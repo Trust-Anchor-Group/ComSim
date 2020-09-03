@@ -66,7 +66,7 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 Specifies the filename of the model to use during simulation.
 The file must be an XML file that conforms to the
 http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
-Schema: <a href="blob/master/ComSim/Schema/ComSim.xsd">ComSim.xsd</a> in the repository.
+Schema: <a href="ComSim/Schema/ComSim.xsd">ComSim.xsd</a> in the repository.
 </td>
 </tr>
 <tr>
