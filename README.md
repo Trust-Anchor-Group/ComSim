@@ -7,8 +7,8 @@ The TAG *Network Communication Simulator* (or *TAG ComSim*) is a *white-label* c
 * **Scriptable**: Logic can be provided through use of [script](https://lab.tagroot.io/Script.md).
 * **Models**: Models are defined in XML files, and include support for defining:
 	* Actors
-	* Actions
 	* Probability Distributions
+	* Actions
 	* Events
 	* Statistics
 	* Report Output
@@ -54,6 +54,27 @@ of use, data, or profits; or business interruption) however caused and on any th
 negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
 
 The TAG ComSim is © Trust Anchor Group AB 2020. All rights reserved.
+
+## Command-line arguments
+
+The *TAG ComSim* console application is run from a command-prompt. Command-line arguments are as follows:
+
+<table>
+<tr>
+<td><code>-i FILENAME</code></td>
+<td rowspan="4">
+Specifies the filename of the model to use during simulation.
+The file must be an XML file that conforms to the
+http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
+Schema is available at Schema/ComSim.xsd in the repository.
+</td>
+</tr>
+<tr>
+<td><code>-input FILENAME</code></td>
+<td><code>-m FILENAME</code></td>
+<td><code>-model FILENAME</code></td>
+</tr>
+</table>
 
 ## Contact
 

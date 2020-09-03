@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSim"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Model">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Assemblies">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Actors">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Distributions">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Actions">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
