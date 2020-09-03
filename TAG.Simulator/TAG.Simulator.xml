@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.Factory">
+            <summary>
+            Factory of simulation objects.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Factory.Create(System.Xml.XmlElement)">
+            <summary>
+            Creates a simulation objected, based on its XML definition.
+            </summary>
+            <param name="Definition">XML definition.</param>
+            <returns>Created simulation object</returns>
+        </member>
+        <member name="T:TAG.Simulator.ISimulationNode">
+            <summary>
+            Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
+            in simulator models.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ISimulationNode.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ISimulationNode.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.Model">
+            <summary>
+            Root node of a simulation model
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Model.#ctor">
+            <summary>
+            Root node of a simulation model
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.Model.ComSimNamespace">
+            <summary>
+            http://trustanchorgroup.com/Schema/ComSim.xsd
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Model.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.Run">
+            <summary>
+            Runs the simulation.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
+            <summary>
+            Container for activities.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.#ctor">
+            <summary>
+            Container for activities.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Activities.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
+            <summary>
+            Container for actors.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.#ctor">
+            <summary>
+            Container for actors.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actors.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
+            <summary>
+            Container for distributions.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.#ctor">
+            <summary>
+            Container for distributions.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Distributions.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
+            <summary>
+            Abstract base class for simulation nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.#ctor">
+            <summary>
+            Abstract base class for simulation nodes
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNode.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.SimulationNodeChildren">
+            <summary>
+            Abstract base class for simulation nodes with children
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.#ctor">
+            <summary>
+            Abstract base class for simulation nodes
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNodeChildren.Children">
+            <summary>
+            Child nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Structure.Assemblies">
+            <summary>
+            Container for assemblies.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.#ctor">
+            <summary>
+            Container for assemblies.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Structure.Assemblies.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Structure.Assembly">
+            <summary>
+            Assembly reference.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.#ctor">
+            <summary>
+            Assembly reference.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Structure.Assembly.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Structure.Assembly.FileName">
+            <summary>
+            Filename of assembly.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.Create">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+    </members>
+</doc>

@@ -77,6 +77,12 @@ Following is a list of simulation examples that can be used as the basis for new
 |:----------------------------------------------------------|:---------------------------------------------------------------------------|
 | [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. |
 
+## Extending the Simulator
+
+You can extend the simulator by providing links to your own .NET Standard assemblies, and reference them from your simulation model.
+To extend the simulator, create classes that implement the [ISimulationNode](TAG.Simulator/ISimulationNode) interface, defined in the 
+[TAG.Simulator](TAG.Simulator) library. The classes must implement the default constructor.
+
 ## Contact
 
 You can choose to contact us via our [online feedback form](https://lab.tagroot.io/Feedback.md), via [company e-mail](mailto:info@trustanchorgroup.com), or the

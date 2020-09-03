@@ -28,7 +28,7 @@
           <xs:complexType>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Actions">
+        <xs:element name="Activities">
           <xs:complexType>
           </xs:complexType>
         </xs:element>

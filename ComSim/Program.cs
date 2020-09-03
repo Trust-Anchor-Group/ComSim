@@ -2,7 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
 using Waher.Persistence;
@@ -155,7 +157,7 @@ namespace ComSim
 
 				Console.Out.WriteLine("Validating model.");
 
-				XSL.Validate("Model", Model, "Model", "http://trustanchorgroup.com/Schema/ComSim.xsd",
+				XSL.Validate("Model", Model, "Model", TAG.Simulator.Model.ComSimNamespace,
 					XSL.LoadSchema("ComSim.Schema.ComSim.xsd", typeof(Program).Assembly));
 
 				foreach (XmlNode N in Model.DocumentElement.ChildNodes)
@@ -192,9 +194,19 @@ namespace ComSim
 				{
 					Database.Register(FilesProvider);
 
+					Console.Out.WriteLine("Running simulation...");
+
+					Run(Model).Wait();
 				}
 
 				Console.Out.WriteLine("Simulation completed.");
+			}
+			catch (AggregateException ex)
+			{
+				foreach (Exception ex2 in ex.InnerExceptions)
+					WriteLine(ex2.Message, ConsoleColor.White, ConsoleColor.Red);
+
+				return 1;
 			}
 			catch (Exception ex)
 			{
@@ -203,6 +215,12 @@ namespace ComSim
 			}
 
 			return 0;
+		}
+
+		private static async Task Run(XmlDocument ModelXml)
+		{
+			Model Model = (Model)await Factory.Create(ModelXml.DocumentElement);
+			await Model.Run();
 		}
 
 		private static void WriteLine(string Row, ConsoleColor ForegroundColor, ConsoleColor BackgrounColor)

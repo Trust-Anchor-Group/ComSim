@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Description>Library containing the simulator abstraction model, as well as common simulator nodes.</Description>
+    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator\TAG.Simulator.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="Waher.Content" Version="1.0.25" />
+    <PackageReference Include="Waher.Content.Xml" Version="1.0.9" />
+    <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.13" />
+  </ItemGroup>
+
+</Project>
