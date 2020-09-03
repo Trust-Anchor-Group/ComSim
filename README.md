@@ -59,26 +59,9 @@ The TAG ComSim is © Trust Anchor Group AB 2020. All rights reserved.
 
 The *TAG ComSim* console application is run from a command-prompt. Command-line arguments are as follows:
 
-<table>
-<tr>
-<td><code>-i FILENAME</code></td>
-<td rowspan="4">
-Specifies the filename of the model to use during simulation.
-The file must be an XML file that conforms to the
-http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
-Schema: <a href="ComSim/Schema/ComSim.xsd">ComSim.xsd</a> in the repository.
-</td>
-</tr>
-<tr>
-<td><code>-input FILENAME</code></td>
-</tr>
-<tr>
-<td><code>-m FILENAME</code></td>
-</tr>
-<tr>
-<td><code>-model FILENAME</code></td>
-</tr>
-</table>
+| Argument | Description |
+|:---------|:------------|
+| `-i FILENAME` | Specifies the filename of the model to use during simulation. The file must be an XML file that conforms to the http://trustanchorgroup.com/Schema/ComSim.xsd namespace. Schema: [ComSim.xsd](ComSim/Schema/ComSim.xsd) in the repository. |
 
 ## Examples
 

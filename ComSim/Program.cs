@@ -12,9 +12,10 @@ namespace ComSim
 	/// Command-line arguments:
 	/// 
 	/// -i FILENAME        Specifies the filename of the model to use during simulation.
-	/// -input FILENAME    The file must be an XML file that conforms to the
-	/// -m FILENAME        http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
-	/// -model FILENAME    Schema is available at Schema/ComSim.xsd in repository.
+	///                    The file must be an XML file that conforms to the
+	///                    http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
+	///                    Schema is available at Schema/ComSim.xsd in repository.
+	/// -?                 Displays command-line help.
 	/// </summary>
 	class Program
 	{
@@ -38,9 +39,6 @@ namespace ComSim
 					switch (s)
 					{
 						case "-i":
-						case "-input":
-						case "-m":
-						case "-model":
 							if (i >= c)
 								throw new Exception("Expected model filename.");
 
@@ -53,8 +51,6 @@ namespace ComSim
 							break;
 
 						case "-?":
-						case "-h":
-						case "-help":
 							Help = true;
 							break;
 
@@ -72,9 +68,10 @@ namespace ComSim
 					Console.Out.WriteLine("Command-line arguments:");
 					Console.Out.WriteLine();
 					Console.Out.WriteLine("-i FILENAME        Specifies the filename of the model to use during simulation.");
-					Console.Out.WriteLine("-input FILENAME    The file must be an XML file that conforms to the");
-					Console.Out.WriteLine("-m FILENAME        http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
-					Console.Out.WriteLine("-model FILENAME    Schema is available at Schema/ComSim.xsd in the repository.");
+					Console.Out.WriteLine("                   The file must be an XML file that conforms to the");
+					Console.Out.WriteLine("                   http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
+					Console.Out.WriteLine("                   Schema is available at Schema/ComSim.xsd in the repository.");
+					Console.Out.WriteLine("-?                 Displays command-line help.");
 					Console.Out.WriteLine();
 
 					if (args.Length <= 1)
