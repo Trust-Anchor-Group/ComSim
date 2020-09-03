@@ -59,9 +59,15 @@ The TAG ComSim is © Trust Anchor Group AB 2020. All rights reserved.
 
 The *TAG ComSim* console application is run from a command-prompt. Command-line arguments are as follows:
 
-| Argument | Description |
-|:---------|:------------|
-| `-i FILENAME` | Specifies the filename of the model to use during simulation. The file must be an XML file that conforms to the http://trustanchorgroup.com/Schema/ComSim.xsd namespace. Schema: [ComSim.xsd](ComSim/Schema/ComSim.xsd) in the repository. |
+| Argument               | Description |
+|:-----------------------|:------------|
+| `-i FILENAME`          | Specifies the filename of the model to use during simulation. The file must be an XML file that conforms to the http://trustanchorgroup.com/Schema/ComSim.xsd namespace. Schema: [ComSim.xsd](ComSim/Schema/ComSim.xsd) in the repository. |
+| `-d APP_DATA_FOLDER`   | Points to the application data folder. Required if storage of data in a local database is necessary for the simulation. (Storage can include generated user credentials so that the same user identities can be used across simulations.) |
+| `-e`                   | If encryption is used by the database. Default=no encryption. |
+| `-bs BLOCK_SIZE`       | Block size, in bytes. Default=8192. |
+| `-bbs BLOB_BLOCK_SIZE` | BLOB block size, in bytes. Default=8192. |
+| `-enc ENCODING`        | Text encoding. Default=UTF-8 |
+| `-?`                   | Displays command-line help. |
 
 ## Examples
 

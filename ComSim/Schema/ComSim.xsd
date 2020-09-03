@@ -9,8 +9,15 @@
   <xs:element name="Model">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Assemblies">
+        <xs:element name="Assemblies" minOccurs="0" maxOccurs="1">
           <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Assembly" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="fileName" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
           </xs:complexType>
         </xs:element>
         <xs:element name="Actors">

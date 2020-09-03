@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ComSim": {
+      "commandName": "Project",
+      "commandLineArgs": "-d Data -e -i ..\\..\\..\\..\\Examples\\SimpleChatMessages.xml"
+    }
+  }
+}

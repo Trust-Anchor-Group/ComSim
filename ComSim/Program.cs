@@ -1,6 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Xml;
+using Waher.Content.Xml;
+using Waher.Content.Xsl;
+using Waher.Persistence;
+using Waher.Persistence.Files;
+using Waher.Runtime.Inventory.Loader;
 
 namespace ComSim
 {
@@ -11,11 +18,20 @@ namespace ComSim
 	/// 
 	/// Command-line arguments:
 	/// 
-	/// -i FILENAME        Specifies the filename of the model to use during simulation.
-	///                    The file must be an XML file that conforms to the
-	///                    http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
-	///                    Schema is available at Schema/ComSim.xsd in repository.
-	/// -?                 Displays command-line help.
+	/// -i FILENAME           Specifies the filename of the model to use during simulation.
+	///                       The file must be an XML file that conforms to the
+	///                       http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
+	///                       Schema is available at Schema/ComSim.xsd in repository.
+	/// -d APP_DATA_FOLDER    Points to the application data folder. Required if storage
+	///                       of data in a local database is necessary for the 
+	///                       simulation. (Storage can include generated user credentials
+	///                       so that the same user identities can be used across
+	///                       simulations.)
+	/// -e                    If encryption is used by the database. Default=no encryption.
+	/// -bs BLOCK_SIZE        Block size, in bytes. Default=8192.
+	/// -bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.
+	/// -enc ENCODING         Text encoding. Default=UTF-8
+	/// -?                    Displays command-line help.
 	/// </summary>
 	class Program
 	{
@@ -24,8 +40,13 @@ namespace ComSim
 			try
 			{
 				XmlDocument Model = null;
+				Encoding Encoding = Encoding.UTF8;
+				string ProgramDataFolder = null;
 				int i = 0;
 				int c = args.Length;
+				int BlockSize = 8192;
+				int BlobBlockSize = 8192;
+				bool Encryption = false;
 				string s;
 				bool Help = args.Length == 0;
 
@@ -50,6 +71,45 @@ namespace ComSim
 							Model.Load(s);
 							break;
 
+						case "-d":
+							if (i >= c)
+								throw new Exception("Missing program data folder.");
+
+							if (string.IsNullOrEmpty(ProgramDataFolder))
+								ProgramDataFolder = args[i++];
+							else
+								throw new Exception("Only one program data folder allowed.");
+							break;
+
+						case "-bs":
+							if (i >= c)
+								throw new Exception("Block size missing.");
+
+							if (!int.TryParse(args[i++], out BlockSize))
+								throw new Exception("Invalid block size");
+
+							break;
+
+						case "-bbs":
+							if (i >= c)
+								throw new Exception("Blob Block size missing.");
+
+							if (!int.TryParse(args[i++], out BlobBlockSize))
+								throw new Exception("Invalid blob block size");
+
+							break;
+
+						case "-enc":
+							if (i >= c)
+								throw new Exception("Text encoding missing.");
+
+							Encoding = Encoding.GetEncoding(args[i++]);
+							break;
+
+						case "-e":
+							Encryption = true;
+							break;
+
 						case "-?":
 							Help = true;
 							break;
@@ -67,11 +127,20 @@ namespace ComSim
 					Console.Out.WriteLine();
 					Console.Out.WriteLine("Command-line arguments:");
 					Console.Out.WriteLine();
-					Console.Out.WriteLine("-i FILENAME        Specifies the filename of the model to use during simulation.");
-					Console.Out.WriteLine("                   The file must be an XML file that conforms to the");
-					Console.Out.WriteLine("                   http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
-					Console.Out.WriteLine("                   Schema is available at Schema/ComSim.xsd in the repository.");
-					Console.Out.WriteLine("-?                 Displays command-line help.");
+					Console.Out.WriteLine("-i FILENAME           Specifies the filename of the model to use during simulation.");
+					Console.Out.WriteLine("                      The file must be an XML file that conforms to the");
+					Console.Out.WriteLine("                      http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
+					Console.Out.WriteLine("                      Schema is available at Schema/ComSim.xsd in the repository.");
+					Console.Out.WriteLine("-d APP_DATA_FOLDER    Points to the application data folder. Required if storage");
+					Console.Out.WriteLine("                      of data in a local database is necessary for the");
+					Console.Out.WriteLine("                      simulation. (Storage can include generated user credentials");
+					Console.Out.WriteLine("                      so that the same user identities can be used across");
+					Console.Out.WriteLine("                      simulations.)");
+					Console.Out.WriteLine("-e                    If encryption is used by the database. Default=no encryption.");
+					Console.Out.WriteLine("-bs BLOCK_SIZE        Block size, in bytes. Default=8192.");
+					Console.Out.WriteLine("-bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.");
+					Console.Out.WriteLine("-enc ENCODING         Text encoding. Default=UTF-8");
+					Console.Out.WriteLine("-?                    Displays command-line help.");
 					Console.Out.WriteLine();
 
 					if (args.Length <= 1)
@@ -80,6 +149,52 @@ namespace ComSim
 
 				if (Model is null)
 					throw new Exception("No simulation model specified.");
+
+				if (string.IsNullOrEmpty(ProgramDataFolder))
+					throw new Exception("No program data folder set");
+
+				Console.Out.WriteLine("Validating model.");
+
+				XSL.Validate("Model", Model, "Model", "http://trustanchorgroup.com/Schema/ComSim.xsd",
+					XSL.LoadSchema("ComSim.Schema.ComSim.xsd", typeof(Program).Assembly));
+
+				foreach (XmlNode N in Model.DocumentElement.ChildNodes)
+				{
+					if (N is XmlElement E && E.LocalName == "Assemblies")
+					{
+						foreach (XmlNode N2 in E.ChildNodes)
+						{
+							if (N2 is XmlElement E2 && E2.LocalName == "Assembly")
+							{
+								string FileName = XML.Attribute(E2, "fileName");
+
+								if (!File.Exists(FileName))
+									throw new Exception("File not found: " + FileName);
+
+								Console.Out.WriteLine("Loading " + FileName);
+
+								AssemblyName AN = AssemblyName.GetAssemblyName(FileName);
+								AppDomain.CurrentDomain.Load(AN);
+							}
+						}
+					}
+				}
+
+				if (!Directory.Exists(ProgramDataFolder))
+					Directory.CreateDirectory(ProgramDataFolder);
+
+				Console.Out.WriteLine("Initializing runtime inventory.");
+				TypesLoader.Initialize();
+
+				Console.Out.WriteLine("Initializing database.");
+
+				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
+				{
+					Database.Register(FilesProvider);
+
+				}
+
+				Console.Out.WriteLine("Simulation completed.");
 			}
 			catch (Exception ex)
 			{
