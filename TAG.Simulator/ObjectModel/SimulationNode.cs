@@ -40,5 +40,40 @@ namespace TAG.Simulator.ObjectModel
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
 		public abstract Task FromXml(XmlElement Definition);
+
+		/// <summary>
+		/// Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+		/// </summary>
+		/// <param name="Method">Method to call.</param>
+		/// <param name="DepthFirst">If children are iterated before parents.</param>
+		public virtual Task ForEach(ForEachCallbackMethod Method, bool DepthFirst)
+		{
+			return Method(this);
+		}
+
+		/// <summary>
+		/// Initialized the node before simulation.
+		/// </summary>
+		public virtual Task Initialize()
+		{
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public virtual Task Start()
+		{
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Finalizes the node after simulation.
+		/// </summary>
+		public virtual Task Finalize()
+		{
+			return Task.CompletedTask;
+		}
+
 	}
 }

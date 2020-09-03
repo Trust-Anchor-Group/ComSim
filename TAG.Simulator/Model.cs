@@ -39,9 +39,18 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Runs the simulation.
 		/// </summary>
-		public Task Run()
+		public async Task Run()
 		{
-			return Task.CompletedTask;
+			Console.Out.WriteLine("Initializing...");
+			await this.ForEach(async (Node) => await Node.Initialize(), false);
+			
+			Console.Out.WriteLine("Starting...");
+			await this.ForEach(async (Node) => await Node.Start(), false);
+
+			// TODO
+
+			Console.Out.WriteLine("Finalizing...");
+			await this.ForEach(async (Node) => await Node.Finalize(), false);
 		}
 	}
 }

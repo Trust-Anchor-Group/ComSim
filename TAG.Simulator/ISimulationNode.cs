@@ -5,6 +5,12 @@ using System.Xml;
 namespace TAG.Simulator
 {
 	/// <summary>
+	/// Callback method for iteration across the simulation model.
+	/// </summary>
+	/// <param name="Node">Current node being processed.</param>
+	public delegate Task ForEachCallbackMethod(ISimulationNode Node);
+
+	/// <summary>
 	/// Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
 	/// in simulator models.
 	/// </summary>
@@ -37,5 +43,28 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
 		Task FromXml(XmlElement Definition);
+
+		/// <summary>
+		/// Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+		/// </summary>
+		/// <param name="Method">Method to call.</param>
+		/// <param name="DepthFirst">If children are iterated before parents.</param>
+		Task ForEach(ForEachCallbackMethod Method, bool DepthFirst);
+
+		/// <summary>
+		/// Initialized the node before simulation.
+		/// </summary>
+		Task Initialize();
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		Task Start();
+
+		/// <summary>
+		/// Finalizes the node after simulation.
+		/// </summary>
+		Task Finalize();
+
 	}
 }

@@ -41,5 +41,26 @@ namespace TAG.Simulator.ObjectModel
 
 			this.children = Children.ToArray();
 		}
+
+		/// <summary>
+		/// Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+		/// </summary>
+		/// <param name="Method">Method to call.</param>
+		/// <param name="DepthFirst">If children are iterated before parents.</param>
+		public override async Task ForEach(ForEachCallbackMethod Method, bool DepthFirst)
+		{
+			if (!DepthFirst)
+				await Method(this);
+
+			if (!(this.children is null))
+			{
+				foreach (ISimulationNode Child in this.children)
+					await Child.ForEach(Method, DepthFirst);
+			}
+
+			if (DepthFirst)
+				await Method(this);
+		}
+
 	}
 }

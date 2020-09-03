@@ -16,6 +16,12 @@
             <param name="Definition">XML definition.</param>
             <returns>Created simulation object</returns>
         </member>
+        <member name="T:TAG.Simulator.ForEachCallbackMethod">
+            <summary>
+            Callback method for iteration across the simulation model.
+            </summary>
+            <param name="Node">Current node being processed.</param>
+        </member>
         <member name="T:TAG.Simulator.ISimulationNode">
             <summary>
             Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
@@ -43,6 +49,28 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.ForEach(TAG.Simulator.ForEachCallbackMethod,System.Boolean)">
+            <summary>
+            Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+            </summary>
+            <param name="Method">Method to call.</param>
+            <param name="DepthFirst">If children are iterated before parents.</param>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ISimulationNode.Finalize">
+            <summary>
+            Finalizes the node after simulation.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.Model">
             <summary>
@@ -170,6 +198,28 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.ForEach(TAG.Simulator.ForEachCallbackMethod,System.Boolean)">
+            <summary>
+            Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+            </summary>
+            <param name="Method">Method to call.</param>
+            <param name="DepthFirst">If children are iterated before parents.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Finalize">
+            <summary>
+            Finalizes the node after simulation.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNodeChildren">
             <summary>
             Abstract base class for simulation nodes with children
@@ -190,6 +240,13 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.ForEach(TAG.Simulator.ForEachCallbackMethod,System.Boolean)">
+            <summary>
+            Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+            </summary>
+            <param name="Method">Method to call.</param>
+            <param name="DepthFirst">If children are iterated before parents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Structure.Assemblies">
             <summary>
