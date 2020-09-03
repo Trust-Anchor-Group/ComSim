@@ -80,7 +80,7 @@ Following is a list of simulation examples that can be used as the basis for new
 ## Extending the Simulator
 
 You can extend the simulator by providing links to your own .NET Standard assemblies, and reference them from your simulation model.
-To extend the simulator, create classes that implement the [ISimulationNode](TAG.Simulator/ISimulationNode) interface, defined in the 
+To extend the simulator, create classes that implement the [ISimulationNode](TAG.Simulator/ISimulationNode.cs) interface, defined in the 
 [TAG.Simulator](TAG.Simulator) library. The classes must implement the default constructor.
 
 ## Contact
