@@ -80,6 +80,14 @@ Schema: <a href="ComSim/Schema/ComSim.xsd">ComSim.xsd</a> in the repository.
 </tr>
 </table>
 
+## Examples
+
+Following is a list of simulation examples that can be used as the basis for new simulation models:
+
+| Example                                                   | Descriptio                                                                 |
+|:----------------------------------------------------------|:---------------------------------------------------------------------------|
+| [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. |
+
 ## Contact
 
 You can choose to contact us via our [online feedback form](https://lab.tagroot.io/Feedback.md), via [company e-mail](mailto:info@trustanchorgroup.com), or the
