@@ -71,7 +71,11 @@ Schema is available at Schema/ComSim.xsd in the repository.
 </tr>
 <tr>
 <td><code>-input FILENAME</code></td>
+</tr>
+<tr>
 <td><code>-m FILENAME</code></td>
+</tr>
+<tr>
 <td><code>-model FILENAME</code></td>
 </tr>
 </table>
