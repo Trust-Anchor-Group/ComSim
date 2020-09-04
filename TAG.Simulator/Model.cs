@@ -30,7 +30,12 @@ namespace TAG.Simulator
 	{
 		private TimeBase timeBase;
 		private Duration timeUnit;
+		private Duration timeCycle;
+		private Duration duration;
 		private DateTime start;
+		private DateTime end;
+		private double timeUnitMs;
+		private double timeCycleMs;
 
 		/// <summary>
 		/// Root node of a simulation model
@@ -72,8 +77,10 @@ namespace TAG.Simulator
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.timeBase = (TimeBase)XML.Attribute(Definition, "timeBase", TimeBase.StartOfSimulation);
+			this.timeBase = (TimeBase)XML.Attribute(Definition, "timeBase", TimeBase.ComputerClock);
 			this.timeUnit = XML.Attribute(Definition, "timeUnit", Duration.FromHours(1));
+			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
+			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
 
 			return base.FromXml(Definition);
 		}
@@ -81,27 +88,56 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		public override Task Initialize()
+		/// <param name="Model">Model being executed.</param>
+		public override Task Initialize(Model Model)
 		{
 			this.start = DateTime.Now;
-			return base.Initialize();
+			this.end = this.start + this.duration;
+
+			this.timeUnitMs = ((this.start + this.timeUnit) - this.start).TotalMilliseconds;
+			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
+
+			return base.Initialize(Model);
 		}
 
 		/// <summary>
 		/// Runs the simulation.
 		/// </summary>
-		public async Task Run()
+		/// <param name="Done">Task completion source, that can be set by external events.</param>
+		/// <returns>If simulation completed successfully.</returns>
+		public async Task<bool> Run(TaskCompletionSource<bool> Done)
 		{
 			Console.Out.WriteLine("Initializing...");
-			await this.ForEach(async (Node) => await Node.Initialize(), false);
-			
+			await this.ForEach(async (Node) => await Node.Initialize(this), false);
+
 			Console.Out.WriteLine("Starting...");
 			await this.ForEach(async (Node) => await Node.Start(), false);
 
-			// TODO
+			Console.Out.WriteLine("Running...");
+
+			DateTime TP;
+			double t1;
+			double t2 = 0;
+			double dt;
+			bool Result = true;
+
+			while ((TP = DateTime.Now) <= this.end)
+			{
+				t1 = t2;
+				t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs);
+				dt = t2 - t1;
+
+				if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
+				{
+					Result = false;
+					break;
+				}
+			}
 
 			Console.Out.WriteLine("Finalizing...");
 			await this.ForEach(async (Node) => await Node.Finalize(), false);
+
+			return Result;
 		}
 	}
 }

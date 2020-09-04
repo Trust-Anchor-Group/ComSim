@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd" timeBase="StartOfSimulation" timeUnit="PT1M">
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd" 
+       timeBase="StartOfSimulation" 
+       timeUnit="PT1M" 
+       timeCycle="PT1H" 
+       duration="PT5H">
   <Assemblies/>
   <Actors/>
   <Distributions/>

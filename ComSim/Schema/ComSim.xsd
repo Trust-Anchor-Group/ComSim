@@ -33,7 +33,7 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="timeBase" use="optional" default="StartOfSimulation">
+      <xs:attribute name="timeBase" use="optional" default="ComputerClock">
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="StartOfSimulation"/>
@@ -42,6 +42,8 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="timeUnit" type="xs:duration" use="optional" default="PT1H"/>
+      <xs:attribute name="timeCycle" type="xs:duration" use="optional" default="P1D"/>
+      <xs:attribute name="duration" type="xs:duration" use="required"/>
     </xs:complexType>
   </xs:element>
   

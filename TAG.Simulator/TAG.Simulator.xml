@@ -59,10 +59,11 @@
             <param name="Method">Method to call.</param>
             <param name="DepthFirst">If children are iterated before parents.</param>
         </member>
-        <member name="M:TAG.Simulator.ISimulationNode.Initialize">
+        <member name="M:TAG.Simulator.ISimulationNode.Initialize(TAG.Simulator.Model)">
             <summary>
             Initialized the node before simulation.
             </summary>
+            <param name="Model">Model being executed.</param>
         </member>
         <member name="M:TAG.Simulator.ISimulationNode.Start">
             <summary>
@@ -128,15 +129,18 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.Model.Initialize">
+        <member name="M:TAG.Simulator.Model.Initialize(TAG.Simulator.Model)">
             <summary>
             Initialized the node before simulation.
             </summary>
+            <param name="Model">Model being executed.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.Run">
+        <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean})">
             <summary>
             Runs the simulation.
             </summary>
+            <param name="Done">Task completion source, that can be set by external events.</param>
+            <returns>If simulation completed successfully.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
             <summary>
@@ -253,10 +257,11 @@
             <param name="Method">Method to call.</param>
             <param name="DepthFirst">If children are iterated before parents.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Initialize">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Initialize(TAG.Simulator.Model)">
             <summary>
             Initialized the node before simulation.
             </summary>
+            <param name="Model">Model being executed.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Start">
             <summary>

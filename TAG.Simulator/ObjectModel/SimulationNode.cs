@@ -64,7 +64,8 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		public virtual Task Initialize()
+		/// <param name="Model">Model being executed.</param>
+		public virtual Task Initialize(Model Model)
 		{
 			return Task.CompletedTask;
 		}

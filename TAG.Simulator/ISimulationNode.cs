@@ -55,7 +55,8 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		Task Initialize();
+		/// <param name="Model">Model being executed.</param>
+		Task Initialize(Model Model);
 
 		/// <summary>
 		/// Starts the node.

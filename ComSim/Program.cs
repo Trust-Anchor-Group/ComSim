@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -193,14 +194,52 @@ namespace ComSim
 
 				Log.Register(new ConsoleEventSink());
 
+				TaskCompletionSource<bool> Done = new TaskCompletionSource<bool>(false);
+
+				try
+				{
+					SetConsoleCtrlHandler((ControlType) =>
+					{
+						switch (ControlType)
+						{
+							case CtrlTypes.CTRL_BREAK_EVENT:
+							case CtrlTypes.CTRL_CLOSE_EVENT:
+							case CtrlTypes.CTRL_C_EVENT:
+							case CtrlTypes.CTRL_SHUTDOWN_EVENT:
+								Done.TrySetResult(false);
+								break;
+
+							case CtrlTypes.CTRL_LOGOFF_EVENT:
+								break;
+						}
+
+						return true;
+					}, true);
+				}
+				catch (Exception)
+				{
+					Log.Error("Unable to register CTRL-C control handler.");
+				}
+
 				Console.Out.WriteLine("Initializing database.");
+
+				bool Result;
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Run(Model, FilesProvider).Wait();
+					Result = Run(Model, FilesProvider, Done).Result;
 				}
 
-				Console.Out.WriteLine("Simulation completed.");
+				if (Result)
+				{
+					Console.Out.WriteLine("Simulation completed.");
+					return 0;
+				}
+				else
+				{
+					WriteLine("Simulation aborted.", ConsoleColor.White, ConsoleColor.Red);
+					return 1;
+				}
 			}
 			catch (AggregateException ex)
 			{
@@ -214,11 +253,9 @@ namespace ComSim
 				WriteLine(ex.Message, ConsoleColor.White, ConsoleColor.Red);
 				return 1;
 			}
-
-			return 0;
 		}
 
-		private static async Task Run(XmlDocument ModelXml, FilesProvider DB)
+		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done)
 		{
 			try
 			{
@@ -231,7 +268,7 @@ namespace ComSim
 
 				Console.Out.WriteLine("Running simulation...");
 				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null);
-				await Model.Run();
+				return await Model.Run(Done);
 			}
 			finally
 			{
@@ -255,6 +292,26 @@ namespace ComSim
 			Console.ForegroundColor = ForegroundColorBak;
 			Console.BackgroundColor = BackgroundColorBak;
 		}
+
+		#region unmanaged
+
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms686016(v=vs.85).aspx
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683242(v=vs.85).aspx
+
+		[DllImport("Kernel32")]
+		public static extern bool SetConsoleCtrlHandler(HandlerRoutine Handler, bool Add);
+		public delegate bool HandlerRoutine(CtrlTypes CtrlType);
+
+		public enum CtrlTypes
+		{
+			CTRL_C_EVENT = 0,
+			CTRL_BREAK_EVENT = 1,
+			CTRL_CLOSE_EVENT = 2,
+			CTRL_LOGOFF_EVENT = 5,
+			CTRL_SHUTDOWN_EVENT = 6
+		}
+
+		#endregion
 
 	}
 }
