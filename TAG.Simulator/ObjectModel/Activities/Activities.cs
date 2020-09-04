@@ -12,8 +12,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Container for activities.
 		/// </summary>
-		public Activities()
-			: base()
+		/// <param name="Parent">Parent node</param>
+		public Activities(ISimulationNode Parent)
+			: base(Parent)
 		{
 		}
 
@@ -25,10 +26,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
+		/// <param name="Parent">Parent node</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create()
+		public override ISimulationNode Create(ISimulationNode Parent)
 		{
-			return new Activities();
+			return new Activities(Parent);
 		}
 	}
 }

@@ -9,12 +9,21 @@ namespace TAG.Simulator.ObjectModel
 	/// </summary>
 	public abstract class SimulationNode : ISimulationNode
 	{
+		private readonly ISimulationNode parent;
+
 		/// <summary>
 		/// Abstract base class for simulation nodes
 		/// </summary>
-		public SimulationNode()
+		/// <param name="Parent">Parent node</param>
+		public SimulationNode(ISimulationNode Parent)
 		{
+			this.parent = Parent;
 		}
+
+		/// <summary>
+		/// Parent node
+		/// </summary>
+		public ISimulationNode Parent => this.parent;
 
 		/// <summary>
 		/// XML Namespace where the element is defined.
@@ -32,8 +41,9 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
+		/// <param name="Parent">Parent node.</param>
 		/// <returns>New instance</returns>
-		public abstract ISimulationNode Create();
+		public abstract ISimulationNode Create(ISimulationNode Parent);
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.

@@ -12,8 +12,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Container for distributions.
 		/// </summary>
-		public Distributions()
-			: base()
+		/// <param name="Parent">Parent node</param>
+		public Distributions(ISimulationNode Parent)
+			: base(Parent)
 		{
 		}
 
@@ -25,10 +26,11 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
+		/// <param name="Parent">Parent node</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create()
+		public override ISimulationNode Create(ISimulationNode Parent)
 		{
-			return new Distributions();
+			return new Distributions(Parent);
 		}
 	}
 }

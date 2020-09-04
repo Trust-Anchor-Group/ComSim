@@ -7,8 +7,11 @@ using System.Xml;
 using TAG.Simulator;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
+using Waher.Events;
+using Waher.Events.Console;
 using Waher.Persistence;
 using Waher.Persistence.Files;
+using Waher.Runtime.Inventory;
 using Waher.Runtime.Inventory.Loader;
 
 namespace ComSim
@@ -188,15 +191,13 @@ namespace ComSim
 				Console.Out.WriteLine("Initializing runtime inventory.");
 				TypesLoader.Initialize();
 
+				Log.Register(new ConsoleEventSink());
+
 				Console.Out.WriteLine("Initializing database.");
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Database.Register(FilesProvider);
-
-					Console.Out.WriteLine("Running simulation...");
-
-					Run(Model).Wait();
+					Run(Model, FilesProvider).Wait();
 				}
 
 				Console.Out.WriteLine("Simulation completed.");
@@ -217,10 +218,28 @@ namespace ComSim
 			return 0;
 		}
 
-		private static async Task Run(XmlDocument ModelXml)
+		private static async Task Run(XmlDocument ModelXml, FilesProvider DB)
 		{
-			Model Model = (Model)await Factory.Create(ModelXml.DocumentElement);
-			await Model.Run();
+			try
+			{
+				Console.Out.WriteLine("Starting database...");
+				Database.Register(DB);
+				await DB.RepairIfInproperShutdown(null);
+
+				Console.Out.WriteLine("Starting modules...");
+				await Types.StartAllModules(60000);
+
+				Console.Out.WriteLine("Running simulation...");
+				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null);
+				await Model.Run();
+			}
+			finally
+			{
+				Console.Out.WriteLine("Stopping modules...");
+				await Types.StopAllModules();
+				await DB.Flush();
+				Log.Terminate();
+			}
 		}
 
 		private static void WriteLine(string Row, ConsoleColor ForegroundColor, ConsoleColor BackgrounColor)

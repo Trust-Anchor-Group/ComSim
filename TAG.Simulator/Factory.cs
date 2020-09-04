@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Events;
 using Waher.Runtime.Inventory;
 
 namespace TAG.Simulator
@@ -19,8 +20,9 @@ namespace TAG.Simulator
 		/// Creates a simulation objected, based on its XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition.</param>
+		/// <param name="Parent">Parent node.</param>
 		/// <returns>Created simulation object</returns>
-		public static async Task<ISimulationNode> Create(XmlElement Definition)
+		public static async Task<ISimulationNode> Create(XmlElement Definition, ISimulationNode Parent)
 		{
 			ISimulationNode Result;
 			string Key;
@@ -29,6 +31,8 @@ namespace TAG.Simulator
 			{
 				if (!initialized)
 				{
+					object[] Arguments = new object[] { null };
+
 					foreach (Type T in Types.GetTypesImplementingInterface(typeof(ISimulationNode)))
 					{
 						TypeInfo TI = T.GetTypeInfo();
@@ -37,11 +41,12 @@ namespace TAG.Simulator
 
 						try
 						{
-							ISimulationNode Node = (ISimulationNode)Activator.CreateInstance(T);
+							ISimulationNode Node = (ISimulationNode)Activator.CreateInstance(T, Arguments);
 							nodeTypes[Node.Namespace + "#" + Node.LocalName] = Node;
 						}
-						catch (Exception)
+						catch (Exception ex)
 						{
+							Log.Critical(ex);
 							continue;
 						}
 					}
@@ -54,7 +59,7 @@ namespace TAG.Simulator
 					throw new Exception("Unable to instantiate objects of type " + Definition.NamespaceURI + "#" + Definition.LocalName);
 			}
 
-			Result = Result.Create();
+			Result = Result.Create(Parent);
 			await Result.FromXml(Definition);
 
 			return Result;

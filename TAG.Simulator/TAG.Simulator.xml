@@ -9,11 +9,12 @@
             Factory of simulation objects.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Factory.Create(System.Xml.XmlElement)">
+        <member name="M:TAG.Simulator.Factory.Create(System.Xml.XmlElement,TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a simulation objected, based on its XML definition.
             </summary>
             <param name="Definition">XML definition.</param>
+            <param name="Parent">Parent node.</param>
             <returns>Created simulation object</returns>
         </member>
         <member name="T:TAG.Simulator.ForEachCallbackMethod">
@@ -38,10 +39,11 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ISimulationNode.Create">
+        <member name="M:TAG.Simulator.ISimulationNode.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
         </member>
         <member name="M:TAG.Simulator.ISimulationNode.FromXml(System.Xml.XmlElement)">
@@ -72,15 +74,31 @@
             Finalizes the node after simulation.
             </summary>
         </member>
+        <member name="T:TAG.Simulator.TimeBase">
+            <summary>
+            Base of simulation time
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.TimeBase.StartOfSimulation">
+            <summary>
+            00:00:00 equals start of simulation.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.TimeBase.ComputerClock">
+            <summary>
+            Time/Date equals computer time/date.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.Model">
             <summary>
             Root node of a simulation model
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Model.#ctor">
+        <member name="M:TAG.Simulator.Model.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Root node of a simulation model
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="F:TAG.Simulator.Model.ComSimNamespace">
             <summary>
@@ -92,11 +110,28 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Model.Create">
+        <member name="P:TAG.Simulator.Model.TimeBase">
+            <summary>
+            Base of simulation time
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Model.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
         </member>
         <member name="M:TAG.Simulator.Model.Run">
             <summary>
@@ -108,20 +143,22 @@
             Container for activities.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Container for activities.
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Activities.LocalName">
             <summary>
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.Create">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
@@ -129,20 +166,22 @@
             Container for actors.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Container for actors.
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.Actors.LocalName">
             <summary>
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.Create">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
@@ -150,20 +189,22 @@
             Container for distributions.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Container for distributions.
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Distributions.Distributions.LocalName">
             <summary>
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.Create">
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distributions.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
@@ -171,9 +212,15 @@
             Abstract base class for simulation nodes
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Abstract base class for simulation nodes
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Parent">
+            <summary>
+            Parent node
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Namespace">
@@ -186,10 +233,11 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Create">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNode.FromXml(System.Xml.XmlElement)">
@@ -225,10 +273,11 @@
             Abstract base class for simulation nodes with children
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Abstract base class for simulation nodes
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNodeChildren.Children">
             <summary>
@@ -253,20 +302,22 @@
             Container for assemblies.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Container for assemblies.
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Structure.Assemblies.LocalName">
             <summary>
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.Create">
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assemblies.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Structure.Assembly">
@@ -274,10 +325,11 @@
             Assembly reference.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.#ctor">
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
             Assembly reference.
             </summary>
+            <param name="Parent">Parent node</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Structure.Assembly.LocalName">
             <summary>
@@ -289,10 +341,11 @@
             Filename of assembly.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.Create">
+        <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
             </summary>
+            <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.FromXml(System.Xml.XmlElement)">

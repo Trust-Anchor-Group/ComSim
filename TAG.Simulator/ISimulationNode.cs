@@ -35,8 +35,9 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
+		/// <param name="Parent">Parent node.</param>
 		/// <returns>New instance</returns>
-		ISimulationNode Create();
+		ISimulationNode Create(ISimulationNode Parent);
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
