@@ -97,7 +97,7 @@ Syntax of simulation nodes are defined in XML Schema files. The following table 
 | Schema                                                     | Namespace                                            | Description                                                                |
 |:-----------------------------------------------------------|:-----------------------------------------------------|:---------------------------------------------------------------------------|
 | [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)              | `http://trustanchorgroup.com/Schema/ComSim.xsd`      | Defines the main structure of a simulation model file.                     |
-| [ComSimXmpp.xsd](TAG.Simulator.Xmpp/Schema/ComSimXmpp.xsd) | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd` | Defines simulation extensions for actors communicating XMPP.               |
+| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd) | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd` | Defines simulation extensions for actors communicating XMPP.               |
 
 ## Contact
 
