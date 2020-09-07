@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 
 namespace TAG.Simulator
 {
@@ -28,6 +29,14 @@ namespace TAG.Simulator
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		string LocalName
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+		/// </summary>
+		string SchemaResource
 		{
 			get;
 		}

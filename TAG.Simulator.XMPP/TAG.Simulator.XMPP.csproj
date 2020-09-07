@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Description>Extension library to the ComSim simulator, providing support for XMPP communication.</Description>
+    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.XMPP\TAG.Simulator.XMPP.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
+  </Target>
+
+  <ItemGroup>
+    <None Remove="Schema\ComSimXmpp.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\ComSimXmpp.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Waher.Networking.XMPP" Version="1.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 using TAG.Simulator;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
@@ -159,10 +162,7 @@ namespace ComSim
 				if (string.IsNullOrEmpty(ProgramDataFolder))
 					throw new Exception("No program data folder set");
 
-				Console.Out.WriteLine("Validating model.");
-
-				XSL.Validate("Model", Model, "Model", TAG.Simulator.Model.ComSimNamespace,
-					XSL.LoadSchema("ComSim.Schema.ComSim.xsd", typeof(Program).Assembly));
+				Console.Out.WriteLine("Loading modules.");
 
 				foreach (XmlNode N in Model.DocumentElement.ChildNodes)
 				{
@@ -179,8 +179,8 @@ namespace ComSim
 
 								Console.Out.WriteLine("Loading " + FileName);
 
-								AssemblyName AN = AssemblyName.GetAssemblyName(FileName);
-								AppDomain.CurrentDomain.Load(AN);
+								byte[] Bin = File.ReadAllBytes(FileName);
+								AppDomain.CurrentDomain.Load(Bin);
 							}
 						}
 					}
@@ -191,6 +191,45 @@ namespace ComSim
 
 				Console.Out.WriteLine("Initializing runtime inventory.");
 				TypesLoader.Initialize();
+				Factory.Initialize();
+
+				Console.Out.WriteLine("Validating model.");
+
+				Dictionary<string, XmlSchema> Schemas = new Dictionary<string, XmlSchema>();
+				LinkedList<XmlElement> ToProcess = new LinkedList<XmlElement>();
+				XmlElement Loop;
+				string Last = null;
+
+				ToProcess.AddLast(Model.DocumentElement);
+
+				while (!((Loop = ToProcess.First?.Value) is null))
+				{
+					ToProcess.RemoveFirst();
+
+					foreach (XmlNode N in Loop.ChildNodes)
+					{
+						if (N is XmlElement E)
+							ToProcess.AddLast(E);
+					}
+
+					s = Loop.NamespaceURI;
+					if (s != Last)
+					{
+						Last = s;
+						if (!Schemas.ContainsKey(s))
+						{
+							if (!Factory.TryGetSchemaResource(s, out KeyValuePair<string, Assembly> P))
+								throw new Exception("Namespace " + s + " not defined in a schema in any of the loaded modules.");
+
+							Schemas[s] = XSL.LoadSchema(P.Key, P.Value);
+						}
+					}
+				}
+
+				XmlSchema[] Schemas2 = new XmlSchema[Schemas.Count];
+				Schemas.Values.CopyTo(Schemas2, 0);
+
+				XSL.Validate("Model", Model, "Model", TAG.Simulator.Model.ComSimNamespace, Schemas2);
 
 				Log.Register(new ConsoleEventSink());
 

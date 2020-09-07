@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSim"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Model">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Assemblies" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Assembly" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="fileName" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Actors">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Distributions">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="Uniform" type="UniformDistribution"/>
+              <xs:element name="Normal" type="NormalDistribution"/>
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Activities">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="timeBase" use="optional" default="ComputerClock">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="StartOfSimulation"/>
+            <xs:enumeration value="ComputerClock"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="timeUnit" type="xs:duration" use="optional" default="PT1H"/>
+      <xs:attribute name="timeCycle" type="xs:duration" use="optional" default="P1D"/>
+      <xs:attribute name="duration" type="xs:duration" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Distribution" abstract="true">
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="N" type="PositiveDouble" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="PositiveDouble">
+    <xs:restriction base="xs:double">
+      <xs:minExclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NonNegativeDouble">
+    <xs:restriction base="xs:double">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="UniformDistribution">
+    <xs:complexContent>
+      <xs:extension base="Distribution">
+        <xs:attribute name="from" type="xs:double" use="required"/>
+        <xs:attribute name="to" type="xs:double" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="NormalDistribution">
+    <xs:complexContent>
+      <xs:extension base="Distribution">
+        <xs:attribute name="μ" type="xs:double" use="required"/>
+        <xs:attribute name="σ" type="PositiveDouble" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Actor" abstract="true">
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="N" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="PortNumber">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:maxExclusive value="65536"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

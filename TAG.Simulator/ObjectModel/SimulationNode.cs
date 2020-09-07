@@ -31,6 +31,11 @@ namespace TAG.Simulator.ObjectModel
 		public virtual string Namespace => Model.ComSimNamespace;
 
 		/// <summary>
+		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+		/// </summary>
+		public virtual string SchemaResource => "TAG.Simulator.Schema.ComSim.xsd";
+
+		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public abstract string LocalName

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator.XMPP</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.XMPP.XmppActor">
+            <summary>
+            Abstract base class for XMPP actors.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActor.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for XMPP actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.XmppActor.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.XmppActor.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.XmppActorBosh">
+            <summary>
+            XMPP Actor connecting to the XMPP network using BOSH (HTTP).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorBosh.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using BOSH (HTTP).
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.XmppActorBosh.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorBosh.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.XmppActorTcp">
+            <summary>
+            XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorTcp.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.XmppActorTcp.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorTcp.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.XmppActorWebSocket">
+            <summary>
+            XMPP Actor connecting to the XMPP network using web-sockets.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorWebSocket.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using web-sockets.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.XmppActorWebSocket.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActorWebSocket.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSim"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
+
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+
+  <xs:complexType name="XmppActor">
+    <xs:complexContent>
+      <xs:extension base="cs:Actor">
+        <xs:attribute name="domain" type="xs:string" use="required"/>
+        <xs:attribute name="port" type="cs:PortNumber" use="optional"/>
+        <xs:attribute name="userName" type="xs:string" use="required"/>
+        <xs:attribute name="apiKey" type="xs:string" use="optional"/>
+        <xs:attribute name="secret" type="xs:string" use="optional"/>
+        <xs:attribute name="alwaysConnected" type="xs:boolean" use="optional" default="true"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="XmppActorTcp" type="XmppActor"/>
+  <xs:element name="XmppActorBosh" type="XmppActor"/>
+  <xs:element name="XmppActorWebSocket" type="XmppActor"/>
+
+</xs:schema>

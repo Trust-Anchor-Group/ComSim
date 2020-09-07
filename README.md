@@ -73,7 +73,7 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 
 Following is a list of simulation examples that can be used as the basis for new simulation models:
 
-| Example                                                   | Descriptio                                                                 |
+| Example                                                   | Description                                                                |
 |:----------------------------------------------------------|:---------------------------------------------------------------------------|
 | [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. |
 
@@ -83,6 +83,21 @@ You can extend the simulator by providing links to your own .NET Standard assemb
 To extend the simulator, create classes that implement the [ISimulationNode](TAG.Simulator/ISimulationNode.cs) interface, defined in the 
 [TAG.Simulator](TAG.Simulator) library. The classes must implement the public a constructor taking a `ISimulationNode` argument representing
 its parent node.
+
+Following is a list of extension modules provided in the repository:
+
+| Example                                  | Description                                                  |
+|:-----------------------------------------|:-------------------------------------------------------------|
+| [TAG.Simulator.XMPP](TAG.Simulator.XMPP) | Defines simulation extensions for actors communicating XMPP. |
+
+## Schema Files
+
+Syntax of simulation nodes are defined in XML Schema files. The following table lists XML Schema files defined by the project:
+
+| Schema                                                     | Namespace                                            | Description                                                                |
+|:-----------------------------------------------------------|:-----------------------------------------------------|:---------------------------------------------------------------------------|
+| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)              | `http://trustanchorgroup.com/Schema/ComSim.xsd`      | Defines the main structure of a simulation model file.                     |
+| [ComSimXmpp.xsd](TAG.Simulator.Xmpp/Schema/ComSimXmpp.xsd) | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd` | Defines simulation extensions for actors communicating XMPP.               |
 
 ## Contact
 

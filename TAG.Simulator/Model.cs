@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
+using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.ObjectModel.Distributions;
 using Waher.Content;
 using Waher.Content.Xml;
 
@@ -28,6 +31,8 @@ namespace TAG.Simulator
 	/// </summary>
 	public class Model : SimulationNodeChildren
 	{
+		private readonly Dictionary<string, Distribution> distributions = new Dictionary<string, Distribution>();
+		private readonly Dictionary<string, Actor> actors = new Dictionary<string, Actor>();
 		private TimeBase timeBase;
 		private Duration timeUnit;
 		private Duration timeCycle;
@@ -101,6 +106,30 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Registers a distribution with the runtime environment of the model.
+		/// </summary>
+		/// <param name="Distribution">Distribution object.</param>
+		public void Register(Distribution Distribution)
+		{
+			if (this.distributions.ContainsKey(Distribution.Id))
+				throw new Exception("A distribution with ID " + Distribution.Id + " already registered.");
+
+			this.distributions[Distribution.Id] = Distribution;
+		}
+
+		/// <summary>
+		/// Registers a actor with the runtime environment of the model.
+		/// </summary>
+		/// <param name="Actor">Actor object.</param>
+		public void Register(Actor Actor)
+		{
+			if (this.actors.ContainsKey(Actor.Id))
+				throw new Exception("An actor with ID " + Actor.Id + " already registered.");
+
+			this.actors[Actor.Id] = Actor;
+		}
+
+		/// <summary>
 		/// Runs the simulation.
 		/// </summary>
 		/// <param name="Done">Task completion source, that can be set by external events.</param>
@@ -124,7 +153,7 @@ namespace TAG.Simulator
 			while ((TP = DateTime.Now) <= this.end)
 			{
 				t1 = t2;
-				t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs);
+				t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs) / this.timeUnitMs;
 				dt = t2 - t1;
 
 				if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)

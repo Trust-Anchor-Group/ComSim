@@ -9,6 +9,19 @@
             Factory of simulation objects.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.Factory.Initialize">
+            <summary>
+            Initializes the factory
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Factory.TryGetSchemaResource(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Reflection.Assembly}@)">
+            <summary>
+            Tries to get the embedded resource name of the schema defining a namespace, and the corresponding assembly.
+            </summary>
+            <param name="Namespace">Namespace</param>
+            <param name="Result">Embedded resource name and assembly.</param>
+            <returns>If the namespace was found.</returns>
+        </member>
         <member name="M:TAG.Simulator.Factory.Create(System.Xml.XmlElement,TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a simulation objected, based on its XML definition.
@@ -37,6 +50,11 @@
         <member name="P:TAG.Simulator.ISimulationNode.LocalName">
             <summary>
             Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ISimulationNode.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
             </summary>
         </member>
         <member name="M:TAG.Simulator.ISimulationNode.Create(TAG.Simulator.ISimulationNode)">
@@ -135,6 +153,18 @@
             </summary>
             <param name="Model">Model being executed.</param>
         </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Distributions.Distribution)">
+            <summary>
+            Registers a distribution with the runtime environment of the model.
+            </summary>
+            <param name="Distribution">Distribution object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Actors.Actor)">
+            <summary>
+            Registers a actor with the runtime environment of the model.
+            </summary>
+            <param name="Actor">Actor object.</param>
+        </member>
         <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean})">
             <summary>
             Runs the simulation.
@@ -165,6 +195,39 @@
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Actors.Actor">
+            <summary>
+            Abstract base class for actors
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for actors
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.Id">
+            <summary>
+            ID of actor.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.N">
+            <summary>
+            Number of actors of this type specified.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
             Container for actors.
@@ -187,6 +250,39 @@
             </summary>
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.Distribution">
+            <summary>
+            Abstract base class for distributions
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for distributions
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Distribution.Id">
+            <summary>
+            ID of distribution.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N">
+            <summary>
+            Intensity/Frequency/Factor
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
             <summary>
@@ -211,6 +307,84 @@
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.Normal">
+            <summary>
+            Normal distribution
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Normal distribution
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Normal.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Normal.Mean">
+            <summary>
+            μ
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Normal.StdDev">
+            <summary>
+            σ
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.Uniform">
+            <summary>
+            Uniform distribution
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Uniform distribution
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Uniform.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Uniform.From">
+            <summary>
+            From
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Uniform.To">
+            <summary>
+            To
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
             <summary>
             Abstract base class for simulation nodes
@@ -230,6 +404,11 @@
         <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Namespace">
             <summary>
             XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNode.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNode.LocalName">
