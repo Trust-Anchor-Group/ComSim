@@ -7,7 +7,7 @@ namespace TAG.Simulator.XMPP
 	/// <summary>
 	/// XMPP Actor connecting to the XMPP network using web-sockets.
 	/// </summary>
-	public class XmppActorWebSocket : XmppActor
+	public class XmppActorWebSocket : XmppActorEndpoint
 	{
 		/// <summary>
 		/// XMPP Actor connecting to the XMPP network using web-sockets.
@@ -54,5 +54,10 @@ namespace TAG.Simulator.XMPP
 		{
 			return new XmppActorWebSocket(this.Parent, InstanceIndex, InstanceId);
 		}
+
+		/// <summary>
+		/// Type of XRD link representing endpoint.
+		/// </summary>
+		protected override string EndpointType => "urn:xmpp:alt-connections:websocket";
 	}
 }

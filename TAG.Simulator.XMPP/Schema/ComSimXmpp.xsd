@@ -40,7 +40,7 @@
   <xs:complexType name="XmppActorEndpoint">
     <xs:complexContent>
       <xs:extension base="XmppActor">
-        <xs:attribute name="endpoint" type="xs:anyURI" use="required"/>
+        <xs:attribute name="endpoint" type="xs:anyURI" use="optional"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

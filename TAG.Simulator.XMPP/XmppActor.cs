@@ -29,7 +29,6 @@ namespace TAG.Simulator.XMPP
 		private string userName;
 		private string apiKey;
 		private string secret;
-		private string endpoint;
 		private bool alwaysConnected;
 		private bool allowCramMD5;
 		private bool allowDigestMD5;
@@ -78,6 +77,21 @@ namespace TAG.Simulator.XMPP
 		public bool IsOnline => this.isOnline;
 
 		/// <summary>
+		/// If server is to be trusted, regardless of state of certificate.
+		/// </summary>
+		public bool TrustServer => this.trustServer;
+
+		/// <summary>
+		/// Domain
+		/// </summary>
+		public string Domain => this.domain;
+
+		/// <summary>
+		/// Host
+		/// </summary>
+		public string Host => this.host;
+
+		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
@@ -93,11 +107,6 @@ namespace TAG.Simulator.XMPP
 				this.port = XML.Attribute(Definition, "port", 0);
 			else
 				this.port = null;
-
-			if (Definition.HasAttribute("endpoint"))
-				this.endpoint = XML.Attribute(Definition, "endpoint");
-			else
-				this.endpoint = null;
 
 			this.allowCramMD5 = XML.Attribute(Definition, "allowCramMD5", false);
 			this.allowDigestMD5 = XML.Attribute(Definition, "allowDigestMD5", false);
@@ -156,7 +165,6 @@ namespace TAG.Simulator.XMPP
 			Result.domain = this.domain;
 			Result.host = this.host;
 			Result.port = this.port;
-			Result.endpoint = this.endpoint;
 			Result.userName = this.userName + InstanceIndex.ToString();
 			Result.apiKey = this.apiKey;
 			Result.secret = this.secret;
@@ -300,8 +308,7 @@ namespace TAG.Simulator.XMPP
 				Host = this.host,
 				Port = this.port.Value,
 				RequestRosterOnStartup = this.requestRosterOnStartup,
-				TrustServer = this.trustServer,
-				UriEndpoint = this.endpoint
+				TrustServer = this.trustServer
 			};
 
 			if (this.credentials is null)

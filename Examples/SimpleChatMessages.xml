@@ -9,9 +9,9 @@
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
+    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
+    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
   </Actors>
   <Distributions>
     <Uniform id="ThousandPerMinute" from="0" to="60" N="1000"/>

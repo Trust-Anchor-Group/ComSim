@@ -1,13 +1,13 @@
 ﻿using System;
-using TAG.Simulator.ObjectModel.Actors;
-using Waher.Networking.XMPP;
+using System.Xml;
+using Waher.Content.Xml;
 
 namespace TAG.Simulator.XMPP
 {
 	/// <summary>
 	/// XMPP Actor connecting to the XMPP network using BOSH (HTTP).
 	/// </summary>
-	public class XmppActorBosh : XmppActor
+	public class XmppActorBosh : XmppActorEndpoint
 	{
 		/// <summary>
 		/// XMPP Actor connecting to the XMPP network using BOSH (HTTP).
@@ -54,5 +54,10 @@ namespace TAG.Simulator.XMPP
 		{
 			return new XmppActorBosh(this.Parent, InstanceIndex, InstanceId);
 		}
+
+		/// <summary>
+		/// Type of XRD link representing endpoint.
+		/// </summary>
+		protected override string EndpointType => "urn:xmpp:alt-connections:xbosh";
 	}
 }
