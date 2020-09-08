@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Events;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.ObjectModel.Distributions;
 using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Networking.Sniffers;
+using Waher.Runtime.Settings;
 
 namespace TAG.Simulator
 {
@@ -33,12 +38,16 @@ namespace TAG.Simulator
 	{
 		private readonly Dictionary<string, Distribution> distributions = new Dictionary<string, Distribution>();
 		private readonly Dictionary<string, Actor> actors = new Dictionary<string, Actor>();
+		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
+		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 		private TimeBase timeBase;
 		private Duration timeUnit;
 		private Duration timeCycle;
 		private Duration duration;
 		private DateTime start;
 		private DateTime end;
+		private string snifferFolder;
+		private string snifferTransformFileName;
 		private double timeUnitMs;
 		private double timeCycleMs;
 
@@ -65,6 +74,24 @@ namespace TAG.Simulator
 		/// Base of simulation time
 		/// </summary>
 		public TimeBase TimeBase => this.timeBase;
+
+		/// <summary>
+		/// Folder used for sniffer output.
+		/// </summary>
+		public string SnifferFolder
+		{
+			get => this.snifferFolder;
+			set => this.snifferFolder = value;
+		}
+
+		/// <summary>
+		/// Sniffer XSLT file to use to transform sniffer output.
+		/// </summary>
+		public string SnifferTransformFileName
+		{
+			get => this.snifferTransformFileName;
+			set => this.snifferTransformFileName = value;
+		}
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -137,36 +164,113 @@ namespace TAG.Simulator
 		public async Task<bool> Run(TaskCompletionSource<bool> Done)
 		{
 			Console.Out.WriteLine("Initializing...");
-			await this.ForEach(async (Node) => await Node.Initialize(this), false);
+			await this.ForEach(async (Node) => await Node.Initialize(this), true);
 
-			Console.Out.WriteLine("Starting...");
-			await this.ForEach(async (Node) => await Node.Start(), false);
-
-			Console.Out.WriteLine("Running...");
-
-			DateTime TP;
-			double t1;
-			double t2 = 0;
-			double dt;
-			bool Result = true;
-
-			while ((TP = DateTime.Now) <= this.end)
+			try
 			{
-				t1 = t2;
-				t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs) / this.timeUnitMs;
-				dt = t2 - t1;
+				Console.Out.WriteLine("Starting...");
+				await this.ForEach(async (Node) => await Node.Start(), true);
 
-				if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
+				Console.Out.WriteLine("Running...");
+
+				DateTime TP;
+				double t1;
+				double t2 = 0;
+				double dt;
+				bool Result = true;
+
+				while ((TP = DateTime.Now) <= this.end)
 				{
-					Result = false;
-					break;
+					t1 = t2;
+					t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs) / this.timeUnitMs;
+					dt = t2 - t1;
+
+					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
+					{
+						Result = false;
+						break;
+					}
 				}
+		
+				return Result;
+			}
+			finally
+			{
+				Console.Out.WriteLine("Finalizing...");
+				await this.ForEach(async (Node) => await Node.Finalize(), true);
+			}
+		}
+
+		/// <summary>
+		/// Gets an array of random bytes.
+		/// </summary>
+		/// <param name="NrBytes">Number of random bytes to generate.</param>
+		/// <returns>Random bytes.</returns>
+		public byte[] GetRandomBytes(int NrBytes)
+		{
+			byte[] Result = new byte[NrBytes];
+
+			lock (this.rnd)
+			{
+				this.rnd.GetBytes(Result);
 			}
 
-			Console.Out.WriteLine("Finalizing...");
-			await this.ForEach(async (Node) => await Node.Finalize(), false);
+			return Result;
+		}
+
+		/// <summary>
+		/// Gets a key from the database. If it does not exist, it prompts the user for input.
+		/// </summary>
+		/// <param name="KeyName">Name of key.</param>
+		/// <returns>Value of key.</returns>
+		public async Task<string> GetKey(string KeyName)
+		{
+			string Result;
+
+			lock (this.keyValues)
+			{
+				if (this.keyValues.TryGetValue(KeyName, out Result))
+					return Result;
+			}
+
+			Result = await RuntimeSettings.GetAsync("KEY." + KeyName, string.Empty);
+
+			if (string.IsNullOrEmpty(Result))
+			{
+				KeyEventArgs e = new KeyEventArgs(KeyName);
+				this.OnGetKey?.Invoke(this, e);
+
+				if (string.IsNullOrEmpty(e.Value))
+					throw new Exception("Unable to get value for key " + KeyName);
+
+				Result = e.Value;
+				await RuntimeSettings.SetAsync("KEY." + KeyName, Result);
+			}
+
+			lock (this.keyValues)
+			{
+				this.keyValues[KeyName] = Result;
+			}
 
 			return Result;
+		}
+
+		/// <summary>
+		/// Event raised when the model needs a key from the system.
+		/// </summary>
+		public event KeyEventHandler OnGetKey;
+
+		/// <summary>
+		/// Gets a sniffer, if sniffer output is desired.
+		/// </summary>
+		/// <param name="Actor"></param>
+		/// <returns>Sniffer, if any, null otherwise.</returns>
+		public ISniffer GetSniffer(string Actor)
+		{
+			if (string.IsNullOrEmpty(this.snifferFolder))
+				return null;
+			else
+				return new XmlFileSniffer(Path.Combine(this.snifferFolder, Actor + ".xml"), this.snifferTransformFileName, BinaryPresentationMethod.Base64);
 		}
 	}
 }

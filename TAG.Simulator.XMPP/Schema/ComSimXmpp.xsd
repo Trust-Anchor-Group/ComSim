@@ -13,17 +13,40 @@
     <xs:complexContent>
       <xs:extension base="cs:Actor">
         <xs:attribute name="domain" type="xs:string" use="required"/>
-        <xs:attribute name="port" type="cs:PortNumber" use="optional"/>
         <xs:attribute name="userName" type="xs:string" use="required"/>
         <xs:attribute name="apiKey" type="xs:string" use="optional"/>
         <xs:attribute name="secret" type="xs:string" use="optional"/>
-        <xs:attribute name="alwaysConnected" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="alwaysConnected" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="allowCramMD5" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="allowDigestMD5" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="allowEncryption" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="allowPlain" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="allowScramSHA1" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="allowScramSHA256" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="requestRosterOnStartup" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="trustServer" type="xs:boolean" use="optional" default="false"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:element name="XmppActorTcp" type="XmppActor"/>
-  <xs:element name="XmppActorBosh" type="XmppActor"/>
-  <xs:element name="XmppActorWebSocket" type="XmppActor"/>
+  <xs:complexType name="XmppActorPort">
+    <xs:complexContent>
+      <xs:extension base="XmppActor">
+        <xs:attribute name="port" type="cs:PortNumber" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="XmppActorEndpoint">
+    <xs:complexContent>
+      <xs:extension base="XmppActor">
+        <xs:attribute name="endpoint" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="XmppActorTcp" type="XmppActorPort"/>
+  <xs:element name="XmppActorBosh" type="XmppActorEndpoint"/>
+  <xs:element name="XmppActorWebSocket" type="XmppActorEndpoint"/>
 
 </xs:schema>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -9,10 +8,13 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using TAG.Simulator;
+using TAG.Simulator.Events;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
 using Waher.Events;
 using Waher.Events.Console;
+using Waher.Events.Files;
+using Waher.Events.Persistence;
 using Waher.Persistence;
 using Waher.Persistence.Files;
 using Waher.Runtime.Inventory;
@@ -31,6 +33,11 @@ namespace ComSim
 	///                       The file must be an XML file that conforms to the
 	///                       http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
 	///                       Schema is available at Schema/ComSim.xsd in repository.
+	/// -l LOG_FILENAME       Redirects logged events to a log file.
+	/// -lt LOG_TRANSFORM     File name of optional XSLT transform for use with log file.
+	/// -lc                   Log events to the console.
+	/// -s SNIFFER_FOLDER     Optional folder for storing network sniff files.
+	/// -st SNIFFER_TRANSFORM File name of optional XSLT transform for use with sniffers.
 	/// -d APP_DATA_FOLDER    Points to the application data folder. Required if storage
 	///                       of data in a local database is necessary for the 
 	///                       simulation. (Storage can include generated user credentials
@@ -51,6 +58,10 @@ namespace ComSim
 				XmlDocument Model = null;
 				Encoding Encoding = Encoding.UTF8;
 				string ProgramDataFolder = null;
+				string SnifferFolder = null;
+				string LogFileName = null;
+				string LogTransformFileName = null;
+				string SnifferTransformFileName = null;
 				int i = 0;
 				int c = args.Length;
 				int BlockSize = 8192;
@@ -58,6 +69,7 @@ namespace ComSim
 				bool Encryption = false;
 				string s;
 				bool Help = args.Length == 0;
+				bool LogConsole = false;
 
 				while (i < c)
 				{
@@ -78,6 +90,50 @@ namespace ComSim
 
 							Model = new XmlDocument();
 							Model.Load(s);
+							break;
+
+						case "-l":
+							if (i >= c)
+								throw new Exception("Missing log file name.");
+
+							if (string.IsNullOrEmpty(LogFileName))
+								LogFileName = args[i++];
+							else
+								throw new Exception("Only one log file name allowed.");
+							break;
+
+						case "-lt":
+							if (i >= c)
+								throw new Exception("Missing log transform file name.");
+
+							if (string.IsNullOrEmpty(LogTransformFileName))
+								LogTransformFileName = args[i++];
+							else
+								throw new Exception("Only one log transform file name allowed.");
+							break;
+
+						case "-lc":
+							LogConsole = true;
+							break;
+
+						case "-s":
+							if (i >= c)
+								throw new Exception("Missing sniffer folder.");
+
+							if (string.IsNullOrEmpty(SnifferFolder))
+								SnifferFolder = args[i++];
+							else
+								throw new Exception("Only one sniffer folder allowed.");
+							break;
+
+						case "-st":
+							if (i >= c)
+								throw new Exception("Missing sniffer transform file name.");
+
+							if (string.IsNullOrEmpty(SnifferTransformFileName))
+								SnifferTransformFileName = args[i++];
+							else
+								throw new Exception("Only one sniffer transform file name allowed.");
 							break;
 
 						case "-d":
@@ -140,6 +196,11 @@ namespace ComSim
 					Console.Out.WriteLine("                      The file must be an XML file that conforms to the");
 					Console.Out.WriteLine("                      http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
 					Console.Out.WriteLine("                      Schema is available at Schema/ComSim.xsd in the repository.");
+					Console.Out.WriteLine("-l LOG_FILENAME       Redirects logged events to a log file.");
+					Console.Out.WriteLine("-lt LOG_TRANSFORM     File name of optional XSLT transform for use with log file.");
+					Console.Out.WriteLine("-lc                   Log events to the console.");
+					Console.Out.WriteLine("-s SNIFFER_FOLDER     Optional folder for storing network sniff files.");
+					Console.Out.WriteLine("-st SNIFFER_TRANSFORM File name of optional XSLT transform for use with sniffers.");
 					Console.Out.WriteLine("-d APP_DATA_FOLDER    Points to the application data folder. Required if storage");
 					Console.Out.WriteLine("                      of data in a local database is necessary for the");
 					Console.Out.WriteLine("                      simulation. (Storage can include generated user credentials");
@@ -168,6 +229,11 @@ namespace ComSim
 				{
 					if (N is XmlElement E && E.LocalName == "Assemblies")
 					{
+						Dictionary<string, Assembly> Loaded = new Dictionary<string, Assembly>();
+
+						foreach (Assembly A in AppDomain.CurrentDomain.GetAssemblies())
+							Loaded[A.GetName().Name] = A;
+
 						foreach (XmlNode N2 in E.ChildNodes)
 						{
 							if (N2 is XmlElement E2 && E2.LocalName == "Assembly")
@@ -177,13 +243,48 @@ namespace ComSim
 								if (!File.Exists(FileName))
 									throw new Exception("File not found: " + FileName);
 
-								Console.Out.WriteLine("Loading " + FileName);
+								LinkedList<string> ToLoad = new LinkedList<string>();
+								ToLoad.AddLast(FileName);
 
-								byte[] Bin = File.ReadAllBytes(FileName);
-								AppDomain.CurrentDomain.Load(Bin);
+								while (!string.IsNullOrEmpty(FileName = ToLoad.First?.Value))
+								{
+									ToLoad.RemoveFirst();
+
+									Console.Out.WriteLine("Loading " + FileName);
+
+									byte[] Bin = File.ReadAllBytes(FileName);
+									Assembly A = AppDomain.CurrentDomain.Load(Bin);
+									Loaded[A.GetName().Name] = A;
+
+									AssemblyName[] Referenced = A.GetReferencedAssemblies();
+
+									foreach (AssemblyName AN in Referenced)
+									{
+										if (Loaded.ContainsKey(AN.Name))
+											continue;
+
+										string RefFileName = Path.Combine(Path.GetDirectoryName(FileName), AN.Name + ".dll");
+
+										if (!File.Exists(RefFileName))
+											continue;
+
+										if (!ToLoad.Contains(RefFileName))
+											ToLoad.AddLast(RefFileName);
+									}
+								}
 							}
 						}
+
 					}
+				}
+
+				if (!string.IsNullOrEmpty(SnifferFolder))
+				{
+					if (!Directory.Exists(SnifferFolder))
+						Directory.CreateDirectory(SnifferFolder);
+
+					foreach (string FileName in Directory.GetFiles(SnifferFolder, "*.xml", SearchOption.TopDirectoryOnly))
+						File.Delete(FileName);
 				}
 
 				if (!Directory.Exists(ProgramDataFolder))
@@ -231,7 +332,16 @@ namespace ComSim
 
 				XSL.Validate("Model", Model, "Model", TAG.Simulator.Model.ComSimNamespace, Schemas2);
 
-				Log.Register(new ConsoleEventSink());
+				if (!string.IsNullOrEmpty(LogFileName))
+				{
+					if (File.Exists(LogFileName))
+						File.Delete(LogFileName);
+
+					Log.Register(new XmlFileEventSink("XmlEventSink", LogFileName, LogTransformFileName, int.MaxValue));
+				}
+
+				if (LogConsole)
+					Log.Register(new ConsoleEventSink(false));
 
 				TaskCompletionSource<bool> Done = new TaskCompletionSource<bool>(false);
 
@@ -266,7 +376,7 @@ namespace ComSim
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Result = Run(Model, FilesProvider, Done).Result;
+					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName).Result;
 				}
 
 				if (Result)
@@ -294,7 +404,8 @@ namespace ComSim
 			}
 		}
 
-		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done)
+		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
+			string SnifferFolder, string SnifferTransformFileName)
 		{
 			try
 			{
@@ -302,11 +413,19 @@ namespace ComSim
 				Database.Register(DB);
 				await DB.RepairIfInproperShutdown(null);
 
+				await Database.Clear("EventLog");
+				Log.Register(new PersistedEventLog(int.MaxValue));
+
 				Console.Out.WriteLine("Starting modules...");
 				await Types.StartAllModules(60000);
 
 				Console.Out.WriteLine("Running simulation...");
 				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null);
+
+				Model.SnifferFolder = SnifferFolder;
+				Model.SnifferTransformFileName = SnifferTransformFileName;
+				Model.OnGetKey += Model_OnGetKey;
+
 				return await Model.Run(Done);
 			}
 			finally
@@ -316,6 +435,12 @@ namespace ComSim
 				await DB.Flush();
 				Log.Terminate();
 			}
+		}
+
+		private static void Model_OnGetKey(object Sender, KeyEventArgs e)
+		{
+			Console.Out.Write("Input value for key " + e.Name + ": ");
+			e.Value = Console.In.ReadLine();
 		}
 
 		private static void WriteLine(string Row, ConsoleColor ForegroundColor, ConsoleColor BackgrounColor)

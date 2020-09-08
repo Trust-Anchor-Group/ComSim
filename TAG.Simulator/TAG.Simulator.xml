@@ -4,6 +4,34 @@
         <name>TAG.Simulator</name>
     </assembly>
     <members>
+        <member name="T:TAG.Simulator.Events.KeyEventHandler">
+            <summary>
+            Delegate for key event handlers.
+            </summary>
+            <param name="Sender">Sender of event.</param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="T:TAG.Simulator.Events.KeyEventArgs">
+            <summary>
+            Event arguments for key events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Events.KeyEventArgs.#ctor(System.String)">
+            <summary>
+            Event arguments for key events.
+            </summary>
+            <param name="Name">Key name.</param>
+        </member>
+        <member name="P:TAG.Simulator.Events.KeyEventArgs.Name">
+            <summary>
+            Key name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Events.KeyEventArgs.Value">
+            <summary>
+            Key value
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.Factory">
             <summary>
             Factory of simulation objects.
@@ -134,6 +162,16 @@
             Base of simulation time
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.SnifferFolder">
+            <summary>
+            Folder used for sniffer output.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.SnifferTransformFileName">
+            <summary>
+            Sniffer XSLT file to use to transform sniffer output.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.Model.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
@@ -172,6 +210,32 @@
             <param name="Done">Task completion source, that can be set by external events.</param>
             <returns>If simulation completed successfully.</returns>
         </member>
+        <member name="M:TAG.Simulator.Model.GetRandomBytes(System.Int32)">
+            <summary>
+            Gets an array of random bytes.
+            </summary>
+            <param name="NrBytes">Number of random bytes to generate.</param>
+            <returns>Random bytes.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetKey(System.String)">
+            <summary>
+            Gets a key from the database. If it does not exist, it prompts the user for input.
+            </summary>
+            <param name="KeyName">Name of key.</param>
+            <returns>Value of key.</returns>
+        </member>
+        <member name="E:TAG.Simulator.Model.OnGetKey">
+            <summary>
+            Event raised when the model needs a key from the system.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetSniffer(System.String)">
+            <summary>
+            Gets a sniffer, if sniffer output is desired.
+            </summary>
+            <param name="Actor"></param>
+            <returns>Sniffer, if any, null otherwise.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
             <summary>
             Container for activities.
@@ -206,14 +270,32 @@
             </summary>
             <param name="Parent">Parent node</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.#ctor(TAG.Simulator.ISimulationNode,System.Int32,System.String)">
+            <summary>
+            Abstract base class for actors
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.Id">
             <summary>
             ID of actor.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.InstanceId">
+            <summary>
+            ID of actor instance.
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.N">
             <summary>
             Number of actors of this type specified.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.InstanceIndex">
+            <summary>
+            Actor instance index.
             </summary>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.FromXml(System.Xml.XmlElement)">
@@ -227,6 +309,39 @@
             Initialized the node before simulation.
             </summary>
             <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Finalize">
+            <summary>
+            Finalizes the node after simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.CreateInstance(System.Int32,System.String)">
+            <summary>
+            Creates an instance of the actor.
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.InitializeInstance">
+            <summary>
+            Initializes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.StartInstance">
+            <summary>
+            Starts an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.FinalizeInstance">
+            <summary>
+            Finalizes an instance of an actor.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>

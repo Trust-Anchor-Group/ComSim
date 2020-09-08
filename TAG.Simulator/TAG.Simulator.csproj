@@ -30,7 +30,9 @@
     <PackageReference Include="Waher.Content" Version="1.0.25" />
     <PackageReference Include="Waher.Content.Xml" Version="1.0.9" />
     <PackageReference Include="Waher.Events" Version="1.0.12" />
+    <PackageReference Include="Waher.Networking" Version="1.0.17" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.13" />
+    <PackageReference Include="Waher.Runtime.Settings" Version="1.0.3" />
   </ItemGroup>
 
 </Project>

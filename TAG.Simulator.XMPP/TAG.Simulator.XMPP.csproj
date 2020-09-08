@@ -11,6 +11,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.XMPP\TAG.Simulator.XMPP.xml</DocumentationFile>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -28,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Waher.Networking.DNS" Version="1.0.9" />
     <PackageReference Include="Waher.Networking.XMPP" Version="1.1.3" />
   </ItemGroup>
 

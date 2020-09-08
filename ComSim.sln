@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComSim", "ComSim\ComSim.csproj", "{C1AE6303-7818-444E-B88A-EA9AC1398329}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComSim", "ComSim\ComSim.csproj", "{C1AE6303-7818-444E-B88A-EA9AC1398329}"
+	ProjectSection(ProjectDependencies) = postProject
+		{665C3275-0870-44D6-ADFD-60CFC928C400} = {665C3275-0870-44D6-ADFD-60CFC928C400}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8506E457-8DBA-4CBE-9075-1C5BBFE82306}"
 	ProjectSection(SolutionItems) = preProject
 		Examples\SimpleChatMessages.xml = Examples\SimpleChatMessages.xml
+		Examples\SnifferXmlToHtml.xslt = Examples\SnifferXmlToHtml.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E852FEDB-C91F-4124-A25F-9526AB4F668C}"
@@ -15,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator", "TAG.Simulator\TAG.Simulator.csproj", "{EF3340BD-AE1D-4C7E-B531-D2B8D73E838F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator", "TAG.Simulator\TAG.Simulator.csproj", "{EF3340BD-AE1D-4C7E-B531-D2B8D73E838F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.XMPP", "TAG.Simulator.XMPP\TAG.Simulator.XMPP.csproj", "{665C3275-0870-44D6-ADFD-60CFC928C400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMPP", "TAG.Simulator.XMPP\TAG.Simulator.XMPP.csproj", "{665C3275-0870-44D6-ADFD-60CFC928C400}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
