@@ -7,7 +7,9 @@ using System.Xml;
 using TAG.Simulator.Events;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Distributions;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Networking.Sniffers;
@@ -38,7 +40,11 @@ namespace TAG.Simulator
 	{
 		private readonly Dictionary<string, Distribution> distributions = new Dictionary<string, Distribution>();
 		private readonly Dictionary<string, Actor> actors = new Dictionary<string, Actor>();
+		private readonly Dictionary<string, Activity> activities = new Dictionary<string, Activity>();
+		private readonly Dictionary<string, ActivityNode> activityNodes = new Dictionary<string, ActivityNode>();
+		private readonly Dictionary<string, Event> eventsWithId = new Dictionary<string, Event>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
+		private readonly LinkedList<Event> events = new LinkedList<Event>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 		private TimeBase timeBase;
 		private Duration timeUnit;
@@ -145,6 +151,17 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Tries to get a registered distribution from the model.
+		/// </summary>
+		/// <param name="Id">ID of distribution.</param>
+		/// <param name="Distribution">Distribution if found.</param>
+		/// <returns>If a distribution was found.</returns>
+		public bool TryGetDistribution(string Id, out Distribution Distribution)
+		{
+			return this.distributions.TryGetValue(Id, out Distribution);
+		}
+
+		/// <summary>
 		/// Registers a actor with the runtime environment of the model.
 		/// </summary>
 		/// <param name="Actor">Actor object.</param>
@@ -154,6 +171,94 @@ namespace TAG.Simulator
 				throw new Exception("An actor with ID " + Actor.Id + " already registered.");
 
 			this.actors[Actor.Id] = Actor;
+		}
+
+		/// <summary>
+		/// Tries to get a registered actor from the model.
+		/// </summary>
+		/// <param name="Id">ID of actor.</param>
+		/// <param name="Actor">Actor if found.</param>
+		/// <returns>If an actor was found.</returns>
+		public bool TryGetActor(string Id, out Actor Actor)
+		{
+			return this.actors.TryGetValue(Id, out Actor);
+		}
+
+		/// <summary>
+		/// Registers a event with the runtime environment of the model.
+		/// </summary>
+		/// <param name="Event">Event object.</param>
+		public void Register(Event Event)
+		{
+			if (!string.IsNullOrEmpty(Event.Id))
+			{
+				if (this.eventsWithId.ContainsKey(Event.Id))
+					throw new Exception("An event with ID " + Event.Id + " already registered.");
+
+				this.eventsWithId[Event.Id] = Event;
+			}
+
+			this.events.AddLast(Event);
+		}
+
+		/// <summary>
+		/// Tries to get a registered event from the model.
+		/// </summary>
+		/// <param name="Id">ID of event.</param>
+		/// <param name="Event">Event if found.</param>
+		/// <returns>If an event was found.</returns>
+		public bool TryGetEvent(string Id, out Event Event)
+		{
+			return this.eventsWithId.TryGetValue(Id, out Event);
+		}
+
+		/// <summary>
+		/// Registers a activity with the runtime environment of the model.
+		/// </summary>
+		/// <param name="Activity">Activity object.</param>
+		public void Register(Activity Activity)
+		{
+			if (this.activities.ContainsKey(Activity.Id))
+				throw new Exception("An activity with ID " + Activity.Id + " already registered.");
+
+			this.activities[Activity.Id] = Activity;
+		}
+
+		/// <summary>
+		/// Tries to get a registered activity from the model.
+		/// </summary>
+		/// <param name="Id">ID of activity.</param>
+		/// <param name="Activity">Activity if found.</param>
+		/// <returns>If an activity was found.</returns>
+		public bool TryGetActivity(string Id, out Activity Activity)
+		{
+			return this.activities.TryGetValue(Id, out Activity);
+		}
+
+		/// <summary>
+		/// Registers a activity node with the runtime environment of the model.
+		/// </summary>
+		/// <param name="ActivityNode">ActivityNode object.</param>
+		public void Register(ActivityNode ActivityNode)
+		{
+			if (!string.IsNullOrEmpty(ActivityNode.Id))
+			{
+				if (this.activityNodes.ContainsKey(ActivityNode.Id))
+					throw new Exception("An activity node with ID " + ActivityNode.Id + " already registered.");
+
+				this.activityNodes[ActivityNode.Id] = ActivityNode;
+			}
+		}
+
+		/// <summary>
+		/// Tries to get a registered activity node from the model.
+		/// </summary>
+		/// <param name="Id">ID of activity node.</param>
+		/// <param name="ActivityNode">ActivityNode if found.</param>
+		/// <returns>If an activity node was found.</returns>
+		public bool TryGetActivityNode(string Id, out ActivityNode ActivityNode)
+		{
+			return this.activityNodes.TryGetValue(Id, out ActivityNode);
 		}
 
 		/// <summary>

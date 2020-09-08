@@ -32,16 +32,26 @@ namespace TAG.Simulator.ObjectModel
 		/// <param name="Definition">XML definition</param>
 		public override async Task FromXml(XmlElement Definition)
 		{
-			List<ISimulationNode> Children = new List<ISimulationNode>();
-
-			foreach (XmlNode N in Definition.ChildNodes)
+			if (this.ParseChildren)
 			{
-				if (N is XmlElement E)
-					Children.Add(await Factory.Create(E, this));
-			}
+				List<ISimulationNode> Children = new List<ISimulationNode>();
 
-			this.children = Children.ToArray();
+				foreach (XmlNode N in Definition.ChildNodes)
+				{
+					if (N is XmlElement E)
+						Children.Add(await Factory.Create(E, this));
+				}
+
+				this.children = Children.ToArray();
+			}
+			else
+				this.children = new ISimulationNode[0];
 		}
+
+		/// <summary>
+		/// If children are 
+		/// </summary>
+		public virtual bool ParseChildren => true;
 
 		/// <summary>
 		/// Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.

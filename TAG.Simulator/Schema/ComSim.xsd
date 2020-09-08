@@ -36,9 +36,19 @@
             </xs:choice>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Events">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="StochasticEvent" type="StochasticEvent"/>
+              <xs:element name="ExternalEvent" type="ExternalEvent"/>
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="Activities">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="Activity" type="Activity"/>
               <xs:any namespace="##other"/>
             </xs:choice>
           </xs:complexType>
@@ -103,5 +113,204 @@
       <xs:maxExclusive value="65536"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:complexType name="Event" abstract="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="SetVariable">
+        <xs:complexType>
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="Value"/>
+          </xs:choice>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ActorReference">
+        <xs:complexType>
+          <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="FromPopulation">
+              <xs:complexType>
+                <xs:attribute name="actor" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+          <xs:attribute name="exclusive" type="xs:boolean" use="optional" default="true"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="activity" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:group name="Value">
+    <xs:choice>
+      <xs:element name="Script" type="xs:string"/>
+      <xs:element name="Variable">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="String" type="xs:string"/>
+      <xs:element name="Xml">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:any namespace="##any"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Number">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:double" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Duration">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:duration" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DateTime">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:dateTime" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Time">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:time" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="StochasticEvent">
+    <xs:complexContent>
+      <xs:extension base="Event">
+        <xs:attribute name="distribution" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalEvent">
+    <xs:complexContent>
+      <xs:extension base="Event">
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Activity">
+    <xs:sequence>
+      <xs:element name="Start" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="ActivityNode"/>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:group ref="ActivityNodes" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Stop" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="ActivityNode"/>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
+
+  <xs:group name="ActivityNodes">
+    <xs:choice>
+      <xs:element name="Delay" type="DurationActivityNode"/>
+      <xs:element name="Script" type="ExpressionActivityNode"/>
+      <xs:element name="Action" type="ActionActivityNode"/>
+      <xs:element name="Conditional" type="ConditionalActivityNode"/>
+      <xs:element name="GoTo" type="ReferenceActivityNode"/>
+      <xs:element name="Finished" type="ActivityNode"/>
+      <xs:element name="Parallel" type="ParallelActivityNode"/>
+      <xs:any namespace="##other"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="ActivityNode">
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="DurationActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:attribute name="duration" type="xs:duration" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExpressionActivityNode" mixed="true">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActionActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:sequence>
+          <xs:element name="Argument" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:group ref="Value"/>
+              </xs:choice>
+              <xs:attribute name="name" type="xs:string" use="optional"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="actor" type="xs:string" use="required"/>
+        <xs:attribute name="action" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ConditionalActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:sequence>
+          <xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+              </xs:sequence>
+              <xs:attribute name="condition" type="xs:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Otherwise" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ReferenceActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:attribute name="ref" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ParallelActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:sequence>
+          <xs:element name="Thread" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
 </xs:schema>

@@ -197,11 +197,69 @@
             </summary>
             <param name="Distribution">Distribution object.</param>
         </member>
+        <member name="M:TAG.Simulator.Model.TryGetDistribution(System.String,TAG.Simulator.ObjectModel.Distributions.Distribution@)">
+            <summary>
+            Tries to get a registered distribution from the model.
+            </summary>
+            <param name="Id">ID of distribution.</param>
+            <param name="Distribution">Distribution if found.</param>
+            <returns>If a distribution was found.</returns>
+        </member>
         <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Actors.Actor)">
             <summary>
             Registers a actor with the runtime environment of the model.
             </summary>
             <param name="Actor">Actor object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.TryGetActor(System.String,TAG.Simulator.ObjectModel.Actors.Actor@)">
+            <summary>
+            Tries to get a registered actor from the model.
+            </summary>
+            <param name="Id">ID of actor.</param>
+            <param name="Actor">Actor if found.</param>
+            <returns>If an actor was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Events.Event)">
+            <summary>
+            Registers a event with the runtime environment of the model.
+            </summary>
+            <param name="Event">Event object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.TryGetEvent(System.String,TAG.Simulator.ObjectModel.Events.Event@)">
+            <summary>
+            Tries to get a registered event from the model.
+            </summary>
+            <param name="Id">ID of event.</param>
+            <param name="Event">Event if found.</param>
+            <returns>If an event was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.Activity)">
+            <summary>
+            Registers a activity with the runtime environment of the model.
+            </summary>
+            <param name="Activity">Activity object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.TryGetActivity(System.String,TAG.Simulator.ObjectModel.Activities.Activity@)">
+            <summary>
+            Tries to get a registered activity from the model.
+            </summary>
+            <param name="Id">ID of activity.</param>
+            <param name="Activity">Activity if found.</param>
+            <returns>If an activity was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.ActivityNode)">
+            <summary>
+            Registers a activity node with the runtime environment of the model.
+            </summary>
+            <param name="ActivityNode">ActivityNode object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.TryGetActivityNode(System.String,TAG.Simulator.ObjectModel.Activities.ActivityNode@)">
+            <summary>
+            Tries to get a registered activity node from the model.
+            </summary>
+            <param name="Id">ID of activity node.</param>
+            <param name="ActivityNode">ActivityNode if found.</param>
+            <returns>If an activity node was found.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean})">
             <summary>
@@ -236,6 +294,45 @@
             <param name="Actor"></param>
             <returns>Sniffer, if any, null otherwise.</returns>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
+            <summary>
+            Represents an action on an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents an action on an actor.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Action.ActorId">
+            <summary>
+            Actor ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Action.ActionName">
+            <summary>
+            Action
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Action.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
             <summary>
             Container for activities.
@@ -257,6 +354,413 @@
             Creates a new instance of the node.
             </summary>
             <param name="Parent">Parent node</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Activity">
+            <summary>
+            Represents an activity that can be executed as the result of triggered events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents an activity that can be executed as the result of triggered events.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.Id">
+            <summary>
+            ID of event.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.ActivityNode">
+            <summary>
+            Abstract base class for activity nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for activity nodes
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.ActivityNode.Id">
+            <summary>
+            ID of event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Argument">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Argument.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Argument.Name">
+            <summary>
+            Name of variable within the scope of the event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Condition">
+            <summary>
+            Represents a condition.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a condition.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Condition.ConditionString">
+            <summary>
+            Condition string
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Condition.Expression">
+            <summary>
+            Parsed expression
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Condition.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Conditional">
+            <summary>
+            Conditional execution in an activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Conditional.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Conditional execution in an activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Conditional.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Conditional.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Delay">
+            <summary>
+            Represents a delay in an activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Delay.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a delay in an activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Delay.Duration">
+            <summary>
+            Duration
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Delay.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Delay.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Delay.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Finished">
+            <summary>
+            Terminates execution of activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Finished.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Terminates execution of activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Finished.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Finished.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.GoTo">
+            <summary>
+            Jumps to another node in the activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Jumps to another node in the activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.GoTo.Node">
+            <summary>
+            Referenced node
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.GoTo.Reference">
+            <summary>
+            Reference
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.GoTo.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Otherwise">
+            <summary>
+            Represents a condition that is always true.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a condition that is always true.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Otherwise.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Parallel">
+            <summary>
+            Executes multiple threads in parallel.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Parallel.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Executes multiple threads in parallel.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Parallel.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Parallel.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Script">
+            <summary>
+            Executes script in an activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a delay in an activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.ScriptString">
+            <summary>
+            Script string
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.Expression">
+            <summary>
+            Parsed expression
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.ParseChildren">
+            <summary>
+            If children are 
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Start">
+            <summary>
+            Represents the starting point of the activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Start.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents the starting point of the activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Start.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Start.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Stop">
+            <summary>
+            Represents the stoping point of the activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Stop.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents the stoping point of the activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Stop.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Stop.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actor">
@@ -500,6 +1004,247 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.ActorReference">
+            <summary>
+            References a population of actors.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            References a population of actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ActorReference.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ActorReference.Name">
+            <summary>
+            Name of actor within the scope of the event.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ActorReference.Exclusive">
+            <summary>
+            If the actor is referenced for exclusive use in the event (i.e. cannot participate in another event at the same time).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.Event">
+            <summary>
+            Abstract base class for events
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for events
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.Id">
+            <summary>
+            ID of event.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.ActivityId">
+            <summary>
+            ID of Activity to execute when event is triggered.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.Activity">
+            <summary>
+            Activity to execute when event is triggered.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.Events">
+            <summary>
+            Container for events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Events.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Container for events.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Events.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Events.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.ExternalEvent">
+            <summary>
+            External Event
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            External Event
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.FromPopulation">
+            <summary>
+            References a specific population of actors.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            References a specific population of actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.FromPopulation.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.FromPopulation.Actor">
+            <summary>
+            Name of actor defining the population.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.SetVariable">
+            <summary>
+            Sets a variable value when an event is triggered.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Sets a variable value when an event is triggered.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.SetVariable.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.SetVariable.Name">
+            <summary>
+            Name of variable within the scope of the event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.StochasticEvent">
+            <summary>
+            Stochastic Event
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Stochastic Event
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.StochasticEvent.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.StochasticEvent.DistributionId">
+            <summary>
+            ID of Distribution
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.StochasticEvent.Distribution">
+            <summary>
+            Distribution
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
             <summary>
             Abstract base class for simulation nodes
@@ -589,6 +1334,11 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.SimulationNodeChildren.ParseChildren">
+            <summary>
+            If children are 
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.ForEach(TAG.Simulator.ForEachCallbackMethod,System.Boolean)">
             <summary>
             Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
@@ -648,6 +1398,294 @@
             <returns>New instance</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Structure.Assembly.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.DateTime">
+            <summary>
+            DateTime value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            DateTime value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.DateTime.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.DateTime.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Duration">
+            <summary>
+            Duration value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Duration value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Duration.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Duration.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Number">
+            <summary>
+            Number value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Number value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Number.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Number.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Script">
+            <summary>
+            Value defined by script.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class of values
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Script.ScriptString">
+            <summary>
+            Script string
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Script.Expression">
+            <summary>
+            Parsed expression
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Script.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.String">
+            <summary>
+            String value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            String value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.String.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.String.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Time">
+            <summary>
+            Time value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Time value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Time.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Time.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Value">
+            <summary>
+            Abstract base class for values
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Value.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for values
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Variable">
+            <summary>
+            Value defined by variable.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Value defined by variable.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Variable.Name">
+            <summary>
+            Variable name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Variable.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Xml">
+            <summary>
+            XML value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            String value.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Xml.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Xml.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.FromXml(System.Xml.XmlElement)">
             <summary>
             Sets properties and attributes of class in accordance with XML definition.
             </summary>

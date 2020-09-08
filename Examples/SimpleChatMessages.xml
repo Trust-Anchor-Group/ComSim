@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
-       timeBase="StartOfSimulation" 
-       timeUnit="PT1S" 
-       timeCycle="PT1M" 
-       duration="PT1M">
+       timeBase="StartOfSimulation"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT10M">
   <Assemblies>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
@@ -14,7 +14,43 @@
     <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
   </Actors>
   <Distributions>
-    <Uniform id="ThousandPerMinute" from="0" to="60" N="1000"/>
+    <Uniform id="ThousandsPerMinute" from="0" to="60" N="1000"/>
   </Distributions>
-  <Activities/>
+  <Events>
+    <StochasticEvent distribution="ThousandsPerMinute" activity="StartChatSession">
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+        <FromPopulation actor="XmppBosh"/>
+        <FromPopulation actor="XmppWebSocket"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+        <FromPopulation actor="XmppBosh"/>
+        <FromPopulation actor="XmppWebSocket"/>
+      </ActorReference>
+      <SetVariable name="Message">
+        <String>Hello</String>
+      </SetVariable>
+    </StochasticEvent>
+    <ExternalEvent id="MessageReceived" activity="RespondToMessage">
+    </ExternalEvent>
+  </Events>
+  <Activities>
+    <Activity id="StartChatSession">
+      <Start/>
+      <Action actor="From" action="SendChatMessage">
+        <Argument name="To">
+          <Script>To.FullJid</Script>
+        </Argument>
+        <Argument name="Message">
+          <Variable name="Message"/>
+        </Argument>
+      </Action>
+      <Stop/>
+    </Activity>
+    <Activity id="RespondToMessage">
+      <Start/>
+      <Stop/>
+    </Activity>
+  </Activities>
 </Model>
