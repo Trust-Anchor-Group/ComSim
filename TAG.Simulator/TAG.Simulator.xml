@@ -58,6 +58,26 @@
             <param name="Parent">Parent node.</param>
             <returns>Created simulation object</returns>
         </member>
+        <member name="T:TAG.Simulator.IActorNode">
+            <summary>
+            Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
+            in simulator models.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.IActorNode.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+            <summary>
+            Registers an external event on the actor.
+            </summary>
+            <param name="ExternalEvent"></param>
+        </member>
+        <member name="M:TAG.Simulator.IActorNode.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
+            <summary>
+            Tries to get an external event, given its name.
+            </summary>
+            <param name="Name">Name of external event.</param>
+            <param name="ExternalEvent">External event object.</param>
+            <returns>If an external event with the corresponding name was found.</returns>
+        </member>
         <member name="T:TAG.Simulator.ForEachCallbackMethod">
             <summary>
             Callback method for iteration across the simulation model.
@@ -293,6 +313,15 @@
             </summary>
             <param name="Actor"></param>
             <returns>Sniffer, if any, null otherwise.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.IActorNode,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            Method called when an external event has been received.
+            </summary>
+            <param name="Source">Actor receiving the event.</param>
+            <param name="Name">Name of event.</param>
+            <param name="Arguments">Event arguments.</param>
+            <returns>If event was handled</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
@@ -847,6 +876,20 @@
             Finalizes an instance of an actor.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+            <summary>
+            Registers an external event on the actor.
+            </summary>
+            <param name="ExternalEvent"></param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
+            <summary>
+            Tries to get an external event, given its name.
+            </summary>
+            <param name="Name">Name of external event.</param>
+            <param name="ExternalEvent">External event object.</param>
+            <returns>If an external event with the corresponding name was found.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
             Container for actors.
@@ -1086,6 +1129,35 @@
             Starts the node.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Trigger(Waher.Script.Variables)">
+            <summary>
+            Triggers the event.
+            </summary>
+            <param name="Variables"></param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.EventHandler">
+            <summary>
+            External Event
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventHandler.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            External Event
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.EventHandler.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventHandler.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Events">
             <summary>
             Container for events.
@@ -1111,14 +1183,34 @@
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ExternalEvent">
             <summary>
-            External Event
+            Handles an incoming event raised from an external source
             </summary>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.#ctor(TAG.Simulator.ISimulationNode)">
             <summary>
-            External Event
+            Handles an incoming event raised from an external source
             </summary>
             <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Name">
+            <summary>
+            Name of external event
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.EventId">
+            <summary>
+            Optional name for variable, if different from <see cref="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Name"/>
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.ActorName">
+            <summary>
+            Optional name for actor variable reference of sender of external event.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Event">
+            <summary>
+            Referenced event object.
+            </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.LocalName">
             <summary>
@@ -1131,6 +1223,37 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Register(TAG.Simulator.ObjectModel.Events.Parameter)">
+            <summary>
+            Registers a parameter with the external event.
+            </summary>
+            <param name="Parameter">Parameter</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Trigger(TAG.Simulator.IActorNode,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            Method called when an external event has been received.
+            </summary>
+            <param name="Source">Actor receiving the event.</param>
+            <param name="Arguments">Event arguments.</param>
+            <returns>If event was handled</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.FromPopulation">
             <summary>
@@ -1165,6 +1288,51 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.Parameter">
+            <summary>
+            Sets a variable to the value of an event parameter.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Sets a variable to the value of an event parameter.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Parameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Parameter.Name">
+            <summary>
+            Name of external event
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Parameter.Variable">
+            <summary>
+            Optional name for variable, if different from <see cref="P:TAG.Simulator.ObjectModel.Events.Parameter.Name"/>
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.SetVariable">
             <summary>

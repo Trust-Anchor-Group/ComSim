@@ -12,6 +12,9 @@
   <xs:complexType name="XmppActor">
     <xs:complexContent>
       <xs:extension base="cs:Actor">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="cs:ExternalEvent"/>
+        </xs:choice>
         <xs:attribute name="domain" type="xs:string" use="required"/>
         <xs:attribute name="userName" type="xs:string" use="required"/>
         <xs:attribute name="apiKey" type="xs:string" use="optional"/>

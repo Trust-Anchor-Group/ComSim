@@ -9,9 +9,21 @@
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
-    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
-    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true"/>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorTcp>
+    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorBosh>
+    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorWebSocket>
   </Actors>
   <Distributions>
     <Uniform id="ThousandsPerMinute" from="0" to="60" N="1000"/>
@@ -32,8 +44,8 @@
         <String>Hello</String>
       </SetVariable>
     </StochasticEvent>
-    <ExternalEvent id="MessageReceived" activity="RespondToMessage">
-    </ExternalEvent>
+    <EventHandler id="MessageReceived" activity="RespondToMessage">
+    </EventHandler>
   </Events>
   <Activities>
     <Activity id="StartChatSession">
@@ -50,6 +62,58 @@
     </Activity>
     <Activity id="RespondToMessage">
       <Start/>
+      <Conditional>
+        <Condition condition="e.Body='Hello'">
+          <Action actor="To" action="SendChatMessage">
+            <Argument name="To">
+              <Script>e.From</Script>
+            </Argument>
+            <Argument name="Message">
+              <String>How are you?</String>
+            </Argument>
+          </Action>
+        </Condition>
+        <Condition condition="e.Body='How are you?'">
+          <Action actor="To" action="SendChatMessage">
+            <Argument name="To">
+              <Script>e.From</Script>
+            </Argument>
+            <Argument name="Message">
+              <String>Fine thanks, and you?</String>
+            </Argument>
+          </Action>
+        </Condition>
+        <Condition condition="e.Body='Fine thanks, and you?'">
+          <Action actor="To" action="SendChatMessage">
+            <Argument name="To">
+              <Script>e.From</Script>
+            </Argument>
+            <Argument name="Message">
+              <String>Fine also, thanks</String>
+            </Argument>
+          </Action>
+        </Condition>
+        <Condition condition="e.Body='Fine also, thanks'">
+          <Action actor="To" action="SendChatMessage">
+            <Argument name="To">
+              <Script>e.From</Script>
+            </Argument>
+            <Argument name="Message">
+              <String>Bye</String>
+            </Argument>
+          </Action>
+        </Condition>
+        <Condition condition="e.Body='Bye'">
+          <Action actor="To" action="SendChatMessage">
+            <Argument name="To">
+              <Script>e.From</Script>
+            </Argument>
+            <Argument name="Message">
+              <String>See you</String>
+            </Argument>
+          </Action>
+        </Condition>
+      </Conditional>
       <Stop/>
     </Activity>
   </Activities>

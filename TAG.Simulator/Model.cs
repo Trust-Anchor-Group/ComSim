@@ -296,7 +296,7 @@ namespace TAG.Simulator
 						break;
 					}
 				}
-		
+
 				return Result;
 			}
 			finally
@@ -377,5 +377,24 @@ namespace TAG.Simulator
 			else
 				return new XmlFileSniffer(Path.Combine(this.snifferFolder, Actor + ".xml"), this.snifferTransformFileName, BinaryPresentationMethod.Base64);
 		}
+
+		/// <summary>
+		/// Method called when an external event has been received.
+		/// </summary>
+		/// <param name="Source">Actor receiving the event.</param>
+		/// <param name="Name">Name of event.</param>
+		/// <param name="Arguments">Event arguments.</param>
+		/// <returns>If event was handled</returns>
+		public bool ExternalEvent(IActorNode Source, string Name, params KeyValuePair<string, object>[] Arguments)
+		{
+			if (Source.TryGetExternalEvent(Name, out ExternalEvent ExternalEvent))
+			{
+				ExternalEvent.Trigger(Source, Arguments);
+				return true;
+			}
+			else
+				return false;
+		}
+
 	}
 }

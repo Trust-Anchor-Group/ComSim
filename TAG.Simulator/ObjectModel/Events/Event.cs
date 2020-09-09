@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
@@ -74,5 +75,14 @@ namespace TAG.Simulator.ObjectModel.Events
 
 			return base.Start();
 		}
+
+		/// <summary>
+		/// Triggers the event.
+		/// </summary>
+		/// <param name="Variables"></param>
+		public void Trigger(Variables Variables)
+		{
+		}
+
 	}
 }

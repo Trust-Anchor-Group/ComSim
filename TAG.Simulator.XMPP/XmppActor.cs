@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
@@ -204,6 +205,18 @@ namespace TAG.Simulator.XMPP
 				this.client = new XmppClient(this.xmppCredentials, string.Empty, typeof(XmppActor).GetTypeInfo().Assembly, this.sniffer);
 
 			this.client.OnStateChanged += this.Client_OnStateChanged;
+			this.client.OnChatMessage += Client_OnChatMessage;
+			this.client.OnConnectionError += Client_OnConnectionError;
+			this.client.OnError += Client_OnError;
+			this.client.OnErrorMessage += Client_OnErrorMessage;
+			this.client.OnGroupChatMessage += Client_OnGroupChatMessage;
+			this.client.OnHeadlineMessage += Client_OnHeadlineMessage;
+			this.client.OnNormalMessage += Client_OnNormalMessage;
+			this.client.OnPresence += Client_OnPresence;
+			this.client.OnPresenceSubscribe += Client_OnPresenceSubscribe;
+			this.client.OnRosterItemAdded += Client_OnRosterItemAdded;
+			this.client.OnRosterItemRemoved += Client_OnRosterItemRemoved;
+			this.client.OnRosterItemUpdated += Client_OnRosterItemUpdated;
 
 			this.connected = new TaskCompletionSource<bool>();
 
@@ -214,6 +227,117 @@ namespace TAG.Simulator.XMPP
 				if (this.xmppCredentials.AllowRegistration && !(await this.connected.Task))
 					throw new Exception("Unable to create account for " + this.userName + "@" + this.domain);
 			}
+		}
+
+		private Task Client_OnRosterItemUpdated(object Sender, RosterItem Item)
+		{
+			this.model?.ExternalEvent(this, "RosterItemUpdated",
+				new KeyValuePair<string, object>("Item", Item),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnRosterItemRemoved(object Sender, RosterItem Item)
+		{
+			this.model?.ExternalEvent(this, "RosterItemRemoved",
+				new KeyValuePair<string, object>("Item", Item),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnRosterItemAdded(object Sender, RosterItem Item)
+		{
+			this.model?.ExternalEvent(this, "RosterItemAdded",
+				new KeyValuePair<string, object>("Item", Item),
+				new KeyValuePair<string, object>("Client", this.client));
+			
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnPresenceSubscribe(object Sender, PresenceEventArgs e)
+		{
+			if (this.model is null || !this.model.ExternalEvent(this, "PresenceSubscribe",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client)))
+			{
+				e.Accept();
+			}
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnPresence(object Sender, PresenceEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "Presence",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnNormalMessage(object Sender, MessageEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "NormalMessage",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnHeadlineMessage(object Sender, MessageEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "HeadlineMessage",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnGroupChatMessage(object Sender, MessageEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "GroupChatMessage",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnErrorMessage(object Sender, MessageEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "ErrorMessage",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnError(object Sender, Exception Exception)
+		{
+			this.model?.ExternalEvent(this, "Error",
+				new KeyValuePair<string, object>("Exception", Exception),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnConnectionError(object Sender, Exception Exception)
+		{
+			this.model?.ExternalEvent(this, "ConnectionError",
+				new KeyValuePair<string, object>("Exception", Exception),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
+		}
+
+		private Task Client_OnChatMessage(object Sender, MessageEventArgs e)
+		{
+			this.model?.ExternalEvent(this, "ChatMessage",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Client", this.client));
+
+			return Task.CompletedTask;
 		}
 
 		private Task Client_OnStateChanged(object Sender, XmppState NewState)
@@ -246,6 +370,10 @@ namespace TAG.Simulator.XMPP
 					break;
 			}
 
+			this.model?.ExternalEvent(this, "OnStateChanged",
+				new KeyValuePair<string, object>("NewState", NewState),
+				new KeyValuePair<string, object>("Client", this.client));
+
 			return Task.CompletedTask;
 		}
 
@@ -272,7 +400,7 @@ namespace TAG.Simulator.XMPP
 			{
 				if (this.sniffer is IDisposable Disposable)
 					Disposable.Dispose();
-			
+
 				this.sniffer = null;
 			}
 
@@ -326,5 +454,16 @@ namespace TAG.Simulator.XMPP
 
 			return Result;
 		}
+
+		/// <summary>
+		/// Sends a chat message to another client.
+		/// </summary>
+		/// <param name="To">JID of recipient</param>
+		/// <param name="Message">Message to send</param>
+		public void SendChatMessage(string To, string Message)
+		{
+			this.client?.SendChatMessage(To, Message);
+		}
+
 	}
 }

@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E852FEDB-C91F-4124-A25F-9526AB4F668C}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		TODO.md = TODO.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator", "TAG.Simulator\TAG.Simulator.csproj", "{EF3340BD-AE1D-4C7E-B531-D2B8D73E838F}"

@@ -137,6 +137,13 @@
             </summary>
             <returns>XMPP Credentials</returns>
         </member>
+        <member name="M:TAG.Simulator.XMPP.XmppActor.SendChatMessage(System.String,System.String)">
+            <summary>
+            Sends a chat message to another client.
+            </summary>
+            <param name="To">JID of recipient</param>
+            <param name="Message">Message to send</param>
+        </member>
         <member name="T:TAG.Simulator.XMPP.XmppActorBosh">
             <summary>
             XMPP Actor connecting to the XMPP network using BOSH (HTTP).

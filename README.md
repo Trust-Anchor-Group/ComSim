@@ -87,7 +87,9 @@ Following is a list of simulation examples that can be used as the basis for new
 You can extend the simulator by providing links to your own .NET Standard assemblies, and reference them from your simulation model.
 To extend the simulator, create classes that implement the [ISimulationNode](TAG.Simulator/ISimulationNode.cs) interface, defined in the 
 [TAG.Simulator](TAG.Simulator) library. The classes must implement the public a constructor taking a `ISimulationNode` argument representing
-its parent node.
+its parent node. To extend the simulator with new types of actors (for instance, new communication protocols), these classes must also 
+implement the [IActorNode](TAG.Simulator/IActorNode.cs) interface, or derive from the [Actor](TAG.Simulator/ObjectModel/Actors/Actor.cs) 
+class.
 
 Following is a list of extension modules provided in the repository:
 

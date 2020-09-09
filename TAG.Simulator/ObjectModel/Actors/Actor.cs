@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
-using Waher.Script.Operators.Comparisons;
 
 namespace TAG.Simulator.ObjectModel.Actors
 {
 	/// <summary>
 	/// Abstract base class for actors
 	/// </summary>
-	public abstract class Actor : SimulationNode
+	public abstract class Actor : SimulationNodeChildren, IActorNode
 	{
+		private Dictionary<string, ExternalEvent> externalEvents = null;
 		private Actor[] instances;
 		private string id;
 		private int n;
@@ -69,7 +70,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 			this.id = XML.Attribute(Definition, "id");
 			this.n = XML.Attribute(Definition, "N", 0);
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
@@ -151,5 +152,38 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// </summary>
 		public abstract Task FinalizeInstance();
 
+		/// <summary>
+		/// Registers an external event on the actor.
+		/// </summary>
+		/// <param name="ExternalEvent"></param>
+		public void Register(ExternalEvent ExternalEvent)
+		{
+			string Name = ExternalEvent.Name;
+
+			if (this.externalEvents is null)
+				this.externalEvents = new Dictionary<string, ExternalEvent>();
+
+			if (this.externalEvents.ContainsKey(Name))
+				throw new Exception("External event named " + Name + " already registered on actor " + this.id);
+			else
+				this.externalEvents[Name] = ExternalEvent;
+		}
+
+		/// <summary>
+		/// Tries to get an external event, given its name.
+		/// </summary>
+		/// <param name="Name">Name of external event.</param>
+		/// <param name="ExternalEvent">External event object.</param>
+		/// <returns>If an external event with the corresponding name was found.</returns>
+		public bool TryGetExternalEvent(string Name, out ExternalEvent ExternalEvent)
+		{
+			if (this.externalEvents is null)
+			{
+				ExternalEvent = null;
+				return false;
+			}
+			else
+				return this.externalEvents.TryGetValue(Name, out ExternalEvent);
+		}
 	}
 }
