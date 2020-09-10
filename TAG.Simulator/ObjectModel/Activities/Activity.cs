@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -60,6 +61,17 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			Model.Register(this);
 			return base.Initialize(Model);
+		}
+
+		/// <summary>
+		/// Executes a task.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		public virtual Task ExecuteTask(Model Model, Variables Variables)
+		{
+			// TODO
+			return Task.CompletedTask;
 		}
 	}
 }

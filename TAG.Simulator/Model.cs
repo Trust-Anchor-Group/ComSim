@@ -314,13 +314,15 @@ namespace TAG.Simulator
 				DateTime TP;
 				double t1;
 				double t2 = 0;
+				double t;
 				int NrCycles = 0;
 				bool Result = true;
 
 				while ((TP = DateTime.Now) <= this.end)
 				{
+					t = (TP - this.start).TotalMilliseconds;
 					t1 = t2;
-					t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs) / this.timeUnitMs;
+					t2 = Math.IEEERemainder(t, this.timeCycleMs) / this.timeUnitMs;
 					if (t2 < t1)
 						NrCycles++;
 
@@ -444,6 +446,37 @@ namespace TAG.Simulator
 			}
 			else
 				return false;
+		}
+
+		/// <summary>
+		/// Called when an activity is started.
+		/// </summary>
+		/// <param name="ActivityId">Activity ID</param>
+		/// <param name="SourceId">ID of node activating activity.</param>
+		public void IncActivityStartCount(string ActivityId, string SourceId)
+		{
+			Waher.Events.Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted");
+		}
+
+		/// <summary>
+		/// Called when an activity is finished.
+		/// </summary>
+		/// <param name="ActivityId">Activity ID</param>
+		/// <param name="SourceId">ID of node activating activity.</param>
+		public void IncActivityFinishedCount(string ActivityId, string SourceId)
+		{
+			Waher.Events.Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished");
+		}
+
+		/// <summary>
+		/// Called when an activity is stopped, due to error.
+		/// </summary>
+		/// <param name="ActivityId">Activity ID</param>
+		/// <param name="SourceId">ID of node activating activity.</param>
+		/// <param name="ErrorMessage">Error message.</param>
+		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage)
+		{
+			Waher.Events.Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError");
 		}
 
 	}

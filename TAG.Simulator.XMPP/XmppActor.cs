@@ -200,9 +200,9 @@ namespace TAG.Simulator.XMPP
 			this.sniffer = this.model.GetSniffer(this.userName);
 
 			if (this.sniffer is null)
-				this.client = new XmppClient(this.xmppCredentials, string.Empty, typeof(XmppActor).GetTypeInfo().Assembly);
+				this.client = new XmppClient(this.xmppCredentials, "en", typeof(XmppActor).GetTypeInfo().Assembly);
 			else
-				this.client = new XmppClient(this.xmppCredentials, string.Empty, typeof(XmppActor).GetTypeInfo().Assembly, this.sniffer);
+				this.client = new XmppClient(this.xmppCredentials, "en", typeof(XmppActor).GetTypeInfo().Assembly, this.sniffer);
 
 			this.client.OnStateChanged += this.Client_OnStateChanged;
 			this.client.OnChatMessage += Client_OnChatMessage;

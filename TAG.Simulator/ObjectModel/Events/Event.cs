@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
+using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -80,8 +81,18 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
-		public void Trigger(Variables Variables)
+		public async void Trigger(Variables Variables)
 		{
+			try
+			{
+				this.model.IncActivityStartCount(this.activityId, this.id);
+				await this.activity.ExecuteTask(this.model, Variables);
+				this.model.IncActivityFinishedCount(this.activityId, this.id);
+			}
+			catch (Exception ex)
+			{
+				this.model.IncActivityErrorCount(this.activityId, this.id, ex.Message);
+			}
 		}
 
 	}

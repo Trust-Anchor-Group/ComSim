@@ -7,6 +7,7 @@ Features
 [x] Events
 	[x] Stochastic events
 	[x] External events
+	[x] Trigger activities
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
 [ ] Activities

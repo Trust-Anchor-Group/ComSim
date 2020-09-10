@@ -91,6 +91,8 @@ namespace TAG.Simulator.ObjectModel.Distributions
 			if (p <= 0)
 				return 0;
 
+			p *= this.N;
+
 			int Nr = (int)p;
 			if (Nr > 0)
 				p -= Nr;

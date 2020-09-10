@@ -26,10 +26,10 @@
     </xmpp:XmppActorWebSocket>
   </Actors>
   <Distributions>
-    <Uniform id="ThousandsPerMinute" from="0" to="60" N="1000"/>
+    <Uniform id="HundredPerMinute" from="0" to="60" N="100"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="ThousandsPerMinute" activity="StartChatSession">
+    <StochasticEvent distribution="HundredPerMinute" activity="StartChatSession">
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
         <FromPopulation actor="XmppBosh"/>
