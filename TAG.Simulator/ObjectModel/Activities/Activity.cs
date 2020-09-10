@@ -9,7 +9,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Represents an activity that can be executed as the result of triggered events.
 	/// </summary>
-	public class Activity : SimulationNodeChildren
+	public class Activity : SimulationNodeChildren, IActivity
 	{
 		private string id;
 
@@ -23,7 +23,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// ID of event.
+		/// ID of activity.
 		/// </summary>
 		public string Id => this.id;
 
@@ -64,7 +64,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// Executes a task.
+		/// Executes the activity.
 		/// </summary>
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>

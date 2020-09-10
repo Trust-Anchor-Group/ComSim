@@ -7,7 +7,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// <summary>
 	/// Interface for events that can be triggered by elapsed time.
 	/// </summary>
-	public interface ITimeTriggerEvent : ISimulationNode
+	public interface ITimeTriggerEvent : IEvent
 	{
 		/// <summary>
 		/// Check if event is triggered during a time period.

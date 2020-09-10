@@ -13,7 +13,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	public class StochasticEvent : Event, ITimeTriggerEvent
 	{
 		private string distributionId;
-		private Distribution distribution;
+		private IDistribution distribution;
 
 		/// <summary>
 		/// Stochastic Event
@@ -37,7 +37,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Distribution
 		/// </summary>
-		public Distribution Distribution => this.distribution;
+		public IDistribution Distribution => this.distribution;
 
 		/// <summary>
 		/// Creates a new instance of the node.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -14,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	{
 		private Dictionary<string, Parameter> parameters = null;
 		private Model model;
-		private Event eventReference;
+		private IEvent eventReference;
 		private string name;
 		private string eventId;
 		private string actorName;
@@ -46,7 +47,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Referenced event object.
 		/// </summary>
-		public Event Event => this.eventReference;
+		public IEvent Event => this.eventReference;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -84,7 +85,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			this.model = Model;
 
-			if (this.Parent is IActorNode Actor)
+			if (this.Parent is IActor Actor)
 				Actor.Register(this);
 			else
 				throw new Exception("External event registered on a node that is not an actor.");
@@ -126,7 +127,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Source">Actor receiving the event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public void Trigger(IActorNode Source, params KeyValuePair<string, object>[] Arguments)
+		public void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
 		{
 			Variables Variables = new Variables();
 

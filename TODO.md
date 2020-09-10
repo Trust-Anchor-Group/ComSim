@@ -8,9 +8,8 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
-[ ] Distributions
-	[ ] Regular distribution: fixed interval, for sampling
 [ ] Activities
+	[ ] Execution
 	[ ] Counters
 	[ ] Stat activity node: Increments counters
 	[ ]	Sensor data (local/remote)
@@ -32,6 +31,8 @@ Features
 		[ ] Statistics
 		[ ] Custom graphs
 		[ ] Event log statistics
+[ ] Distributions
+	[ ] Regular distribution: fixed interval, for sampling
 [ ] Generate action documentation (xml, xslt) automatically
 [ ] Distributions
 [ ] XMPP

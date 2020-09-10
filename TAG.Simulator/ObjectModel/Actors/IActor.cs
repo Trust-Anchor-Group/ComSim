@@ -4,14 +4,22 @@ using System.Xml;
 using System.Xml.Schema;
 using TAG.Simulator.ObjectModel.Events;
 
-namespace TAG.Simulator
+namespace TAG.Simulator.ObjectModel.Actors
 {
 	/// <summary>
 	/// Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
 	/// in simulator models.
 	/// </summary>
-	public interface IActorNode : ISimulationNode
+	public interface IActor : ISimulationNode
 	{
+		/// <summary>
+		/// ID of actor.
+		/// </summary>
+		string Id
+		{
+			get;
+		}
+
 		/// <summary>
 		/// Registers an external event on the actor.
 		/// </summary>

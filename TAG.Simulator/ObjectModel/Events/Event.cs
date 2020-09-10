@@ -11,10 +11,10 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// <summary>
 	/// Abstract base class for events
 	/// </summary>
-	public abstract class Event : SimulationNodeChildren
+	public abstract class Event : SimulationNodeChildren, IEvent
 	{
 		private Model model;
-		private Activity activity;
+		private IActivity activity;
 		private string activityId;
 		private string id;
 
@@ -40,7 +40,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Activity to execute when event is triggered.
 		/// </summary>
-		public Activity Activity => this.activity;
+		public IActivity Activity => this.activity;
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.

@@ -8,7 +8,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Abstract base class for activity nodes
 	/// </summary>
-	public abstract class ActivityNode : SimulationNodeChildren
+	public abstract class ActivityNode : SimulationNodeChildren, IActivityNode
 	{
 		private string id;
 
@@ -22,7 +22,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// ID of event.
+		/// ID of activity node.
 		/// </summary>
 		public string Id => this.id;
 

@@ -12,7 +12,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	public class GoTo : ActivityNode 
 	{
 		private Model model;
-		private ActivityNode node;
+		private IActivityNode node;
 		private string reference;
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Referenced node
 		/// </summary>
-		public ActivityNode Node => this.node;
+		public IActivityNode Node => this.node;
 
 		/// <summary>
 		/// Reference

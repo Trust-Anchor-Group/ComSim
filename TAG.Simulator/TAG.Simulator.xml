@@ -58,26 +58,6 @@
             <param name="Parent">Parent node.</param>
             <returns>Created simulation object</returns>
         </member>
-        <member name="T:TAG.Simulator.IActorNode">
-            <summary>
-            Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
-            in simulator models.
-            </summary>
-        </member>
-        <member name="M:TAG.Simulator.IActorNode.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
-            <summary>
-            Registers an external event on the actor.
-            </summary>
-            <param name="ExternalEvent"></param>
-        </member>
-        <member name="M:TAG.Simulator.IActorNode.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
-            <summary>
-            Tries to get an external event, given its name.
-            </summary>
-            <param name="Name">Name of external event.</param>
-            <param name="ExternalEvent">External event object.</param>
-            <returns>If an external event with the corresponding name was found.</returns>
-        </member>
         <member name="T:TAG.Simulator.ForEachCallbackMethod">
             <summary>
             Callback method for iteration across the simulation model.
@@ -241,13 +221,13 @@
             </summary>
             <param name="Model">Model being executed.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Distributions.Distribution)">
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Distributions.IDistribution)">
             <summary>
             Registers a distribution with the runtime environment of the model.
             </summary>
             <param name="Distribution">Distribution object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetDistribution(System.String,TAG.Simulator.ObjectModel.Distributions.Distribution@)">
+        <member name="M:TAG.Simulator.Model.TryGetDistribution(System.String,TAG.Simulator.ObjectModel.Distributions.IDistribution@)">
             <summary>
             Tries to get a registered distribution from the model.
             </summary>
@@ -255,13 +235,13 @@
             <param name="Distribution">Distribution if found.</param>
             <returns>If a distribution was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Actors.Actor)">
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Actors.IActor)">
             <summary>
             Registers a actor with the runtime environment of the model.
             </summary>
             <param name="Actor">Actor object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetActor(System.String,TAG.Simulator.ObjectModel.Actors.Actor@)">
+        <member name="M:TAG.Simulator.Model.TryGetActor(System.String,TAG.Simulator.ObjectModel.Actors.IActor@)">
             <summary>
             Tries to get a registered actor from the model.
             </summary>
@@ -269,13 +249,13 @@
             <param name="Actor">Actor if found.</param>
             <returns>If an actor was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Events.Event)">
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Events.IEvent)">
             <summary>
             Registers a event with the runtime environment of the model.
             </summary>
             <param name="Event">Event object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetEvent(System.String,TAG.Simulator.ObjectModel.Events.Event@)">
+        <member name="M:TAG.Simulator.Model.TryGetEvent(System.String,TAG.Simulator.ObjectModel.Events.IEvent@)">
             <summary>
             Tries to get a registered event from the model.
             </summary>
@@ -283,13 +263,13 @@
             <param name="Event">Event if found.</param>
             <returns>If an event was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.Activity)">
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.IActivity)">
             <summary>
             Registers a activity with the runtime environment of the model.
             </summary>
             <param name="Activity">Activity object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetActivity(System.String,TAG.Simulator.ObjectModel.Activities.Activity@)">
+        <member name="M:TAG.Simulator.Model.TryGetActivity(System.String,TAG.Simulator.ObjectModel.Activities.IActivity@)">
             <summary>
             Tries to get a registered activity from the model.
             </summary>
@@ -297,13 +277,13 @@
             <param name="Activity">Activity if found.</param>
             <returns>If an activity was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.ActivityNode)">
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.IActivityNode)">
             <summary>
             Registers a activity node with the runtime environment of the model.
             </summary>
             <param name="ActivityNode">ActivityNode object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetActivityNode(System.String,TAG.Simulator.ObjectModel.Activities.ActivityNode@)">
+        <member name="M:TAG.Simulator.Model.TryGetActivityNode(System.String,TAG.Simulator.ObjectModel.Activities.IActivityNode@)">
             <summary>
             Tries to get a registered activity node from the model.
             </summary>
@@ -350,7 +330,7 @@
             <param name="Actor"></param>
             <returns>Sniffer, if any, null otherwise.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.IActorNode,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.ObjectModel.Actors.IActor,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Method called when an external event has been received.
             </summary>
@@ -456,7 +436,7 @@
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.Id">
             <summary>
-            ID of event.
+            ID of activity.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.LocalName">
@@ -485,7 +465,7 @@
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExecuteTask(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
-            Executes a task.
+            Executes the activity.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
@@ -503,7 +483,7 @@
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.ActivityNode.Id">
             <summary>
-            ID of event.
+            ID of activity node.
             </summary>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.FromXml(System.Xml.XmlElement)">
@@ -719,6 +699,33 @@
         <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.Start">
             <summary>
             Starts the node.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.IActivity">
+            <summary>
+            Interface for activities
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.IActivity.Id">
+            <summary>
+            ID of activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.ExecuteTask(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes the activity.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.IActivityNode">
+            <summary>
+            Interface for activity nodes
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.IActivityNode.Id">
+            <summary>
+            ID of activity node.
             </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Otherwise">
@@ -978,6 +985,31 @@
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Actors.IActor">
+            <summary>
+            Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
+            in simulator models.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.Id">
+            <summary>
+            ID of actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+            <summary>
+            Registers an external event on the actor.
+            </summary>
+            <param name="ExternalEvent"></param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
+            <summary>
+            Tries to get an external event, given its name.
+            </summary>
+            <param name="Name">Name of external event.</param>
+            <param name="ExternalEvent">External event object.</param>
+            <returns>If an external event with the corresponding name was found.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distribution">
             <summary>
             Abstract base class for distributions
@@ -1060,6 +1092,25 @@
             </summary>
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.IDistribution">
+            <summary>
+            Interface for distributions
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.IDistribution.Id">
+            <summary>
+            ID of distribution.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.IDistribution.CheckTrigger(System.Double,System.Double,System.Int32)">
+            <summary>
+            Check if distribution has a sample within the time period.
+            </summary>
+            <param name="t1">Starting time of period.</param>
+            <param name="t2">Ending time of period.</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>How many times samples were found in time period.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Normal">
             <summary>
@@ -1367,7 +1418,7 @@
             </summary>
             <param name="Parameter">Parameter</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Trigger(TAG.Simulator.IActorNode,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEvent.Trigger(TAG.Simulator.ObjectModel.Actors.IActor,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Method called when an external event has been received.
             </summary>
@@ -1408,6 +1459,22 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.IEvent">
+            <summary>
+            Interface for events
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IEvent.Id">
+            <summary>
+            ID of event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Trigger(Waher.Script.Variables)">
+            <summary>
+            Triggers the event.
+            </summary>
+            <param name="Variables">Event variables</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent">
             <summary>

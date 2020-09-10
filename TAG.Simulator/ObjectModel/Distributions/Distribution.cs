@@ -8,7 +8,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 	/// <summary>
 	/// Abstract base class for distributions
 	/// </summary>
-	public abstract class Distribution : SimulationNode
+	public abstract class Distribution : SimulationNode, IDistribution
 	{
 		private Model model;
 		private string id;

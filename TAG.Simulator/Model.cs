@@ -38,11 +38,11 @@ namespace TAG.Simulator
 	/// </summary>
 	public class Model : SimulationNodeChildren
 	{
-		private readonly Dictionary<string, Distribution> distributions = new Dictionary<string, Distribution>();
-		private readonly Dictionary<string, Actor> actors = new Dictionary<string, Actor>();
-		private readonly Dictionary<string, Activity> activities = new Dictionary<string, Activity>();
-		private readonly Dictionary<string, ActivityNode> activityNodes = new Dictionary<string, ActivityNode>();
-		private readonly Dictionary<string, Event> eventsWithId = new Dictionary<string, Event>();
+		private readonly Dictionary<string, IDistribution> distributions = new Dictionary<string, IDistribution>();
+		private readonly Dictionary<string, IActor> actors = new Dictionary<string, IActor>();
+		private readonly Dictionary<string, IActivity> activities = new Dictionary<string, IActivity>();
+		private readonly Dictionary<string, IActivityNode> activityNodes = new Dictionary<string, IActivityNode>();
+		private readonly Dictionary<string, IEvent> eventsWithId = new Dictionary<string, IEvent>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
@@ -174,7 +174,7 @@ namespace TAG.Simulator
 		/// Registers a distribution with the runtime environment of the model.
 		/// </summary>
 		/// <param name="Distribution">Distribution object.</param>
-		public void Register(Distribution Distribution)
+		public void Register(IDistribution Distribution)
 		{
 			if (this.distributions.ContainsKey(Distribution.Id))
 				throw new Exception("A distribution with ID " + Distribution.Id + " already registered.");
@@ -188,7 +188,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of distribution.</param>
 		/// <param name="Distribution">Distribution if found.</param>
 		/// <returns>If a distribution was found.</returns>
-		public bool TryGetDistribution(string Id, out Distribution Distribution)
+		public bool TryGetDistribution(string Id, out IDistribution Distribution)
 		{
 			return this.distributions.TryGetValue(Id, out Distribution);
 		}
@@ -197,7 +197,7 @@ namespace TAG.Simulator
 		/// Registers a actor with the runtime environment of the model.
 		/// </summary>
 		/// <param name="Actor">Actor object.</param>
-		public void Register(Actor Actor)
+		public void Register(IActor Actor)
 		{
 			if (this.actors.ContainsKey(Actor.Id))
 				throw new Exception("An actor with ID " + Actor.Id + " already registered.");
@@ -211,7 +211,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of actor.</param>
 		/// <param name="Actor">Actor if found.</param>
 		/// <returns>If an actor was found.</returns>
-		public bool TryGetActor(string Id, out Actor Actor)
+		public bool TryGetActor(string Id, out IActor Actor)
 		{
 			return this.actors.TryGetValue(Id, out Actor);
 		}
@@ -220,7 +220,7 @@ namespace TAG.Simulator
 		/// Registers a event with the runtime environment of the model.
 		/// </summary>
 		/// <param name="Event">Event object.</param>
-		public void Register(Event Event)
+		public void Register(IEvent Event)
 		{
 			if (!string.IsNullOrEmpty(Event.Id))
 			{
@@ -240,7 +240,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of event.</param>
 		/// <param name="Event">Event if found.</param>
 		/// <returns>If an event was found.</returns>
-		public bool TryGetEvent(string Id, out Event Event)
+		public bool TryGetEvent(string Id, out IEvent Event)
 		{
 			return this.eventsWithId.TryGetValue(Id, out Event);
 		}
@@ -249,7 +249,7 @@ namespace TAG.Simulator
 		/// Registers a activity with the runtime environment of the model.
 		/// </summary>
 		/// <param name="Activity">Activity object.</param>
-		public void Register(Activity Activity)
+		public void Register(IActivity Activity)
 		{
 			if (this.activities.ContainsKey(Activity.Id))
 				throw new Exception("An activity with ID " + Activity.Id + " already registered.");
@@ -263,7 +263,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of activity.</param>
 		/// <param name="Activity">Activity if found.</param>
 		/// <returns>If an activity was found.</returns>
-		public bool TryGetActivity(string Id, out Activity Activity)
+		public bool TryGetActivity(string Id, out IActivity Activity)
 		{
 			return this.activities.TryGetValue(Id, out Activity);
 		}
@@ -272,7 +272,7 @@ namespace TAG.Simulator
 		/// Registers a activity node with the runtime environment of the model.
 		/// </summary>
 		/// <param name="ActivityNode">ActivityNode object.</param>
-		public void Register(ActivityNode ActivityNode)
+		public void Register(IActivityNode ActivityNode)
 		{
 			if (!string.IsNullOrEmpty(ActivityNode.Id))
 			{
@@ -289,7 +289,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of activity node.</param>
 		/// <param name="ActivityNode">ActivityNode if found.</param>
 		/// <returns>If an activity node was found.</returns>
-		public bool TryGetActivityNode(string Id, out ActivityNode ActivityNode)
+		public bool TryGetActivityNode(string Id, out IActivityNode ActivityNode)
 		{
 			return this.activityNodes.TryGetValue(Id, out ActivityNode);
 		}
@@ -437,7 +437,7 @@ namespace TAG.Simulator
 		/// <param name="Name">Name of event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public bool ExternalEvent(IActorNode Source, string Name, params KeyValuePair<string, object>[] Arguments)
+		public bool ExternalEvent(IActor Source, string Name, params KeyValuePair<string, object>[] Arguments)
 		{
 			if (Source.TryGetExternalEvent(Name, out ExternalEvent ExternalEvent))
 			{

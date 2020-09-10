@@ -10,7 +10,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// <summary>
 	/// Abstract base class for actors
 	/// </summary>
-	public abstract class Actor : SimulationNodeChildren, IActorNode
+	public abstract class Actor : SimulationNodeChildren, IActor
 	{
 		private Dictionary<string, ExternalEvent> externalEvents = null;
 		private Actor[] instances;
