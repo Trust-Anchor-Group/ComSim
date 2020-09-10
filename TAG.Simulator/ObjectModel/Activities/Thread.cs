@@ -6,15 +6,15 @@ using Waher.Script;
 namespace TAG.Simulator.ObjectModel.Activities
 {
 	/// <summary>
-	/// Represents a condition that is always true.
+	/// Represents a thread in parallel execution.
 	/// </summary>
-	public class Otherwise : ActivityNode, IConditionNode
+	public class Thread : ActivityNode
 	{
 		/// <summary>
-		/// Represents a condition that is always true.
+		/// Represents a thread in parallel execution.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Otherwise(ISimulationNode Parent)
+		public Thread(ISimulationNode Parent)
 			: base(Parent)
 		{
 		}
@@ -22,7 +22,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Otherwise";
+		public override string LocalName => "Thread";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -31,19 +31,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent)
 		{
-			return new Otherwise(Parent);
-		}
-
-		/// <summary>
-		/// Initialized the node before simulation.
-		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
-		{
-			if (this.Parent is Conditional Conditional)
-				Conditional.Register(this);
-
-			return base.Initialize(Model);
+			return new Thread(Parent);
 		}
 
 		/// <summary>
@@ -56,17 +44,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			await Activity.ExecuteActivity(Model, Variables, this.FirstNode);
 			return null;
-		}
-
-		/// <summary>
-		/// If the node condition is true.
-		/// </summary>
-		/// <param name="Model">Current model</param>
-		/// <param name="Variables">Set of variables for the activity.</param>
-		/// <returns>If embedded nodes are to be executed.</returns>
-		public bool IsTrue(Model Model, Variables Variables)
-		{
-			return true;
 		}
 
 	}

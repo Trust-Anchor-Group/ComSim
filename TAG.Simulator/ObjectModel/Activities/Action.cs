@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -10,6 +13,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public class Action : ActivityNode
 	{
+		private Argument[] arguments;
+		private string[] argumentNames;
 		private string actor;
 		private string action;
 
@@ -58,5 +63,125 @@ namespace TAG.Simulator.ObjectModel.Activities
 
 			return base.FromXml(Definition);
 		}
+
+		/// <summary>
+		/// Initialized the node before simulation.
+		/// </summary>
+		/// <param name="Model">Model being executed.</param>
+		public override Task Initialize(Model Model)
+		{
+			List<Argument> Arguments = new List<Argument>();
+			List<string> Names = new List<string>();
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is Argument Argument)
+				{
+					Arguments.Add(Argument);
+					Names.Add(Argument.Name);
+				}
+			}
+
+			this.arguments = Arguments.ToArray();
+			this.argumentNames = Names.ToArray();
+
+			return base.Initialize(Model);
+		}
+
+		/// <summary>
+		/// Executes a node.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		{
+			if (!Variables.TryGetVariable(this.actor, out Variable v))
+				throw new Exception("Actor not found: " + this.actor);
+
+			object Actor = v.ValueObject;
+			if (Actor is null)
+				throw new Exception("Actor is null.");
+
+			Type T = Actor.GetType();
+			MethodInfo Method;
+			int[] Positions;
+			int i, j, c;
+
+			lock (this.synchObj)
+			{
+				if (T == this.lastType)
+				{
+					Method = this.lastMethod;
+					Positions = this.argumentPositions;
+				}
+				else
+				{
+					this.lastType = T;
+
+					c = this.argumentNames.Length;
+					Positions = new int[c];
+					Method = null;
+
+					foreach (MethodInfo MI in T.GetRuntimeMethods())
+					{
+						if (MI.IsAbstract || !MI.IsPublic)
+							continue;
+
+						if (MI.Name != this.action)
+							continue;
+
+						ParameterInfo[] Parameters = MI.GetParameters();
+						if (Parameters.Length != c)
+							continue;
+
+						for (i = 0; i < c; i++)
+						{
+							ParameterInfo Parameter = Parameters[i];
+							j = Array.IndexOf<string>(this.argumentNames, Parameter.Name);
+							if (j < 0)
+							{
+								Parameters = null;
+								break;
+							}
+
+							Positions[i] = j;
+						}
+
+						if (Parameters is null)
+							continue;
+
+						Method = MI;
+						break;
+					}
+
+					if (Method is null)
+						throw new Exception("No method named " + this.action + " found on actor " + this.actor + " (of type " + T.FullName + "), with the givet set of arguments.");
+
+					this.lastMethod = Method;
+					this.argumentPositions = Positions;
+				}
+			}
+
+			c = Positions.Length;
+
+			object[] Arguments = new object[c];
+
+			for (i = 0; i < c; i++)
+				Arguments[i] = this.arguments[Positions[i]].Value.Evaluate(Variables);
+
+			object Result = Method.Invoke(Actor, Arguments);
+
+			if (Result is Task Task)
+				await Task;
+
+			return null;
+		}
+
+		private Type lastType = null;
+		private MethodInfo lastMethod = null;
+		private int[] argumentPositions = null;
+		private readonly object synchObj = new object();
+
 	}
 }

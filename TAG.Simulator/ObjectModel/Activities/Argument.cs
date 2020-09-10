@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -10,6 +11,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public class Argument : SimulationNodeChildren
 	{
+		private IValue value = null;
 		private string name;
 
 		/// <summary>
@@ -32,6 +34,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public string Name => this.name;
 
 		/// <summary>
+		/// Value node.
+		/// </summary>
+		public IValue Value => this.value;
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -50,6 +57,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 			this.name = XML.Attribute(Definition, "name");
 
 			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Registers a value for the argument.
+		/// </summary>
+		/// <param name="Value">Value node</param>
+		public void Register(IValue Value)
+		{
+			if (this.value is null)
+				this.value = Value;
+			else
+				throw new Exception("Argument already has a value defined.");
 		}
 
 	}

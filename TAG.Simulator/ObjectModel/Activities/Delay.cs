@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -51,6 +53,24 @@ namespace TAG.Simulator.ObjectModel.Activities
 			this.duration = XML.Attribute(Definition, "duration", Duration.Zero);
 
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Executes a node.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		{
+			DateTime Now = DateTime.Now;
+			DateTime TP = Now + this.duration;
+			TimeSpan TS = TP - Now;
+
+			if (TS > TimeSpan.Zero)
+				await Task.Delay(TS);
+
+			return null;
 		}
 	}
 }

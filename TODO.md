@@ -9,7 +9,9 @@ Features
 	[x] External events
 	[x] Trigger activities
 [ ] Activities
-	[ ] Execution
+	[ ] Populations
+	[x] Execution
+	[ ] Activity node with external event conditions, or stochastic conditions
 	[ ] Counters
 	[ ] Stat activity node: Increments counters
 	[ ]	Sensor data (local/remote)
@@ -38,6 +40,7 @@ Features
 [ ] XMPP
 	[ ] Message handlers
 	[ ] Iq handlers
+	[ ] Extension libraries
 	[ ] UDP
 [ ] HTTP
 	[ ] GET
@@ -57,6 +60,8 @@ Examples
 [ ] Guess a number
 [ ] Federation
 [ ] Web Server Load (HTTP GET)
+[ ] External events to determine activity node transitions
+[ ] Parallel threads in activity
 
 Documentation
 --------------------

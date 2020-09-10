@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
-using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -32,6 +33,26 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override ISimulationNode Create(ISimulationNode Parent)
 		{
 			return new Parallel(Parent);
+		}
+
+		/// <summary>
+		/// Executes a node.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		{
+			Task[] Tasks = new Task[this.Count];
+			LinkedListNode<IActivityNode> Loop = this.FirstNode;
+			int i = 0;
+
+			while (!(Loop is null))
+				Tasks[i++] = Loop.Value.Execute(Model, Variables);
+
+			await Task.WhenAll(Tasks);
+
+			return null;
 		}
 
 	}

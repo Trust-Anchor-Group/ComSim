@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -11,6 +12,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public class Activity : SimulationNodeChildren, IActivity
 	{
+		private LinkedList<IActivityNode> activityNodes = null;
 		private string id;
 
 		/// <summary>
@@ -64,14 +66,56 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
+		/// Registers a child activity node.
+		/// </summary>
+		/// <param name="Model">Model being executed.</param>
+		/// <param name="Node">Activity node.</param>
+		public void Register(Model Model, IActivityNode Node)
+		{
+			if (this.activityNodes is null)
+				this.activityNodes = new LinkedList<IActivityNode>();
+
+			Model.Register(this.activityNodes.AddLast(Node));
+		}
+
+		/// <summary>
 		/// Executes the activity.
 		/// </summary>
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		public virtual Task ExecuteTask(Model Model, Variables Variables)
+		public virtual async Task ExecuteTask(Model Model, Variables Variables)
 		{
-			// TODO
-			return Task.CompletedTask;
+			if (!(this.activityNodes is null))
+			{
+				try
+				{
+					await ExecuteActivity(Model, Variables, this.activityNodes.First);
+				}
+				catch (FinishedException)
+				{
+					// Execution finished.
+				}
+			}
+		}
+
+		/// <summary>
+		/// Executes an activity by executing a possibly branching sequence of nodes.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <param name="Start">Node to start execution with.</param>
+		public static async Task ExecuteActivity(Model Model, Variables Variables, LinkedListNode<IActivityNode> Start)
+		{
+			LinkedListNode<IActivityNode> Next;
+
+			while (!(Start is null))
+			{
+				Next = await Start.Value.Execute(Model, Variables);
+				if (Next is null)
+					Next = Start.Next;
+
+				Start = Next;
+			}
 		}
 	}
 }

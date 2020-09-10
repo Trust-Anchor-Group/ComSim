@@ -277,13 +277,13 @@
             <param name="Activity">Activity if found.</param>
             <returns>If an activity was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Activities.IActivityNode)">
+        <member name="M:TAG.Simulator.Model.Register(System.Collections.Generic.LinkedListNode{TAG.Simulator.ObjectModel.Activities.IActivityNode})">
             <summary>
             Registers a activity node with the runtime environment of the model.
             </summary>
             <param name="ActivityNode">ActivityNode object.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.TryGetActivityNode(System.String,TAG.Simulator.ObjectModel.Activities.IActivityNode@)">
+        <member name="M:TAG.Simulator.Model.TryGetActivityNode(System.String,System.Collections.Generic.LinkedListNode{TAG.Simulator.ObjectModel.Activities.IActivityNode}@)">
             <summary>
             Tries to get a registered activity node from the model.
             </summary>
@@ -400,6 +400,20 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
             <summary>
             Container for activities.
@@ -463,12 +477,27 @@
             </summary>
             <param name="Model">Model being executed.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.Register(TAG.Simulator.Model,TAG.Simulator.ObjectModel.Activities.IActivityNode)">
+            <summary>
+            Registers a child activity node.
+            </summary>
+            <param name="Model">Model being executed.</param>
+            <param name="Node">Activity node.</param>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExecuteTask(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
             Executes the activity.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExecuteActivity(TAG.Simulator.Model,Waher.Script.Variables,System.Collections.Generic.LinkedListNode{TAG.Simulator.ObjectModel.Activities.IActivityNode})">
+            <summary>
+            Executes an activity by executing a possibly branching sequence of nodes.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <param name="Start">Node to start execution with.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.ActivityNode">
             <summary>
@@ -498,6 +527,31 @@
             </summary>
             <param name="Model">Model being executed.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.Register(TAG.Simulator.Model,TAG.Simulator.ObjectModel.Activities.IActivityNode)">
+            <summary>
+            Registers a child activity node.
+            </summary>
+            <param name="Model">Model being executed.</param>
+            <param name="Node">Activity node.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.ActivityNode.FirstNode">
+            <summary>
+            First child activity node.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.ActivityNode.Count">
+            <summary>
+            Number of registered activity nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Argument">
             <summary>
             Defines an argument in an action.
@@ -519,6 +573,11 @@
             Name of variable within the scope of the event.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Argument.Value">
+            <summary>
+            Value node.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
@@ -531,6 +590,12 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Condition">
             <summary>
@@ -571,6 +636,28 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.IsTrue(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            If the node condition is true.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>If embedded nodes are to be executed.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Conditional">
             <summary>
             Conditional execution in an activity.
@@ -593,6 +680,20 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Conditional.Register(TAG.Simulator.ObjectModel.Activities.IConditionNode)">
+            <summary>
+            Register a conditional node.
+            </summary>
+            <param name="Node">Conditional node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Conditional.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Delay">
             <summary>
@@ -628,6 +729,14 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Delay.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Finished">
             <summary>
             Terminates execution of activity.
@@ -650,6 +759,24 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Finished.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.FinishedException">
+            <summary>
+            Exceptions thrown when the execution of an activity is completed.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.FinishedException.#ctor">
+            <summary>
+            Exceptions thrown when the execution of an activity is completed.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.GoTo">
             <summary>
@@ -701,6 +828,14 @@
             Starts the node.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IActivity">
             <summary>
             Interface for activities
@@ -710,6 +845,13 @@
             <summary>
             ID of activity.
             </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.Register(TAG.Simulator.Model,TAG.Simulator.ObjectModel.Activities.IActivityNode)">
+            <summary>
+            Registers a child activity node.
+            </summary>
+            <param name="Model">Model being executed.</param>
+            <param name="Node">Activity node.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.ExecuteTask(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
@@ -727,6 +869,34 @@
             <summary>
             ID of activity node.
             </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivityNode.Register(TAG.Simulator.Model,TAG.Simulator.ObjectModel.Activities.IActivityNode)">
+            <summary>
+            Registers a child activity node.
+            </summary>
+            <param name="Model">Model being executed.</param>
+            <param name="Node">Activity node.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivityNode.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.IConditionNode">
+            <summary>
+            Interface for condition nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IConditionNode.IsTrue(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            If the node condition is true.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>If embedded nodes are to be executed.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Otherwise">
             <summary>
@@ -751,6 +921,28 @@
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.IsTrue(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            If the node condition is true.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>If embedded nodes are to be executed.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Parallel">
             <summary>
             Executes multiple threads in parallel.
@@ -773,6 +965,14 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Parallel.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Script">
             <summary>
@@ -818,6 +1018,14 @@
             If children are 
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Start">
             <summary>
             Represents the starting point of the activity.
@@ -841,6 +1049,14 @@
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Start.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Stop">
             <summary>
             Represents the stoping point of the activity.
@@ -863,6 +1079,45 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Stop.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Thread">
+            <summary>
+            Represents a thread in parallel execution.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Thread.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a thread in parallel execution.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Thread.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Thread.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Thread.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actor">
             <summary>
@@ -1813,6 +2068,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Duration">
             <summary>
             Duration value.
@@ -1847,6 +2109,25 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.IValue">
+            <summary>
+            Interface for values
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.IValue.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Number">
             <summary>
             Number value.
@@ -1880,6 +2161,13 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Script">
             <summary>
@@ -1920,6 +2208,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.String">
             <summary>
             String value.
@@ -1953,6 +2248,13 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Time">
             <summary>
@@ -1988,6 +2290,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Value">
             <summary>
             Abstract base class for values
@@ -1998,6 +2307,19 @@
             Abstract base class for values
             </summary>
             <param name="Parent">Parent node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Value.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Value.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Variable">
             <summary>
@@ -2033,6 +2355,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Xml">
             <summary>
             XML value.
@@ -2066,6 +2395,13 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
         </member>
     </members>
 </doc>

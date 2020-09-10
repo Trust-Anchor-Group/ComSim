@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Script;
@@ -52,6 +50,16 @@ namespace TAG.Simulator.ObjectModel.Values
 			this.value = Definition.InnerXml;
 
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Evaluates the value.
+		/// </summary>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Evaluated value.</returns>
+		public override object Evaluate(Variables Variables)
+		{
+			return this.value;
 		}
 	}
 }

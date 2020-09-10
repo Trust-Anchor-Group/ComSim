@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -12,7 +13,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	public class GoTo : ActivityNode 
 	{
 		private Model model;
-		private IActivityNode node;
+		private LinkedListNode<IActivityNode> node;
 		private string reference;
 
 		/// <summary>
@@ -27,7 +28,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Referenced node
 		/// </summary>
-		public IActivityNode Node => this.node;
+		public LinkedListNode<IActivityNode> Node => this.node;
 
 		/// <summary>
 		/// Reference
@@ -80,6 +81,17 @@ namespace TAG.Simulator.ObjectModel.Activities
 				throw new Exception("Activity node not found: " + this.reference);
 
 			return base.Start();
+		}
+
+		/// <summary>
+		/// Executes a node.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		{
+			return Task.FromResult<LinkedListNode<IActivityNode>>(this.node);
 		}
 	}
 }

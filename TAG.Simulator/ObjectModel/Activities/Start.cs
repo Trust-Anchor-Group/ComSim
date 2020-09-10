@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -32,5 +33,17 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			return new Start(Parent);
 		}
+
+		/// <summary>
+		/// Executes a node.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		{
+			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+		}
+
 	}
 }

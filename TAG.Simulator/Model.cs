@@ -41,7 +41,7 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, IDistribution> distributions = new Dictionary<string, IDistribution>();
 		private readonly Dictionary<string, IActor> actors = new Dictionary<string, IActor>();
 		private readonly Dictionary<string, IActivity> activities = new Dictionary<string, IActivity>();
-		private readonly Dictionary<string, IActivityNode> activityNodes = new Dictionary<string, IActivityNode>();
+		private readonly Dictionary<string, LinkedListNode<IActivityNode>> activityNodes = new Dictionary<string, LinkedListNode<IActivityNode>>();
 		private readonly Dictionary<string, IEvent> eventsWithId = new Dictionary<string, IEvent>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
@@ -272,14 +272,16 @@ namespace TAG.Simulator
 		/// Registers a activity node with the runtime environment of the model.
 		/// </summary>
 		/// <param name="ActivityNode">ActivityNode object.</param>
-		public void Register(IActivityNode ActivityNode)
+		public void Register(LinkedListNode<IActivityNode> ActivityNode)
 		{
-			if (!string.IsNullOrEmpty(ActivityNode.Id))
-			{
-				if (this.activityNodes.ContainsKey(ActivityNode.Id))
-					throw new Exception("An activity node with ID " + ActivityNode.Id + " already registered.");
+			string Id = ActivityNode.Value.Id;
 
-				this.activityNodes[ActivityNode.Id] = ActivityNode;
+			if (!string.IsNullOrEmpty(Id))
+			{
+				if (this.activityNodes.ContainsKey(Id))
+					throw new Exception("An activity node with ID " + Id + " already registered.");
+
+				this.activityNodes[Id] = ActivityNode;
 			}
 		}
 
@@ -289,7 +291,7 @@ namespace TAG.Simulator
 		/// <param name="Id">ID of activity node.</param>
 		/// <param name="ActivityNode">ActivityNode if found.</param>
 		/// <returns>If an activity node was found.</returns>
-		public bool TryGetActivityNode(string Id, out IActivityNode ActivityNode)
+		public bool TryGetActivityNode(string Id, out LinkedListNode<IActivityNode> ActivityNode)
 		{
 			return this.activityNodes.TryGetValue(Id, out ActivityNode);
 		}

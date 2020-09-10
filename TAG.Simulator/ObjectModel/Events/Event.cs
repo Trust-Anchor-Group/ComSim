@@ -85,6 +85,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			try
 			{
+				// TODO: Populate and set variables
+
 				this.model.IncActivityStartCount(this.activityId, this.id);
 				await this.activity.ExecuteTask(this.model, Variables);
 				this.model.IncActivityFinishedCount(this.activityId, this.id);
