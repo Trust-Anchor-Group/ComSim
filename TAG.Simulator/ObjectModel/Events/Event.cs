@@ -79,7 +79,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Triggers the event.
 		/// </summary>
-		/// <param name="Variables"></param>
+		/// <param name="Variables">Event variables</param>
 		public void Trigger(Variables Variables)
 		{
 		}

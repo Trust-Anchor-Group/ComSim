@@ -44,7 +44,7 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, ActivityNode> activityNodes = new Dictionary<string, ActivityNode>();
 		private readonly Dictionary<string, Event> eventsWithId = new Dictionary<string, Event>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
-		private readonly LinkedList<Event> events = new LinkedList<Event>();
+		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 		private TimeBase timeBase;
 		private Duration timeUnit;
@@ -56,6 +56,7 @@ namespace TAG.Simulator
 		private string snifferTransformFileName;
 		private double timeUnitMs;
 		private double timeCycleMs;
+		private double timeCycleUnits;
 
 		/// <summary>
 		/// Root node of a simulation model
@@ -80,6 +81,36 @@ namespace TAG.Simulator
 		/// Base of simulation time
 		/// </summary>
 		public TimeBase TimeBase => this.timeBase;
+
+		/// <summary>
+		/// Time unit
+		/// </summary>
+		public Duration TimeUnit => this.timeUnit;
+
+		/// <summary>
+		/// Time unit, in milliseconds
+		/// </summary>
+		public double TimeUnitMs => this.timeUnitMs;
+
+		/// <summary>
+		/// Time cycle
+		/// </summary>
+		public Duration TimeCycle => this.timeCycle;
+
+		/// <summary>
+		/// Time cycle, in milliseconds
+		/// </summary>
+		public double TimeCycleMs => this.timeCycleMs;
+
+		/// <summary>
+		/// Time cycle, in number of <see cref="TimeUnit"/>.
+		/// </summary>
+		public double TimeCycleUnits => this.timeCycleUnits;
+
+		/// <summary>
+		/// Simulation duration
+		/// </summary>
+		public Duration Duration => this.duration;
 
 		/// <summary>
 		/// Folder used for sniffer output.
@@ -134,6 +165,7 @@ namespace TAG.Simulator
 
 			this.timeUnitMs = ((this.start + this.timeUnit) - this.start).TotalMilliseconds;
 			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
+			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
 			return base.Initialize(Model);
 		}
@@ -198,7 +230,8 @@ namespace TAG.Simulator
 				this.eventsWithId[Event.Id] = Event;
 			}
 
-			this.events.AddLast(Event);
+			if (Event is ITimeTriggerEvent TimeTriggeredEvent)
+				this.timeTriggeredEvents.AddLast(TimeTriggeredEvent);
 		}
 
 		/// <summary>
@@ -281,14 +314,18 @@ namespace TAG.Simulator
 				DateTime TP;
 				double t1;
 				double t2 = 0;
-				double dt;
+				int NrCycles = 0;
 				bool Result = true;
 
 				while ((TP = DateTime.Now) <= this.end)
 				{
 					t1 = t2;
 					t2 = Math.IEEERemainder((TP - this.start).TotalMilliseconds, this.timeCycleMs) / this.timeUnitMs;
-					dt = t2 - t1;
+					if (t2 < t1)
+						NrCycles++;
+
+					foreach (ITimeTriggerEvent Event in this.timeTriggeredEvents)
+						Event.CheckTrigger(t1, t2, NrCycles);
 
 					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
 					{
@@ -321,6 +358,19 @@ namespace TAG.Simulator
 			}
 
 			return Result;
+		}
+
+		/// <summary>
+		/// Generates a new floating-point value between 0 and 1, using a cryptographic random number generator.
+		/// </summary>
+		/// <returns>Random number.</returns>
+		public double GetRandomDouble()
+		{
+			byte[] b = this.GetRandomBytes(8);
+			double d = BitConverter.ToUInt64(b, 0);
+			d /= ulong.MaxValue;
+
+			return d;
 		}
 
 		/// <summary>

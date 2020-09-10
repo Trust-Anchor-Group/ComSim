@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Content.Xml;
 using TAG.Simulator.ObjectModel.Distributions;
+using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
 	/// <summary>
 	/// Stochastic Event
 	/// </summary>
-	public class StochasticEvent : Event
+	public class StochasticEvent : Event, ITimeTriggerEvent
 	{
 		private string distributionId;
 		private Distribution distribution;
@@ -69,6 +70,22 @@ namespace TAG.Simulator.ObjectModel.Events
 				throw new Exception("Distribution not found: " + this.distributionId);
 
 			return base.Initialize(Model);
+		}
+
+		/// <summary>
+		/// Check if event is triggered during a time period.
+		/// </summary>
+		/// <param name="t1">Starting time of period.</param>
+		/// <param name="t2">Ending time of period.</param>
+		/// <param name="NrCycles">Number of time cycles completed.</param>
+		public void CheckTrigger(double t1, double t2, int NrCycles)
+		{
+			int n = this.distribution.CheckTrigger(t1, t2, NrCycles);
+			while (n > 0)
+			{
+				this.Trigger(new Variables());
+				n--;
+			}
 		}
 
 	}

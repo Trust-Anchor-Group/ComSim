@@ -182,6 +182,36 @@
             Base of simulation time
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.TimeUnit">
+            <summary>
+            Time unit
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.TimeUnitMs">
+            <summary>
+            Time unit, in milliseconds
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.TimeCycle">
+            <summary>
+            Time cycle
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.TimeCycleMs">
+            <summary>
+            Time cycle, in milliseconds
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.TimeCycleUnits">
+            <summary>
+            Time cycle, in number of <see cref="P:TAG.Simulator.Model.TimeUnit"/>.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.Duration">
+            <summary>
+            Simulation duration
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Model.SnifferFolder">
             <summary>
             Folder used for sniffer output.
@@ -294,6 +324,12 @@
             </summary>
             <param name="NrBytes">Number of random bytes to generate.</param>
             <returns>Random bytes.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetRandomDouble">
+            <summary>
+            Generates a new floating-point value between 0 and 1, using a cryptographic random number generator.
+            </summary>
+            <returns>Random number.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.GetKey(System.String)">
             <summary>
@@ -934,6 +970,16 @@
             Intensity/Frequency/Factor
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Distribution.Model">
+            <summary>
+            Model hosting the distribution
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Distribution.TimeCycleUnits">
+            <summary>
+            Time cycle, in number of <see cref="P:TAG.Simulator.Model.TimeUnit"/>.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.FromXml(System.Xml.XmlElement)">
             <summary>
             Sets properties and attributes of class in accordance with XML definition.
@@ -945,6 +991,23 @@
             Initialized the node before simulation.
             </summary>
             <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.CheckTrigger(System.Double,System.Double,System.Int32)">
+            <summary>
+            Check if distribution has a sample within the time period.
+            </summary>
+            <param name="t1">Starting time of period.</param>
+            <param name="t2">Ending time of period.</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>How many times samples were found in time period.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.GetCumulativeProbability(System.Double,System.Int32)">
+            <summary>
+            The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N"/>).
+            </summary>
+            <param name="t">Time</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>CDU(t)</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
             <summary>
@@ -1008,6 +1071,21 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.Erf(System.Double)">
+            <summary>
+            Statistical error function erf(z), for real-valued arguments.
+            </summary>
+            <param name="x">Real-valued argument</param>
+            <returns>erf(x)</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.GetCumulativeProbability(System.Double,System.Int32)">
+            <summary>
+            The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N"/>).
+            </summary>
+            <param name="t">Time</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>CDU(t)</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Uniform">
             <summary>
             Uniform distribution
@@ -1034,6 +1112,11 @@
             To
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Uniform.Inverted">
+            <summary>
+            If the interval is inverted (with respect to the model time cycle).
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.Create(TAG.Simulator.ISimulationNode)">
             <summary>
             Creates a new instance of the node.
@@ -1046,6 +1129,14 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.GetCumulativeProbability(System.Double,System.Int32)">
+            <summary>
+            The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N"/>).
+            </summary>
+            <param name="t">Time</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>CDU(t)</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ActorReference">
             <summary>
@@ -1133,7 +1224,7 @@
             <summary>
             Triggers the event.
             </summary>
-            <param name="Variables"></param>
+            <param name="Variables">Event variables</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.EventHandler">
             <summary>
@@ -1289,6 +1380,19 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent">
+            <summary>
+            Interface for events that can be triggered by elapsed time.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent.CheckTrigger(System.Double,System.Double,System.Int32)">
+            <summary>
+            Check if event is triggered during a time period.
+            </summary>
+            <param name="t1">Starting time of period.</param>
+            <param name="t2">Ending time of period.</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Parameter">
             <summary>
             Sets a variable to the value of an event parameter.
@@ -1412,6 +1516,14 @@
             Initialized the node before simulation.
             </summary>
             <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.CheckTrigger(System.Double,System.Double,System.Int32)">
+            <summary>
+            Check if event is triggered during a time period.
+            </summary>
+            <param name="t1">Starting time of period.</param>
+            <param name="t2">Ending time of period.</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
             <summary>

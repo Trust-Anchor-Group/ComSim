@@ -12,6 +12,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 	{
 		private double from;
 		private double to;
+		private bool inverted;
 
 		/// <summary>
 		/// Uniform distribution
@@ -38,6 +39,11 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		public double To => this.to;
 
 		/// <summary>
+		/// If the interval is inverted (with respect to the model time cycle).
+		/// </summary>
+		public bool Inverted => this.inverted;
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -55,8 +61,38 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		{
 			this.from = XML.Attribute(Definition, "from", 0.0);
 			this.to = XML.Attribute(Definition, "to", 0.0);
+			this.inverted = this.from >= this.to;
 
 			return base.FromXml(Definition);
 		}
+
+		/// <summary>
+		/// The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="Distribution.N"/>).
+		/// </summary>
+		/// <param name="t">Time</param>
+		/// <param name="NrCycles">Number of time cycles completed.</param>
+		/// <returns>CDU(t)</returns>
+		protected override double GetCumulativeProbability(double t, int NrCycles)
+		{
+			if (this.inverted)
+			{
+				if (t >= this.from)
+					return (t - this.from) / (this.TimeCycleUnits + this.to - this.from) + NrCycles;
+				else if (t <= this.to)
+					return (this.TimeCycleUnits + t - this.from) / (this.TimeCycleUnits + this.to - this.from) + NrCycles;
+				else
+					return NrCycles;
+			}
+			else
+			{
+				if (t <= this.from)
+					return NrCycles;
+				else if (t >= this.to)
+					return NrCycles + 1;
+				else
+					return (t - this.from) / (this.to - this.from) + NrCycles;
+			}
+		}
+
 	}
 }

@@ -62,6 +62,7 @@
     </Activity>
     <Activity id="RespondToMessage">
       <Start/>
+      <Delay duration="PT5S"/>
       <Conditional>
         <Condition condition="e.Body='Hello'">
           <Action actor="To" action="SendChatMessage">
