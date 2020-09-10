@@ -1512,6 +1512,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Event">
             <summary>
             Abstract base class for events
@@ -1555,6 +1562,12 @@
             Starts the node.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Register(TAG.Simulator.ObjectModel.Events.IEventPreparation)">
+            <summary>
+            Registers an event preparation node.
+            </summary>
+            <param name="PreparationNode">Preparation node.</param>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.Event.Trigger(Waher.Script.Variables)">
             <summary>
             Triggers the event.
@@ -1583,6 +1596,30 @@
             </summary>
             <param name="Parent">Parent node.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.EventPreparation">
+            <summary>
+            Abstract base class for event preparation nodes (with children).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Abstract base class for event preparation nodes (with children).
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Events">
             <summary>
@@ -1731,6 +1768,24 @@
             </summary>
             <param name="Variables">Event variables</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Register(TAG.Simulator.ObjectModel.Events.IEventPreparation)">
+            <summary>
+            Registers an event preparation node.
+            </summary>
+            <param name="PreparationNode">Preparation node.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.IEventPreparation">
+            <summary>
+            Interface for event preparation nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent">
             <summary>
             Interface for events that can be triggered by elapsed time.
@@ -1822,6 +1877,19 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.StochasticEvent">
             <summary>
@@ -2127,6 +2195,17 @@
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.IValueRecipient">
+            <summary>
+            Interface for nodes holding a value node
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.IValueRecipient.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Number">
             <summary>

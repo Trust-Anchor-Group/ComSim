@@ -26,5 +26,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		void Trigger(Variables Variables);
+
+		/// <summary>
+		/// Registers an event preparation node.
+		/// </summary>
+		/// <param name="PreparationNode">Preparation node.</param>
+		void Register(IEventPreparation PreparationNode);
 	}
 }

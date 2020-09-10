@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
 	/// <summary>
 	/// Sets a variable value when an event is triggered.
 	/// </summary>
-	public class SetVariable : SimulationNodeChildren
+	public class SetVariable : EventPreparation, IValueRecipient
 	{
+		private IValue value = null;
 		private string name;
 
 		/// <summary>
@@ -50,6 +53,28 @@ namespace TAG.Simulator.ObjectModel.Events
 			this.name = XML.Attribute(Definition, "name");
 
 			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Registers a value for the argument.
+		/// </summary>
+		/// <param name="Value">Value node</param>
+		public void Register(IValue Value)
+		{
+			if (this.value is null)
+				this.value = Value;
+			else
+				throw new Exception("SetVariable node already has a value defined.");
+		}
+
+		/// <summary>
+		/// Prepares <paramref name="Variables"/> for the execution of an event.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Event variables</param>
+		public override void Prepare(Model Model, Variables Variables)
+		{
+			Variables[this.name] = this.value?.Evaluate(Variables);
 		}
 
 	}

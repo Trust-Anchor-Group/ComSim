@@ -9,7 +9,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Defines an argument in an action.
 	/// </summary>
-	public class Argument : SimulationNodeChildren
+	public class Argument : SimulationNodeChildren, IValueRecipient
 	{
 		private IValue value = null;
 		private string name;

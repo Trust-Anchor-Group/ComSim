@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
@@ -13,6 +14,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// </summary>
 	public abstract class Event : SimulationNodeChildren, IEvent
 	{
+		private LinkedList<IEventPreparation> preparationNodes = null;
 		private Model model;
 		private IActivity activity;
 		private string activityId;
@@ -78,6 +80,18 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// Registers an event preparation node.
+		/// </summary>
+		/// <param name="PreparationNode">Preparation node.</param>
+		public void Register(IEventPreparation PreparationNode)
+		{
+			if (this.preparationNodes is null)
+				this.preparationNodes = new LinkedList<IEventPreparation>();
+
+			this.preparationNodes.AddLast(PreparationNode);
+		}
+
+		/// <summary>
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
@@ -85,7 +99,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			try
 			{
-				// TODO: Populate and set variables
+				if (!(this.preparationNodes is null))
+				{
+					foreach (IEventPreparation Node in this.preparationNodes)
+						Node.Prepare(this.model, Variables);
+				}
 
 				this.model.IncActivityStartCount(this.activityId, this.id);
 				await this.activity.ExecuteTask(this.model, Variables);

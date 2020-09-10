@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
 	/// <summary>
 	/// References a population of actors.
 	/// </summary>
-	public class ActorReference : SimulationNodeChildren
+	public class ActorReference : EventPreparation
 	{
 		private string name;
 		private bool exclusive;
@@ -57,6 +58,16 @@ namespace TAG.Simulator.ObjectModel.Events
 			this.exclusive = XML.Attribute(Definition, "exclusive", true);
 
 			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Prepares <paramref name="Variables"/> for the execution of an event.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Event variables</param>
+		public override void Prepare(Model Model, Variables Variables)
+		{
+			// TODO
 		}
 
 	}

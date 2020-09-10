@@ -24,6 +24,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Model">Model being executed.</param>
 		public override Task Initialize(Model Model)
 		{
+			if (this.Parent is IValueRecipient Recipient)
+				Recipient.Register(this);
+
 			return base.Initialize(Model);
 		}
 
