@@ -17,6 +17,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		private IActor[] actorsStat;
 		private int count;
 		private string name;
+		private string name2;
 		private bool exclusive;
 
 		/// <summary>
@@ -81,6 +82,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			this.actorsStat = this.actors.ToArray();
 			this.count = this.actorsStat.Length;
+			this.name2 = this.name + " Actor";
 
 			return base.Start();
 		}
@@ -119,7 +121,8 @@ namespace TAG.Simulator.ObjectModel.Events
 				Actor = this.actorsStat[i].GetFreeIndividual(j, this.exclusive);
 			}
 
-			Variables[this.name] = Actor;
+			Variables[this.name2] = Actor;
+			Variables[this.name] = Actor.ActivityObject;
 		}
 
 		/// <summary>
@@ -130,7 +133,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		public override void Release(Model Model, Variables Variables)
 		{
 			if (this.exclusive &&
-				Variables.TryGetVariable(this.name, out Variable v) &&
+				Variables.TryGetVariable(this.name2, out Variable v) &&
 				v.ValueObject is IActor InstanceActor &&
 				InstanceActor.Parent is IActor ActorPopulation)
 			{

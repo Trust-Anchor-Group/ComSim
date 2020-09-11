@@ -1250,6 +1250,11 @@
             </summary>
             <param name="Individual">Individual to return.</param>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.ActivityObject">
+            <summary>
+            Returns the object that will be used by the actor for actions during an activity.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
             Container for actors.
@@ -1322,6 +1327,11 @@
             Returns an individual to the population, once free again.
             </summary>
             <param name="Individual">Individual to return.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.ActivityObject">
+            <summary>
+            Returns the object that will be used by the actor for actions during an activity.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.IActors">
             <summary>

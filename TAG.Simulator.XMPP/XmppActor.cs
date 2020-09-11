@@ -460,14 +460,9 @@ namespace TAG.Simulator.XMPP
 		}
 
 		/// <summary>
-		/// Sends a chat message to another client.
+		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
-		/// <param name="To">JID of recipient</param>
-		/// <param name="Message">Message to send</param>
-		public void SendChatMessage(string To, string Message)
-		{
-			this.client?.SendChatMessage(To, Message);
-		}
+		public override object ActivityObject => this.client;
 
 	}
 }

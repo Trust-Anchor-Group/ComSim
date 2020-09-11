@@ -54,7 +54,7 @@
         <Argument name="To">
           <Script>To.FullJid</Script>
         </Argument>
-        <Argument name="Message">
+        <Argument name="Body">
           <Variable name="Message"/>
         </Argument>
       </Action>
@@ -69,7 +69,7 @@
             <Argument name="To">
               <Script>e.From</Script>
             </Argument>
-            <Argument name="Message">
+            <Argument name="Body">
               <String>How are you?</String>
             </Argument>
           </Action>
@@ -79,7 +79,7 @@
             <Argument name="To">
               <Script>e.From</Script>
             </Argument>
-            <Argument name="Message">
+            <Argument name="Body">
               <String>Fine thanks, and you?</String>
             </Argument>
           </Action>
@@ -89,7 +89,7 @@
             <Argument name="To">
               <Script>e.From</Script>
             </Argument>
-            <Argument name="Message">
+            <Argument name="Body">
               <String>Fine also, thanks</String>
             </Argument>
           </Action>
@@ -99,7 +99,7 @@
             <Argument name="To">
               <Script>e.From</Script>
             </Argument>
-            <Argument name="Message">
+            <Argument name="Body">
               <String>Bye</String>
             </Argument>
           </Action>
@@ -109,7 +109,7 @@
             <Argument name="To">
               <Script>e.From</Script>
             </Argument>
-            <Argument name="Message">
+            <Argument name="Body">
               <String>See you</String>
             </Argument>
           </Action>

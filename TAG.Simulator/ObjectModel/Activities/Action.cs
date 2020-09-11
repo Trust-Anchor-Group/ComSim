@@ -117,13 +117,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 				}
 				else
 				{
-					this.lastType = T;
-
 					c = this.argumentNames.Length;
 					Positions = new int[c];
 					Method = null;
 
-					foreach (MethodInfo MI in T.GetRuntimeMethods())
+					IEnumerable<MethodInfo> Methods = T.GetRuntimeMethods();
+
+					foreach (MethodInfo MI in Methods)
 					{
 						if (MI.IsAbstract || !MI.IsPublic)
 							continue;
@@ -160,6 +160,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 
 					this.lastMethod = Method;
 					this.argumentPositions = Positions;
+					this.lastType = T;
 				}
 			}
 

@@ -56,5 +56,12 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="Individual">Individual to return.</param>
 		void ReturnIndividual(IActor Individual);
 
+		/// <summary>
+		/// Returns the object that will be used by the actor for actions during an activity.
+		/// </summary>
+		object ActivityObject
+		{
+			get;
+		}
 	}
 }
