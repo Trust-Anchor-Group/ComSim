@@ -113,7 +113,8 @@ namespace TAG.Simulator.ObjectModel.Events
 				while (P[i] <= j)
 					i++;
 
-				j -= P[i];
+				if (i > 0)
+					j -= P[i - 1];
 
 				Actor = this.actorsStat[i].GetFreeIndividual(j, this.exclusive);
 			}
