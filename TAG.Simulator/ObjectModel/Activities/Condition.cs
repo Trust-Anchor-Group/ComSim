@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -99,8 +100,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 				object Result = this.expression.Evaluate(Variables);
 				return Result is bool b && b;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				Log.Critical(ex);
 				return false;
 			}
 		}

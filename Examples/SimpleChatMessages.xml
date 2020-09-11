@@ -52,7 +52,7 @@
       <Start/>
       <Action actor="From" action="SendChatMessage">
         <Argument name="To">
-          <Script>To.FullJid</Script>
+          <Script>To.FullJID</Script>
         </Argument>
         <Argument name="Body">
           <Variable name="Message"/>
