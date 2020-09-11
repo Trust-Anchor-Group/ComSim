@@ -97,6 +97,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 				Actor Instance = this.CreateInstance(i, this.id + i.ToString(Format));
 				Instance.id = this.id;
 				Instance.n = this.n;
+				Instance.externalEvents = this.externalEvents;
 
 				this.instances[i - 1] = Instance;
 

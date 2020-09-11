@@ -132,7 +132,7 @@ namespace TAG.Simulator.ObjectModel.Events
 			Variables Variables = new Variables();
 
 			if (!string.IsNullOrEmpty(this.actorName))
-				Variables[this.actorName] = Source;
+				Variables[this.actorName] = Source.ActivityObject;
 
 			if (!(this.parameters is null))
 			{
