@@ -351,27 +351,30 @@
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityStartCount(System.String,System.String)">
+        <member name="M:TAG.Simulator.Model.IncActivityStartCount(System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is started.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
+            <param name="Tags">Meta-data tags related to the event.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityFinishedCount(System.String,System.String)">
+        <member name="M:TAG.Simulator.Model.IncActivityFinishedCount(System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is finished.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
+            <param name="Tags">Meta-data tags related to the event.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.String)">
+        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is stopped, due to error.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
             <param name="ErrorMessage">Error message.</param>
+            <param name="Tags">Meta-data tags related to the event.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
@@ -1295,6 +1298,11 @@
             ID of actor.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.InstanceId">
+            <summary>
+            ID of actor instance.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
             <summary>
             Registers an external event on the actor.
@@ -1602,12 +1610,13 @@
             Starts the node.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Prepare(TAG.Simulator.Model,Waher.Script.Variables,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
+            <param name="Tags">Extensible list of meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Release(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
@@ -1711,12 +1720,13 @@
             </summary>
             <param name="Model">Model being executed.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
+            <param name="Tags">Extensible list of meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Release(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
@@ -1894,12 +1904,13 @@
             Interface for event preparation nodes
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
+            <param name="Tags">Extensible list of meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Release(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
@@ -2006,12 +2017,13 @@
             </summary>
             <param name="Value">Value node</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Prepare(TAG.Simulator.Model,Waher.Script.Variables,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
+            <param name="Tags">Extensible list of meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Release(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>

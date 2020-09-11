@@ -473,9 +473,10 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
-		public void IncActivityStartCount(string ActivityId, string SourceId)
+		/// <param name="Tags">Meta-data tags related to the event.</param>
+		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted");
+			Waher.Events.Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
 		/// <summary>
@@ -483,9 +484,10 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
-		public void IncActivityFinishedCount(string ActivityId, string SourceId)
+		/// <param name="Tags">Meta-data tags related to the event.</param>
+		public void IncActivityFinishedCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished");
+			Waher.Events.Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
 		/// <summary>
@@ -494,9 +496,10 @@ namespace TAG.Simulator
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
 		/// <param name="ErrorMessage">Error message.</param>
-		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage)
+		/// <param name="Tags">Meta-data tags related to the event.</param>
+		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError");
+			Waher.Events.Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}
 
 	}

@@ -97,19 +97,25 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Variables">Event variables</param>
 		public async void Trigger(Variables Variables)
 		{
+			KeyValuePair<string, object>[] Tags2 = null;
+
 			try
 			{
+				List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
+
 				if (!(this.preparationNodes is null))
 				{
 					foreach (IEventPreparation Node in this.preparationNodes)
-						Node.Prepare(this.model, Variables);
+						Node.Prepare(this.model, Variables, Tags);
 				}
+
+				Tags2 = Tags.ToArray();
 
 				try
 				{
-					this.model.IncActivityStartCount(this.activityId, this.id);
+					this.model.IncActivityStartCount(this.activityId, this.id, Tags2);
 					await this.activity.ExecuteTask(this.model, Variables);
-					this.model.IncActivityFinishedCount(this.activityId, this.id);
+					this.model.IncActivityFinishedCount(this.activityId, this.id, Tags2);
 				}
 				finally
 				{
@@ -122,7 +128,10 @@ namespace TAG.Simulator.ObjectModel.Events
 			}
 			catch (Exception ex)
 			{
-				this.model.IncActivityErrorCount(this.activityId, this.id, ex.Message);
+				if (Tags2 is null)
+					Tags2 = new KeyValuePair<string, object>[0];
+
+				this.model.IncActivityErrorCount(this.activityId, this.id, ex.Message, Tags2);
 			}
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
@@ -72,7 +73,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
-		public override void Prepare(Model Model, Variables Variables)
+		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
+		public override void Prepare(Model Model, Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
 			Variables[this.name] = this.value?.Evaluate(Variables);
 		}

@@ -21,6 +21,14 @@ namespace TAG.Simulator.ObjectModel.Actors
 		}
 
 		/// <summary>
+		/// ID of actor instance.
+		/// </summary>
+		string InstanceId
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Registers an external event on the actor.
 		/// </summary>
 		/// <param name="ExternalEvent">External event</param>

@@ -1,9 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml;
-using TAG.Simulator.ObjectModel.Activities;
-using Waher.Content.Xml;
-using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -39,7 +36,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
-		public abstract void Prepare(Model Model, Variables Variables);
+		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
+		public abstract void Prepare(Model Model, Variables Variables, List<KeyValuePair<string, object>> Tags);
 
 		/// <summary>
 		/// Releases resources at the end of an event.
