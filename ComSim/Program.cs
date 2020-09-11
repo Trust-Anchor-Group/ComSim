@@ -47,6 +47,8 @@ namespace ComSim
 	/// -bs BLOCK_SIZE        Block size, in bytes. Default=8192.
 	/// -bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.
 	/// -enc ENCODING         Text encoding. Default=UTF-8
+	/// -mr FILENAME          Generates a Markdown Report file after simulation.
+	/// -xr FILENAME          Generates an XML report file after simulation.
 	/// -?                    Displays command-line help.
 	/// </summary>
 	class Program
@@ -62,6 +64,8 @@ namespace ComSim
 				string LogFileName = null;
 				string LogTransformFileName = null;
 				string SnifferTransformFileName = null;
+				string XmlOutputFileName = null;
+				string MarkdownOutputFileName = null;
 				int i = 0;
 				int c = args.Length;
 				int BlockSize = 8192;
@@ -175,6 +179,26 @@ namespace ComSim
 							Encryption = true;
 							break;
 
+						case "-mr":
+							if (i >= c)
+								throw new Exception("Missing markdown report file name.");
+
+							if (string.IsNullOrEmpty(MarkdownOutputFileName))
+								MarkdownOutputFileName = args[i++];
+							else
+								throw new Exception("Only one markdown report file name allowed.");
+							break;
+
+						case "-xr":
+							if (i >= c)
+								throw new Exception("Missing XML report file name.");
+
+							if (string.IsNullOrEmpty(XmlOutputFileName))
+								XmlOutputFileName = args[i++];
+							else
+								throw new Exception("Only one XML report file name allowed.");
+							break;
+
 						case "-?":
 							Help = true;
 							break;
@@ -210,6 +234,8 @@ namespace ComSim
 					Console.Out.WriteLine("-bs BLOCK_SIZE        Block size, in bytes. Default=8192.");
 					Console.Out.WriteLine("-bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.");
 					Console.Out.WriteLine("-enc ENCODING         Text encoding. Default=UTF-8");
+					Console.Out.WriteLine("-mr FILENAME          Generates a Markdown Report file after simulation.");
+					Console.Out.WriteLine("-xr FILENAME          Generates an XML report file after simulation.");
 					Console.Out.WriteLine("-?                    Displays command-line help.");
 					Console.Out.WriteLine();
 
@@ -376,7 +402,7 @@ namespace ComSim
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName).Result;
+					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName, XmlOutputFileName).Result;
 				}
 
 				if (Result)
@@ -405,7 +431,7 @@ namespace ComSim
 		}
 
 		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
-			string SnifferFolder, string SnifferTransformFileName)
+			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName)
 		{
 			try
 			{
@@ -426,7 +452,39 @@ namespace ComSim
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;
 
-				return await Model.Run(Done);
+				bool Result = await Model.Run(Done);
+
+				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
+				{
+					Console.Out.WriteLine("Generating Markdown report...");
+
+					using (StreamWriter Output = File.CreateText(MarkdownOutputFileName))
+					{
+						await Model.GenerateMarkdownReport(Output);
+					}
+				}
+
+				if (!string.IsNullOrEmpty(XmlOutputFileName))
+				{
+					Console.Out.WriteLine("Generating XML report...");
+
+					XmlWriterSettings Settings = new XmlWriterSettings()
+					{
+						Encoding = Encoding.UTF8,
+						Indent = true,
+						IndentChars = "\t",
+						NewLineChars = "\r\n",
+						NewLineOnAttributes = false,
+						WriteEndDocumentOnClose = true
+					};
+
+					using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
+					{
+						await Model.GenerateXmlReport(Output);
+					}
+				}
+
+				return Result;
 			}
 			finally
 			{

@@ -72,6 +72,8 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 | `-bs BLOCK_SIZE`        | Block size, in bytes. Default=8192. |
 | `-bbs BLOB_BLOCK_SIZE`  | BLOB block size, in bytes. Default=8192. |
 | `-enc ENCODING`         | Text encoding. Default=UTF-8 |
+| `-mr FILENAME`          | Generates a Markdown Report file after simulation. |
+| `-xr FILENAME`          | Generates an XML report file after simulation. |
 | `-?`                    | Displays command-line help. |
 
 ## Examples

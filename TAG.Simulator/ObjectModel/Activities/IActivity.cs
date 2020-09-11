@@ -20,6 +20,14 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
+		/// Execution count
+		/// </summary>
+		int ExecutionCount
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Registers a child activity node.
 		/// </summary>
 		/// <param name="Model">Model being executed.</param>

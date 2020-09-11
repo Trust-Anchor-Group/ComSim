@@ -57,6 +57,7 @@ namespace TAG.Simulator
 		private double timeUnitMs;
 		private double timeCycleMs;
 		private double timeCycleUnits;
+		private int histogramBuckets;
 
 		/// <summary>
 		/// Root node of a simulation model
@@ -113,6 +114,11 @@ namespace TAG.Simulator
 		public Duration Duration => this.duration;
 
 		/// <summary>
+		/// Number of histogram buckets
+		/// </summary>
+		public int HistogramBuckets => this.histogramBuckets;
+
+		/// <summary>
 		/// Folder used for sniffer output.
 		/// </summary>
 		public string SnifferFolder
@@ -150,7 +156,8 @@ namespace TAG.Simulator
 			this.timeUnit = XML.Attribute(Definition, "timeUnit", Duration.FromHours(1));
 			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
 			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
-
+			this.histogramBuckets = XML.Attribute(Definition, "histogramBuckets", 10);
+			
 			return base.FromXml(Definition);
 		}
 
@@ -502,5 +509,27 @@ namespace TAG.Simulator
 			Waher.Events.Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}
 
+		/// <summary>
+		/// Generates a Markdown report.
+		/// </summary>
+		/// <param name="Output">Markdown output.</param>
+		public Task GenerateMarkdownReport(StreamWriter Output)
+		{
+			return this.ForEach((Node) => Node.ExportMarkdown(Output), false);
+		}
+
+		/// <summary>
+		/// Generates an XML report.
+		/// </summary>
+		/// <param name="Output">XML output.</param>
+		public async Task GenerateXmlReport(XmlWriter Output)
+		{
+			Output.WriteStartDocument();
+			Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
+
+			await this.ForEach((Node) => Node.ExportXml(Output), false);
+
+			Output.WriteEndElement();
+		}
 	}
 }

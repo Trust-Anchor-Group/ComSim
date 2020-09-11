@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
@@ -85,5 +86,16 @@ namespace TAG.Simulator
 		/// </summary>
 		Task Finalize();
 
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		Task ExportMarkdown(StreamWriter Output);
+
+		/// <summary>
+		/// Exports XML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		Task ExportXml(XmlWriter Output);
 	}
 }

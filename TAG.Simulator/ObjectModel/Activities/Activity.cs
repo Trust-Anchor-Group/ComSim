@@ -14,6 +14,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	{
 		private LinkedList<IActivityNode> activityNodes = null;
 		private string id;
+		private int executionCount = 0;
 
 		/// <summary>
 		/// Represents an activity that can be executed as the result of triggered events.
@@ -28,6 +29,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// ID of activity.
 		/// </summary>
 		public string Id => this.id;
+
+		/// <summary>
+		/// Execution count
+		/// </summary>
+		public int ExecutionCount => this.executionCount;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -85,6 +91,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Variables">Set of variables for the activity.</param>
 		public virtual async Task ExecuteTask(Model Model, Variables Variables)
 		{
+			this.executionCount++;
+
 			if (!(this.activityNodes is null))
 			{
 				try

@@ -5,6 +5,10 @@
        timeUnit="PT1S"
        timeCycle="PT1M"
        duration="PT10M">
+  <Meta>
+    <Title>Simple Chat Messages</Title>
+    <Description>Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) chatting with each other randomly during 10 minutes, at a frequency of 100 started chat sessions per minute.</Description>
+  </Meta>
   <Assemblies>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>

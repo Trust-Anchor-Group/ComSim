@@ -18,12 +18,15 @@ Features
 	[ ] Measurements
 	[ ] Performance counters
 	[ ] CPU/Memory
+	[ ] Global variables
+	[ ] Timing of, and between events/activities. (communication roundtrip)
 [ ] Simulation output
 	[ ] Statistics
 		[ ] Activities
 		[ ] Actions
 		[ ] Events
 		[ ] Counters
+		[ ] Avg, stddev, var, min, max, mean, median
 		[ ] Errors, Exceptions (from Log)
 	[ ] Data as XMLs
 	[ ] Report as Markdown
@@ -62,6 +65,7 @@ Examples
 [ ] Web Server Load (HTTP GET)
 [ ] External events to determine activity node transitions
 [ ] Parallel threads in activity
+[ ] Timing of communication roundtrip
 
 Documentation
 --------------------

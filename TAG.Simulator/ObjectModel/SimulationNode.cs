@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -90,6 +91,25 @@ namespace TAG.Simulator.ObjectModel
 		{
 			return Task.CompletedTask;
 		}
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public virtual Task ExportMarkdown(StreamWriter Output)
+		{
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Exports XML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public virtual Task ExportXml(XmlWriter Output)
+		{
+			return Task.CompletedTask;
+		}
+
 
 	}
 }
