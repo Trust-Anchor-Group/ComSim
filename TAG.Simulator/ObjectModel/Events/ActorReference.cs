@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -9,8 +11,11 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// <summary>
 	/// References a population of actors.
 	/// </summary>
-	public class ActorReference : EventPreparation
+	public class ActorReference : EventPreparation, IActors
 	{
+		private readonly List<IActor> actors = new List<IActor>();
+		private IActor[] actorsStat;
+		private int count;
 		private string name;
 		private bool exclusive;
 
@@ -61,13 +66,78 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// Registers an actor with the collection of actors.
+		/// </summary>
+		/// <param name="Actor">Actor</param>
+		public void Register(IActor Actor)
+		{
+			this.actors.Add(Actor);
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
+			this.actorsStat = this.actors.ToArray();
+			this.count = this.actorsStat.Length;
+
+			return base.Start();
+		}
+
+		/// <summary>
 		/// Prepares <paramref name="Variables"/> for the execution of an event.
 		/// </summary>
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
 		public override void Prepare(Model Model, Variables Variables)
 		{
-			// TODO
+			IActor Actor;
+			int[] P = new int[this.count];
+			int i, j;
+
+			lock (Model)
+			{
+				for (i = j = 0; i < this.count; i++)
+				{
+					j += this.actorsStat[i].FreeCount;
+					P[i] = j;
+				}
+
+				if (j <= 0)
+					throw new Exception("No free individual available in population.");
+
+				j = Model.GetRandomInteger(j);
+				i = 0;
+
+				while (P[i] <= j)
+					i++;
+
+				j -= P[i];
+
+				Actor = this.actorsStat[i].GetFreeIndividual(j, this.exclusive);
+			}
+
+			Variables[this.name] = Actor;
+		}
+
+		/// <summary>
+		/// Releases resources at the end of an event.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Event variables</param>
+		public override void Release(Model Model, Variables Variables)
+		{
+			if (this.exclusive &&
+				Variables.TryGetVariable(this.name, out Variable v) &&
+				v.ValueObject is IActor InstanceActor &&
+				InstanceActor.Parent is IActor ActorPopulation)
+			{
+				lock (Model)
+				{
+					ActorPopulation.ReturnIndividual(InstanceActor);
+				}
+			}
 		}
 
 	}

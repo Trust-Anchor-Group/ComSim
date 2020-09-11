@@ -70,6 +70,11 @@
             in simulator models.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ISimulationNode.Parent">
+            <summary>
+            Parent node in the simulation model.
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.ISimulationNode.Namespace">
             <summary>
             XML Namespace where the element is defined.
@@ -311,6 +316,13 @@
             </summary>
             <returns>Random number.</returns>
         </member>
+        <member name="M:TAG.Simulator.Model.GetRandomInteger(System.Int32)">
+            <summary>
+            Generates a new random integer between 0 (inclusive) and <paramref name="MaxValueExclusive"/> (exclusive).
+            </summary>
+            <param name="MaxValueExclusive">Maximum value (exclusive)</param>
+            <returns>Random integer value 0 - <paramref name="MaxValueExclusive"/>-1.</returns>
+        </member>
         <member name="M:TAG.Simulator.Model.GetKey(System.String)">
             <summary>
             Gets a key from the database. If it does not exist, it prompts the user for input.
@@ -327,7 +339,7 @@
             <summary>
             Gets a sniffer, if sniffer output is desired.
             </summary>
-            <param name="Actor"></param>
+            <param name="Actor">Actor</param>
             <returns>Sniffer, if any, null otherwise.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.ObjectModel.Actors.IActor,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
@@ -1183,6 +1195,8 @@
         <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.CreateInstance(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -1207,7 +1221,7 @@
             <summary>
             Registers an external event on the actor.
             </summary>
-            <param name="ExternalEvent"></param>
+            <param name="ExternalEvent">External event</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
             <summary>
@@ -1216,6 +1230,25 @@
             <param name="Name">Name of external event.</param>
             <param name="ExternalEvent">External event object.</param>
             <returns>If an external event with the corresponding name was found.</returns>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.FreeCount">
+            <summary>
+            Number of individuals in population that are free.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.GetFreeIndividual(System.Int32,System.Boolean)">
+            <summary>
+            Gets a free individual instance from the population.
+            </summary>
+            <param name="Index">Zero-based index of individual to get.</param>
+            <param name="Exclusive">If individual is for exclusive use (i.e. will not be free once gotten, until returned).</param>
+            <returns>Individual instance returned.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.ReturnIndividual(TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Returns an individual to the population, once free again.
+            </summary>
+            <param name="Individual">Individual to return.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
@@ -1240,6 +1273,12 @@
             <param name="Parent">Parent node</param>
             <returns>New instance</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actors.Register(TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Registers an actor with the collection of actors.
+            </summary>
+            <param name="Actor">Actor</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.IActor">
             <summary>
             Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
@@ -1255,7 +1294,7 @@
             <summary>
             Registers an external event on the actor.
             </summary>
-            <param name="ExternalEvent"></param>
+            <param name="ExternalEvent">External event</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
             <summary>
@@ -1264,6 +1303,36 @@
             <param name="Name">Name of external event.</param>
             <param name="ExternalEvent">External event object.</param>
             <returns>If an external event with the corresponding name was found.</returns>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.FreeCount">
+            <summary>
+            Number of individuals in population that are free.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.GetFreeIndividual(System.Int32,System.Boolean)">
+            <summary>
+            Gets a free individual instance from the population.
+            </summary>
+            <param name="Index">Zero-based index of individual to get.</param>
+            <param name="Exclusive">If individual is for exclusive use (i.e. will not be free once gotten, until returned).</param>
+            <returns>Individual instance returned.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.ReturnIndividual(TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Returns an individual to the population, once free again.
+            </summary>
+            <param name="Individual">Individual to return.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Actors.IActors">
+            <summary>
+            Interface for collections of actors.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActors.Register(TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Registers an actor with the collection of actors.
+            </summary>
+            <param name="Actor">Actor</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distribution">
             <summary>
@@ -1512,9 +1581,27 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Register(TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Registers an actor with the collection of actors.
+            </summary>
+            <param name="Actor">Actor</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.Release(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Releases resources at the end of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
@@ -1617,6 +1704,13 @@
         <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.Release(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Releases resources at the end of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
@@ -1734,9 +1828,14 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Events.FromPopulation.Actor">
+        <member name="P:TAG.Simulator.ObjectModel.Events.FromPopulation.ActorId">
             <summary>
             Name of actor defining the population.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.FromPopulation.Actor">
+            <summary>
+            Referenced actor.
             </summary>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.Create(TAG.Simulator.ISimulationNode)">
@@ -1751,6 +1850,12 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.Initialize(TAG.Simulator.Model)">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+            <param name="Model">Model being executed.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.IEvent">
             <summary>
@@ -1782,6 +1887,13 @@
         <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Prepare(TAG.Simulator.Model,Waher.Script.Variables)">
             <summary>
             Prepares <paramref name="Variables"/> for the execution of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.Release(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Releases resources at the end of an event.
             </summary>
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
@@ -1891,6 +2003,13 @@
             <param name="Model">Current model</param>
             <param name="Variables">Event variables</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.Release(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Releases resources at the end of an event.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Event variables</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.StochasticEvent">
             <summary>
             Stochastic Event
@@ -1957,7 +2076,7 @@
         </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Parent">
             <summary>
-            Parent node
+            Parent node in the simulation model.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNode.Namespace">

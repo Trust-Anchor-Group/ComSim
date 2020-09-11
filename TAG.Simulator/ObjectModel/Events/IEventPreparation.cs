@@ -19,5 +19,12 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
 		void Prepare(Model Model, Variables Variables);
+
+		/// <summary>
+		/// Releases resources at the end of an event.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Event variables</param>
+		void Release(Model Model, Variables Variables);
 	}
 }

@@ -45,13 +45,15 @@ namespace TAG.Simulator.XMPP
 
 		/// <summary>
 		/// Creates an instance object of the XMPP actor, and initializes it.
+		/// 
+		/// Note: Parent of newly created actor should point to this node (the creator of the instance object).
 		/// </summary>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
 		protected override XmppActor CreateInstanceObject(int InstanceIndex, string InstanceId)
 		{
-			return new XmppActorTcp(this.Parent, InstanceIndex, InstanceId);
+			return new XmppActorTcp(this, InstanceIndex, InstanceId);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -10,7 +11,8 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// </summary>
 	public class FromPopulation : SimulationNode
 	{
-		private string actor;
+		private IActor actor;
+		private string actorId;
 
 		/// <summary>
 		/// References a specific population of actors.
@@ -29,7 +31,12 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Name of actor defining the population.
 		/// </summary>
-		public string Actor => this.actor;
+		public string ActorId => this.actorId;
+
+		/// <summary>
+		/// Referenced actor.
+		/// </summary>
+		public IActor Actor => this.actor;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -47,8 +54,23 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
+			this.actorId = XML.Attribute(Definition, "actor");
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Initialized the node before simulation.
+		/// </summary>
+		/// <param name="Model">Model being executed.</param>
+		public override Task Initialize(Model Model)
+		{
+			if (!Model.TryGetActor(this.actorId, out this.actor))
+				throw new Exception("Actor not found: " + this.actorId);
+
+			if (this.Parent is IActors Actors)
+				Actors.Register(this.actor);
+
+			return base.Initialize(Model);
 		}
 
 	}

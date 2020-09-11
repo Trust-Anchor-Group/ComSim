@@ -378,6 +378,24 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Generates a new random integer between 0 (inclusive) and <paramref name="MaxValueExclusive"/> (exclusive).
+		/// </summary>
+		/// <param name="MaxValueExclusive">Maximum value (exclusive)</param>
+		/// <returns>Random integer value 0 - <paramref name="MaxValueExclusive"/>-1.</returns>
+		public int GetRandomInteger(int MaxValueExclusive)
+		{
+			int Result;
+
+			do
+			{
+				Result = (int)(MaxValueExclusive * GetRandomDouble());
+			}
+			while (Result >= MaxValueExclusive);
+
+			return Result;
+		}
+
+		/// <summary>
 		/// Gets a key from the database. If it does not exist, it prompts the user for input.
 		/// </summary>
 		/// <param name="KeyName">Name of key.</param>
@@ -422,7 +440,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Gets a sniffer, if sniffer output is desired.
 		/// </summary>
-		/// <param name="Actor"></param>
+		/// <param name="Actor">Actor</param>
 		/// <returns>Sniffer, if any, null otherwise.</returns>
 		public ISniffer GetSniffer(string Actor)
 		{

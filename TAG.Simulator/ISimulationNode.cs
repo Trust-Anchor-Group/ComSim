@@ -18,6 +18,14 @@ namespace TAG.Simulator
 	public interface ISimulationNode
 	{
 		/// <summary>
+		/// Parent node in the simulation model.
+		/// </summary>
+		ISimulationNode Parent
+		{
+			get;
+		}
+
+		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
 		string Namespace

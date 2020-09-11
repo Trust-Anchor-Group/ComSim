@@ -148,6 +148,8 @@ namespace TAG.Simulator.XMPP
 
 		/// <summary>
 		/// Creates an instance of the actor.
+		/// 
+		/// Note: Parent of newly created actor should point to this node (the creator of the instance object).
 		/// </summary>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>

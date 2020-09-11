@@ -7,8 +7,10 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// <summary>
 	/// Container for actors.
 	/// </summary>
-	public class Actors : SimulationNodeChildren
+	public class Actors : SimulationNodeChildren, IActors
 	{
+		private readonly List<IActor> actors = new List<IActor>();
+
 		/// <summary>
 		/// Container for actors.
 		/// </summary>
@@ -31,6 +33,15 @@ namespace TAG.Simulator.ObjectModel.Actors
 		public override ISimulationNode Create(ISimulationNode Parent)
 		{
 			return new Actors(Parent);
+		}
+
+		/// <summary>
+		/// Registers an actor with the collection of actors.
+		/// </summary>
+		/// <param name="Actor">Actor</param>
+		public void Register(IActor Actor)
+		{
+			this.actors.Add(Actor);
 		}
 	}
 }

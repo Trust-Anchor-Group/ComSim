@@ -21,7 +21,7 @@ namespace TAG.Simulator.ObjectModel
 		}
 
 		/// <summary>
-		/// Parent node
+		/// Parent node in the simulation model.
 		/// </summary>
 		public ISimulationNode Parent => this.parent;
 

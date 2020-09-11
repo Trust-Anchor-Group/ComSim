@@ -9,7 +9,7 @@ Features
 	[x] External events
 	[x] Trigger activities
 [ ] Activities
-	[ ] Populations
+	[x] Populations
 	[x] Execution
 	[ ] Activity node with external event conditions, or stochastic conditions
 	[ ] Counters

@@ -105,9 +105,20 @@ namespace TAG.Simulator.ObjectModel.Events
 						Node.Prepare(this.model, Variables);
 				}
 
-				this.model.IncActivityStartCount(this.activityId, this.id);
-				await this.activity.ExecuteTask(this.model, Variables);
-				this.model.IncActivityFinishedCount(this.activityId, this.id);
+				try
+				{
+					this.model.IncActivityStartCount(this.activityId, this.id);
+					await this.activity.ExecuteTask(this.model, Variables);
+					this.model.IncActivityFinishedCount(this.activityId, this.id);
+				}
+				finally
+				{
+					if (!(this.preparationNodes is null))
+					{
+						foreach (IEventPreparation Node in this.preparationNodes)
+							Node.Release(this.model, Variables);
+					}
+				}
 			}
 			catch (Exception ex)
 			{

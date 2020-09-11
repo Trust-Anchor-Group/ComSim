@@ -77,5 +77,14 @@ namespace TAG.Simulator.ObjectModel.Events
 			Variables[this.name] = this.value?.Evaluate(Variables);
 		}
 
+		/// <summary>
+		/// Releases resources at the end of an event.
+		/// </summary>
+		/// <param name="Model">Current model</param>
+		/// <param name="Variables">Event variables</param>
+		public override void Release(Model Model, Variables Variables)
+		{
+			Variables.Remove(this.name);
+		}
 	}
 }

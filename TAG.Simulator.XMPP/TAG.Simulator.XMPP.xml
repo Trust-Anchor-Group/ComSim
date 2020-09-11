@@ -103,6 +103,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActor.CreateInstance(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -111,6 +113,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActor.CreateInstanceObject(System.Int32,System.String)">
             <summary>
             Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -178,6 +182,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActorBosh.CreateInstanceObject(System.Int32,System.String)">
             <summary>
             Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -233,6 +239,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActorEndpoint.CreateInstance(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -278,6 +286,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActorTcp.CreateInstanceObject(System.Int32,System.String)">
             <summary>
             Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>
@@ -317,6 +327,8 @@
         <member name="M:TAG.Simulator.XMPP.XmppActorWebSocket.CreateInstanceObject(System.Int32,System.String)">
             <summary>
             Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
             </summary>
             <param name="InstanceIndex">Instance index.</param>
             <param name="InstanceId">ID of instance</param>

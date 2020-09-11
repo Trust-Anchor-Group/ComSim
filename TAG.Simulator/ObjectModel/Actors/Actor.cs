@@ -13,7 +13,8 @@ namespace TAG.Simulator.ObjectModel.Actors
 	public abstract class Actor : SimulationNodeChildren, IActor
 	{
 		private Dictionary<string, ExternalEvent> externalEvents = null;
-		private Actor[] instances;
+		private List<IActor> freeIndividuals = null;
+		private IActor[] instances;
 		private string id;
 		private int n;
 		private readonly string instanceId;
@@ -82,6 +83,9 @@ namespace TAG.Simulator.ObjectModel.Actors
 			await base.Initialize(Model);
 			Model.Register(this);
 
+			if (this.Parent is IActors Actors)
+				Actors.Register(this);
+
 			int NrDigits = 1 + (int)Math.Log10(this.N);
 			string Format = "D" + NrDigits.ToString();
 			int i;
@@ -98,6 +102,9 @@ namespace TAG.Simulator.ObjectModel.Actors
 
 				await Instance.InitializeInstance();
 			}
+
+			this.freeIndividuals = new List<IActor>();
+			this.freeIndividuals.AddRange(this.instances);
 		}
 
 		/// <summary>
@@ -131,6 +138,8 @@ namespace TAG.Simulator.ObjectModel.Actors
 
 		/// <summary>
 		/// Creates an instance of the actor.
+		/// 
+		/// Note: Parent of newly created actor should point to this node (the creator of the instance object).
 		/// </summary>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
@@ -155,7 +164,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// Registers an external event on the actor.
 		/// </summary>
-		/// <param name="ExternalEvent"></param>
+		/// <param name="ExternalEvent">External event</param>
 		public void Register(ExternalEvent ExternalEvent)
 		{
 			string Name = ExternalEvent.Name;
@@ -184,6 +193,36 @@ namespace TAG.Simulator.ObjectModel.Actors
 			}
 			else
 				return this.externalEvents.TryGetValue(Name, out ExternalEvent);
+		}
+
+		/// <summary>
+		/// Number of individuals in population that are free.
+		/// </summary>
+		public int FreeCount => this.freeIndividuals?.Count ?? 0;
+
+		/// <summary>
+		/// Gets a free individual instance from the population.
+		/// </summary>
+		/// <param name="Index">Zero-based index of individual to get.</param>
+		/// <param name="Exclusive">If individual is for exclusive use (i.e. will not be free once gotten, until returned).</param>
+		/// <returns>Individual instance returned.</returns>
+		public IActor GetFreeIndividual(int Index, bool Exclusive)
+		{
+			IActor Result = this.freeIndividuals[Index];
+
+			if (Exclusive)
+				this.freeIndividuals.RemoveAt(Index);
+
+			return Result;
+		}
+
+		/// <summary>
+		/// Returns an individual to the population, once free again.
+		/// </summary>
+		/// <param name="Individual">Individual to return.</param>
+		public void ReturnIndividual(IActor Individual)
+		{
+			this.freeIndividuals.Add(Individual);
 		}
 	}
 }
