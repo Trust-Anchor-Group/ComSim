@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
@@ -60,6 +61,28 @@ namespace TAG.Simulator.ObjectModel.Activities
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			bool First = true;
+
+			foreach (IConditionNode Node in this.conditions)
+			{
+				Node.ExportPlantUml(Output, Indentation, First);
+				First = false;
+			}
+
+			if (!First)
+			{
+				Indent(Output, Indentation);
+				Output.WriteLine("endif");
+			}
 		}
 
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
@@ -183,6 +184,36 @@ namespace TAG.Simulator.ObjectModel.Activities
 		private MethodInfo lastMethod = null;
 		private int[] argumentPositions = null;
 		private readonly object synchObj = new object();
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			Indent(Output, Indentation);
+			Output.Write(':');
+			Output.Write(this.actor);
+			Output.Write('.');
+			Output.Write(this.action);
+			Output.Write("(");
+
+			Indentation++;
+
+			foreach (Argument Arg in this.arguments)
+			{
+				Output.WriteLine();
+				Indent(Output, Indentation);
+
+				Output.Write(Arg.Name);
+				Output.Write(": ");
+
+				Arg.Value.ExportPlantUml(Output, Indentation);
+			}
+
+			Output.WriteLine(");");
+		}
 
 	}
 }

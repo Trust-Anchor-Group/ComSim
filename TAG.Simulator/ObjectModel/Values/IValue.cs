@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.IO;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Values
@@ -15,5 +15,12 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
 		object Evaluate(Variables Variables);
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		void ExportPlantUml(StreamWriter Output, int Indentation);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -125,5 +126,29 @@ namespace TAG.Simulator.ObjectModel.Activities
 				Start = Next;
 			}
 		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override Task ExportMarkdown(StreamWriter Output)
+		{
+			Output.WriteLine(this.id);
+			Output.WriteLine(new string('-', this.id.Length + 3));
+			Output.WriteLine();
+
+			Output.WriteLine("```uml");
+			Output.WriteLine("@startuml");
+
+			foreach (IActivityNode Node in this.activityNodes)
+				Node.ExportPlantUml(Output, 0);
+
+			Output.WriteLine("@enduml");
+			Output.WriteLine("```");
+			Output.WriteLine();
+
+			return base.ExportMarkdown(Output);
+		}
+
 	}
 }

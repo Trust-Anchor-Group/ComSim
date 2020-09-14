@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -17,5 +16,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
 		bool IsTrue(Model Model, Variables Variables);
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		/// <param name="First">If the condition is the first condition.</param>
+		void ExportPlantUml(StreamWriter Output, int Indentation, bool First);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -61,6 +62,59 @@ namespace TAG.Simulator.ObjectModel.Values
 		public override object Evaluate(Variables Variables)
 		{
 			return this.value;
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			ExportPlantUml(this.value, Output);
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Duration">Duration value.</param>
+		/// <param name="Output">Output node</param>
+		public static void ExportPlantUml(Waher.Content.Duration Duration, StreamWriter Output)
+		{
+			if (Duration.Negation)
+				Output.Write("-(");
+
+			bool First = true;
+
+			Append(Output, Duration.Years, "years", ref First);
+			Append(Output, Duration.Months, "months", ref First);
+			Append(Output, Duration.Days, "d", ref First);
+			Append(Output, Duration.Hours, "h", ref First);
+			Append(Output, Duration.Minutes, "min", ref First);
+
+			int s = (int)Duration.Seconds;
+			Append(Output, s, "s", ref First);
+
+			int ms = (int)((Duration.Seconds - s) * 1000);
+			Append(Output, ms, "ms", ref First);
+
+			if (Duration.Negation)
+				Output.Write(')');
+		}
+
+		private static void Append(StreamWriter Output, int Nr, string Unit, ref bool First)
+		{
+			if (Nr != 0)
+			{
+				if (First)
+					First = false;
+				else
+					Output.Write(", ");
+
+				Output.Write(Nr.ToString());
+				Output.Write(' ');
+				Output.Write(Unit);
+			}
 		}
 	}
 }

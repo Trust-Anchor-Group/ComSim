@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Script;
@@ -69,6 +68,16 @@ namespace TAG.Simulator.ObjectModel.Values
 		public override object Evaluate(Variables Variables)
 		{
 			return this.expression.Evaluate(Variables);
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			Activities.Script.ExportPlantUml(this.script, Output, Indentation);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
@@ -11,7 +12,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Represents a delay in an activity.
 	/// </summary>
-	public class Delay : ActivityNode 
+	public class Delay : ActivityNode
 	{
 		private Duration duration;
 
@@ -71,6 +72,21 @@ namespace TAG.Simulator.ObjectModel.Activities
 				await Task.Delay(TS);
 
 			return null;
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			Indent(Output, Indentation);
+			Output.Write(":Delay(");
+
+			Values.Duration.ExportPlantUml(this.duration, Output);
+
+			Output.WriteLine(");");
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
@@ -53,6 +53,38 @@ namespace TAG.Simulator.ObjectModel.Activities
 			await Task.WhenAll(Tasks);
 
 			return null;
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			bool First = true;
+			LinkedListNode<IActivityNode> Loop = this.FirstNode;
+
+			while (!(Loop is null))
+			{
+				Indent(Output, Indentation);
+
+				if (First)
+				{
+					First = false;
+					Output.WriteLine("fork");
+				}
+				else
+					Output.WriteLine("fork again");
+
+				Loop.Value.ExportPlantUml(Output, Indentation + 1);
+			}
+
+			if (!First)
+			{
+				Indent(Output, Indentation);
+				Output.WriteLine("end fork");
+			}
 		}
 
 	}

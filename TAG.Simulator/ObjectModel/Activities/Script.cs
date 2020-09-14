@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Script;
@@ -76,6 +77,47 @@ namespace TAG.Simulator.ObjectModel.Activities
 			this.expression.Evaluate(Variables);
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			ExportPlantUml(this.script, Output, Indentation);
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Script">Script expression.</param>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation)
+		{
+			bool First = true;
+
+			foreach (string Row in Script.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n'))
+			{
+				if (First)
+				{
+					Indent(Output, Indentation);
+					Output.Write(':');
+					First = false;
+				}
+				else
+				{
+					Output.WriteLine();
+					Indent(Output, Indentation);
+				}
+
+				Output.Write(Row);
+			}
+
+			if (!First)
+				Output.WriteLine(";");
 		}
 	}
 }

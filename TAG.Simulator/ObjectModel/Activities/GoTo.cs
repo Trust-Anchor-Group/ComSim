@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -92,6 +93,22 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
 		{
 			return Task.FromResult<LinkedListNode<IActivityNode>>(this.node);
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			Indent(Output, Indentation);
+			Output.Write('(');
+			Output.Write(this.reference);
+			Output.WriteLine(')');
+
+			Indent(Output, Indentation);
+			Output.WriteLine("detach");
 		}
 	}
 }

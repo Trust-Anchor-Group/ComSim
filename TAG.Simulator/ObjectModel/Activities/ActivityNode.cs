@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -87,5 +88,26 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public abstract Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables);
 
+		/// <summary>
+		/// Adds indentation to the current row.
+		/// </summary>
+		/// <param name="Output">Output.</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		protected static void Indent(StreamWriter Output, int Indentation)
+		{
+			if (Indentation > 0)
+				Output.Write(new string('\t', Indentation));
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		public virtual void ExportPlantUml(StreamWriter Output, int Indentation)
+		{
+			foreach (IActivityNode Node in this.activityNodes)
+				Node.ExportPlantUml(Output, Indentation);
+		}
 	}
 }

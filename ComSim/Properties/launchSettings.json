@@ -2,7 +2,7 @@
   "profiles": {
     "ComSim": {
       "commandName": "Project",
-      "commandLineArgs": "-d Data -e -i ..\\..\\..\\..\\Examples\\SimpleChatMessages.xml -lc -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr Report.md -xr Report.xml"
+      "commandLineArgs": "-d Data -e -i ..\\..\\..\\..\\Examples\\SimpleChatMessages.xml -lc -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Report.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Report.xml\""
     }
   }
 }

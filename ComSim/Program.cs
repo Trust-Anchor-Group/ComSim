@@ -458,6 +458,10 @@ namespace ComSim
 				{
 					Console.Out.WriteLine("Generating Markdown report...");
 
+					string Folder = Path.GetDirectoryName(MarkdownOutputFileName);
+					if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
+						Directory.CreateDirectory(Folder);
+
 					using (StreamWriter Output = File.CreateText(MarkdownOutputFileName))
 					{
 						await Model.GenerateMarkdownReport(Output);
@@ -477,6 +481,10 @@ namespace ComSim
 						NewLineOnAttributes = false,
 						WriteEndDocumentOnClose = true
 					};
+
+					string Folder = Path.GetDirectoryName(XmlOutputFileName);
+					if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
+						Directory.CreateDirectory(Folder);
 
 					using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
 					{

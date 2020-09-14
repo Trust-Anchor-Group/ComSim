@@ -458,6 +458,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Action.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activities">
             <summary>
             Container for activities.
@@ -560,6 +567,12 @@
             <param name="Variables">Set of variables for the activity.</param>
             <param name="Start">Node to start execution with.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.ActivityNode">
             <summary>
             Abstract base class for activity nodes
@@ -612,6 +625,20 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.Indent(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Adds indentation to the current row.
+            </summary>
+            <param name="Output">Output.</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Argument">
             <summary>
@@ -719,6 +746,14 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>If embedded nodes are to be executed.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Condition.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Boolean)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="First">If the condition is the first condition.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Conditional">
             <summary>
             Conditional execution in an activity.
@@ -755,6 +790,13 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Conditional.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Delay">
             <summary>
@@ -798,6 +840,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Delay.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Finished">
             <summary>
             Terminates execution of activity.
@@ -828,6 +877,13 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Finished.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.FinishedException">
             <summary>
@@ -897,6 +953,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.GoTo.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IActivity">
             <summary>
             Interface for activities
@@ -951,6 +1014,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivityNode.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IConditionNode">
             <summary>
             Interface for condition nodes
@@ -963,6 +1033,14 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>If embedded nodes are to be executed.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IConditionNode.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Boolean)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="First">If the condition is the first condition.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Otherwise">
             <summary>
@@ -1009,6 +1087,14 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>If embedded nodes are to be executed.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Otherwise.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Boolean)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="First">If the condition is the first condition.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Parallel">
             <summary>
             Executes multiple threads in parallel.
@@ -1039,6 +1125,13 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Parallel.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Script">
             <summary>
@@ -1092,6 +1185,21 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.ExportPlantUml(System.String,System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Script">Script expression.</param>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Start">
             <summary>
             Represents the starting point of the activity.
@@ -1123,6 +1231,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Start.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Stop">
             <summary>
             Represents the stoping point of the activity.
@@ -1153,6 +1268,13 @@
             <param name="Model">Current model</param>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Stop.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Thread">
             <summary>
@@ -2462,6 +2584,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Duration">
             <summary>
             Duration value.
@@ -2503,6 +2632,20 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ExportPlantUml(Waher.Content.Duration,System.IO.StreamWriter)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Duration">Duration value.</param>
+            <param name="Output">Output node</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.IValue">
             <summary>
             Interface for values
@@ -2514,6 +2657,13 @@
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.IValue.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.IValueRecipient">
             <summary>
@@ -2567,6 +2717,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Script">
             <summary>
             Value defined by script.
@@ -2613,6 +2770,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.String">
             <summary>
             String value.
@@ -2653,6 +2817,13 @@
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Time">
             <summary>
@@ -2695,6 +2866,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Value">
             <summary>
             Abstract base class for values
@@ -2718,6 +2896,13 @@
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Value.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Variable">
             <summary>
@@ -2760,6 +2945,13 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Xml">
             <summary>
             XML value.
@@ -2800,6 +2992,13 @@
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
     </members>
 </doc>
