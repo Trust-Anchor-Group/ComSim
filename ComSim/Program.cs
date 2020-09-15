@@ -49,6 +49,12 @@ namespace ComSim
 	/// -enc ENCODING         Text encoding. Default=UTF-8
 	/// -mr FILENAME          Generates a Markdown Report file after simulation.
 	/// -xr FILENAME          Generates an XML report file after simulation.
+	/// -master RELNAME       Adds a Master file declaration to the top of markdown
+	///                       reports. The reference must be relative to the generated
+	///                       report file.
+	/// -css RELNAME          Adds a CSS file declaration to the top of markdown
+	///                       reports. The reference must be relative to the generated
+	///                       report file.
 	/// -?                    Displays command-line help.
 	/// </summary>
 	class Program
@@ -59,6 +65,8 @@ namespace ComSim
 			{
 				XmlDocument Model = null;
 				Encoding Encoding = Encoding.UTF8;
+				LinkedList<string> Master = new LinkedList<string>();
+				LinkedList<string> Css = new LinkedList<string>();
 				string ProgramDataFolder = null;
 				string SnifferFolder = null;
 				string LogFileName = null;
@@ -199,6 +207,20 @@ namespace ComSim
 								throw new Exception("Only one XML report file name allowed.");
 							break;
 
+						case "-master":
+							if (i >= c)
+								throw new Exception("Missing master file name.");
+
+							Master.AddLast(args[i++]);
+							break;
+
+						case "-css":
+							if (i >= c)
+								throw new Exception("Missing CSS file name.");
+
+							Css.AddLast(args[i++]);
+							break;
+
 						case "-?":
 							Help = true;
 							break;
@@ -236,6 +258,12 @@ namespace ComSim
 					Console.Out.WriteLine("-enc ENCODING         Text encoding. Default=UTF-8");
 					Console.Out.WriteLine("-mr FILENAME          Generates a Markdown Report file after simulation.");
 					Console.Out.WriteLine("-xr FILENAME          Generates an XML report file after simulation.");
+					Console.Out.WriteLine("-master RELNAME       Adds a Master file declaration to the top of markdown");
+					Console.Out.WriteLine("                      reports. The reference must be relative to the generated");
+					Console.Out.WriteLine("                      report file.");
+					Console.Out.WriteLine("-css RELNAME          Adds a CSS file declaration to the top of markdown");
+					Console.Out.WriteLine("                      reports. The reference must be relative to the generated");
+					Console.Out.WriteLine("                      report file.");
 					Console.Out.WriteLine("-?                    Displays command-line help.");
 					Console.Out.WriteLine();
 
@@ -402,7 +430,8 @@ namespace ComSim
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName, XmlOutputFileName).Result;
+					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName, 
+						XmlOutputFileName, Master, Css).Result;
 				}
 
 				if (Result)
@@ -431,7 +460,8 @@ namespace ComSim
 		}
 
 		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
-			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName)
+			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName,
+			IEnumerable<string> Master, IEnumerable<string> Css)
 		{
 			try
 			{
@@ -464,6 +494,18 @@ namespace ComSim
 
 					using (StreamWriter Output = File.CreateText(MarkdownOutputFileName))
 					{
+						foreach (string s in Master)
+						{
+							Output.Write("Master: ");
+							Output.WriteLine(s);
+						}
+
+						foreach (string s in Css)
+						{
+							Output.Write("CSS: ");
+							Output.WriteLine(s);
+						}
+
 						await Model.GenerateMarkdownReport(Output);
 					}
 				}

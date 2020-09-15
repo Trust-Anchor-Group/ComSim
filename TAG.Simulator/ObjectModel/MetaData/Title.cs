@@ -63,6 +63,8 @@ namespace TAG.Simulator.ObjectModel.MetaData
 			Output.WriteLine("Date: " + DateTime.Today.ToString("d"));
 			Output.WriteLine("Description: This document contains the results of executing a simulation.");
 			Output.WriteLine();
+			Output.WriteLine(new string('=', 80));
+			Output.WriteLine();
 			Output.WriteLine(this.title);
 			Output.WriteLine(new string('=', this.title.Length + 3));
 			Output.WriteLine();

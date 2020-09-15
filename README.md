@@ -74,6 +74,8 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 | `-enc ENCODING`         | Text encoding. Default=UTF-8 |
 | `-mr FILENAME`          | Generates a [Markdown](https://lab.tagroot.io/Markdown.md) Report file after simulation. |
 | `-xr FILENAME`          | Generates an XML report file after simulation. |
+| `-master RELNAME`       | Adds a Master file declaration to the top of markdown reports. The reference must be relative to the generated report file. |
+| `-css RELNAME`          | Adds a CSS file declaration to the top of markdown reports. The reference must be relative to the generated report file. |
 | `-?`                    | Displays command-line help. |
 
 ## Examples
