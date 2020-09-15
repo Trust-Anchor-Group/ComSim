@@ -393,17 +393,11 @@
             <param name="ErrorMessage">Error message.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.GenerateMarkdownReport(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.Model.ExportXml(System.Xml.XmlWriter)">
             <summary>
-            Generates a Markdown report.
+            Exports XML
             </summary>
-            <param name="Output">Markdown output.</param>
-        </member>
-        <member name="M:TAG.Simulator.Model.GenerateXmlReport(System.Xml.XmlWriter)">
-            <summary>
-            Generates an XML report.
-            </summary>
-            <param name="Output">XML output.</param>
+            <param name="Output">Output node</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
@@ -570,6 +564,12 @@
         <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExportMarkdown(System.IO.StreamWriter)">
             <summary>
             Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExportXml(System.Xml.XmlWriter)">
+            <summary>
+            Exports XML
             </summary>
             <param name="Output">Output node</param>
         </member>
@@ -2486,6 +2486,18 @@
             </summary>
             <param name="Method">Method to call.</param>
             <param name="DepthFirst">If children are iterated before parents.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports Markdown
+            </summary>
+            <param name="Output">Output node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.ExportXml(System.Xml.XmlWriter)">
+            <summary>
+            Exports XML
+            </summary>
+            <param name="Output">Output node</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Structure.Assemblies">
             <summary>

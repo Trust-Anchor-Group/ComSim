@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -71,6 +72,32 @@ namespace TAG.Simulator.ObjectModel
 
 			if (DepthFirst)
 				await Method(this);
+		}
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportMarkdown(StreamWriter Output)
+		{
+			if (!(this.children is null))
+			{
+				foreach (ISimulationNode Child in this.children)
+					await Child.ExportMarkdown(Output);
+			}
+		}
+
+		/// <summary>
+		/// Exports XML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportXml(XmlWriter Output)
+		{
+			if (!(this.children is null))
+			{
+				foreach (ISimulationNode Child in this.children)
+					await Child.ExportXml(Output);
+			}
 		}
 
 	}

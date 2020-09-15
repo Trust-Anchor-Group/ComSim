@@ -12,7 +12,7 @@ Features
 	[x] Title
 	[x] Description
 	[ ] Script
-	[ ] Section descriptions
+	[x] Section descriptions
 [ ] Activities
 	[x] Populations
 	[x] Execution

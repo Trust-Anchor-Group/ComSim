@@ -61,7 +61,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 			Output.WriteLine(this.description);
 			Output.WriteLine();
 
-			return Task.CompletedTask;
+			return base.ExportMarkdown(Output);
 		}
 
 		/// <summary>
@@ -72,7 +72,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		{
 			Output.WriteElementString("Description", this.description);
 
-			return Task.CompletedTask;
+			return base.ExportXml(Output);
 		}
 	}
 }

@@ -510,24 +510,15 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
-		/// Generates a Markdown report.
+		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Markdown output.</param>
-		public Task GenerateMarkdownReport(StreamWriter Output)
-		{
-			return this.ForEach((Node) => Node.ExportMarkdown(Output), false);
-		}
-
-		/// <summary>
-		/// Generates an XML report.
-		/// </summary>
-		/// <param name="Output">XML output.</param>
-		public async Task GenerateXmlReport(XmlWriter Output)
+		/// <param name="Output">Output node</param>
+		public override async Task ExportXml(XmlWriter Output)
 		{
 			Output.WriteStartDocument();
 			Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
 
-			await this.ForEach((Node) => Node.ExportXml(Output), false);
+			await base.ExportXml(Output);
 
 			Output.WriteEndElement();
 		}

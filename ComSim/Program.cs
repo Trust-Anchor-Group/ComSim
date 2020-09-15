@@ -506,7 +506,7 @@ namespace ComSim
 							Output.WriteLine(s);
 						}
 
-						await Model.GenerateMarkdownReport(Output);
+						await Model.ExportMarkdown(Output);
 					}
 				}
 
@@ -530,7 +530,7 @@ namespace ComSim
 
 					using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
 					{
-						await Model.GenerateXmlReport(Output);
+						await Model.ExportXml(Output);
 					}
 				}
 

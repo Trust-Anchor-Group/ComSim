@@ -113,33 +113,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("```");
 			Output.WriteLine();
 
-			return Task.CompletedTask;
+			return base.ExportMarkdown(Output);
 		}
 
 		/// <summary>
 		/// Exports XML
 		/// </summary>
 		/// <param name="Output">Output node</param>
-		public override Task ExportXml(XmlWriter Output)
+		public override async Task ExportXml(XmlWriter Output)
 		{
 			Output.WriteStartElement("Activities");
-			Output.WriteStartElement("TotalCounts");
-
-			foreach (ISimulationNode Node in this.Children)
-			{
-				if (Node is IActivity Activity)
-				{
-					Output.WriteStartElement("TotalCount");
-					Output.WriteAttributeString("activity", Activity.Id);
-					Output.WriteAttributeString("count", Activity.ExecutionCount.ToString());
-					Output.WriteEndElement();
-				}
-			}
-
+			await base.ExportXml(Output);
 			Output.WriteEndElement();
-			Output.WriteEndElement();
-
-			return base.ExportXml(Output);
 		}
 
 	}

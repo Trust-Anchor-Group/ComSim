@@ -69,7 +69,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 			Output.WriteLine(new string('=', this.title.Length + 3));
 			Output.WriteLine();
 
-			return Task.CompletedTask;
+			return base.ExportMarkdown(Output);
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 			Output.WriteElementString("Title", this.title);
 			Output.WriteElementString("DateTime", XML.Encode(DateTime.Now));
 
-			return Task.CompletedTask;
+			return base.ExportXml(Output);
 		}
 	}
 }

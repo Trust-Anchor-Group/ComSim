@@ -131,11 +131,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Exports PlantUML
 		/// </summary>
 		/// <param name="Output">Output node</param>
-		public override Task ExportMarkdown(StreamWriter Output)
+		public override async Task ExportMarkdown(StreamWriter Output)
 		{
 			Output.WriteLine(this.id);
 			Output.WriteLine(new string('-', this.id.Length + 3));
 			Output.WriteLine();
+
+			await base.ExportMarkdown(Output);
 
 			Output.WriteLine("```uml");
 			Output.WriteLine("@startuml");
@@ -146,8 +148,21 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("@enduml");
 			Output.WriteLine("```");
 			Output.WriteLine();
+		}
 
-			return base.ExportMarkdown(Output);
+		/// <summary>
+		/// Exports XML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportXml(XmlWriter Output)
+		{
+			Output.WriteStartElement("Activity");
+			Output.WriteAttributeString("id", this.id);
+			Output.WriteAttributeString("executionCount", this.executionCount.ToString());
+
+			await base.ExportXml(Output);
+
+			Output.WriteEndElement();
 		}
 
 	}
