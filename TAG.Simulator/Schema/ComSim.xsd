@@ -246,7 +246,7 @@
   <xs:group name="ActivityNodes">
     <xs:choice>
       <xs:element name="Delay" type="DurationActivityNode"/>
-      <xs:element name="Script" type="ExpressionActivityNode"/>
+      <xs:element name="Eval" type="ExpressionActivityNode"/>
       <xs:element name="Action" type="ActionActivityNode"/>
       <xs:element name="Conditional" type="ConditionalActivityNode"/>
       <xs:element name="GoTo" type="ReferenceActivityNode"/>

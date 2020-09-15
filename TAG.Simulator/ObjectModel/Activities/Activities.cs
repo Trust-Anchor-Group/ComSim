@@ -41,9 +41,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Output">Output node</param>
 		public override Task ExportMarkdown(StreamWriter Output)
 		{
-			StringBuilder IDs = new StringBuilder();
-			StringBuilder Counts = new StringBuilder();
-			bool First = true;
+			int MaxCount = 1;   // To avoid division by zero
 
 			Output.WriteLine("Activities");
 			Output.WriteLine("=============");
@@ -56,47 +54,64 @@ namespace TAG.Simulator.ObjectModel.Activities
 			{
 				if (Node is IActivity Activity)
 				{
+					if (Activity.ExecutionCount > MaxCount)
+						MaxCount = Activity.ExecutionCount;
+
 					Output.Write("| `");
 					Output.Write(Activity.Id);
 					Output.Write("` | ");
 					Output.Write(Activity.ExecutionCount.ToString());
 					Output.WriteLine(" |");
-
-					if (First)
-					{
-						IDs.Append("[");
-						Counts.Append("[");
-						First = false;
-					}
-					else
-					{
-						IDs.Append(",");
-						Counts.Append(",");
-					}
-
-					IDs.Append('"');
-					IDs.Append(Activity.Id);
-					IDs.Append('"');
-
-					Counts.Append(Activity.ExecutionCount.ToString());
 				}
 			}
 
 			Output.WriteLine("[Total activity counts][TotalActivityCounts]");
 
-			if (!(First))
-			{
-				IDs.Append(']');
-				Counts.Append(']');
+			Output.WriteLine();
+			Output.WriteLine("```layout: Total activity counts");
+			Output.WriteLine("<Layout2D xmlns=\"http://waher.se/Layout/Layout2D.xsd\"");
+			Output.WriteLine("          background=\"WhiteBackground\" pen=\"BlackPen\"");
+			Output.WriteLine("          font=\"WhiteText\" textColor=\"Black\">");
+			Output.WriteLine("  <SolidPen id=\"BlackPen\" color=\"Black\" width=\"1px\"/>");
+			Output.WriteLine("  <SolidBackground id=\"WhiteBackground\" color=\"WhiteSmoke\"/>");
+			Output.WriteLine("  <SolidBackground id=\"Bar\" color=\"{Alpha('Green',128)}\"/>");
+			Output.WriteLine("  <Font id=\"WhiteText\" name=\"Arial\" size=\"12pt\" color=\"White\"/>");
+			Output.WriteLine("  <Font id=\"BlackText\" name=\"Arial\" size=\"12pt\" color=\"Black\"/>");
+			Output.WriteLine("  <Grid columns=\"2\">");
 
-				Output.WriteLine();
-				Output.Write("{HorizontalBars(");
-				Output.Write(IDs.ToString());
-				Output.Write(',');
-				Output.Write(Counts.ToString());
-				Output.WriteLine(")}");
-				Output.WriteLine();
+			int HalfMaxCount = MaxCount / 2;
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is IActivity Activity)
+				{
+					Output.WriteLine("    <Cell>");
+					Output.WriteLine("      <Margins left=\"0.5em\" right=\"0.5em\">");
+					Output.Write("        <Label text=\"");
+					Output.Write(Activity.Id);
+					Output.WriteLine("\" x=\"100%\" y=\"50%\" halign=\"Right\" valign=\"Center\" font=\"BlackText\"/>");
+					Output.WriteLine("      </Margins>");
+					Output.WriteLine("    </Cell>");
+					Output.WriteLine("    <Cell>");
+					Output.WriteLine("      <Margins left=\"1mm\" top=\"1mm\" bottom=\"1mm\" right=\"1mm\">");
+					Output.Write("        <RoundedRectangle radiusX=\"3mm\" radiusY=\"3mm\" width=\"");
+					Output.Write((Activity.ExecutionCount * 100 + HalfMaxCount) / MaxCount);
+					Output.WriteLine("%\" height=\"1cm\" fill=\"Bar\">");
+					Output.WriteLine("          <Margins left=\"0.5em\" right=\"0.5em\">");
+					Output.Write("            <Label text=\"");
+					Output.Write(Activity.ExecutionCount.ToString());
+					Output.WriteLine("\" x=\"50%\" y=\"50%\" halign=\"Center\" valign=\"Center\"/>");
+					Output.WriteLine("          </Margins>");
+					Output.WriteLine("        </RoundedRectangle>");
+					Output.WriteLine("      </Margins>");
+					Output.WriteLine("    </Cell>");
+				}
 			}
+
+			Output.WriteLine("  </Grid>");
+			Output.WriteLine("</Layout2D>");
+			Output.WriteLine("```");
+			Output.WriteLine();
 
 			return Task.CompletedTask;
 		}

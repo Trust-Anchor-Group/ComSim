@@ -10,7 +10,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Executes script in an activity.
 	/// </summary>
-	public class Script : ActivityNode 
+	public class Eval : ActivityNode 
 	{
 		private string script;
 		private Expression expression;
@@ -19,7 +19,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Represents a delay in an activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Script(ISimulationNode Parent)
+		public Eval(ISimulationNode Parent)
 			: base(Parent)
 		{
 		}
@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Script string
 		/// </summary>
-		public string ScriptString => this.script;
+		public string Script => this.script;
 
 		/// <summary>
 		/// Parsed expression
@@ -37,7 +37,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Script";
+		public override string LocalName => "Eval";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -46,7 +46,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent)
 		{
-			return new Script(Parent);
+			return new Eval(Parent);
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Indentation">Number of tabs to indent.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation)
 		{
-			ExportPlantUml(this.script, Output, Indentation);
+			ExportPlantUml(this.script, Output, Indentation, true);
 		}
 
 		/// <summary>
@@ -95,7 +95,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Script">Script expression.</param>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation)
+		/// <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
+		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation, bool Delimiters)
 		{
 			bool First = true;
 
@@ -103,8 +104,12 @@ namespace TAG.Simulator.ObjectModel.Activities
 			{
 				if (First)
 				{
-					Indent(Output, Indentation);
-					Output.Write(':');
+					if (Delimiters)
+					{
+						Indent(Output, Indentation);
+						Output.Write(':');
+					}
+
 					First = false;
 				}
 				else
@@ -116,7 +121,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 				Output.Write(Row);
 			}
 
-			if (!First)
+			if (!First && Delimiters)
 				Output.WriteLine(";");
 		}
 	}

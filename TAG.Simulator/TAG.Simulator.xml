@@ -847,6 +847,74 @@
             <param name="Output">Output node</param>
             <param name="Indentation">Number of tabs to indent.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Eval">
+            <summary>
+            Executes script in an activity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Represents a delay in an activity.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Eval.Script">
+            <summary>
+            Script string
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Eval.Expression">
+            <summary>
+            Parsed expression
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Eval.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Eval.ParseChildren">
+            <summary>
+            If children are 
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.ExportPlantUml(System.String,System.IO.StreamWriter,System.Int32,System.Boolean)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Script">Script expression.</param>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Finished">
             <summary>
             Terminates execution of activity.
@@ -1130,73 +1198,6 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
-            <param name="Indentation">Number of tabs to indent.</param>
-        </member>
-        <member name="T:TAG.Simulator.ObjectModel.Activities.Script">
-            <summary>
-            Executes script in an activity.
-            </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.#ctor(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Represents a delay in an activity.
-            </summary>
-            <param name="Parent">Parent node</param>
-        </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.ScriptString">
-            <summary>
-            Script string
-            </summary>
-        </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.Expression">
-            <summary>
-            Parsed expression
-            </summary>
-        </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.LocalName">
-            <summary>
-            Local name of XML element defining contents of class.
-            </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.Create(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Creates a new instance of the node.
-            </summary>
-            <param name="Parent">Parent node.</param>
-            <returns>New instance</returns>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.FromXml(System.Xml.XmlElement)">
-            <summary>
-            Sets properties and attributes of class in accordance with XML definition.
-            </summary>
-            <param name="Definition">XML definition</param>
-        </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Script.ParseChildren">
-            <summary>
-            If children are 
-            </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
-            <summary>
-            Executes a node.
-            </summary>
-            <param name="Model">Current model</param>
-            <param name="Variables">Set of variables for the activity.</param>
-            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
-            <summary>
-            Exports PlantUML
-            </summary>
-            <param name="Output">Output node</param>
-            <param name="Indentation">Number of tabs to indent.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Script.ExportPlantUml(System.String,System.IO.StreamWriter,System.Int32)">
-            <summary>
-            Exports PlantUML
-            </summary>
-            <param name="Script">Script expression.</param>
             <param name="Output">Output node</param>
             <param name="Indentation">Number of tabs to indent.</param>
         </member>

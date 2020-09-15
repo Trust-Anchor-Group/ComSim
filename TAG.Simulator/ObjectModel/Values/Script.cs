@@ -77,7 +77,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Indentation">Number of tabs to indent.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation)
 		{
-			Activities.Script.ExportPlantUml(this.script, Output, Indentation);
+			Activities.Eval.ExportPlantUml(this.script, Output, Indentation, false);
 		}
 	}
 }

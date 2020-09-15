@@ -8,6 +8,11 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
+[x] Meta-data
+	[x] Title
+	[x] Description
+	[ ] Script
+	[ ] Section descriptions
 [ ] Activities
 	[x] Populations
 	[x] Execution
@@ -28,6 +33,7 @@ Features
 		[ ] Counters
 		[ ] Avg, stddev, var, min, max, mean, median
 		[ ] Errors, Exceptions (from Log)
+		[ ] Event type histogram over time
 	[ ] Data as XMLs
 	[ ] Report as Markdown
 		[ ] Distributions

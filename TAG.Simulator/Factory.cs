@@ -33,20 +33,17 @@ namespace TAG.Simulator
 					if (TI.IsAbstract)
 						continue;
 
-					try
-					{
-						ISimulationNode Node = (ISimulationNode)Activator.CreateInstance(T, Arguments);
-						nodeTypes[Node.Namespace + "#" + Node.LocalName] = Node;
+					ISimulationNode Node = (ISimulationNode)Activator.CreateInstance(T, Arguments);
+					string Key = Node.Namespace + "#" + Node.LocalName;
 
-						string s = Node.Namespace;
-						if (!schemas.ContainsKey(s))
-							schemas[s] = new KeyValuePair<string, Assembly>(Node.SchemaResource, TI.Assembly);
-					}
-					catch (Exception ex)
-					{
-						Log.Critical(ex);
-						continue;
-					}
+					if (nodeTypes.ContainsKey(Key))
+						throw new Exception("A class handling " + Key + " has already been registered.");
+					else
+						nodeTypes[Key] = Node;
+
+					string s = Node.Namespace;
+					if (!schemas.ContainsKey(s))
+						schemas[s] = new KeyValuePair<string, Assembly>(Node.SchemaResource, TI.Assembly);
 				}
 
 				initialized = true;
