@@ -17,8 +17,8 @@ Features
 	[x] Populations
 	[x] Execution
 	[ ] Activity node with external event conditions, or stochastic conditions
-	[ ] Counters
-	[ ] Stat activity node: Increments counters
+	[x] Counters
+	[x] Stat activity node: Increments counters
 	[ ]	Sensor data (local/remote)
 	[ ] Measurements
 	[ ] Performance counters
@@ -27,13 +27,15 @@ Features
 	[ ] Timing of, and between events/activities. (communication roundtrip)
 [ ] Simulation output
 	[ ] Statistics
-		[ ] Activities
-		[ ] Actions
-		[ ] Events
-		[ ] Counters
+		[x] Activities
+		[x] Actions
+		[x] Events
+		[x] Counters
+		[ ] Histograms
 		[ ] Avg, stddev, var, min, max, mean, median
 		[ ] Errors, Exceptions (from Log)
 		[ ] Event type histogram over time
+		[ ] Custom SQL
 	[ ] Data as XMLs
 	[ ] Report as Markdown
 		[ ] Distributions

@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using TAG.Simulator;
 using TAG.Simulator.Events;
+using TAG.Simulator.Statistics;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
 using Waher.Events;
@@ -430,7 +431,7 @@ namespace ComSim
 
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
-					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName, 
+					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
 						XmlOutputFileName, Master, Css).Result;
 				}
 
@@ -482,7 +483,18 @@ namespace ComSim
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;
 
-				bool Result = await Model.Run(Done);
+				bool Result;
+				EventStatistics EventStatistics = new EventStatistics();
+				Log.Register(EventStatistics);
+
+				try
+				{
+					Result = await Model.Run(Done);
+				}
+				finally
+				{
+					Log.Unregister(EventStatistics);
+				}
 
 				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
 				{
@@ -507,6 +519,7 @@ namespace ComSim
 						}
 
 						await Model.ExportMarkdown(Output);
+						EventStatistics.ExportMarkdown(Output);
 					}
 				}
 
@@ -530,7 +543,13 @@ namespace ComSim
 
 					using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
 					{
+						Output.WriteStartDocument();
+						Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
+
 						await Model.ExportXml(Output);
+						EventStatistics.ExportXml(Output);
+
+						Output.WriteEndElement();
 					}
 				}
 

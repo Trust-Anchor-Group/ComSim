@@ -393,6 +393,18 @@
             <param name="ErrorMessage">Error message.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
+        <member name="M:TAG.Simulator.Model.IncrementCounter(System.String)">
+            <summary>
+            Increments a counter
+            </summary>
+            <param name="CounterName">Counter name</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports Markdown
+            </summary>
+            <param name="Output">Output node</param>
+        </member>
         <member name="M:TAG.Simulator.Model.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
@@ -1109,6 +1121,55 @@
             <param name="Output">Output node</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Inc">
+            <summary>
+            Increments a counter.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.#ctor(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Increments a counter.
+            </summary>
+            <param name="Parent">Parent node</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Inc.Counter">
+            <summary>
+            Counter name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Inc.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.Create(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.Execute(TAG.Simulator.Model,Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Model">Current model</param>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Otherwise">
             <summary>
@@ -3012,6 +3073,179 @@
             </summary>
             <param name="Output">Output node</param>
             <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.Bucket">
+            <summary>
+            Statistical bucket
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.#ctor(System.String,System.Boolean)">
+            <summary>
+            Statistical bucket
+            </summary>
+            <param name="Id">ID of bucket.</param>
+            <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Id">
+            <summary>
+            Bucket ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Count">
+            <summary>
+            Counter
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Sum">
+            <summary>
+            Sum of samples.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Min">
+            <summary>
+            Smallest sample
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Max">
+            <summary>
+            Largest sample
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Mean">
+            <summary>
+            Mean (average) value of samples.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.Inc">
+            <summary>
+            Increments counter.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(System.Double)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Variance">
+            <summary>
+            Variance of samples
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.StdDev">
+            <summary>
+            (Biased) standard deviation of samples
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.Buckets">
+            <summary>
+            A collection of buckets
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor">
+            <summary>
+            A collection of buckets
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.Inc(System.String)">
+            <summary>
+            Increments a counter.
+            </summary>
+            <param name="Counter">Counter ID</param>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Buckets.Count">
+            <summary>
+            Number of counters
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.GetTable">
+            <summary>
+            Gets a count table of registered counters.
+            </summary>
+            <returns>Count table</returns>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.CountTable">
+            <summary>
+            Represents a simple count table
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.#ctor">
+            <summary>
+            Represents a simple count table
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.Add(System.String,System.Int64)">
+            <summary>
+            Adds a record to the table.
+            </summary>
+            <param name="Id">Count ID</param>
+            <param name="Count">Count</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.SetFgColor(System.String,System.String)">
+            <summary>
+            Sets the foreground color for a record.
+            </summary>
+            <param name="Id">Record ID</param>
+            <param name="Color">String representation of color</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.SetBgColor(System.String,System.String)">
+            <summary>
+            Sets the background color for a record.
+            </summary>
+            <param name="Id">Record ID</param>
+            <param name="Color">String representation of color</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.ExportTableMarkdown(System.IO.StreamWriter,System.String,System.String,System.String)">
+            <summary>
+            Exports data as a Markdown Table
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Header">Header string</param>
+            <param name="Title">Title string</param>
+            <param name="Id">Table ID</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.ExportTableGraph(System.IO.StreamWriter,System.String)">
+            <summary>
+            Exports data as a graph embedded in markdown
+            </summary>
+            <param name="Output">Markdown output</param>
+            <param name="Title">Title string</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.CountTable.ExportXml(System.Xml.XmlWriter,System.String,System.String)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
+            <param name="TableElement">XML Table element name.</param>
+            <param name="RowElement">XML Row element name.</param>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.EventStatistics">
+            <summary>
+            Basic event statistics
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.EventStatistics.#ctor">
+            <summary>
+            Basic event statistics
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.EventStatistics.Queue(Waher.Events.Event)">
+            <summary>
+            Processes an event.
+            </summary>
+            <param name="Event">Event</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.EventStatistics.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports accumulated statistics to markdown
+            </summary>
+            <param name="Output">Markdown output</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.EventStatistics.ExportXml(System.Xml.XmlWriter)">
+            <summary>
+            Exports accumulated statistics to XML
+            </summary>
+            <param name="Output">XML output</param>
         </member>
     </members>
 </doc>

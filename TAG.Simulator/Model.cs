@@ -14,6 +14,8 @@ using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Networking.Sniffers;
 using Waher.Runtime.Settings;
+using Waher.Events;
+using TAG.Simulator.Statistics;
 
 namespace TAG.Simulator
 {
@@ -46,6 +48,7 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
+		private readonly Buckets counters = new Buckets();
 		private TimeBase timeBase;
 		private Duration timeUnit;
 		private Duration timeCycle;
@@ -157,7 +160,7 @@ namespace TAG.Simulator
 			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
 			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
 			this.histogramBuckets = XML.Attribute(Definition, "histogramBuckets", 10);
-			
+
 			return base.FromXml(Definition);
 		}
 
@@ -483,7 +486,7 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
+			Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
 		/// <summary>
@@ -494,7 +497,7 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityFinishedCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
+			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
 		/// <summary>
@@ -506,7 +509,36 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, params KeyValuePair<string, object>[] Tags)
 		{
-			Waher.Events.Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
+			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
+		}
+
+		/// <summary>
+		/// Increments a counter
+		/// </summary>
+		/// <param name="CounterName">Counter name</param>
+		public void IncrementCounter(string CounterName)
+		{
+			this.counters.Inc(CounterName);
+		}
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportMarkdown(StreamWriter Output)
+		{
+			await base.ExportMarkdown(Output);
+
+			if (this.counters.Count > 0)
+			{
+				Output.WriteLine("Counters");
+				Output.WriteLine("===========");
+				Output.WriteLine();
+
+				CountTable Table = this.counters.GetTable();
+				Table.ExportTableMarkdown(Output, "Counter", "Counters", "Counters");
+				Table.ExportTableGraph(Output, "Counters");
+			}
 		}
 
 		/// <summary>
@@ -515,12 +547,14 @@ namespace TAG.Simulator
 		/// <param name="Output">Output node</param>
 		public override async Task ExportXml(XmlWriter Output)
 		{
-			Output.WriteStartDocument();
-			Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
-
 			await base.ExportXml(Output);
 
-			Output.WriteEndElement();
+			if (this.counters.Count > 0)
+			{
+				CountTable Table = this.counters.GetTable();
+				Table.ExportXml(Output, "Counters", "Counter");
+			}
 		}
+
 	}
 }
