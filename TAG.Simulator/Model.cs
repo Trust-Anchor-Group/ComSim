@@ -536,7 +536,7 @@ namespace TAG.Simulator
 				Output.WriteLine();
 
 				CountTable Table = this.counters.GetTable();
-				Table.ExportTableMarkdown(Output, "Counter", "Counters", "Counters");
+				//Table.ExportTableMarkdown(Output, "Counter", "Counters", "Counters");
 				Table.ExportTableGraph(Output, "Counters");
 			}
 		}

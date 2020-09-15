@@ -54,7 +54,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 					Table.Add(Activity.Id, Activity.ExecutionCount);
 			}
 
-			Table.ExportTableMarkdown(Output, "Activity", "Total activity counts", "TotalActivityCounts");
+			//Table.ExportTableMarkdown(Output, "Activity", "Total activity counts", "TotalActivityCounts");
 			Table.ExportTableGraph(Output, "Total activity counts");
 
 			return base.ExportMarkdown(Output);

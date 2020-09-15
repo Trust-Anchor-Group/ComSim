@@ -61,7 +61,7 @@ namespace TAG.Simulator.Statistics
 			Output.WriteLine("=========");
 			Output.WriteLine();
 
-			Table.ExportTableMarkdown(Output, "Type", "Total event counts", "TotalEventCounts");
+			//Table.ExportTableMarkdown(Output, "Type", "Total event counts", "TotalEventCounts");
 			Table.ExportTableGraph(Output, "Total event counts");
 		}
 
