@@ -17,8 +17,9 @@ namespace TAG.Simulator.ObjectModel
 		/// Abstract base class for simulation nodes
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public SimulationNodeChildren(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public SimulationNodeChildren(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -40,7 +41,7 @@ namespace TAG.Simulator.ObjectModel
 				foreach (XmlNode N in Definition.ChildNodes)
 				{
 					if (N is XmlElement E)
-						Children.Add(await Factory.Create(E, this));
+						Children.Add(await Factory.Create(E, this, this.Model ?? this as Model));
 				}
 
 				this.children = Children.ToArray();

@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.80.2" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="Waher.Content" Version="1.0.25" />
     <PackageReference Include="Waher.Content.Xml" Version="1.0.9" />

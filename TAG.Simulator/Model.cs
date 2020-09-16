@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Xml;
+using SkiaSharp;
 using TAG.Simulator.Events;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
@@ -48,8 +49,12 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
-		private readonly Buckets counters = new Buckets();
+		private EventStatistics eventStatistics;
+		private Buckets activityStartStatistics;
+		private Buckets activityTimeStatistics;
+		private Buckets counters;
 		private TimeBase timeBase;
+		private Duration bucketTime;
 		private Duration timeUnit;
 		private Duration timeCycle;
 		private Duration duration;
@@ -60,14 +65,14 @@ namespace TAG.Simulator
 		private double timeUnitMs;
 		private double timeCycleMs;
 		private double timeCycleUnits;
-		private int histogramBuckets;
 
 		/// <summary>
 		/// Root node of a simulation model
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Model(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Model(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -117,9 +122,9 @@ namespace TAG.Simulator
 		public Duration Duration => this.duration;
 
 		/// <summary>
-		/// Number of histogram buckets
+		/// Time to collect events, for statistical purposes.
 		/// </summary>
-		public int HistogramBuckets => this.histogramBuckets;
+		public Duration BucketTime => this.bucketTime;
 
 		/// <summary>
 		/// Folder used for sniffer output.
@@ -143,10 +148,11 @@ namespace TAG.Simulator
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Model(Parent);
+			return new Model(Parent, Model);
 		}
 
 		/// <summary>
@@ -159,7 +165,7 @@ namespace TAG.Simulator
 			this.timeUnit = XML.Attribute(Definition, "timeUnit", Duration.FromHours(1));
 			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
 			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
-			this.histogramBuckets = XML.Attribute(Definition, "histogramBuckets", 10);
+			this.bucketTime = XML.Attribute(Definition, "bucketTime", Duration.FromMinutes(1));
 
 			return base.FromXml(Definition);
 		}
@@ -167,8 +173,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
 			this.start = DateTime.Now;
 			this.end = this.start + this.duration;
@@ -177,7 +182,23 @@ namespace TAG.Simulator
 			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
-			return base.Initialize(Model);
+			this.counters = new Buckets(this.start, this.bucketTime);
+			this.activityStartStatistics = new Buckets(this.start, this.bucketTime);
+			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime);
+			this.eventStatistics = new EventStatistics(this.start, this.bucketTime);
+			Log.Register(this.eventStatistics);
+
+			return base.Initialize();
+		}
+
+		/// <summary>
+		/// Finalizes the node after simulation.
+		/// </summary>
+		public override Task Finalize()
+		{
+			Log.Unregister(this.eventStatistics);
+
+			return base.Finalize();
 		}
 
 		/// <summary>
@@ -314,7 +335,7 @@ namespace TAG.Simulator
 		public async Task<bool> Run(TaskCompletionSource<bool> Done)
 		{
 			Console.Out.WriteLine("Initializing...");
-			await this.ForEach(async (Node) => await Node.Initialize(this), true);
+			await this.ForEach(async (Node) => await Node.Initialize(), true);
 
 			try
 			{
@@ -486,6 +507,7 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
+			this.activityStartStatistics.Inc(ActivityId);
 			Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
@@ -494,9 +516,11 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
+		/// <param name="ElapsedTime">Elapsed time.</param>
 		/// <param name="Tags">Meta-data tags related to the event.</param>
-		public void IncActivityFinishedCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
+		public void IncActivityFinishedCount(string ActivityId, string SourceId, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
+			this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
 			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
@@ -529,6 +553,17 @@ namespace TAG.Simulator
 		{
 			await base.ExportMarkdown(Output);
 
+			if (this.activityStartStatistics.Count > 0)
+			{
+				Output.WriteLine("Activities");
+				Output.WriteLine("=============");
+				Output.WriteLine();
+
+				CountTable Table = this.activityStartStatistics.GetTable();
+				Table.ExportTableGraph(Output, "Total activity counts");
+			
+			}
+
 			if (this.counters.Count > 0)
 			{
 				Output.WriteLine("Counters");
@@ -536,9 +571,10 @@ namespace TAG.Simulator
 				Output.WriteLine();
 
 				CountTable Table = this.counters.GetTable();
-				//Table.ExportTableMarkdown(Output, "Counter", "Counters", "Counters");
 				Table.ExportTableGraph(Output, "Counters");
 			}
+
+			this.eventStatistics.ExportMarkdown(Output);
 		}
 
 		/// <summary>
@@ -549,11 +585,42 @@ namespace TAG.Simulator
 		{
 			await base.ExportXml(Output);
 
+			if (this.activityStartStatistics.Count > 0)
+			{
+				CountTable Table = this.activityStartStatistics.GetTable();
+				Table.ExportXml(Output, "ActivityStarts", "ActivityStart");
+			}
+
+			if (this.activityTimeStatistics.Count > 0)
+			{
+				CountTable Table = this.activityTimeStatistics.GetTable();
+				Table.ExportXml(Output, "ActivityTimes", "ActivityTime");
+			}
+
 			if (this.counters.Count > 0)
 			{
 				CountTable Table = this.counters.GetTable();
 				Table.ExportXml(Output, "Counters", "Counter");
 			}
+
+			this.eventStatistics.ExportXml(Output);
+		}
+
+		/// <summary>
+		/// Creates a palette for graphs.
+		/// </summary>
+		/// <param name="N">Number of colors in palette.</param>
+		/// <returns>Palette</returns>
+		public static SKColor[] CreatePalette(int N)
+		{
+			SKColor[] Result = new SKColor[N];
+			double d = 360.0 / Math.Max(N, 6);
+			int i;
+
+			for (i = 0; i < N; i++)
+				Result[i] = SKColor.FromHsl((float)(d*i + 145), 100, 50);
+
+			return Result;
 		}
 
 	}

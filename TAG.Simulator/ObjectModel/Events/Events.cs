@@ -13,8 +13,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Container for events.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Events(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Events(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -27,10 +28,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Events(Parent);
+			return new Events(Parent, Model);
 		}
 	}
 }

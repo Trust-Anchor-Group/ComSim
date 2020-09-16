@@ -21,8 +21,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Abstract base class for activity nodes
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public ActivityNode(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public ActivityNode(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -45,28 +46,26 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
 			if (this.Parent is IActivity Activity)
-				Activity.Register(Model, this);
+				Activity.Register(this);
 			else if (this.Parent is IActivityNode ActivityNode)
-				ActivityNode.Register(Model, this);
+				ActivityNode.Register(this);
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>
 		/// Registers a child activity node.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
 		/// <param name="Node">Activity node.</param>
-		public void Register(Model Model, IActivityNode Node)
+		public void Register(IActivityNode Node)
 		{
 			if (this.activityNodes is null)
 				this.activityNodes = new LinkedList<IActivityNode>();
 
-			Model.Register(this.activityNodes.AddLast(Node));
+			this.Model.Register(this.activityNodes.AddLast(Node));
 			this.count++;
 		}
 
@@ -83,10 +82,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Executes a node.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public abstract Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables);
+		public abstract Task<LinkedListNode<IActivityNode>> Execute(Variables Variables);
 
 		/// <summary>
 		/// Adds indentation to the current row.

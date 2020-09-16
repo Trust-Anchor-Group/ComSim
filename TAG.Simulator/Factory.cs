@@ -25,7 +25,7 @@ namespace TAG.Simulator
 		{
 			if (!initialized)
 			{
-				object[] Arguments = new object[] { null };
+				object[] Arguments = new object[] { null, null };
 
 				foreach (Type T in Types.GetTypesImplementingInterface(typeof(ISimulationNode)))
 				{
@@ -66,8 +66,9 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="Definition">XML definition.</param>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>Created simulation object</returns>
-		public static async Task<ISimulationNode> Create(XmlElement Definition, ISimulationNode Parent)
+		public static async Task<ISimulationNode> Create(XmlElement Definition, ISimulationNode Parent, Model Model)
 		{
 			string Key;
 
@@ -78,7 +79,7 @@ namespace TAG.Simulator
 			if (!nodeTypes.TryGetValue(Key, out ISimulationNode Result))
 				throw new Exception("Unable to instantiate objects of type " + Definition.NamespaceURI + "#" + Definition.LocalName);
 
-			Result = Result.Create(Parent);
+			Result = Result.Create(Parent, Model);
 			await Result.FromXml(Definition);
 
 			return Result;

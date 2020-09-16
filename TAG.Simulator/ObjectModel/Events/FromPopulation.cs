@@ -18,8 +18,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// References a specific population of actors.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public FromPopulation(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public FromPopulation(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -42,10 +43,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new FromPopulation(Parent);
+			return new FromPopulation(Parent, Model);
 		}
 
 		/// <summary>
@@ -61,16 +63,15 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			if (!Model.TryGetActor(this.actorId, out this.actor))
+			if (!this.Model.TryGetActor(this.actorId, out this.actor))
 				throw new Exception("Actor not found: " + this.actorId);
 
 			if (this.Parent is IActors Actors)
 				Actors.Register(this.actor);
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 	}

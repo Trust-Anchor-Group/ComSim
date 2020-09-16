@@ -12,16 +12,14 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Prepares <paramref name="Variables"/> for the execution of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		void Prepare(Model Model, Variables Variables, List<KeyValuePair<string, object>> Tags);
+		void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags);
 
 		/// <summary>
 		/// Releases resources at the end of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
-		void Release(Model Model, Variables Variables);
+		void Release(Variables Variables);
 	}
 }

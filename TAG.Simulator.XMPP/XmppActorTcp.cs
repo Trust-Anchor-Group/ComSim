@@ -12,8 +12,9 @@ namespace TAG.Simulator.XMPP
 		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public XmppActorTcp(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public XmppActorTcp(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -21,10 +22,11 @@ namespace TAG.Simulator.XMPP
 		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public XmppActorTcp(ISimulationNode Parent, int InstanceIndex, string InstanceId)
-			: base(Parent, InstanceIndex, InstanceId)
+		public XmppActorTcp(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
 
@@ -37,10 +39,11 @@ namespace TAG.Simulator.XMPP
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new XmppActorTcp(Parent);
+			return new XmppActorTcp(Parent, Model);
 		}
 
 		/// <summary>
@@ -53,7 +56,7 @@ namespace TAG.Simulator.XMPP
 		/// <returns>Actor instance.</returns>
 		protected override XmppActor CreateInstanceObject(int InstanceIndex, string InstanceId)
 		{
-			return new XmppActorTcp(this, InstanceIndex, InstanceId);
+			return new XmppActorTcp(this, this.Model, InstanceIndex, InstanceId);
 		}
 	}
 }

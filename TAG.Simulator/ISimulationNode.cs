@@ -54,8 +54,9 @@ namespace TAG.Simulator
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model owning the node.</param>
 		/// <returns>New instance</returns>
-		ISimulationNode Create(ISimulationNode Parent);
+		ISimulationNode Create(ISimulationNode Parent, Model Model);
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
@@ -73,8 +74,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		Task Initialize(Model Model);
+		Task Initialize();
 
 		/// <summary>
 		/// Starts the node.

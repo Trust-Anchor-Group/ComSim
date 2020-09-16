@@ -24,8 +24,9 @@ namespace TAG.Simulator.XMPP
 		/// Abstract base class for XMPP actors with custom endpoint.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public XmppActorEndpoint(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public XmppActorEndpoint(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -33,10 +34,11 @@ namespace TAG.Simulator.XMPP
 		/// Abstract base class for XMPP actors with custom endpoint.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public XmppActorEndpoint(ISimulationNode Parent, int InstanceIndex, string InstanceId)
-			: base(Parent, InstanceIndex, InstanceId)
+		public XmppActorEndpoint(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
 
@@ -57,10 +59,9 @@ namespace TAG.Simulator.XMPP
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override async Task Initialize(Model Model)
+		public override async Task Initialize()
 		{
-			await base.Initialize(Model);
+			await base.Initialize();
 
 			if (string.IsNullOrEmpty(this.endpoint))
 			{

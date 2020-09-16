@@ -16,8 +16,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Container for activities.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Activities(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Activities(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -30,46 +31,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Activities(Parent);
+			return new Activities(Parent, Model);
 		}
-
-		/// <summary>
-		/// Exports Markdown
-		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override Task ExportMarkdown(StreamWriter Output)
-		{
-			CountTable Table = new CountTable();
-
-			Output.WriteLine("Activities");
-			Output.WriteLine("=============");
-			Output.WriteLine();
-
-			foreach (ISimulationNode Node in this.Children)
-			{
-				if (Node is IActivity Activity)
-					Table.Add(Activity.Id, Activity.ExecutionCount);
-			}
-
-			//Table.ExportTableMarkdown(Output, "Activity", "Total activity counts", "TotalActivityCounts");
-			Table.ExportTableGraph(Output, "Total activity counts");
-
-			return base.ExportMarkdown(Output);
-		}
-
-		/// <summary>
-		/// Exports XML
-		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override async Task ExportXml(XmlWriter Output)
-		{
-			Output.WriteStartElement("Activities");
-			await base.ExportXml(Output);
-			Output.WriteEndElement();
-		}
-
 	}
 }

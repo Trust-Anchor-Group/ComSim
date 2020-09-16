@@ -12,10 +12,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// If the node condition is true.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
-		bool IsTrue(Model Model, Variables Variables);
+		bool IsTrue(Variables Variables);
 
 		/// <summary>
 		/// Exports PlantUML

@@ -17,8 +17,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// String value.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public String(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public String(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -36,10 +37,11 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new String(Parent);
+			return new String(Parent, Model);
 		}
 
 		/// <summary>

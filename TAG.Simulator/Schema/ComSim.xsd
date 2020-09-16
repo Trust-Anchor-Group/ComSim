@@ -70,10 +70,10 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attribute name="bucketTime" type="xs:duration" use="optional" default="PT1M"/>
       <xs:attribute name="timeUnit" type="xs:duration" use="optional" default="PT1H"/>
       <xs:attribute name="timeCycle" type="xs:duration" use="optional" default="P1D"/>
       <xs:attribute name="duration" type="xs:duration" use="required"/>
-      <xs:attribute name="histogramBuckets" type="xs:positiveInteger" use="optional" default="10"/>
     </xs:complexType>
   </xs:element>
 

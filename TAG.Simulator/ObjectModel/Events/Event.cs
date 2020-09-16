@@ -15,7 +15,6 @@ namespace TAG.Simulator.ObjectModel.Events
 	public abstract class Event : SimulationNodeChildren, IEvent
 	{
 		private LinkedList<IEventPreparation> preparationNodes = null;
-		private Model model;
 		private IActivity activity;
 		private string activityId;
 		private string id;
@@ -24,8 +23,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Abstract base class for events
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Event(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Event(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -59,13 +59,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			this.model = Model;
-			this.model.Register(this);
+			this.Model.Register(this);
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>
@@ -73,7 +71,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.model.TryGetActivity(this.activityId, out this.activity))
+			if (!this.Model.TryGetActivity(this.activityId, out this.activity))
 				throw new Exception("Activity not found: " + this.activityId);
 
 			return base.Start();
@@ -106,23 +104,24 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (!(this.preparationNodes is null))
 				{
 					foreach (IEventPreparation Node in this.preparationNodes)
-						Node.Prepare(this.model, Variables, Tags);
+						Node.Prepare(Variables, Tags);
 				}
 
 				Tags2 = Tags.ToArray();
 
 				try
 				{
-					this.model.IncActivityStartCount(this.activityId, this.id, Tags2);
-					await this.activity.ExecuteTask(this.model, Variables);
-					this.model.IncActivityFinishedCount(this.activityId, this.id, Tags2);
+					DateTime Start = DateTime.Now;
+					this.Model.IncActivityStartCount(this.activityId, this.id, Tags2);
+					await this.activity.ExecuteTask(Variables);
+					this.Model.IncActivityFinishedCount(this.activityId, this.id, DateTime.Now - Start, Tags2);
 				}
 				finally
 				{
 					if (!(this.preparationNodes is null))
 					{
 						foreach (IEventPreparation Node in this.preparationNodes)
-							Node.Release(this.model, Variables);
+							Node.Release(Variables);
 					}
 				}
 			}
@@ -131,7 +130,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (Tags2 is null)
 					Tags2 = new KeyValuePair<string, object>[0];
 
-				this.model.IncActivityErrorCount(this.activityId, this.id, ex.Message, Tags2);
+				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, Tags2);
 			}
 		}
 

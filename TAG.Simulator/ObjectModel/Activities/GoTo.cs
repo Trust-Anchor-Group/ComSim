@@ -13,7 +13,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public class GoTo : ActivityNode 
 	{
-		private Model model;
 		private LinkedListNode<IActivityNode> node;
 		private string reference;
 
@@ -21,8 +20,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Jumps to another node in the activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public GoTo(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public GoTo(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -45,10 +45,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new GoTo(Parent);
+			return new GoTo(Parent, Model);
 		}
 
 		/// <summary>
@@ -63,22 +64,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// Initialized the node before simulation.
-		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
-		{
-			this.model = Model;
-
-			return base.Initialize(Model);
-		}
-
-		/// <summary>
 		/// Starts the node.
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.model.TryGetActivityNode(this.reference, out this.node))
+			if (!this.Model.TryGetActivityNode(this.reference, out this.node))
 				throw new Exception("Activity node not found: " + this.reference);
 
 			return base.Start();
@@ -87,10 +77,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Executes a node.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			return Task.FromResult<LinkedListNode<IActivityNode>>(this.node);
 		}

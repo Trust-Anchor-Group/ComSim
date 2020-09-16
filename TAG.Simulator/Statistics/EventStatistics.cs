@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Content;
 using Waher.Events;
 
 namespace TAG.Simulator.Statistics
@@ -11,21 +12,31 @@ namespace TAG.Simulator.Statistics
 	/// </summary>
 	public class EventStatistics : EventSink
 	{
-		private readonly Bucket bucketDebug = new Bucket("Debug", false);
-		private readonly Bucket bucketInformational = new Bucket("Informational", false);
-		private readonly Bucket bucketNotice = new Bucket("Notice", false);
-		private readonly Bucket bucketWarning = new Bucket("Warning", false);
-		private readonly Bucket bucketError = new Bucket("Error", false);
-		private readonly Bucket bucketCritical = new Bucket("Critical", false);
-		private readonly Bucket bucketAlert = new Bucket("Alert", false);
-		private readonly Bucket bucketEmergency = new Bucket("Emergency", false);
+		private readonly Bucket bucketDebug;
+		private readonly Bucket bucketInformational;
+		private readonly Bucket bucketNotice;
+		private readonly Bucket bucketWarning;
+		private readonly Bucket bucketError;
+		private readonly Bucket bucketCritical;
+		private readonly Bucket bucketAlert;
+		private readonly Bucket bucketEmergency;
 
 		/// <summary>
 		/// Basic event statistics
 		/// </summary>
-		public EventStatistics()
+		/// <param name="StartTime">Starting time</param>
+		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+		public EventStatistics(DateTime StartTime, Duration BucketTime)
 			: base("Event Statistics")
 		{
+			this.bucketDebug = new Bucket("Debug", false, StartTime, BucketTime);
+			this.bucketInformational = new Bucket("Informational", false, StartTime, BucketTime);
+			this.bucketNotice = new Bucket("Notice", false, StartTime, BucketTime);
+			this.bucketWarning = new Bucket("Warning", false, StartTime, BucketTime);
+			this.bucketError = new Bucket("Error", false, StartTime, BucketTime);
+			this.bucketCritical = new Bucket("Critical", false, StartTime, BucketTime);
+			this.bucketAlert = new Bucket("Alert", false, StartTime, BucketTime);
+			this.bucketEmergency = new Bucket("Emergency", false, StartTime, BucketTime);
 		}
 
 		/// <summary>

@@ -14,21 +14,21 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// Abstract base class for values
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Value(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Value(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
 			if (this.Parent is IValueRecipient Recipient)
 				Recipient.Register(this);
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>

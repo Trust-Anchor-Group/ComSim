@@ -18,8 +18,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// Time value.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Time(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Time(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -37,10 +38,11 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Time(Parent);
+			return new Time(Parent, Model);
 		}
 
 		/// <summary>

@@ -10,7 +10,6 @@ namespace TAG.Simulator.ObjectModel.Distributions
 	/// </summary>
 	public abstract class Distribution : SimulationNode, IDistribution
 	{
-		private Model model;
 		private string id;
 		private double n;
 		private double timeCycleUnits;
@@ -19,8 +18,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Abstract base class for distributions
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Distribution(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Distribution(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -33,11 +33,6 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Intensity/Frequency/Factor
 		/// </summary>
 		public double N => this.n;
-
-		/// <summary>
-		/// Model hosting the distribution
-		/// </summary>
-		public Model Model => this.model;
 
 		/// <summary>
 		/// Time cycle, in number of <see cref="Model.TimeUnit"/>.
@@ -59,14 +54,12 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			this.model = Model;
-			this.model.Register(this);
-			this.timeCycleUnits = Model.TimeCycleUnits;
+			this.Model.Register(this);
+			this.timeCycleUnits = this.Model.TimeCycleUnits;
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>
@@ -84,7 +77,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				p = this.GetCumulativeProbability(t2, NrCycles) - this.GetCumulativeProbability(t1, NrCycles);
 			else
 			{
-				p = this.GetCumulativeProbability(this.model.TimeCycleUnits, NrCycles - 1) - this.GetCumulativeProbability(t1, NrCycles - 1);
+				p = this.GetCumulativeProbability(this.Model.TimeCycleUnits, NrCycles - 1) - this.GetCumulativeProbability(t1, NrCycles - 1);
 				p += this.GetCumulativeProbability(t2, NrCycles) - this.GetCumulativeProbability(0, NrCycles);
 			}
 
@@ -97,7 +90,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 			if (Nr > 0)
 				p -= Nr;
 
-			if (p > 0 && this.model.GetRandomDouble() <= p)
+			if (p > 0 && this.Model.GetRandomDouble() <= p)
 				Nr++;
 
 			return Nr;

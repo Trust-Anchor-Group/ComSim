@@ -23,8 +23,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Represents an action on an actor.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Action(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Action(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -47,10 +48,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Action(Parent);
+			return new Action(Parent, Model);
 		}
 
 		/// <summary>
@@ -68,8 +70,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
 			List<Argument> Arguments = new List<Argument>();
 			List<string> Names = new List<string>();
@@ -86,16 +87,15 @@ namespace TAG.Simulator.ObjectModel.Activities
 			this.arguments = Arguments.ToArray();
 			this.argumentNames = Names.ToArray();
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>
 		/// Executes a node.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override async Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			if (!Variables.TryGetVariable(this.actor, out Variable v))
 				throw new Exception("Actor not found: " + this.actor);

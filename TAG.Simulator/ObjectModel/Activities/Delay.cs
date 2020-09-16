@@ -20,8 +20,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Represents a delay in an activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Delay(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Delay(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -39,10 +40,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Delay(Parent);
+			return new Delay(Parent, Model);
 		}
 
 		/// <summary>
@@ -59,10 +61,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Executes a node.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override async Task<LinkedListNode<IActivityNode>> Execute(Model Model, Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			DateTime Now = DateTime.Now;
 			DateTime TP = Now + this.duration;
@@ -84,7 +85,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Indent(Output, Indentation);
 			Output.Write(":Delay(");
 
-			Values.Duration.ExportPlantUml(this.duration, Output);
+			Values.Duration.ExportText(this.duration, Output);
 
 			Output.WriteLine(");");
 		}

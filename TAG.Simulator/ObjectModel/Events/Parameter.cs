@@ -17,8 +17,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Sets a variable to the value of an event parameter.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Parameter(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Parameter(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -41,10 +42,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Parameter(Parent);
+			return new Parameter(Parent, Model);
 		}
 
 		/// <summary>
@@ -62,8 +64,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
 			(this.Parent as ExternalEvent)?.Register(this);
 			return Task.CompletedTask;

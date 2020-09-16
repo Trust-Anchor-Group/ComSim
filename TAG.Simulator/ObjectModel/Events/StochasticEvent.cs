@@ -19,8 +19,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Stochastic Event
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public StochasticEvent(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public StochasticEvent(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -43,10 +44,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new StochasticEvent(Parent);
+			return new StochasticEvent(Parent, Model);
 		}
 
 		/// <summary>
@@ -63,13 +65,12 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			if (!Model.TryGetDistribution(this.distributionId, out this.distribution))
+			if (!this.Model.TryGetDistribution(this.distributionId, out this.distribution))
 				throw new Exception("Distribution not found: " + this.distributionId);
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>

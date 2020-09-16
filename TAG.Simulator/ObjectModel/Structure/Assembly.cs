@@ -16,8 +16,9 @@ namespace TAG.Simulator.ObjectModel.Structure
 		/// Assembly reference.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Assembly(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Assembly(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -35,10 +36,11 @@ namespace TAG.Simulator.ObjectModel.Structure
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Assembly(Parent);
+			return new Assembly(Parent, Model);
 		}
 
 		/// <summary>

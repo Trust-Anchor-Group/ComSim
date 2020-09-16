@@ -477,24 +477,13 @@ namespace ComSim
 				await Types.StartAllModules(60000);
 
 				Console.Out.WriteLine("Running simulation...");
-				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null);
+				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null, null);
 
 				Model.SnifferFolder = SnifferFolder;
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;
 
-				bool Result;
-				EventStatistics EventStatistics = new EventStatistics();
-				Log.Register(EventStatistics);
-
-				try
-				{
-					Result = await Model.Run(Done);
-				}
-				finally
-				{
-					Log.Unregister(EventStatistics);
-				}
+				bool Result = await Model.Run(Done);
 
 				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
 				{
@@ -519,7 +508,6 @@ namespace ComSim
 						}
 
 						await Model.ExportMarkdown(Output);
-						EventStatistics.ExportMarkdown(Output);
 					}
 				}
 
@@ -547,7 +535,6 @@ namespace ComSim
 						Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
 
 						await Model.ExportXml(Output);
-						EventStatistics.ExportXml(Output);
 
 						Output.WriteEndElement();
 					}

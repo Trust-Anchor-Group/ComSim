@@ -15,8 +15,9 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Container for actors.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Actors(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Actors(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -29,10 +30,11 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Actors(Parent);
+			return new Actors(Parent, Model);
 		}
 
 		/// <summary>

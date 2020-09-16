@@ -20,8 +20,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Sets a variable value when an event is triggered.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public SetVariable(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public SetVariable(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -39,10 +40,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new SetVariable(Parent);
+			return new SetVariable(Parent, Model);
 		}
 
 		/// <summary>
@@ -71,10 +73,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Prepares <paramref name="Variables"/> for the execution of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public override void Prepare(Model Model, Variables Variables, List<KeyValuePair<string, object>> Tags)
+		public override void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
 			Variables[this.name] = this.value?.Evaluate(Variables);
 		}
@@ -82,9 +83,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Releases resources at the end of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
-		public override void Release(Model Model, Variables Variables)
+		public override void Release(Variables Variables)
 		{
 			Variables.Remove(this.name);
 		}

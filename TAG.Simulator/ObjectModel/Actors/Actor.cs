@@ -24,8 +24,9 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Abstract base class for actors
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Actor(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Actor(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -33,10 +34,11 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Abstract base class for actors
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public Actor(ISimulationNode Parent, int InstanceIndex, string InstanceId)
-			: base(Parent)
+		public Actor(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model)
 		{
 			this.instanceIndex = InstanceIndex;
 			this.instanceId = InstanceId;
@@ -77,11 +79,10 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override async Task Initialize(Model Model)
+		public override async Task Initialize()
 		{
-			await base.Initialize(Model);
-			Model.Register(this);
+			await base.Initialize();
+			this.Model.Register(this);
 
 			if (this.Parent is IActors Actors)
 				Actors.Register(this);

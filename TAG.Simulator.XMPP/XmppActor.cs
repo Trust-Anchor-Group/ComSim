@@ -19,7 +19,6 @@ namespace TAG.Simulator.XMPP
 	/// </summary>
 	public abstract class XmppActor : Actor
 	{
-		private Model model;
 		private XmppClient client;
 		private ISniffer sniffer;
 		private AccountCredentials credentials;
@@ -46,8 +45,9 @@ namespace TAG.Simulator.XMPP
 		/// Abstract base class for XMPP actors.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public XmppActor(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public XmppActor(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -55,10 +55,11 @@ namespace TAG.Simulator.XMPP
 		/// Abstract base class for XMPP actors.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public XmppActor(ISimulationNode Parent, int InstanceIndex, string InstanceId)
-			: base(Parent, InstanceIndex, InstanceId)
+		public XmppActor(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
 
@@ -124,11 +125,8 @@ namespace TAG.Simulator.XMPP
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override async Task Initialize(Model Model)
+		public override async Task Initialize()
 		{
-			this.model = Model;
-
 			if (this.port.HasValue)
 				this.host = this.domain;
 			else
@@ -149,7 +147,7 @@ namespace TAG.Simulator.XMPP
 				}
 			}
 
-			await base.Initialize(Model);
+			await base.Initialize();
 		}
 
 		/// <summary>
@@ -164,7 +162,6 @@ namespace TAG.Simulator.XMPP
 		{
 			XmppActor Result = this.CreateInstanceObject(InstanceIndex, InstanceId);
 
-			Result.model = this.model;
 			Result.domain = this.domain;
 			Result.host = this.host;
 			Result.port = this.port;
@@ -201,7 +198,7 @@ namespace TAG.Simulator.XMPP
 		{
 			this.xmppCredentials = await this.GetInstanceCredentials();
 
-			this.sniffer = this.model.GetSniffer(this.userName);
+			this.sniffer = this.Model.GetSniffer(this.userName);
 
 			if (this.sniffer is null)
 				this.client = new XmppClient(this.xmppCredentials, "en", typeof(XmppActor).GetTypeInfo().Assembly);
@@ -235,7 +232,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnRosterItemUpdated(object Sender, RosterItem Item)
 		{
-			this.model?.ExternalEvent(this, "RosterItemUpdated",
+			this.Model.ExternalEvent(this, "RosterItemUpdated",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -244,7 +241,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnRosterItemRemoved(object Sender, RosterItem Item)
 		{
-			this.model?.ExternalEvent(this, "RosterItemRemoved",
+			this.Model.ExternalEvent(this, "RosterItemRemoved",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -253,7 +250,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnRosterItemAdded(object Sender, RosterItem Item)
 		{
-			this.model?.ExternalEvent(this, "RosterItemAdded",
+			this.Model.ExternalEvent(this, "RosterItemAdded",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
 			
@@ -262,7 +259,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnPresenceSubscribe(object Sender, PresenceEventArgs e)
 		{
-			if (this.model is null || !this.model.ExternalEvent(this, "PresenceSubscribe",
+			if (!this.Model.ExternalEvent(this, "PresenceSubscribe",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client)))
 			{
@@ -274,7 +271,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnPresence(object Sender, PresenceEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "Presence",
+			this.Model.ExternalEvent(this, "Presence",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -283,7 +280,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnNormalMessage(object Sender, MessageEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "NormalMessage",
+			this.Model.ExternalEvent(this, "NormalMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -292,7 +289,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnHeadlineMessage(object Sender, MessageEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "HeadlineMessage",
+			this.Model.ExternalEvent(this, "HeadlineMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -301,7 +298,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnGroupChatMessage(object Sender, MessageEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "GroupChatMessage",
+			this.Model.ExternalEvent(this, "GroupChatMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -310,7 +307,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnErrorMessage(object Sender, MessageEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "ErrorMessage",
+			this.Model.ExternalEvent(this, "ErrorMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -319,7 +316,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnError(object Sender, Exception Exception)
 		{
-			this.model?.ExternalEvent(this, "Error",
+			this.Model.ExternalEvent(this, "Error",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -328,7 +325,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnConnectionError(object Sender, Exception Exception)
 		{
-			this.model?.ExternalEvent(this, "ConnectionError",
+			this.Model.ExternalEvent(this, "ConnectionError",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -337,7 +334,7 @@ namespace TAG.Simulator.XMPP
 
 		private Task Client_OnChatMessage(object Sender, MessageEventArgs e)
 		{
-			this.model?.ExternalEvent(this, "ChatMessage",
+			this.Model.ExternalEvent(this, "ChatMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -374,7 +371,7 @@ namespace TAG.Simulator.XMPP
 					break;
 			}
 
-			this.model?.ExternalEvent(this, "OnStateChanged",
+			this.Model.ExternalEvent(this, "OnStateChanged",
 				new KeyValuePair<string, object>("NewState", NewState),
 				new KeyValuePair<string, object>("Client", this.client));
 
@@ -446,9 +443,9 @@ namespace TAG.Simulator.XMPP
 			if (this.credentials is null)
 			{
 				Result.AllowRegistration = true;
-				Result.FormSignatureKey = await this.model.GetKey(this.apiKey);
-				Result.FormSignatureSecret = await this.model.GetKey(this.secret);
-				Result.Password = Convert.ToBase64String(this.model.GetRandomBytes(32));
+				Result.FormSignatureKey = await this.Model.GetKey(this.apiKey);
+				Result.FormSignatureSecret = await this.Model.GetKey(this.secret);
+				Result.Password = Convert.ToBase64String(this.Model.GetRandomBytes(32));
 			}
 			else
 			{

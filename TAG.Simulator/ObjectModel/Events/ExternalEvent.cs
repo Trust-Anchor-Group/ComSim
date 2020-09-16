@@ -14,7 +14,6 @@ namespace TAG.Simulator.ObjectModel.Events
 	public class ExternalEvent : SimulationNodeChildren
 	{
 		private Dictionary<string, Parameter> parameters = null;
-		private Model model;
 		private IEvent eventReference;
 		private string name;
 		private string eventId;
@@ -24,8 +23,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Handles an incoming event raised from an external source
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public ExternalEvent(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public ExternalEvent(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -58,10 +58,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ExternalEvent(Parent);
+			return new ExternalEvent(Parent, Model);
 		}
 
 		/// <summary>
@@ -80,17 +81,14 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			this.model = Model;
-
 			if (this.Parent is IActor Actor)
 				Actor.Register(this);
 			else
 				throw new Exception("External event registered on a node that is not an actor.");
 
-			return base.Initialize(Model);
+			return base.Initialize();
 		}
 
 		/// <summary>
@@ -98,7 +96,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.model.TryGetEvent(this.eventId, out this.eventReference))
+			if (!this.Model.TryGetEvent(this.eventId, out this.eventReference))
 				throw new Exception("Event node not found: " + this.eventId);
 
 			return base.Start();

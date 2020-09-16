@@ -16,8 +16,9 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// Description of model
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Description(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Description(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -35,10 +36,11 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Description(Parent);
+			return new Description(Parent, Model);
 		}
 
 		/// <summary>

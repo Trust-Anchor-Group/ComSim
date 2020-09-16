@@ -24,8 +24,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// References a population of actors.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public ActorReference(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public ActorReference(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -48,10 +49,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ActorReference(Parent);
+			return new ActorReference(Parent, Model);
 		}
 
 		/// <summary>
@@ -90,16 +92,15 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Prepares <paramref name="Variables"/> for the execution of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public override void Prepare(Model Model, Variables Variables, List<KeyValuePair<string, object>> Tags)
+		public override void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
 			IActor Actor;
 			int[] P = new int[this.count];
 			int i, j;
 
-			lock (Model)
+			lock (this.Model)
 			{
 				for (i = j = 0; i < this.count; i++)
 				{
@@ -110,7 +111,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (j <= 0)
 					throw new Exception("No free individual available in population.");
 
-				j = Model.GetRandomInteger(j);
+				j = this.Model.GetRandomInteger(j);
 				i = 0;
 
 				while (P[i] <= j)
@@ -131,16 +132,15 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Releases resources at the end of an event.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Event variables</param>
-		public override void Release(Model Model, Variables Variables)
+		public override void Release(Variables Variables)
 		{
 			if (this.exclusive &&
 				Variables.TryGetVariable(this.name2, out Variable v) &&
 				v.ValueObject is IActor InstanceActor &&
 				InstanceActor.Parent is IActor ActorPopulation)
 			{
-				lock (Model)
+				lock (this.Model)
 				{
 					ActorPopulation.ReturnIndividual(InstanceActor);
 				}

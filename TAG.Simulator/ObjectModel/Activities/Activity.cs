@@ -21,8 +21,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Represents an activity that can be executed as the result of triggered events.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Activity(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Activity(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -45,10 +46,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Activity(Parent);
+			return new Activity(Parent, Model);
 		}
 
 		/// <summary>
@@ -65,32 +67,29 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
-		public override Task Initialize(Model Model)
+		public override Task Initialize()
 		{
-			Model.Register(this);
-			return base.Initialize(Model);
+			this.Model.Register(this);
+			return base.Initialize();
 		}
 
 		/// <summary>
 		/// Registers a child activity node.
 		/// </summary>
-		/// <param name="Model">Model being executed.</param>
 		/// <param name="Node">Activity node.</param>
-		public void Register(Model Model, IActivityNode Node)
+		public void Register(IActivityNode Node)
 		{
 			if (this.activityNodes is null)
 				this.activityNodes = new LinkedList<IActivityNode>();
 
-			Model.Register(this.activityNodes.AddLast(Node));
+			this.Model.Register(this.activityNodes.AddLast(Node));
 		}
 
 		/// <summary>
 		/// Executes the activity.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		public virtual async Task ExecuteTask(Model Model, Variables Variables)
+		public virtual async Task ExecuteTask(Variables Variables)
 		{
 			this.executionCount++;
 
@@ -98,7 +97,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			{
 				try
 				{
-					await ExecuteActivity(Model, Variables, this.activityNodes.First);
+					await ExecuteActivity(Variables, this.activityNodes.First);
 				}
 				catch (FinishedException)
 				{
@@ -110,16 +109,15 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Executes an activity by executing a possibly branching sequence of nodes.
 		/// </summary>
-		/// <param name="Model">Current model</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <param name="Start">Node to start execution with.</param>
-		public static async Task ExecuteActivity(Model Model, Variables Variables, LinkedListNode<IActivityNode> Start)
+		public static async Task ExecuteActivity(Variables Variables, LinkedListNode<IActivityNode> Start)
 		{
 			LinkedListNode<IActivityNode> Next;
 
 			while (!(Start is null))
 			{
-				Next = await Start.Value.Execute(Model, Variables);
+				Next = await Start.Value.Execute(Variables);
 				if (Next is null)
 					Next = Start.Next;
 
@@ -148,21 +146,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("@enduml");
 			Output.WriteLine("```");
 			Output.WriteLine();
-		}
-
-		/// <summary>
-		/// Exports XML
-		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override async Task ExportXml(XmlWriter Output)
-		{
-			Output.WriteStartElement("Activity");
-			Output.WriteAttributeString("id", this.id);
-			Output.WriteAttributeString("executionCount", this.executionCount.ToString());
-
-			await base.ExportXml(Output);
-
-			Output.WriteEndElement();
 		}
 
 	}

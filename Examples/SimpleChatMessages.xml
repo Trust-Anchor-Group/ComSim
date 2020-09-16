@@ -2,6 +2,7 @@
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        timeBase="StartOfSimulation"
+       bucketTime="PT1M"
        timeUnit="PT1S"
        timeCycle="PT1M"
        duration="PT10M">

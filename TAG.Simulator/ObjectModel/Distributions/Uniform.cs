@@ -18,8 +18,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Uniform distribution
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
-		public Uniform(ISimulationNode Parent)
-			: base(Parent)
+		/// <param name="Model">Model in which the node is defined.</param>
+		public Uniform(ISimulationNode Parent, Model Model)
+			: base(Parent, Model)
 		{
 		}
 
@@ -47,10 +48,11 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model in which the node is defined.</param>
 		/// <returns>New instance</returns>
-		public override ISimulationNode Create(ISimulationNode Parent)
+		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Uniform(Parent);
+			return new Uniform(Parent, Model);
 		}
 
 		/// <summary>
