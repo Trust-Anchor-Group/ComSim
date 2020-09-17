@@ -56,6 +56,7 @@
     <Activity id="StartChatSession">
       <Description>This activity starts a chat session, by sending a chat message to a random recipient.</Description>
       <Start/>
+      <Inc counter="Sessions"/>
       <Action actor="From" action="SendChatMessage">
         <Argument name="To">
           <Script>To.FullJID</Script>
@@ -64,13 +65,13 @@
           <Variable name="Message"/>
         </Argument>
       </Action>
-      <Inc counter="Tx"/>
+      <Count counter="Tx"/>
       <Stop/>
     </Activity>
     <Activity id="RespondToMessage">
       <Description>This activity responds to incoming chat messages, thus creating a short chat session.</Description>
       <Start/>
-      <Inc counter="Rx"/>
+      <Count counter="Rx"/>
       <Delay duration="PT5S"/>
       <Conditional>
         <Condition condition="e.Body='Hello'">
@@ -82,7 +83,7 @@
               <String>How are you?</String>
             </Argument>
           </Action>
-          <Inc counter="Tx"/>
+          <Count counter="Tx"/>
         </Condition>
         <Condition condition="e.Body='How are you?'">
           <Action actor="To" action="SendChatMessage">
@@ -93,7 +94,7 @@
               <String>Fine thanks, and you?</String>
             </Argument>
           </Action>
-          <Inc counter="Tx"/>
+          <Count counter="Tx"/>
         </Condition>
         <Condition condition="e.Body='Fine thanks, and you?'">
           <Action actor="To" action="SendChatMessage">
@@ -104,7 +105,7 @@
               <String>Fine also, thanks</String>
             </Argument>
           </Action>
-          <Inc counter="Tx"/>
+          <Count counter="Tx"/>
         </Condition>
         <Condition condition="e.Body='Fine also, thanks'">
           <Action actor="To" action="SendChatMessage">
@@ -115,7 +116,7 @@
               <String>Bye</String>
             </Argument>
           </Action>
-          <Inc counter="Tx"/>
+          <Count counter="Tx"/>
         </Condition>
         <Condition condition="e.Body='Bye'">
           <Action actor="To" action="SendChatMessage">
@@ -126,7 +127,8 @@
               <String>See you</String>
             </Argument>
           </Action>
-          <Inc counter="Tx"/>
+          <Count counter="Tx"/>
+          <Dec counter="Sessions"/>
         </Condition>
       </Conditional>
       <Stop/>

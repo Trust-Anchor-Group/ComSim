@@ -54,6 +54,7 @@ namespace TAG.Simulator
 		private Buckets activityStartStatistics;
 		private Buckets activityTimeStatistics;
 		private Buckets counters;
+		private Buckets samples;
 		private TimeBase timeBase;
 		private Duration bucketTime;
 		private Duration timeUnit;
@@ -161,6 +162,7 @@ namespace TAG.Simulator
 		internal Buckets ActivityStartStatistics => this.activityStartStatistics;
 		internal Buckets ActivityTimeStatistics => this.activityTimeStatistics;
 		internal Buckets Counters => this.counters;
+		internal Buckets Samples => this.samples;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -209,6 +211,7 @@ namespace TAG.Simulator
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
 			this.counters = new Buckets(this.start, this.bucketTime);
+			this.samples = new Buckets(this.start, this.bucketTime);
 			this.activityStartStatistics = new Buckets(this.start, this.bucketTime);
 			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime);
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime);
@@ -357,8 +360,9 @@ namespace TAG.Simulator
 		/// Runs the simulation.
 		/// </summary>
 		/// <param name="Done">Task completion source, that can be set by external events.</param>
+		/// <param name="EmitDots">If dots should be emitted to the console to mark the passage of time.</param>
 		/// <returns>If simulation completed successfully.</returns>
-		public async Task<bool> Run(TaskCompletionSource<bool> Done)
+		public async Task<bool> Run(TaskCompletionSource<bool> Done, bool EmitDots)
 		{
 			Console.Out.WriteLine("Initializing...");
 			await this.ForEach(async (Node) => await Node.Initialize(), true);
@@ -370,6 +374,7 @@ namespace TAG.Simulator
 
 				Console.Out.WriteLine("Running...");
 
+				DateTime Prev = DateTime.Now;
 				DateTime TP;
 				double t1;
 				double t2 = 0;
@@ -381,12 +386,22 @@ namespace TAG.Simulator
 				{
 					t = (TP - this.start).TotalMilliseconds;
 					t1 = t2;
-					t2 = Math.IEEERemainder(t, this.timeCycleMs) / this.timeUnitMs;
+					t2 = Math.IEEERemainder(t, this.timeCycleMs);
+					if (t2 < 0)
+						t2 += this.timeCycleMs;
+					t2 /= this.timeUnitMs;
+
 					if (t2 < t1)
 						NrCycles++;
 
 					foreach (ITimeTriggerEvent Event in this.timeTriggeredEvents)
 						Event.CheckTrigger(t1, t2, NrCycles);
+
+					if (EmitDots && Prev.Second != TP.Second)
+					{
+						Prev = TP;
+						Console.Out.Write('.');
+					}
 
 					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
 					{
@@ -399,6 +414,9 @@ namespace TAG.Simulator
 			}
 			finally
 			{
+				if (EmitDots)
+					Console.Out.WriteLine('.');
+
 				Console.Out.WriteLine("Finalizing...");
 				await this.ForEach(async (Node) => await Node.Finalize(), true);
 			}
@@ -543,7 +561,7 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			this.activityStartStatistics.Inc(ActivityId);
+			this.activityStartStatistics.CountEvent(ActivityId);
 			Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
@@ -573,12 +591,30 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
-		/// Increments a counter
+		/// Counts an event.
+		/// </summary>
+		/// <param name="CounterName">Counter name</param>
+		public void CountEvent(string CounterName)
+		{
+			this.counters.CountEvent(CounterName);
+		}
+
+		/// <summary>
+		/// Increments a counter.
 		/// </summary>
 		/// <param name="CounterName">Counter name</param>
 		public void IncrementCounter(string CounterName)
 		{
-			this.counters.Inc(CounterName);
+			this.samples.IncrementCounter(CounterName);
+		}
+
+		/// <summary>
+		/// Decrements a counter.
+		/// </summary>
+		/// <param name="CounterName">Counter name</param>
+		public void DecrementCounter(string CounterName)
+		{
+			this.samples.DecrementCounter(CounterName);
 		}
 
 		/// <summary>
@@ -601,6 +637,15 @@ namespace TAG.Simulator
 				Table.ExportTableGraph(Output, "Counters");
 
 				this.counters.ExportCountHistoryGraph("Counters", null, Output, this);
+			}
+
+			if (this.samples.Count > 0)
+			{
+				Output.WriteLine("Samples");
+				Output.WriteLine("===========");
+				Output.WriteLine();
+
+				this.samples.ExportCountHistoryGraph("Samples", null, Output, this);
 			}
 
 			this.eventStatistics.ExportMarkdown(Output, this);

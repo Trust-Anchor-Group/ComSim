@@ -15,6 +15,7 @@ namespace TAG.Simulator.Statistics
 		private readonly string id;
 		private readonly Duration bucketTime;
 		private readonly bool calcStdDev;
+		private readonly bool persistentCounters;
 		private DateTime start;
 		private DateTime stop;
 		private long count = 0;
@@ -29,13 +30,15 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="Id">ID of bucket.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+		/// <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
-		public Bucket(string Id, bool CalcStdDev, DateTime StartTime, Duration BucketTime)
+		public Bucket(string Id, bool CalcStdDev, bool PersistentCounters, DateTime StartTime, Duration BucketTime)
 		{
 			this.id = Id;
 			this.samples = CalcStdDev ? new LinkedList<double>() : null;
 			this.calcStdDev = CalcStdDev;
+			this.persistentCounters = PersistentCounters;
 			this.bucketTime = BucketTime;
 			this.start = StartTime;
 			this.stop = this.start + BucketTime;
@@ -138,14 +141,19 @@ namespace TAG.Simulator.Statistics
 		{
 			lock (this)
 			{
-				DateTime Now = DateTime.Now;
-				while (Now >= this.stop)
-					this.NextBucketLocked();
+				return this.Sample(++this.totCount);
+			}
+		}
 
-				this.count++;
-				this.totCount++;
-
-				return this.start;
+		/// <summary>
+		/// Decrements counter.
+		/// </summary>
+		/// <returns>Start time of bucket that was incremented.</returns>
+		public DateTime Dec()
+		{
+			lock (this)
+			{
+				return this.Sample(--this.totCount);
 			}
 		}
 

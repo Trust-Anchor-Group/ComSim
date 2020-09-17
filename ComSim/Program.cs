@@ -432,7 +432,7 @@ namespace ComSim
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
 					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
-						XmlOutputFileName, Master, Css).Result;
+						XmlOutputFileName, Master, Css, !LogConsole).Result;
 				}
 
 				if (Result)
@@ -462,7 +462,7 @@ namespace ComSim
 
 		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
 			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName,
-			IEnumerable<string> Master, IEnumerable<string> Css)
+			IEnumerable<string> Master, IEnumerable<string> Css, bool EmitDots)
 		{
 			try
 			{
@@ -483,7 +483,7 @@ namespace ComSim
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;
 
-				bool Result = await Model.Run(Done);
+				bool Result = await Model.Run(Done, EmitDots);
 
 				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
 				{

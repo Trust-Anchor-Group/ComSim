@@ -247,7 +247,9 @@
   <xs:group name="ActivityNodes">
     <xs:choice>
       <xs:element name="Delay" type="DurationActivityNode"/>
-      <xs:element name="Inc" type="IncActivityNode"/>
+      <xs:element name="Count" type="CounterActivityNode"/>
+      <xs:element name="Inc" type="CounterActivityNode"/>
+      <xs:element name="Dec" type="CounterActivityNode"/>
       <xs:element name="Eval" type="ExpressionActivityNode"/>
       <xs:element name="Action" type="ActionActivityNode"/>
       <xs:element name="Conditional" type="ConditionalActivityNode"/>
@@ -270,7 +272,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="IncActivityNode">
+  <xs:complexType name="CounterActivityNode">
     <xs:complexContent>
       <xs:extension base="ActivityNode">
         <xs:attribute name="counter" type="xs:string" use="required"/>

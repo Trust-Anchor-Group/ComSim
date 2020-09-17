@@ -29,7 +29,7 @@ namespace TAG.Simulator.Statistics
 			foreach (Enum T in Enum.GetValues(typeof(EventType)))
 				IDs.Add(T.ToString());
 
-			this.buckets = new Buckets(StartTime, BucketTime, false, IDs.ToArray());
+			this.buckets = new Buckets(StartTime, BucketTime, false, false, IDs.ToArray());
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Event">Event</param>
 		public override Task Queue(Event Event)
 		{
-			this.buckets.Inc(Event.Type.ToString());
+			this.buckets.CountEvent(Event.Type.ToString());
 			return Task.CompletedTask;
 		}
 

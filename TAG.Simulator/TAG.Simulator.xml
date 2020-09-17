@@ -330,11 +330,12 @@
             <param name="ActivityNode">ActivityNode if found.</param>
             <returns>If an activity node was found.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean})">
+        <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean},System.Boolean)">
             <summary>
             Runs the simulation.
             </summary>
             <param name="Done">Task completion source, that can be set by external events.</param>
+            <param name="EmitDots">If dots should be emitted to the console to mark the passage of time.</param>
             <returns>If simulation completed successfully.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.GetTimeCoordinates(System.DateTime)">
@@ -418,9 +419,21 @@
             <param name="ErrorMessage">Error message.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
+        <member name="M:TAG.Simulator.Model.CountEvent(System.String)">
+            <summary>
+            Counts an event.
+            </summary>
+            <param name="CounterName">Counter name</param>
+        </member>
         <member name="M:TAG.Simulator.Model.IncrementCounter(System.String)">
             <summary>
-            Increments a counter
+            Increments a counter.
+            </summary>
+            <param name="CounterName">Counter name</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.DecrementCounter(System.String)">
+            <summary>
+            Decrements a counter.
             </summary>
             <param name="CounterName">Counter name</param>
         </member>
@@ -830,6 +843,107 @@
             <param name="Output">Output node</param>
             <param name="Indentation">Number of tabs to indent.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Count">
+            <summary>
+            Counts an instance of an event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Count.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Counts an instance of an event.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Count.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Count.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Count.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Count.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.CounterActivityNode">
+            <summary>
+            Abstract base class for counter activity nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for counter activity nodes.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.Counter">
+            <summary>
+            Counter name
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Dec">
+            <summary>
+            Decrements a counter.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Dec.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Decrements a counter.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Dec.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Dec.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Dec.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Dec.ExportPlantUml(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Delay">
             <summary>
             Represents a delay in an activity.
@@ -1147,11 +1261,6 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Inc.Counter">
-            <summary>
-            Counter name
-            </summary>
-        </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Inc.LocalName">
             <summary>
             Local name of XML element defining contents of class.
@@ -1164,12 +1273,6 @@
             <param name="Parent">Parent node.</param>
             <param name="Model">Model in which the node is defined.</param>
             <returns>New instance</returns>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.FromXml(System.Xml.XmlElement)">
-            <summary>
-            Sets properties and attributes of class in accordance with XML definition.
-            </summary>
-            <param name="Definition">XML definition</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Inc.Execute(Waher.Script.Variables)">
             <summary>
@@ -3156,12 +3259,13 @@
             Statistical bucket
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.#ctor(System.String,System.Boolean,System.DateTime,Waher.Content.Duration)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.#ctor(System.String,System.Boolean,System.Boolean,System.DateTime,Waher.Content.Duration)">
             <summary>
             Statistical bucket
             </summary>
             <param name="Id">ID of bucket.</param>
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+            <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
         </member>
@@ -3203,6 +3307,12 @@
         <member name="M:TAG.Simulator.Statistics.Bucket.Inc">
             <summary>
             Increments counter.
+            </summary>
+            <returns>Start time of bucket that was incremented.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.Dec">
+            <summary>
+            Decrements counter.
             </summary>
             <returns>Start time of bucket that was incremented.</returns>
         </member>
@@ -3252,18 +3362,31 @@
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,System.Boolean,System.String[])">
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,System.Boolean,System.Boolean,System.String[])">
             <summary>
             A collection of buckets
             </summary>
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+            <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
             <param name="IDs">Predefined IDs</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.Inc(System.String)">
+        <member name="M:TAG.Simulator.Statistics.Buckets.CountEvent(System.String)">
+            <summary>
+            Counts an event.
+            </summary>
+            <param name="Counter">Counter ID</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.IncrementCounter(System.String)">
             <summary>
             Increments a counter.
+            </summary>
+            <param name="Counter">Counter ID</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.DecrementCounter(System.String)">
+            <summary>
+            Decrements a counter.
             </summary>
             <param name="Counter">Counter ID</param>
         </member>

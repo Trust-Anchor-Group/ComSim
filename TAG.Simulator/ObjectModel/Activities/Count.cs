@@ -10,16 +10,16 @@ using Waher.Script;
 namespace TAG.Simulator.ObjectModel.Activities
 {
 	/// <summary>
-	/// Increments a counter.
+	/// Counts an instance of an event.
 	/// </summary>
-	public class Inc : CounterActivityNode
+	public class Count : CounterActivityNode
 	{
 		/// <summary>
-		/// Increments a counter.
+		/// Counts an instance of an event.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Inc(ISimulationNode Parent, Model Model)
+		public Count(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Inc";
+		public override string LocalName => "Count";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -37,7 +37,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Inc(Parent, Model);
+			return new Count(Parent, Model);
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			this.Model.IncrementCounter(this.Counter);
+			this.Model.CountEvent(this.Counter);
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}
 
@@ -59,7 +59,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override void ExportPlantUml(StreamWriter Output, int Indentation)
 		{
 			Indent(Output, Indentation);
-			Output.Write(":Inc(");
+			Output.Write(":Count(");
 			Output.Write(this.Counter);
 			Output.WriteLine(");");
 		}

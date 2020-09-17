@@ -22,7 +22,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
 		public Buckets(DateTime StartTime, Duration BucketTime)
-			: this(StartTime, BucketTime, false, null)
+			: this(StartTime, BucketTime, false, false, null)
 		{
 		}
 
@@ -32,8 +32,9 @@ namespace TAG.Simulator.Statistics
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+		/// <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
 		/// <param name="IDs">Predefined IDs</param>
-		public Buckets(DateTime StartTime, Duration BucketTime, bool CalcStdDev, string[] IDs)
+		public Buckets(DateTime StartTime, Duration BucketTime, bool CalcStdDev, bool PersistentCounters, string[] IDs)
 		{
 			this.start = StartTime;
 			this.bucketTime = BucketTime;
@@ -41,15 +42,15 @@ namespace TAG.Simulator.Statistics
 			if (!(IDs is null))
 			{
 				foreach (string ID in IDs)
-					this.buckets[ID] = new Bucket(ID, CalcStdDev, StartTime, BucketTime);
+					this.buckets[ID] = new Bucket(ID, CalcStdDev, PersistentCounters, StartTime, BucketTime);
 			}
 		}
 
 		/// <summary>
-		/// Increments a counter.
+		/// Counts an event.
 		/// </summary>
 		/// <param name="Counter">Counter ID</param>
-		public void Inc(string Counter)
+		public void CountEvent(string Counter)
 		{
 			Bucket Bucket;
 
@@ -57,12 +58,52 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, false, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
 
 			this.start = Bucket.Inc();
+		}
+
+		/// <summary>
+		/// Increments a counter.
+		/// </summary>
+		/// <param name="Counter">Counter ID</param>
+		public void IncrementCounter(string Counter)
+		{
+			Bucket Bucket;
+
+			lock (this.buckets)
+			{
+				if (!this.buckets.TryGetValue(Counter, out Bucket))
+				{
+					Bucket = new Bucket(Counter, false, true, this.start, this.bucketTime);
+					this.buckets[Counter] = Bucket;
+				}
+			}
+
+			this.start = Bucket.Inc();
+		}
+
+		/// <summary>
+		/// Decrements a counter.
+		/// </summary>
+		/// <param name="Counter">Counter ID</param>
+		public void DecrementCounter(string Counter)
+		{
+			Bucket Bucket;
+
+			lock (this.buckets)
+			{
+				if (!this.buckets.TryGetValue(Counter, out Bucket))
+				{
+					Bucket = new Bucket(Counter, false, true, this.start, this.bucketTime);
+					this.buckets[Counter] = Bucket;
+				}
+			}
+
+			this.start = Bucket.Dec();
 		}
 
 		/// <summary>
@@ -78,7 +119,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, true, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
