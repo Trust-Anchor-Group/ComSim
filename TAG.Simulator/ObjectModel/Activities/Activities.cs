@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using TAG.Simulator.Statistics;
+using System.Collections.Generic;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -37,5 +33,23 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			return new Activities(Parent, Model);
 		}
+
+		/// <summary>
+		/// Gets the declared order of activities in the model.
+		/// </summary>
+		/// <returns>Order</returns>
+		public string[] ActivityOrder()
+		{
+			List<string> Order = new List<string>();
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is IActivity Activity)
+					Order.Add(Activity.Id);
+			}
+
+			return Order.ToArray();
+		}
+
 	}
 }

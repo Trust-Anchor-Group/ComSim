@@ -131,6 +131,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Output">Output node</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
+			this.Model.ExportActivitiesIntroduction(Output);
+
 			Output.WriteLine(this.id);
 			Output.WriteLine(new string('-', this.id.Length + 3));
 			Output.WriteLine();

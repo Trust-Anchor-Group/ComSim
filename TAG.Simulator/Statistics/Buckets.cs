@@ -72,7 +72,7 @@ namespace TAG.Simulator.Statistics
 		{
 			get
 			{
-				lock(this.buckets)
+				lock (this.buckets)
 				{
 					return this.buckets.Count;
 				}
@@ -82,15 +82,27 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Gets a count table of registered counters.
 		/// </summary>
+		/// <param name="Order">Optional sort order of records.</param>
 		/// <returns>Count table</returns>
-		public CountTable GetTable()
+		public CountTable GetTable(string[] Order = null)
 		{
 			CountTable Result = new CountTable();
 
 			lock (this.buckets)
 			{
-				foreach (Bucket Bucket in this.buckets.Values)
-					Result.Add(Bucket.Id, Bucket.Count);
+				if (Order is null)
+				{
+					foreach (Bucket Bucket in this.buckets.Values)
+						Result.Add(Bucket.Id, Bucket.Count);
+				}
+				else
+				{
+					foreach (string Id in Order)
+					{
+						if (this.buckets.TryGetValue(Id, out Bucket Bucket))
+							Result.Add(Bucket.Id, Bucket.Count);
+					}
+				}
 			}
 
 			return Result;

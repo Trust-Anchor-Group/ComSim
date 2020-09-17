@@ -144,6 +144,11 @@ namespace TAG.Simulator
 			set => this.snifferTransformFileName = value;
 		}
 
+		internal EventStatistics EventStatistics => this.eventStatistics;
+		internal Buckets ActivityStartStatistics => this.activityStartStatistics;
+		internal Buckets ActivityTimeStatistics => this.activityTimeStatistics;
+		internal Buckets Counters => this.counters;
+
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
@@ -551,18 +556,9 @@ namespace TAG.Simulator
 		/// <param name="Output">Output node</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
+			this.activitiesIntroduction = false;
+
 			await base.ExportMarkdown(Output);
-
-			if (this.activityStartStatistics.Count > 0)
-			{
-				Output.WriteLine("Activities");
-				Output.WriteLine("=============");
-				Output.WriteLine();
-
-				CountTable Table = this.activityStartStatistics.GetTable();
-				Table.ExportTableGraph(Output, "Total activity counts");
-			
-			}
 
 			if (this.counters.Count > 0)
 			{
@@ -576,6 +572,37 @@ namespace TAG.Simulator
 
 			this.eventStatistics.ExportMarkdown(Output);
 		}
+
+		internal void ExportActivitiesIntroduction(StreamWriter Output)
+		{
+			if (this.activitiesIntroduction)
+				return;
+
+			this.activitiesIntroduction = true;
+
+			Output.WriteLine("Activities");
+			Output.WriteLine("=============");
+			Output.WriteLine();
+
+			if (this.activityStartStatistics.Count > 0)
+			{
+				CountTable Table = this.activityStartStatistics.GetTable(this.ActivityOrder());
+				Table.ExportTableGraph(Output, "Total activity counts");
+			}
+		}
+
+		private string[] ActivityOrder()
+		{
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is Activities Activities)
+					return Activities.ActivityOrder();
+			}
+
+			return new string[0];
+		}
+
+		private bool activitiesIntroduction;
 
 		/// <summary>
 		/// Exports XML
@@ -614,11 +641,11 @@ namespace TAG.Simulator
 		public static SKColor[] CreatePalette(int N)
 		{
 			SKColor[] Result = new SKColor[N];
-			double d = 360.0 / Math.Max(N, 6);
+			double d = 360.0 / Math.Max(N, 12);
 			int i;
 
 			for (i = 0; i < N; i++)
-				Result[i] = SKColor.FromHsl((float)(d*i + 145), 100, 50);
+				Result[i] = SKColor.FromHsl((float)(d * i), 100, 75);
 
 			return Result;
 		}

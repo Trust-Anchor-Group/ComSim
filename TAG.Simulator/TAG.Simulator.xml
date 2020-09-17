@@ -511,6 +511,12 @@
             <param name="Model">Model in which the node is defined.</param>
             <returns>New instance</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.ActivityOrder">
+            <summary>
+            Gets the declared order of activities in the model.
+            </summary>
+            <returns>Order</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activity">
             <summary>
             Represents an activity that can be executed as the result of triggered events.
@@ -3223,10 +3229,11 @@
             Number of counters
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.GetTable">
+        <member name="M:TAG.Simulator.Statistics.Buckets.GetTable(System.String[])">
             <summary>
             Gets a count table of registered counters.
             </summary>
+            <param name="Order">Optional sort order of records.</param>
             <returns>Count table</returns>
         </member>
         <member name="T:TAG.Simulator.Statistics.CountTable">

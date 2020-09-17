@@ -36,6 +36,10 @@ Features
 		[ ] Errors, Exceptions (from Log)
 		[ ] Event type histogram over time
 		[ ] Custom SQL
+	[ ] Charts
+		[ ] History charts
+		[ ] Use case charts
+		[ ] Distribution (expected) charts
 	[ ] Data as XMLs
 	[ ] Report as Markdown
 		[ ] Distributions
