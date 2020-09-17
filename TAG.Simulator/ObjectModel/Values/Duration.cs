@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -83,8 +84,20 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Output">Output node</param>
 		public static void ExportText(Waher.Content.Duration Duration, StreamWriter Output)
 		{
+			StringBuilder sb = new StringBuilder();
+			ExportText(Duration, sb);
+			Output.Write(sb.ToString());
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Duration">Duration value.</param>
+		/// <param name="Output">Output node</param>
+		public static void ExportText(Waher.Content.Duration Duration, StringBuilder Output)
+		{
 			if (Duration.Negation)
-				Output.Write("-(");
+				Output.Append("-(");
 
 			bool First = true;
 
@@ -101,21 +114,21 @@ namespace TAG.Simulator.ObjectModel.Values
 			Append(Output, ms, "ms", ref First);
 
 			if (Duration.Negation)
-				Output.Write(')');
+				Output.Append(')');
 		}
 
-		private static void Append(StreamWriter Output, int Nr, string Unit, ref bool First)
+		private static void Append(StringBuilder Output, int Nr, string Unit, ref bool First)
 		{
 			if (Nr != 0)
 			{
 				if (First)
 					First = false;
 				else
-					Output.Write(", ");
+					Output.Append(", ");
 
-				Output.Write(Nr.ToString());
-				Output.Write(' ');
-				Output.Write(Unit);
+				Output.Append(Nr.ToString());
+				Output.Append(' ');
+				Output.Append(Unit);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ using Waher.Networking.Sniffers;
 using Waher.Runtime.Settings;
 using Waher.Events;
 using TAG.Simulator.Statistics;
+using System.Text;
 
 namespace TAG.Simulator
 {
@@ -60,6 +61,8 @@ namespace TAG.Simulator
 		private Duration duration;
 		private DateTime start;
 		private DateTime end;
+		private string timeUnitStr;
+		private string bucketTimeStr;
 		private string snifferFolder;
 		private string snifferTransformFileName;
 		private double timeUnitMs;
@@ -97,6 +100,11 @@ namespace TAG.Simulator
 		public Duration TimeUnit => this.timeUnit;
 
 		/// <summary>
+		/// Time unit string
+		/// </summary>
+		public string TimeUnitStr => this.timeUnitStr;
+
+		/// <summary>
 		/// Time unit, in milliseconds
 		/// </summary>
 		public double TimeUnitMs => this.timeUnitMs;
@@ -125,6 +133,11 @@ namespace TAG.Simulator
 		/// Time to collect events, for statistical purposes.
 		/// </summary>
 		public Duration BucketTime => this.bucketTime;
+
+		/// <summary>
+		/// Time to collect events, for statistical purposes.
+		/// </summary>
+		public string BucketTimeStr => this.bucketTimeStr;
 
 		/// <summary>
 		/// Folder used for sniffer output.
@@ -171,6 +184,14 @@ namespace TAG.Simulator
 			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
 			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
 			this.bucketTime = XML.Attribute(Definition, "bucketTime", Duration.FromMinutes(1));
+
+			StringBuilder sb = new StringBuilder();
+			ObjectModel.Values.Duration.ExportText(this.timeUnit, sb);
+			this.timeUnitStr = sb.ToString();
+
+			sb.Clear();
+			ObjectModel.Values.Duration.ExportText(this.bucketTime, sb);
+			this.bucketTimeStr = sb.ToString();
 
 			return base.FromXml(Definition);
 		}
@@ -384,6 +405,16 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Converts a <see cref="DateTime"/> to uncycled (linear) time coordinates.
+		/// </summary>
+		/// <param name="TP">Timepoint</param>
+		/// <returns>Corresponding linear time coordinates.</returns>
+		public double GetTimeCoordinates(DateTime TP)
+		{
+			return (TP - this.start).TotalMilliseconds / this.timeUnitMs;
+		}
+
+		/// <summary>
 		/// Gets an array of random bytes.
 		/// </summary>
 		/// <param name="NrBytes">Number of random bytes to generate.</param>
@@ -566,11 +597,13 @@ namespace TAG.Simulator
 				Output.WriteLine("===========");
 				Output.WriteLine();
 
-				CountTable Table = this.counters.GetTable();
+				CountTable Table = this.counters.GetTotalCountTable();
 				Table.ExportTableGraph(Output, "Counters");
+
+				this.counters.ExportCountHistoryGraph("Counters", null, Output, this);
 			}
 
-			this.eventStatistics.ExportMarkdown(Output);
+			this.eventStatistics.ExportMarkdown(Output, this);
 		}
 
 		internal void ExportActivitiesIntroduction(StreamWriter Output)
@@ -586,8 +619,12 @@ namespace TAG.Simulator
 
 			if (this.activityStartStatistics.Count > 0)
 			{
-				CountTable Table = this.activityStartStatistics.GetTable(this.ActivityOrder());
+				string[] Order = this.ActivityOrder();
+				CountTable Table = this.activityStartStatistics.GetTotalCountTable(Order);
+
 				Table.ExportTableGraph(Output, "Total activity counts");
+
+				this.activityStartStatistics.ExportCountHistoryGraph("Activities", Order, Output, this);
 			}
 		}
 
@@ -614,19 +651,19 @@ namespace TAG.Simulator
 
 			if (this.activityStartStatistics.Count > 0)
 			{
-				CountTable Table = this.activityStartStatistics.GetTable();
+				CountTable Table = this.activityStartStatistics.GetTotalCountTable();
 				Table.ExportXml(Output, "ActivityStarts", "ActivityStart");
 			}
 
 			if (this.activityTimeStatistics.Count > 0)
 			{
-				CountTable Table = this.activityTimeStatistics.GetTable();
+				CountTable Table = this.activityTimeStatistics.GetTotalCountTable();
 				Table.ExportXml(Output, "ActivityTimes", "ActivityTime");
 			}
 
 			if (this.counters.Count > 0)
 			{
-				CountTable Table = this.counters.GetTable();
+				CountTable Table = this.counters.GetTotalCountTable();
 				Table.ExportXml(Output, "Counters", "Counter");
 			}
 

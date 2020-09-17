@@ -2,10 +2,10 @@
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        timeBase="StartOfSimulation"
-       bucketTime="PT1M"
+       bucketTime="PT10S"
        timeUnit="PT1S"
        timeCycle="PT1M"
-       duration="PT10M">
+       duration="PT1M">
   <Meta>
     <Title>Simple Chat Messages</Title>
     <Description>Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) chatting with each other randomly during 10 minutes, at a frequency of 100 started chat sessions per minute.</Description>

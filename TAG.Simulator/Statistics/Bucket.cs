@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Waher.Content;
 
@@ -7,7 +8,7 @@ namespace TAG.Simulator.Statistics
 	/// <summary>
 	/// Statistical bucket
 	/// </summary>
-	public class Bucket
+	public class Bucket : IEnumerable<Statistic>
 	{
 		private readonly LinkedList<Statistic> statistics = new LinkedList<Statistic>();
 		private readonly LinkedList<double> samples;
@@ -17,6 +18,7 @@ namespace TAG.Simulator.Statistics
 		private DateTime start;
 		private DateTime stop;
 		private long count = 0;
+		private long totCount = 0;
 		private double sum = 0;
 		private double min = double.MaxValue;
 		private double max = double.MinValue;
@@ -54,6 +56,20 @@ namespace TAG.Simulator.Statistics
 				lock (this)
 				{
 					return this.count;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Total Counter
+		/// </summary>
+		public long TotalCount
+		{
+			get
+			{
+				lock (this)
+				{
+					return this.totCount;
 				}
 			}
 		}
@@ -127,6 +143,7 @@ namespace TAG.Simulator.Statistics
 					this.NextBucketLocked();
 
 				this.count++;
+				this.totCount++;
 
 				return this.start;
 			}
@@ -247,8 +264,27 @@ namespace TAG.Simulator.Statistics
 		{
 			lock (this)
 			{
-				this.NextBucketLocked();
+				if (this.count > 0)
+					this.NextBucketLocked();
 			}
+		}
+
+		/// <summary>
+		/// Gets an enumerator for recorded statistics.
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		public IEnumerator<Statistic> GetEnumerator()
+		{
+			return this.statistics.GetEnumerator();
+		}
+
+		/// <summary>
+		/// Gets an enumerator for recorded statistics.
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.statistics.GetEnumerator();
 		}
 	}
 }

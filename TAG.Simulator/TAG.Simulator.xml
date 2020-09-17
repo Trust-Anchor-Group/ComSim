@@ -186,6 +186,11 @@
             Time unit
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.TimeUnitStr">
+            <summary>
+            Time unit string
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Model.TimeUnitMs">
             <summary>
             Time unit, in milliseconds
@@ -212,6 +217,11 @@
             </summary>
         </member>
         <member name="P:TAG.Simulator.Model.BucketTime">
+            <summary>
+            Time to collect events, for statistical purposes.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.BucketTimeStr">
             <summary>
             Time to collect events, for statistical purposes.
             </summary>
@@ -326,6 +336,13 @@
             </summary>
             <param name="Done">Task completion source, that can be set by external events.</param>
             <returns>If simulation completed successfully.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetTimeCoordinates(System.DateTime)">
+            <summary>
+            Converts a <see cref="T:System.DateTime"/> to uncycled (linear) time coordinates.
+            </summary>
+            <param name="TP">Timepoint</param>
+            <returns>Corresponding linear time coordinates.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.GetRandomBytes(System.Int32)">
             <summary>
@@ -2761,6 +2778,13 @@
             <param name="Duration">Duration value.</param>
             <param name="Output">Output node</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ExportText(Waher.Content.Duration,System.Text.StringBuilder)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Duration">Duration value.</param>
+            <param name="Output">Output node</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.IValue">
             <summary>
             Interface for values
@@ -3151,6 +3175,11 @@
             Counter
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.TotalCount">
+            <summary>
+            Total Counter
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Statistics.Bucket.Sum">
             <summary>
             Sum of samples.
@@ -3199,6 +3228,18 @@
             Terminates the ongoing collection of data.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.GetEnumerator">
+            <summary>
+            Gets an enumerator for recorded statistics.
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets an enumerator for recorded statistics.
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
         <member name="T:TAG.Simulator.Statistics.Buckets">
             <summary>
             A collection of buckets
@@ -3210,6 +3251,15 @@
             </summary>
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,System.Boolean,System.String[])">
+            <summary>
+            A collection of buckets
+            </summary>
+            <param name="StartTime">Starting time</param>
+            <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+            <param name="CalcStdDev">If standard deviation is to be calculated.</param>
+            <param name="IDs">Predefined IDs</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.Inc(System.String)">
             <summary>
@@ -3229,12 +3279,30 @@
             Number of counters
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.GetTable(System.String[])">
+        <member name="M:TAG.Simulator.Statistics.Buckets.GetTotalCountTable(System.String[])">
             <summary>
             Gets a count table of registered counters.
             </summary>
             <param name="Order">Optional sort order of records.</param>
             <returns>Count table</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.TryGetBucket(System.String,TAG.Simulator.Statistics.Bucket@)">
+            <summary>
+            Tries to get a bucket, given its ID.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <param name="Bucket">Bucket, if found.</param>
+            <returns>If a bucket was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.ExportCountHistoryGraph(System.String,System.Collections.Generic.IEnumerable{System.String},System.IO.StreamWriter,TAG.Simulator.Model,SkiaSharp.SKColor[])">
+            <summary>
+            Exports historical counts as a graph.
+            </summary>
+            <param name="Title">Title of graph.</param>
+            <param name="Order">Preferred order, can be null.</param>
+            <param name="Output">Export destination</param>
+            <param name="Model">Simulation model</param>
+            <param name="Palette">Optional predefined palette</param>
         </member>
         <member name="T:TAG.Simulator.Statistics.CountTable">
             <summary>
@@ -3309,11 +3377,12 @@
             </summary>
             <param name="Event">Event</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.EventStatistics.ExportMarkdown(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.Statistics.EventStatistics.ExportMarkdown(System.IO.StreamWriter,TAG.Simulator.Model)">
             <summary>
             Exports accumulated statistics to markdown
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="Model">Simulation model</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.EventStatistics.ExportXml(System.Xml.XmlWriter)">
             <summary>

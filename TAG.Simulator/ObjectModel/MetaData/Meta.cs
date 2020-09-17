@@ -48,19 +48,34 @@ namespace TAG.Simulator.ObjectModel.MetaData
 
 			Output.WriteLine("| Time units ||");
 			Output.WriteLine("|:-----|:-----|");
-			Output.Write("| Duration: | ");
+			Output.Write("| Simulation Duration: | ");
 			Duration.ExportText(this.Model.Duration, Output);
 			Output.WriteLine(" |");
-			Output.Write("| Base: | ");
-			Output.Write(this.Model.TimeBase.ToString());
+			Output.Write("| Time Base: | ");
+			
+			switch (this.Model.TimeBase)
+			{
+				case TimeBase.ComputerClock:
+					Output.Write("Computer Clock");
+					break;
+
+				case TimeBase.StartOfSimulation:
+					Output.Write("Start of Simulation");
+					break;
+
+				default:
+					Output.Write(this.Model.TimeBase.ToString());
+					break;
+			}
+
 			Output.WriteLine(" |");
-			Output.Write("| Unit: | ");
+			Output.Write("| Time Unit: | ");
 			Duration.ExportText(this.Model.TimeUnit, Output);
 			Output.WriteLine(" |");
-			Output.Write("| Cycle: | ");
+			Output.Write("| Time Cycle: | ");
 			Duration.ExportText(this.Model.TimeCycle, Output);
 			Output.WriteLine(" |");
-			Output.Write("| Bucket: | ");
+			Output.Write("| Bucket Time: | ");
 			Duration.ExportText(this.Model.BucketTime, Output);
 			Output.WriteLine(" |");
 			Output.WriteLine();

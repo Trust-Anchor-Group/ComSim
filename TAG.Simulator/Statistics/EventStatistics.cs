@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -12,14 +14,7 @@ namespace TAG.Simulator.Statistics
 	/// </summary>
 	public class EventStatistics : EventSink
 	{
-		private readonly Bucket bucketDebug;
-		private readonly Bucket bucketInformational;
-		private readonly Bucket bucketNotice;
-		private readonly Bucket bucketWarning;
-		private readonly Bucket bucketError;
-		private readonly Bucket bucketCritical;
-		private readonly Bucket bucketAlert;
-		private readonly Bucket bucketEmergency;
+		private readonly Buckets buckets;
 
 		/// <summary>
 		/// Basic event statistics
@@ -29,14 +24,12 @@ namespace TAG.Simulator.Statistics
 		public EventStatistics(DateTime StartTime, Duration BucketTime)
 			: base("Event Statistics")
 		{
-			this.bucketDebug = new Bucket("Debug", false, StartTime, BucketTime);
-			this.bucketInformational = new Bucket("Informational", false, StartTime, BucketTime);
-			this.bucketNotice = new Bucket("Notice", false, StartTime, BucketTime);
-			this.bucketWarning = new Bucket("Warning", false, StartTime, BucketTime);
-			this.bucketError = new Bucket("Error", false, StartTime, BucketTime);
-			this.bucketCritical = new Bucket("Critical", false, StartTime, BucketTime);
-			this.bucketAlert = new Bucket("Alert", false, StartTime, BucketTime);
-			this.bucketEmergency = new Bucket("Emergency", false, StartTime, BucketTime);
+			List<string> IDs = new List<string>();
+
+			foreach (Enum T in Enum.GetValues(typeof(EventType)))
+				IDs.Add(T.ToString());
+
+			this.buckets = new Buckets(StartTime, BucketTime, false, IDs.ToArray());
 		}
 
 		/// <summary>
@@ -45,18 +38,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Event">Event</param>
 		public override Task Queue(Event Event)
 		{
-			switch (Event.Type)
-			{
-				case EventType.Debug: this.bucketDebug.Inc(); break;
-				case EventType.Informational: this.bucketInformational.Inc(); break;
-				case EventType.Notice: this.bucketNotice.Inc(); break;
-				case EventType.Warning: this.bucketWarning.Inc(); break;
-				case EventType.Error: this.bucketError.Inc(); break;
-				case EventType.Critical: this.bucketCritical.Inc(); break;
-				case EventType.Alert: this.bucketAlert.Inc(); break;
-				case EventType.Emergency: this.bucketEmergency.Inc(); break;
-			}
-
+			this.buckets.Inc(Event.Type.ToString());
 			return Task.CompletedTask;
 		}
 
@@ -64,54 +46,71 @@ namespace TAG.Simulator.Statistics
 		/// Exports accumulated statistics to markdown
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public void ExportMarkdown(StreamWriter Output)
+		/// <param name="Model">Simulation model</param>
+		public void ExportMarkdown(StreamWriter Output, Model Model)
 		{
-			CountTable Table = this.GetTable();
+			CountTable Table = this.GetTable(out string[] Order);
 
 			Output.WriteLine("Events");
 			Output.WriteLine("=========");
 			Output.WriteLine();
 
-			//Table.ExportTableMarkdown(Output, "Type", "Total event counts", "TotalEventCounts");
 			Table.ExportTableGraph(Output, "Total event counts");
+
+			SKColor[] Palette = new SKColor[]
+			{
+				SKColors.DarkBlue,
+				SKColors.LightGray,
+				SKColors.LightYellow,
+				SKColors.Yellow,
+				SKColors.Red,
+				SKColors.DarkRed,
+				SKColors.Purple,
+				SKColors.Black
+			};
+
+			this.buckets.ExportCountHistoryGraph("Events", Order, Output, Model, Palette);
 		}
 
-		private CountTable GetTable()
+		private CountTable GetTable(out string[] Order)
 		{
-			CountTable Table = new CountTable();
+			Order = new string[]
+			{
+				EventType.Debug.ToString(),
+				EventType.Informational.ToString(),
+				EventType.Notice.ToString(),
+				EventType.Warning.ToString(),
+				EventType.Error.ToString(),
+				EventType.Critical.ToString(),
+				EventType.Alert.ToString(),
+				EventType.Emergency.ToString()
+			};
+			
+			CountTable Table = this.buckets.GetTotalCountTable(Order);
 
-			Table.Add("Debug", this.bucketDebug.Count);
-			Table.Add("Informational", this.bucketInformational.Count);
-			Table.Add("Notice", this.bucketNotice.Count);
-			Table.Add("Warning", this.bucketWarning.Count);
-			Table.Add("Error", this.bucketError.Count);
-			Table.Add("Critical", this.bucketCritical.Count);
-			Table.Add("Alert", this.bucketAlert.Count);
-			Table.Add("Emergency", this.bucketEmergency.Count);
+			Table.SetBgColor(Order[0], "DarkBlue");
+			Table.SetFgColor(Order[0], "White");
 
-			Table.SetBgColor("Debug", "DarkBlue");
-			Table.SetFgColor("Debug", "White");
+			Table.SetBgColor(Order[1], "LightGray");
+			Table.SetFgColor(Order[1], "Black");
 
-			Table.SetBgColor("Informational", "WhiteSmoke");
-			Table.SetFgColor("Informational", "Black");
+			Table.SetBgColor(Order[2], "LightYellow");
+			Table.SetFgColor(Order[2], "Black");
 
-			Table.SetBgColor("Notice", "LightYellow");
-			Table.SetFgColor("Notice", "Black");
+			Table.SetBgColor(Order[3], "Yellow");
+			Table.SetFgColor(Order[3], "Black");
 
-			Table.SetBgColor("Warning", "Yellow");
-			Table.SetFgColor("Warning", "Black");
+			Table.SetBgColor(Order[4], "Red");
+			Table.SetFgColor(Order[4], "Yellow");
 
-			Table.SetBgColor("Error", "Red");
-			Table.SetFgColor("Error", "Yellow");
+			Table.SetBgColor(Order[5], "DarkRed");
+			Table.SetFgColor(Order[5], "White");
 
-			Table.SetBgColor("Critical", "DarkRed");
-			Table.SetFgColor("Critical", "White");
+			Table.SetBgColor(Order[6], "Purple");
+			Table.SetFgColor(Order[6], "White");
 
-			Table.SetBgColor("Alert", "Purple");
-			Table.SetFgColor("Alert", "White");
-
-			Table.SetBgColor("Emergency", "Black");
-			Table.SetFgColor("Emergency", "White");
+			Table.SetBgColor(Order[7], "Black");
+			Table.SetFgColor(Order[7], "White");
 
 			return Table;
 		}
@@ -122,7 +121,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Output">XML output</param>
 		public void ExportXml(XmlWriter Output)
 		{
-			CountTable Table = this.GetTable();
+			CountTable Table = this.GetTable(out string[] _);
 			Table.ExportXml(Output, "Events", "EventType");
 		}
 
