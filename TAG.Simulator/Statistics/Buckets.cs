@@ -47,6 +47,24 @@ namespace TAG.Simulator.Statistics
 		}
 
 		/// <summary>
+		/// A collection of buckets
+		/// </summary>
+		/// <param name="StartTime">Starting time</param>
+		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+		/// <param name="Buckets">Predefined buckets.</param>
+		public Buckets(DateTime StartTime, Duration BucketTime, params Bucket[] Buckets)
+		{
+			this.start = StartTime;
+			this.bucketTime = BucketTime;
+
+			if (!(Buckets is null))
+			{
+				foreach (Bucket Bucket in Buckets)
+					this.buckets[Bucket.Id] = Bucket;
+			}
+		}
+
+		/// <summary>
 		/// Counts an event.
 		/// </summary>
 		/// <param name="Counter">Counter ID</param>
@@ -328,7 +346,7 @@ namespace TAG.Simulator.Statistics
 				Script.Append("G.LabelX:=\"Time × ");
 				Script.Append(Model.TimeUnitStr);
 				Script.AppendLine("\";");
-				Script.AppendLine("G.LabelY:=\"Count / ");
+				Script.Append("G.LabelY:=\"Count / ");
 				Script.Append(Model.BucketTimeStr);
 				Script.AppendLine("\";");
 				Script.Append("G.Title:=\"");
@@ -340,6 +358,22 @@ namespace TAG.Simulator.Statistics
 				Output.WriteLine(Script.ToString());
 				Output.WriteLine("}");
 				Output.WriteLine();
+			}
+		}
+
+		/// <summary>
+		/// Sample IDs
+		/// </summary>
+		public string[] IDs
+		{
+			get
+			{
+				lock (this.buckets)
+				{
+					string[] Result = new string[this.buckets.Count];
+					this.buckets.Keys.CopyTo(Result, 0);
+					return Result;
+				}
 			}
 		}
 

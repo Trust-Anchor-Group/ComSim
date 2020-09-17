@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using SkiaSharp;
 using Waher.Content;
 
 namespace TAG.Simulator.Statistics
@@ -294,5 +297,99 @@ namespace TAG.Simulator.Statistics
 		{
 			return this.statistics.GetEnumerator();
 		}
+
+
+		/// <summary>
+		/// Exports historical counts as a graph.
+		/// </summary>
+		/// <param name="Title">Title of graph.</param>
+		/// <param name="Output">Export destination</param>
+		/// <param name="Model">Simulation model</param>
+		public void ExportSampleHistoryGraph(string Title, StreamWriter Output, Model Model)
+		{
+			this.Flush();
+
+			lock (this)
+			{
+				StringBuilder TimeScript = new StringBuilder("Time:=[");
+				StringBuilder MinScript = new StringBuilder("Min:=[");
+				StringBuilder MeanScript = new StringBuilder("Mean:=[");
+				StringBuilder MaxScript = new StringBuilder("Max:=[");
+				bool First = true;
+
+				foreach (Statistic Rec in this.statistics)
+				{
+					if (First)
+						First = false;
+					else
+					{
+						TimeScript.Append(',');
+						MinScript.Append(',');
+						MeanScript.Append(',');
+						MaxScript.Append(',');
+					}
+
+					TimeScript.Append(CommonTypes.Encode(Model.GetTimeCoordinates(Rec.Start)));
+					TimeScript.Append(',');
+					TimeScript.Append(CommonTypes.Encode(Model.GetTimeCoordinates(Rec.Stop)));
+
+					if (Rec.Min.HasValue)
+					{
+						MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
+						MinScript.Append(',');
+						MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
+					}
+					else
+						MinScript.Append("null,null");
+
+					if (Rec.Mean.HasValue)
+					{
+						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
+						MeanScript.Append(',');
+						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
+					}
+					else
+						MeanScript.Append("null,null");
+
+					if (Rec.Max.HasValue)
+					{
+						MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
+						MaxScript.Append(',');
+						MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
+					}
+					else
+						MaxScript.Append("null,null");
+				}
+
+				TimeScript.Append("];");
+				MinScript.Append("];");
+				MeanScript.Append("];");
+				MaxScript.Append("];");
+
+				Output.WriteLine("{");
+				Output.WriteLine(TimeScript.ToString());
+				Output.WriteLine(MinScript.ToString());
+				Output.WriteLine(MeanScript.ToString());
+				Output.WriteLine(MaxScript.ToString());
+
+				Output.WriteLine("GraphWidth:=1000;");
+				Output.WriteLine("GraphHeight:=400;");
+				Output.WriteLine("G:=polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+				Output.Write("G.LabelX:=\"Time × ");
+				Output.Write(Model.TimeUnitStr);
+				Output.WriteLine("\";");
+				Output.Write("G.LabelY:=\"");
+				Output.Write(this.id);
+				Output.WriteLine("\";");
+				Output.Write("G.Title:=\"");
+				Output.Write(Title);
+				Output.WriteLine("\";");
+				Output.WriteLine("G");
+				Output.WriteLine("}");
+				Output.WriteLine();
+			}
+
+		}
+
 	}
 }

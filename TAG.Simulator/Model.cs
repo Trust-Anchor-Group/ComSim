@@ -141,6 +141,16 @@ namespace TAG.Simulator
 		public string BucketTimeStr => this.bucketTimeStr;
 
 		/// <summary>
+		/// Start time
+		/// </summary>
+		public DateTime StartTime => this.start;
+
+		/// <summary>
+		/// End time
+		/// </summary>
+		public DateTime EndTime => this.end;
+
+		/// <summary>
 		/// Folder used for sniffer output.
 		/// </summary>
 		public string SnifferFolder
@@ -381,6 +391,7 @@ namespace TAG.Simulator
 				double t;
 				int NrCycles = 0;
 				bool Result = true;
+				bool Emitted = false;
 
 				while ((TP = DateTime.Now) <= this.end)
 				{
@@ -397,10 +408,23 @@ namespace TAG.Simulator
 					foreach (ITimeTriggerEvent Event in this.timeTriggeredEvents)
 						Event.CheckTrigger(t1, t2, NrCycles);
 
-					if (EmitDots && Prev.Second != TP.Second)
+					int Second = TP.Second;
+
+					if (EmitDots && Prev.Second != Second)
 					{
 						Prev = TP;
-						Console.Out.Write('.');
+
+						if (Second % 10 != 0)
+							Console.Out.Write('.');
+						else
+						{
+							if (Second == 0 && Emitted)
+								Console.Out.WriteLine();
+
+							Console.Out.Write((char)(((int)'0') + (Second / 10)));
+						}
+
+						Emitted = true;
 					}
 
 					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
@@ -645,7 +669,11 @@ namespace TAG.Simulator
 				Output.WriteLine("===========");
 				Output.WriteLine();
 
-				this.samples.ExportCountHistoryGraph("Samples", null, Output, this);
+				foreach (string ID in this.samples.IDs)
+				{
+					if (this.samples.TryGetBucket(ID, out Bucket Bucket))
+						Bucket.ExportSampleHistoryGraph(ID, Output, this);
+				}
 			}
 
 			this.eventStatistics.ExportMarkdown(Output, this);

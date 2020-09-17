@@ -226,6 +226,16 @@
             Time to collect events, for statistical purposes.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.StartTime">
+            <summary>
+            Start time
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Model.EndTime">
+            <summary>
+            End time
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Model.SnifferFolder">
             <summary>
             Folder used for sniffer output.
@@ -3350,6 +3360,14 @@
             </summary>
             <returns>Enumerator</returns>
         </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.ExportSampleHistoryGraph(System.String,System.IO.StreamWriter,TAG.Simulator.Model)">
+            <summary>
+            Exports historical counts as a graph.
+            </summary>
+            <param name="Title">Title of graph.</param>
+            <param name="Output">Export destination</param>
+            <param name="Model">Simulation model</param>
+        </member>
         <member name="T:TAG.Simulator.Statistics.Buckets">
             <summary>
             A collection of buckets
@@ -3371,6 +3389,14 @@
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
             <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
             <param name="IDs">Predefined IDs</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,TAG.Simulator.Statistics.Bucket[])">
+            <summary>
+            A collection of buckets
+            </summary>
+            <param name="StartTime">Starting time</param>
+            <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+            <param name="Buckets">Predefined buckets.</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.CountEvent(System.String)">
             <summary>
@@ -3426,6 +3452,11 @@
             <param name="Output">Export destination</param>
             <param name="Model">Simulation model</param>
             <param name="Palette">Optional predefined palette</param>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.Buckets.IDs">
+            <summary>
+            Sample IDs
+            </summary>
         </member>
         <member name="T:TAG.Simulator.Statistics.CountTable">
             <summary>
