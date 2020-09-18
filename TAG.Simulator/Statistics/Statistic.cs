@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Xml;
+using Waher.Content;
+using Waher.Content.Xml;
 
 namespace TAG.Simulator.Statistics
 {
@@ -119,6 +120,34 @@ namespace TAG.Simulator.Statistics
 		/// Largest value
 		/// </summary>
 		public double? Max => this.max;
-		
+
+		/// <summary>
+		/// Exports data to XML
+		/// </summary>
+		/// <param name="Output">XML Output</param>
+		public void ExportXml(XmlWriter Output)
+		{
+			Output.WriteStartElement("Stat");
+			Output.WriteAttributeString("start", XML.Encode(this.start));
+			Output.WriteAttributeString("stop", XML.Encode(this.stop));
+			Output.WriteAttributeString("count", this.count.ToString());
+
+			if (this.mean.HasValue)
+				Output.WriteAttributeString("mean", CommonTypes.Encode(this.mean.Value));
+
+			if (this.min.HasValue)
+				Output.WriteAttributeString("min", CommonTypes.Encode(this.min.Value));
+
+			if (this.max.HasValue)
+				Output.WriteAttributeString("max", CommonTypes.Encode(this.max.Value));
+
+			if (this.variance.HasValue)
+				Output.WriteAttributeString("variance", CommonTypes.Encode(this.variance.Value));
+
+			if (this.stdDev.HasValue)
+				Output.WriteAttributeString("stdDev", CommonTypes.Encode(this.stdDev.Value));
+
+			Output.WriteEndElement();
+		}
 	}
 }

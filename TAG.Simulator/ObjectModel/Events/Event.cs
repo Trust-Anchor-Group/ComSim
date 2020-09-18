@@ -96,6 +96,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		public async void Trigger(Variables Variables)
 		{
 			KeyValuePair<string, object>[] Tags2 = null;
+			DateTime Start = DateTime.Now;
 
 			try
 			{
@@ -111,7 +112,6 @@ namespace TAG.Simulator.ObjectModel.Events
 
 				try
 				{
-					DateTime Start = DateTime.Now;
 					this.Model.IncActivityStartCount(this.activityId, this.id, Tags2);
 					await this.activity.ExecuteTask(Variables);
 					this.Model.IncActivityFinishedCount(this.activityId, this.id, DateTime.Now - Start, Tags2);
@@ -130,7 +130,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (Tags2 is null)
 					Tags2 = new KeyValuePair<string, object>[0];
 
-				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, Tags2);
+				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, DateTime.Now - Start, Tags2);
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 using SkiaSharp;
 using Waher.Content;
 
@@ -22,7 +23,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
 		public Buckets(DateTime StartTime, Duration BucketTime)
-			: this(StartTime, BucketTime, false, false, null)
+			: this(StartTime, BucketTime, false, null)
 		{
 		}
 
@@ -32,9 +33,8 @@ namespace TAG.Simulator.Statistics
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
-		/// <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
 		/// <param name="IDs">Predefined IDs</param>
-		public Buckets(DateTime StartTime, Duration BucketTime, bool CalcStdDev, bool PersistentCounters, string[] IDs)
+		public Buckets(DateTime StartTime, Duration BucketTime, bool CalcStdDev, string[] IDs)
 		{
 			this.start = StartTime;
 			this.bucketTime = BucketTime;
@@ -42,7 +42,7 @@ namespace TAG.Simulator.Statistics
 			if (!(IDs is null))
 			{
 				foreach (string ID in IDs)
-					this.buckets[ID] = new Bucket(ID, CalcStdDev, PersistentCounters, StartTime, BucketTime);
+					this.buckets[ID] = new Bucket(ID, CalcStdDev, StartTime, BucketTime);
 			}
 		}
 
@@ -76,12 +76,12 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
 
-			this.start = Bucket.Inc();
+			this.start = Bucket.CountOccurrence();
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -116,7 +116,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -137,7 +137,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, true, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, true, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -186,6 +186,30 @@ namespace TAG.Simulator.Statistics
 			}
 
 			return Result;
+		}
+
+		/// <summary>
+		/// Exports data to XML
+		/// </summary>
+		/// <param name="Output">XML Output</param>
+		/// <param name="TableElement">XML Table element name.</param>
+		/// <param name="RowElement">XML Row element name.</param>
+		public void ExportXml(XmlWriter Output, string TableElement, string RowElement)
+		{
+			Output.WriteStartElement(TableElement);
+
+			Bucket[] Buckets;
+
+			lock (this.buckets)
+			{
+				Buckets = new Bucket[this.buckets.Count];
+				this.buckets.Values.CopyTo(Buckets, 0);
+			}
+
+			foreach (Bucket Bucket in Buckets)
+				Bucket.ExportXml(Output, RowElement);
+
+			Output.WriteEndElement();
 		}
 
 		/// <summary>
@@ -241,7 +265,7 @@ namespace TAG.Simulator.Statistics
 							if (!Counts.ContainsKey(Last.Stop))
 								Counts[Last.Stop] = 0;
 						}
-
+				
 						Count++;
 					}
 				}

@@ -82,6 +82,8 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		{
 			Output.WriteElementString("Title", this.title);
 			Output.WriteElementString("DateTime", XML.Encode(DateTime.Now));
+			Output.WriteElementString("Start", XML.Encode(this.Model.StartTime));
+			Output.WriteElementString("End", XML.Encode(this.Model.EndTime));
 
 			return base.ExportXml(Output);
 		}

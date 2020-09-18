@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SkiaSharp;
+using System.Xml;
 using Waher.Content;
 
 namespace TAG.Simulator.Statistics
@@ -18,7 +18,6 @@ namespace TAG.Simulator.Statistics
 		private readonly string id;
 		private readonly Duration bucketTime;
 		private readonly bool calcStdDev;
-		private readonly bool persistentCounters;
 		private DateTime start;
 		private DateTime stop;
 		private long count = 0;
@@ -33,15 +32,13 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="Id">ID of bucket.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
-		/// <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
-		public Bucket(string Id, bool CalcStdDev, bool PersistentCounters, DateTime StartTime, Duration BucketTime)
+		public Bucket(string Id, bool CalcStdDev, DateTime StartTime, Duration BucketTime)
 		{
 			this.id = Id;
 			this.samples = CalcStdDev ? new LinkedList<double>() : null;
 			this.calcStdDev = CalcStdDev;
-			this.persistentCounters = PersistentCounters;
 			this.bucketTime = BucketTime;
 			this.start = StartTime;
 			this.stop = this.start + BucketTime;
@@ -232,6 +229,25 @@ namespace TAG.Simulator.Statistics
 		}
 
 		/// <summary>
+		/// Counts one occurrence
+		/// </summary>
+		/// <returns>Start time of bucket to which the value was reported.</returns>
+		public DateTime CountOccurrence()
+		{
+			lock (this)
+			{
+				DateTime Now = DateTime.Now;
+				while (Now >= this.stop)
+					this.NextBucketLocked();
+
+				this.count++;
+				this.totCount++;
+
+				return this.start;
+			}
+		}
+
+		/// <summary>
 		/// Variance of samples
 		/// </summary>
 		public double Variance
@@ -303,9 +319,10 @@ namespace TAG.Simulator.Statistics
 		/// Exports historical counts as a graph.
 		/// </summary>
 		/// <param name="Title">Title of graph.</param>
+		/// <param name="LabelY">Label for Y-axis.</param>
 		/// <param name="Output">Export destination</param>
 		/// <param name="Model">Simulation model</param>
-		public void ExportSampleHistoryGraph(string Title, StreamWriter Output, Model Model)
+		public void ExportSampleHistoryGraph(string Title, string LabelY, StreamWriter Output, Model Model)
 		{
 			this.Flush();
 
@@ -379,7 +396,7 @@ namespace TAG.Simulator.Statistics
 				Output.Write(Model.TimeUnitStr);
 				Output.WriteLine("\";");
 				Output.Write("G.LabelY:=\"");
-				Output.Write(this.id);
+				Output.Write(LabelY);
 				Output.WriteLine("\";");
 				Output.Write("G.Title:=\"");
 				Output.Write(Title);
@@ -388,7 +405,28 @@ namespace TAG.Simulator.Statistics
 				Output.WriteLine("}");
 				Output.WriteLine();
 			}
+		}
 
+		/// <summary>
+		/// Exports data to XML
+		/// </summary>
+		/// <param name="Output">XML Output</param>
+		/// <param name="RowElement">XML Row element name.</param>
+		public void ExportXml(XmlWriter Output, string RowElement)
+		{
+			this.Flush();
+
+			lock (this)
+			{
+				Output.WriteStartElement(RowElement);
+				Output.WriteAttributeString("type", this.id);
+				Output.WriteAttributeString("count", this.totCount.ToString());
+
+				foreach (Statistic Rec in this.statistics)
+					Rec.ExportXml(Output);
+
+				Output.WriteEndElement();
+			}
 		}
 
 	}

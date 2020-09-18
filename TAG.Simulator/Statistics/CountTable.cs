@@ -186,26 +186,5 @@ namespace TAG.Simulator.Statistics
 			Output.WriteLine();
 		}
 
-		/// <summary>
-		/// Exports data to XML
-		/// </summary>
-		/// <param name="Output">XML Output</param>
-		/// <param name="TableElement">XML Table element name.</param>
-		/// <param name="RowElement">XML Row element name.</param>
-		public void ExportXml(XmlWriter Output, string TableElement, string RowElement)
-		{
-			Output.WriteStartElement(TableElement);
-
-			foreach (KeyValuePair<string, long> P in this.counts)
-			{
-				Output.WriteStartElement(RowElement);
-				Output.WriteAttributeString("type", P.Key);
-				Output.WriteAttributeString("count", P.Value.ToString());
-				Output.WriteEndElement();
-			}
-
-			Output.WriteEndElement();
-		}
-
 	}
 }

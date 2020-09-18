@@ -420,12 +420,13 @@
             <param name="ElapsedTime">Elapsed time.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.String,System.TimeSpan,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is stopped, due to error.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
+            <param name="ElapsedTime">Elapsed time.</param>
             <param name="ErrorMessage">Error message.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
@@ -3269,13 +3270,12 @@
             Statistical bucket
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.#ctor(System.String,System.Boolean,System.Boolean,System.DateTime,Waher.Content.Duration)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.#ctor(System.String,System.Boolean,System.DateTime,Waher.Content.Duration)">
             <summary>
             Statistical bucket
             </summary>
             <param name="Id">ID of bucket.</param>
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
-            <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
         </member>
@@ -3333,6 +3333,12 @@
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.CountOccurrence">
+            <summary>
+            Counts one occurrence
+            </summary>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
         <member name="P:TAG.Simulator.Statistics.Bucket.Variance">
             <summary>
             Variance of samples
@@ -3360,13 +3366,21 @@
             </summary>
             <returns>Enumerator</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.ExportSampleHistoryGraph(System.String,System.IO.StreamWriter,TAG.Simulator.Model)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.ExportSampleHistoryGraph(System.String,System.String,System.IO.StreamWriter,TAG.Simulator.Model)">
             <summary>
             Exports historical counts as a graph.
             </summary>
             <param name="Title">Title of graph.</param>
+            <param name="LabelY">Label for Y-axis.</param>
             <param name="Output">Export destination</param>
             <param name="Model">Simulation model</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.ExportXml(System.Xml.XmlWriter,System.String)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
+            <param name="RowElement">XML Row element name.</param>
         </member>
         <member name="T:TAG.Simulator.Statistics.Buckets">
             <summary>
@@ -3380,14 +3394,13 @@
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,System.Boolean,System.Boolean,System.String[])">
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,System.Boolean,System.String[])">
             <summary>
             A collection of buckets
             </summary>
             <param name="StartTime">Starting time</param>
             <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
-            <param name="PersistentCounters">If counters are persistent across bucket boundaries.</param>
             <param name="IDs">Predefined IDs</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,TAG.Simulator.Statistics.Bucket[])">
@@ -3434,6 +3447,14 @@
             </summary>
             <param name="Order">Optional sort order of records.</param>
             <returns>Count table</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.ExportXml(System.Xml.XmlWriter,System.String,System.String)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
+            <param name="TableElement">XML Table element name.</param>
+            <param name="RowElement">XML Row element name.</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.TryGetBucket(System.String,TAG.Simulator.Statistics.Bucket@)">
             <summary>
@@ -3504,14 +3525,6 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="Title">Title string</param>
-        </member>
-        <member name="M:TAG.Simulator.Statistics.CountTable.ExportXml(System.Xml.XmlWriter,System.String,System.String)">
-            <summary>
-            Exports data to XML
-            </summary>
-            <param name="Output">XML Output</param>
-            <param name="TableElement">XML Table element name.</param>
-            <param name="RowElement">XML Row element name.</param>
         </member>
         <member name="T:TAG.Simulator.Statistics.EventStatistics">
             <summary>
@@ -3620,6 +3633,12 @@
             <summary>
             Largest value
             </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Statistic.ExportXml(System.Xml.XmlWriter)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
         </member>
     </members>
 </doc>

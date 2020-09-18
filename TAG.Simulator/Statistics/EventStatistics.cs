@@ -29,7 +29,7 @@ namespace TAG.Simulator.Statistics
 			foreach (Enum T in Enum.GetValues(typeof(EventType)))
 				IDs.Add(T.ToString());
 
-			this.buckets = new Buckets(StartTime, BucketTime, false, false, IDs.ToArray());
+			this.buckets = new Buckets(StartTime, BucketTime, false, IDs.ToArray());
 		}
 
 		/// <summary>
@@ -121,8 +121,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Output">XML output</param>
 		public void ExportXml(XmlWriter Output)
 		{
-			CountTable Table = this.GetTable(out string[] _);
-			Table.ExportXml(Output, "Events", "EventType");
+			this.buckets.ExportXml(Output, "Events", "EventType");
 		}
 
 	}

@@ -139,7 +139,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 
 			await base.ExportMarkdown(Output);
 
-			Output.WriteLine("```uml");
+			Output.WriteLine("```uml: Activity chart for " + this.id);
 			Output.WriteLine("@startuml");
 
 			foreach (IActivityNode Node in this.activityNodes)
@@ -148,6 +148,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("@enduml");
 			Output.WriteLine("```");
 			Output.WriteLine();
+
+			this.Model.ExportActivityCharts(this.id, Output);
 		}
 
 	}

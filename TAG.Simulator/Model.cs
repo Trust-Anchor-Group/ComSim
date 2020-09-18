@@ -168,12 +168,6 @@ namespace TAG.Simulator
 			set => this.snifferTransformFileName = value;
 		}
 
-		internal EventStatistics EventStatistics => this.eventStatistics;
-		internal Buckets ActivityStartStatistics => this.activityStartStatistics;
-		internal Buckets ActivityTimeStatistics => this.activityTimeStatistics;
-		internal Buckets Counters => this.counters;
-		internal Buckets Samples => this.samples;
-
 		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
@@ -211,9 +205,17 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		public override Task Initialize()
+		public override async Task Initialize()
 		{
 			this.start = DateTime.Now;
+			if (this.start.Millisecond != 0)
+			{
+				this.start = this.start.AddMilliseconds(1000 - this.start.Millisecond);
+
+				while (DateTime.Now < this.start)
+					await Task.Delay(1);
+			}
+
 			this.end = this.start + this.duration;
 
 			this.timeUnitMs = ((this.start + this.timeUnit) - this.start).TotalMilliseconds;
@@ -227,7 +229,7 @@ namespace TAG.Simulator
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime);
 			Log.Register(this.eventStatistics);
 
-			return base.Initialize();
+			await base.Initialize();
 		}
 
 		/// <summary>
@@ -607,10 +609,12 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
+		/// <param name="ElapsedTime">Elapsed time.</param>
 		/// <param name="ErrorMessage">Error message.</param>
 		/// <param name="Tags">Meta-data tags related to the event.</param>
-		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, params KeyValuePair<string, object>[] Tags)
+		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
+			this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
 			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}
 
@@ -672,7 +676,7 @@ namespace TAG.Simulator
 				foreach (string ID in this.samples.IDs)
 				{
 					if (this.samples.TryGetBucket(ID, out Bucket Bucket))
-						Bucket.ExportSampleHistoryGraph(ID, Output, this);
+						Bucket.ExportSampleHistoryGraph(ID, "Mean(" + ID + ")", Output, this);
 				}
 			}
 
@@ -701,6 +705,38 @@ namespace TAG.Simulator
 			}
 		}
 
+		internal void ExportActivityCharts(string ActivityId, StreamWriter Output)
+		{
+			if (this.activityStartStatistics.TryGetBucket(ActivityId, out Bucket Bucket))
+			{
+				string[] Order = this.ActivityOrder();
+				int i = -1;
+				int Index = 0;
+
+				foreach (string Id in Order)
+				{
+					if (!this.activityStartStatistics.TryGetBucket(Id, out Bucket _))
+						continue;
+
+					if (Id == ActivityId)
+						i = Index;
+
+					Index++;
+				}
+
+				if (i >= 0)
+				{
+					SKColor[] Palette = CreatePalette(Index);
+
+					this.activityStartStatistics.ExportCountHistoryGraph("Executions of " + ActivityId,
+						new string[] { ActivityId }, Output, this, new SKColor[] { Palette[i] });
+				}
+			}
+
+			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out Bucket))
+				Bucket.ExportSampleHistoryGraph("Execution time of " + ActivityId, "Mean execution time (s)", Output, this);
+		}
+
 		private string[] ActivityOrder()
 		{
 			foreach (ISimulationNode Node in this.Children)
@@ -723,22 +759,13 @@ namespace TAG.Simulator
 			await base.ExportXml(Output);
 
 			if (this.activityStartStatistics.Count > 0)
-			{
-				CountTable Table = this.activityStartStatistics.GetTotalCountTable();
-				Table.ExportXml(Output, "ActivityStarts", "ActivityStart");
-			}
+				this.activityStartStatistics.ExportXml(Output, "ActivityStarts", "ActivityStart");
 
 			if (this.activityTimeStatistics.Count > 0)
-			{
-				CountTable Table = this.activityTimeStatistics.GetTotalCountTable();
-				Table.ExportXml(Output, "ActivityTimes", "ActivityTime");
-			}
+				this.activityTimeStatistics.ExportXml(Output, "ActivityTimes", "ActivityTime");
 
 			if (this.counters.Count > 0)
-			{
-				CountTable Table = this.counters.GetTotalCountTable();
-				Table.ExportXml(Output, "Counters", "Counter");
-			}
+				this.counters.ExportXml(Output, "Counters", "Counter");
 
 			this.eventStatistics.ExportXml(Output);
 		}
