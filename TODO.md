@@ -31,23 +31,23 @@ Features
 		[x] Actions
 		[x] Events
 		[x] Counters
-		[ ] Histograms
-		[ ] Avg, stddev, var, min, max, mean, median
-		[ ] Errors, Exceptions (from Log)
-		[ ] Event type histogram over time
+		[x] Histograms
+		[x] Mean, stddev, var, min, max
+		[x] Errors, Exceptions (from Log)
+		[x] Event type histogram over time
 		[ ] Custom SQL
 	[ ] Charts
-		[ ] History charts
+		[x] History charts
 		[ ] Use case charts
 		[ ] Distribution (expected) charts
 	[ ] Data as XMLs
 	[ ] Report as Markdown
 		[ ] Distributions
 		[ ] Models
-		[ ] Activity charts
-		[ ] Statistics
+		[x] Activity charts
+		[x] Statistics
 		[ ] Custom graphs
-		[ ] Event log statistics
+		[x] Event log statistics
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
 [ ] Generate action documentation (xml, xslt) automatically
@@ -71,7 +71,7 @@ Features
 Examples
 --------------
 
-[ ] Simple chat
+[x] Simple chat
 [ ] Guess a number
 [ ] Federation
 [ ] Web Server Load (HTTP GET)
