@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Content;
 using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Distributions
@@ -112,6 +114,23 @@ namespace TAG.Simulator.ObjectModel.Distributions
 			}
 
 			return ((1 + Erf((t - this.μ) / this.σSqrt2)) / 2) + NrCycles;
+		}
+
+		/// <summary>
+		/// Exports the PDF function body.
+		/// </summary>
+		/// <param name="Output">Export output</param>
+		public override void ExportPdfBody(StreamWriter Output)
+		{
+			string s;
+
+			Output.Write("exp(-(((t-");
+			Output.Write(CommonTypes.Encode(this.μ));
+			Output.Write(")/");
+			Output.Write(s = CommonTypes.Encode(this.σ));
+			Output.Write(").^2)/2)/(");
+			Output.Write(s);
+			Output.Write("*sqrt(2*pi))");
 		}
 
 	}

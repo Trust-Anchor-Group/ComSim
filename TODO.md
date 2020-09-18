@@ -36,13 +36,13 @@ Features
 		[x] Errors, Exceptions (from Log)
 		[x] Event type histogram over time
 		[ ] Custom SQL
-	[ ] Charts
+	[x] Charts
 		[x] History charts
 		[x] Use case charts
-		[ ] Distribution (expected) charts
+		[x] Distribution (expected) charts
 	[x] Data as XML
 	[ ] Report as Markdown
-		[ ] Distributions
+		[x] Distributions
 		[x] Models
 		[x] Activity charts
 		[x] Statistics
@@ -51,7 +51,6 @@ Features
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
 [x] Generate action documentation (xml, xslt) automatically
-[ ] Distributions
 [ ] XMPP
 	[ ] Message handlers
 	[ ] Iq handlers

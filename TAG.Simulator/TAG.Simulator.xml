@@ -1794,6 +1794,24 @@
             <param name="NrCycles">Number of time cycles completed.</param>
             <returns>CDU(t)</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.ExportPdfOnceOnly(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function, if not already exported.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.ExportPdf(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.ExportPdfBody(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function body.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
             <summary>
             Container for distributions.
@@ -1837,6 +1855,12 @@
             <param name="t2">Ending time of period.</param>
             <param name="NrCycles">Number of time cycles completed.</param>
             <returns>How many times samples were found in time period.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.IDistribution.ExportPdfOnceOnly(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function, if not already exported.
+            </summary>
+            <param name="Output">Export output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Normal">
             <summary>
@@ -1894,6 +1918,12 @@
             <param name="NrCycles">Number of time cycles completed.</param>
             <returns>CDU(t)</returns>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Normal.ExportPdfBody(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function body.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Uniform">
             <summary>
             Uniform distribution
@@ -1947,6 +1977,12 @@
             <param name="t">Time</param>
             <param name="NrCycles">Number of time cycles completed.</param>
             <returns>CDU(t)</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Uniform.ExportPdfBody(System.IO.StreamWriter)">
+            <summary>
+            Exports the PDF function body.
+            </summary>
+            <param name="Output">Export output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ActorReference">
             <summary>
@@ -2085,6 +2121,12 @@
             Exports PlantUML
             </summary>
             <param name="Output">Output node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportUseCaseData(System.IO.StreamWriter)">
+            <summary>
+            Exports use case diagram data.
+            </summary>
+            <param name="Output">Output stream.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.EventHandler">
             <summary>
@@ -2528,6 +2570,18 @@
             <param name="t1">Starting time of period.</param>
             <param name="t2">Ending time of period.</param>
             <param name="NrCycles">Number of time cycles completed.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.ExportUseCaseData(System.IO.StreamWriter)">
+            <summary>
+            Exports use case diagram data.
+            </summary>
+            <param name="Output">Output stream.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Description">
             <summary>

@@ -165,6 +165,19 @@ namespace TAG.Simulator.ObjectModel.Events
 			Output.WriteLine("```uml: Use Case chart for " + Header);
 			Output.WriteLine("@startuml");
 
+			this.ExportUseCaseData(Output);
+
+			Output.WriteLine("@enduml");
+			Output.WriteLine("```");
+			Output.WriteLine();
+		}
+
+		/// <summary>
+		/// Exports use case diagram data.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		public virtual void ExportUseCaseData(StreamWriter Output)
+		{
 			Output.Write("usecase \"");
 			Output.Write(this.activityId);
 			Output.WriteLine("\" as UC1");
@@ -243,12 +256,6 @@ namespace TAG.Simulator.ObjectModel.Events
 					i++;
 				}
 			}
-
-			Output.WriteLine("@enduml");
-			Output.WriteLine("```");
-			Output.WriteLine();
-
-			this.Model.ExportActivityCharts(this.id, Output);
 		}
 
 	}

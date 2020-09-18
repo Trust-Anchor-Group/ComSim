@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Distributions;
+using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -87,6 +88,77 @@ namespace TAG.Simulator.ObjectModel.Events
 			{
 				this.Trigger(new Variables());
 				n--;
+			}
+		}
+
+		/// <summary>
+		/// Exports use case diagram data.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		public override void ExportUseCaseData(StreamWriter Output)
+		{
+			base.ExportUseCaseData(Output);
+
+			Output.WriteLine("note right of UC1");
+			Output.Write("Triggered in accordance with distribution ");
+			Output.WriteLine(this.distributionId);
+			Output.WriteLine("end note");
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportMarkdown(StreamWriter Output)
+		{
+			await base.ExportMarkdown(Output);
+
+			if (!(this.distribution is null))
+			{
+				double t2 = Model.GetTimeCoordinates(this.Model.EndTime);
+				double dt = t2 / 1000;
+				string s;
+
+				Output.WriteLine("{");
+				Output.WriteLine("GraphWidth:=1000;");
+				Output.WriteLine("GraphHeight:=400;");
+
+				this.distribution.ExportPdfOnceOnly(Output);
+
+				Output.Write("t:=0..");
+				Output.Write(CommonTypes.Encode(t2));
+				Output.Write("|");
+				Output.Write(CommonTypes.Encode(dt));
+				Output.WriteLine(";");
+
+				if (this.Model.TimeCycleUnits != 1)
+				{
+					Output.Write("ct:=t/");
+					Output.Write(s = CommonTypes.Encode(this.Model.TimeCycleUnits));
+					Output.WriteLine(";");
+					Output.Write("ct:=(ct-floor(ct))*");
+					Output.Write(s);
+					Output.WriteLine(";");
+				}
+				else
+					Output.WriteLine("ct:=t-floor(t);");
+
+				Output.Write("y:=");
+				Output.Write(this.distributionId);
+				Output.WriteLine("PDF(ct);");
+				Output.WriteLine("G:=plot2dlinearea(t,y,Alpha(\"Blue\",64))+plot2dline(t,y,\"Blue\");");
+				Output.Write("G.LabelX:=\"Time × ");
+				Output.Write(this.Model.TimeUnitStr);
+				Output.WriteLine("\";");
+				Output.Write("G.LabelY:=\"Intensity (/ ");
+				Output.Write(this.Model.TimeUnitStr);
+				Output.WriteLine(")\";");
+				Output.Write("G.Title:=\"Probability Density Function of ");
+				Output.Write(this.distributionId);
+				Output.WriteLine("\";");
+				Output.WriteLine("G");
+				Output.WriteLine("}");
+				Output.WriteLine();
 			}
 		}
 

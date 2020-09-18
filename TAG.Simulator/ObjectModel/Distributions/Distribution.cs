@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Content;
 using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Distributions
@@ -103,6 +105,52 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="NrCycles">Number of time cycles completed.</param>
 		/// <returns>CDU(t)</returns>
 		protected abstract double GetCumulativeProbability(double t, int NrCycles);
+
+		/// <summary>
+		/// Exports the PDF function, if not already exported.
+		/// </summary>
+		/// <param name="Output">Export output</param>
+		public void ExportPdfOnceOnly(StreamWriter Output)
+		{
+			if (!this.exported)
+			{
+				this.exported = true;
+				this.ExportPdf(Output);
+			}
+		}
+
+		private bool exported;
+
+		/// <summary>
+		/// Exports the PDF function.
+		/// </summary>
+		/// <param name="Output">Export output</param>
+		public virtual void ExportPdf(StreamWriter Output)
+		{
+			Output.Write(this.id);
+			Output.Write("PDF(t):=");
+			if (this.n != 1 || this.Model.TimeCycleUnits != 1)
+			{
+				Output.Write(CommonTypes.Encode(this.n));
+
+				if (this.Model.TimeCycleUnits != 1)
+				{
+					Output.Write('/');
+					Output.Write(CommonTypes.Encode(this.Model.TimeCycleUnits));
+				}
+
+				Output.Write('*');
+			}
+			Output.Write('(');
+			this.ExportPdfBody(Output);
+			Output.WriteLine(");");
+		}
+
+		/// <summary>
+		/// Exports the PDF function body.
+		/// </summary>
+		/// <param name="Output">Export output</param>
+		public abstract void ExportPdfBody(StreamWriter Output);
 
 	}
 }

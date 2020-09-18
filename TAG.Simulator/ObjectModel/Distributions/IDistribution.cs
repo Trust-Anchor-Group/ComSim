@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -27,5 +28,10 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <returns>How many times samples were found in time period.</returns>
 		int CheckTrigger(double t1, double t2, int NrCycles);
 
+		/// <summary>
+		/// Exports the PDF function, if not already exported.
+		/// </summary>
+		/// <param name="Output">Export output</param>
+		void ExportPdfOnceOnly(StreamWriter Output);
 	}
 }
