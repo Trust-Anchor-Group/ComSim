@@ -56,7 +56,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		/// <param name="QuoteChar">Quote character.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Indent(Output, Indentation);
 			Output.Write(":Inc(");

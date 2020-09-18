@@ -15,6 +15,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	{
 		private Dictionary<string, Parameter> parameters = null;
 		private IEvent eventReference;
+		private IActor actor;
 		private string name;
 		private string eventId;
 		private string actorName;
@@ -45,6 +46,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		public string ActorName => this.actorName;
 
 		/// <summary>
+		/// Actor reference.
+		/// </summary>
+		public IActor Actor => this.actor;
+
+		/// <summary>
 		/// Referenced event object.
 		/// </summary>
 		public IEvent Event => this.eventReference;
@@ -53,6 +59,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => "ExternalEvent";
+
+		/// <summary>
+		/// Parameters
+		/// </summary>
+		public IEnumerable<Parameter> Parameters => this.parameters?.Values;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -83,8 +94,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Initialize()
 		{
-			if (this.Parent is IActor Actor)
-				Actor.Register(this);
+			this.actor = this.Parent as IActor;
+			if (!(this.actor is null))
+				this.actor.Register(this);
 			else
 				throw new Exception("External event registered on a node that is not an actor.");
 
@@ -98,6 +110,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			if (!this.Model.TryGetEvent(this.eventId, out this.eventReference))
 				throw new Exception("Event node not found: " + this.eventId);
+
+			this.eventReference.Register(this);
 
 			return base.Start();
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
@@ -73,6 +74,5 @@ namespace TAG.Simulator.ObjectModel.Events
 
 			return base.Initialize();
 		}
-
 	}
 }

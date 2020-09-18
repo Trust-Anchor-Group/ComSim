@@ -8,7 +8,7 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
-[x] Meta-data
+[ ] Meta-data
 	[x] Title
 	[x] Description
 	[ ] Script
@@ -38,19 +38,19 @@ Features
 		[ ] Custom SQL
 	[ ] Charts
 		[x] History charts
-		[ ] Use case charts
+		[x] Use case charts
 		[ ] Distribution (expected) charts
-	[ ] Data as XMLs
+	[x] Data as XML
 	[ ] Report as Markdown
 		[ ] Distributions
-		[ ] Models
+		[x] Models
 		[x] Activity charts
 		[x] Statistics
 		[ ] Custom graphs
 		[x] Event log statistics
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
-[ ] Generate action documentation (xml, xslt) automatically
+[x] Generate action documentation (xml, xslt) automatically
 [ ] Distributions
 [ ] XMPP
 	[ ] Message handlers

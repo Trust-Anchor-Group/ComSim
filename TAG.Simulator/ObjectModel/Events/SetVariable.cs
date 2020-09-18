@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
@@ -87,6 +88,23 @@ namespace TAG.Simulator.ObjectModel.Events
 		public override void Release(Variables Variables)
 		{
 			Variables.Remove(this.name);
+		}
+
+		/// <summary>
+		/// Exports the node to PlantUML script in a markdown document.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		public override void ExportPlantUml(StreamWriter Output)
+		{
+			Output.Write("note \"");
+			Output.Write(this.name);
+			Output.Write('=');
+			this.value?.ExportPlantUml(Output, 0, '\'');
+			Output.Write("\" as N");
+			Output.WriteLine(this.name);
+
+			Output.Write("UC1 .. N");
+			Output.WriteLine(this.name);
 		}
 	}
 }

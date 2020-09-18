@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -21,5 +22,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		void Release(Variables Variables);
+
+		/// <summary>
+		/// Exports the node to PlantUML script in a markdown document.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		void ExportPlantUml(StreamWriter Output);
 	}
 }

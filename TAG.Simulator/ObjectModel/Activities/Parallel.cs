@@ -61,7 +61,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		/// <param name="QuoteChar">Quote character.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			bool First = true;
 			LinkedListNode<IActivityNode> Loop = this.FirstNode;
@@ -78,7 +79,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 				else
 					Output.WriteLine("fork again");
 
-				Loop.Value.ExportPlantUml(Output, Indentation + 1);
+				Loop.Value.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 			}
 
 			if (!First)

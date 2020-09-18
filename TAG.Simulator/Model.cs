@@ -683,6 +683,20 @@ namespace TAG.Simulator
 			this.eventStatistics.ExportMarkdown(Output, this);
 		}
 
+		internal void ExportUseCasesIntroduction(StreamWriter Output)
+		{
+			if (this.useCasesIntroduction)
+				return;
+
+			this.useCasesIntroduction = true;
+
+			Output.WriteLine("Use Cases");
+			Output.WriteLine("=============");
+			Output.WriteLine();
+		}
+
+		private bool useCasesIntroduction;
+
 		internal void ExportActivitiesIntroduction(StreamWriter Output)
 		{
 			if (this.activitiesIntroduction)
@@ -707,7 +721,7 @@ namespace TAG.Simulator
 
 		internal void ExportActivityCharts(string ActivityId, StreamWriter Output)
 		{
-			if (this.activityStartStatistics.TryGetBucket(ActivityId, out Bucket Bucket))
+			if (this.activityStartStatistics.TryGetBucket(ActivityId, out Bucket _))
 			{
 				string[] Order = this.ActivityOrder();
 				int i = -1;
@@ -733,7 +747,7 @@ namespace TAG.Simulator
 				}
 			}
 
-			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out Bucket))
+			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out Bucket Bucket))
 				Bucket.ExportSampleHistoryGraph("Execution time of " + ActivityId, "Mean execution time (s)", Output, this);
 		}
 

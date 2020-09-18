@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
-using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -15,6 +15,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	public abstract class Event : SimulationNodeChildren, IEvent
 	{
 		private LinkedList<IEventPreparation> preparationNodes = null;
+		private LinkedList<ExternalEvent> externalEvents = null;
 		private IActivity activity;
 		private string activityId;
 		private string id;
@@ -90,6 +91,18 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// Registers an external event.
+		/// </summary>
+		/// <param name="ExternalEvent">External event.</param>
+		public void Register(ExternalEvent ExternalEvent)
+		{
+			if (this.externalEvents is null)
+				this.externalEvents = new LinkedList<ExternalEvent>();
+
+			this.externalEvents.AddLast(ExternalEvent);
+		}
+
+		/// <summary>
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
@@ -132,6 +145,110 @@ namespace TAG.Simulator.ObjectModel.Events
 
 				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, DateTime.Now - Start, Tags2);
 			}
+		}
+
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		public override async Task ExportMarkdown(StreamWriter Output)
+		{
+			this.Model.ExportUseCasesIntroduction(Output);
+
+			string Header = string.IsNullOrEmpty(this.Id) ? this.ActivityId : this.Id;
+			Output.WriteLine(Header);
+			Output.WriteLine(new string('-', Header.Length + 3));
+			Output.WriteLine();
+
+			await base.ExportMarkdown(Output);
+
+			Output.WriteLine("```uml: Use Case chart for " + Header);
+			Output.WriteLine("@startuml");
+
+			Output.Write("usecase \"");
+			Output.Write(this.activityId);
+			Output.WriteLine("\" as UC1");
+
+			if (!(this.preparationNodes is null))
+			{
+				foreach (IEventPreparation Node in this.preparationNodes)
+					Node.ExportPlantUml(Output);
+			}
+
+			if (!(this.externalEvents is null))
+			{
+				int i = 0;
+
+				foreach (ExternalEvent ExternalEvent in this.externalEvents)
+				{
+					if (ExternalEvent.Actor is null)
+						continue;
+
+					Output.Write("actor \"");
+
+					if (string.IsNullOrEmpty(ExternalEvent.ActorName))
+					{
+						Output.Write(ExternalEvent.Actor.Id);
+						Output.Write("\" as ");
+						Output.Write(ExternalEvent.Actor.Id);
+						Output.Write("_B");
+						Output.Write(i.ToString());
+
+						Output.Write(ExternalEvent.Actor.Id);
+					}
+					else
+					{
+						Output.Write(ExternalEvent.ActorName);
+						Output.Write("\" as ");
+						Output.Write(ExternalEvent.ActorName);
+						Output.Write("_B");
+						Output.Write(i.ToString());
+						Output.Write(" <<");
+						Output.Write(ExternalEvent.Actor.Id);
+						Output.WriteLine(">>");
+
+						Output.Write(ExternalEvent.ActorName);
+					}
+
+					Output.Write("_B");
+					Output.Write(i.ToString());
+					Output.Write(" --> UC1 : ");
+					Output.Write(ExternalEvent.Name);
+					Output.Write("(");
+
+					IEnumerable<Parameter> Parameters = ExternalEvent.Parameters;
+					if (!(Parameters is null))
+					{
+						bool First = true;
+
+						foreach (Parameter P in Parameters)
+						{
+							if (First)
+								First = false;
+							else
+								Output.Write(", ");
+
+							if (!string.IsNullOrEmpty(P.Variable))
+							{
+								Output.Write(P.Variable);
+								Output.Write('=');
+							}
+
+							Output.Write(P.Name);
+						}
+					}
+
+					Output.WriteLine(")");
+
+					i++;
+				}
+			}
+
+			Output.WriteLine("@enduml");
+			Output.WriteLine("```");
+			Output.WriteLine();
+
+			this.Model.ExportActivityCharts(this.id, Output);
 		}
 
 	}

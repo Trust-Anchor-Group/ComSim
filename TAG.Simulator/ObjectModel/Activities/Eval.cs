@@ -85,9 +85,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation)
+		/// <param name="QuoteChar">Quote character.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			ExportPlantUml(this.script, Output, Indentation, true);
+			ExportPlantUml(this.script, Output, Indentation, QuoteChar, true);
 		}
 
 		/// <summary>
@@ -96,10 +97,14 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Script">Script expression.</param>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
+		/// <param name="QuoteChar">Quote character.</param>
 		/// <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
-		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation, bool Delimiters)
+		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation, char QuoteChar, bool Delimiters)
 		{
 			bool First = true;
+
+			if (QuoteChar != '"')
+				Script = Script.Replace('"', QuoteChar);
 
 			foreach (string Row in Script.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n'))
 			{

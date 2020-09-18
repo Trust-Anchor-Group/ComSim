@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
@@ -144,6 +145,35 @@ namespace TAG.Simulator.ObjectModel.Events
 				{
 					ActorPopulation.ReturnIndividual(InstanceActor);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Exports the node to PlantUML script in a markdown document.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		public override void ExportPlantUml(StreamWriter Output)
+		{
+			int i = 0;
+
+			foreach (IActor Actor in this.actors)
+			{
+				Output.Write("actor \"");
+				Output.Write(this.name);
+				Output.Write("\" as ");
+				Output.Write(this.name);
+				Output.Write("_A");
+				Output.Write(i.ToString());
+				Output.Write(" <<");
+				Output.Write(Actor.Id);
+				Output.WriteLine(">>");
+
+				Output.Write(this.name);
+				Output.Write("_A");
+				Output.Write(i.ToString());
+				Output.WriteLine(" --> UC1");
+
+				i++;
 			}
 		}
 

@@ -143,7 +143,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("@startuml");
 
 			foreach (IActivityNode Node in this.activityNodes)
-				Node.ExportPlantUml(Output, 0);
+				Node.ExportPlantUml(Output, 0, '"');
 
 			Output.WriteLine("@enduml");
 			Output.WriteLine("```");

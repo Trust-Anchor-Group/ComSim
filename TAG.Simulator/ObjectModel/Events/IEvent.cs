@@ -32,5 +32,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="PreparationNode">Preparation node.</param>
 		void Register(IEventPreparation PreparationNode);
+
+		/// <summary>
+		/// Registers an external event.
+		/// </summary>
+		/// <param name="ExternalEvent">External event.</param>
+		void Register(ExternalEvent ExternalEvent);
 	}
 }

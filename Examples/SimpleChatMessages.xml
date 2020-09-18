@@ -35,6 +35,7 @@
   </Distributions>
   <Events>
     <StochasticEvent distribution="HundredPerMinute" activity="StartChatSession">
+      <Description>A chat session between two random XMPP clients is started at a frequency of a hundred times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
         <FromPopulation actor="XmppBosh"/>
@@ -50,6 +51,7 @@
       </SetVariable>
     </StochasticEvent>
     <EventHandler id="MessageReceived" activity="RespondToMessage">
+      <Description>Once a message is received from an actor, a proper response should be sent, or the chat session be closed.</Description>
     </EventHandler>
   </Events>
   <Activities>

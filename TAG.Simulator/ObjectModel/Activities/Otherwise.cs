@@ -75,12 +75,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
 		/// <param name="First">If the condition is the first condition.</param>
-		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First)
+		/// <param name="QuoteChar">Quote character.</param>
+		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
 			Indent(Output, Indentation);
 			Output.Write("else (otherwise)");
 
-			base.ExportPlantUml(Output, Indentation + 1);
+			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 		}
 
 	}

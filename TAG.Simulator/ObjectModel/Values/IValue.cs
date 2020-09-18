@@ -21,6 +21,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Output">Output node</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		void ExportPlantUml(StreamWriter Output, int Indentation);
+		/// <param name="QuoteChar">Quote character.</param>
+		void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar);
 	}
 }
