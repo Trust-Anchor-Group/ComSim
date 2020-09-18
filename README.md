@@ -82,9 +82,9 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 
 Following is a list of simulation examples that can be used as the basis for new simulation models:
 
-| Example                                                   | Description                                                                |
-|:----------------------------------------------------------|:---------------------------------------------------------------------------|
-| [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. |
+| Example                                                   | Description                                                                | Simulation Report                                              |
+|:----------------------------------------------------------|:---------------------------------------------------------------------------|:---------------------------------------------------------------|
+| [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. | [Report](https://lab.tagroot.io/Reports/SimpleChatMessages.md) |
 
 ## Extending the Simulator
 
