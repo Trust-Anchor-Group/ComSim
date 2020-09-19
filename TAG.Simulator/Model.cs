@@ -676,8 +676,8 @@ namespace TAG.Simulator
 
 			if (this.samples.Count > 0)
 			{
-				Output.WriteLine("Samples");
-				Output.WriteLine("===========");
+				Output.WriteLine("Measurements");
+				Output.WriteLine("===============");
 				Output.WriteLine();
 
 				foreach (string ID in this.samples.IDs)
