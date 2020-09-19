@@ -8,10 +8,10 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
-[ ] Meta-data
+[x] Meta-data
 	[x] Title
 	[x] Description
-	[ ] Script
+	[x] Script
 	[x] Section descriptions
 [ ] Activities
 	[x] Populations

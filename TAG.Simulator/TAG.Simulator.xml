@@ -2718,6 +2718,52 @@
             </summary>
             <param name="Output">Output node</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.MetaData.ModelScript">
+            <summary>
+            Executes model script, allowing for definitions that will be available across events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.MetaData.ModelScript.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Executes model script, allowing for definitions that will be available across events.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.MetaData.ModelScript.Script">
+            <summary>
+            Script string
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.MetaData.ModelScript.Expression">
+            <summary>
+            Parsed expression
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.MetaData.ModelScript.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.MetaData.ModelScript.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.MetaData.ModelScript.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.MetaData.ModelScript.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Title">
             <summary>
             Title of model

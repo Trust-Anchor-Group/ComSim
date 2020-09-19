@@ -14,6 +14,7 @@
             <xs:sequence>
               <xs:element name="Title" type="xs:string"/>
               <xs:element name="Description" type="xs:string"/>
+              <xs:element name="ModelScript" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
