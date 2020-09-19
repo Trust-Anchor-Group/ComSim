@@ -50,12 +50,24 @@ Features
 		[x] Event log statistics
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
+	[ ] Script-based PDF and CDF
+	[ ] Arcsine distribution
+	[ ] Beta distribution
+	[ ] Chi distribution
+	[ ] Chi-squared distribution
+	[ ] Exponential distribution
+	[ ] Gamma distribution
+	[ ] Student-t distribution
 [x] Generate action documentation (xml, xslt) automatically
 [ ] XMPP
 	[ ] Message handlers
 	[ ] Iq handlers
+	[ ] Presence handlers
 	[ ] Extension libraries
 	[ ] UDP
+	[ ] Iq action node
+	[ ] Message action node
+	[ ] Presence action node
 [ ] HTTP
 	[ ] GET
 	[ ] POST
