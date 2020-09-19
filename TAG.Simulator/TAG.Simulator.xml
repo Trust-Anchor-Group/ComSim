@@ -236,6 +236,11 @@
             End time
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.Variables">
+            <summary>
+            Model variables.
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Model.SnifferFolder">
             <summary>
             Folder used for sniffer output.
@@ -466,6 +471,12 @@
             </summary>
             <param name="N">Number of colors in palette.</param>
             <returns>Palette</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetEventVariables">
+            <summary>
+            Gets a collection of variables for a new event.
+            </summary>
+            <returns>Variables collection</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
@@ -2213,6 +2224,45 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.EventVariables">
+            <summary>
+            Event variables
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.#ctor(Waher.Script.Variables,TAG.Simulator.Model)">
+            <summary>
+            Event variables
+            </summary>
+            <param name="ModelVariables">Model variables.</param>
+            <param name="Model">Simulation model.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.EventVariables.ModelVariables">
+            <summary>
+            Model variables
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.ContainsVariable(System.String)">
+            <summary>
+            If the collection contains a variable with a given name.
+            </summary>
+            <param name="Name">Variable name.</param>
+            <returns>If a variable with that name exists.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.TryGetVariable(System.String,Waher.Script.Variable@)">
+            <summary>
+            Tries to get a variable object, given its name.
+            </summary>
+            <param name="Name">Variable name.</param>
+            <param name="Variable">Variable, if found, or null otherwise.</param>
+            <returns>If a variable with the corresponding name was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.Remove(System.String)">
+            <summary>
+            Removes a varaiable from the collection.
+            </summary>
+            <param name="VariableName">Name of variable.</param>
+            <returns>If the variable was found and removed.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ExternalEvent">
             <summary>

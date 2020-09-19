@@ -23,7 +23,7 @@ Features
 	[ ] Measurements
 	[ ] Performance counters
 	[ ] CPU/Memory
-	[ ] Global variables
+	[x] Global variables
 	[ ] Timing of, and between events/activities. (communication roundtrip)
 [ ] Simulation output
 	[ ] Statistics

@@ -101,6 +101,19 @@ Following is a list of extension modules provided in the repository:
 |:-----------------------------------------|:-------------------------------------------------------------|
 | [TAG.Simulator.XMPP](TAG.Simulator.XMPP) | Defines simulation extensions for actors communicating XMPP. |
 
+## Script extensions
+
+You can extend the script engine using in the simulator, by implementing new functions or custom parsers. See
+[Script reference](https://lab.tagroot.io/Script.md) for more information. Any assembly you reference in your simulation model
+that contains script extensions, will automatically be used to extend the script engine of the simulator.
+
+The simulator itself provides the following extensions:
+
+| Entity   | Description |
+|:---------|:------------|
+| `Model`  | A predefined variable pointing to the simulation model being executed. |
+| `Global` | A set of global variables. Accessible across events. Variables used in event handlers are accessible only from that event handler. |
+
 ## Schema Files
 
 Syntax of simulation nodes are defined in XML Schema files. The following table lists XML Schema files defined by the project:

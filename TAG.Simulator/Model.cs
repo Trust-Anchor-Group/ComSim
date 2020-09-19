@@ -18,6 +18,7 @@ using Waher.Runtime.Settings;
 using Waher.Events;
 using TAG.Simulator.Statistics;
 using System.Text;
+using Waher.Script;
 
 namespace TAG.Simulator
 {
@@ -50,6 +51,7 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
+		private readonly Variables variables = new Variables();
 		private EventStatistics eventStatistics;
 		private Buckets activityStartStatistics;
 		private Buckets activityTimeStatistics;
@@ -149,6 +151,11 @@ namespace TAG.Simulator
 		/// End time
 		/// </summary>
 		public DateTime EndTime => this.end;
+
+		/// <summary>
+		/// Model variables.
+		/// </summary>
+		public Variables Variables => this.variables;
 
 		/// <summary>
 		/// Folder used for sniffer output.
@@ -801,5 +808,13 @@ namespace TAG.Simulator
 			return Result;
 		}
 
+		/// <summary>
+		/// Gets a collection of variables for a new event.
+		/// </summary>
+		/// <returns>Variables collection</returns>
+		public Variables GetEventVariables()
+		{
+			return new EventVariables(this.variables, this);
+		}
 	}
 }
