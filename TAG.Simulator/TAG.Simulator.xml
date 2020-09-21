@@ -1273,6 +1273,52 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Group">
+            <summary>
+            Groups activity nodes together.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Group.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Groups activity nodes together.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Group.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Group.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Group.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Group.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Group.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IActivity">
             <summary>
             Interface for activities

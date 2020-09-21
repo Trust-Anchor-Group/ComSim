@@ -91,79 +91,89 @@
       <Delay duration="PT2S"/>
       <Conditional>
         <Condition condition="e.Body like &quot;Hello[.] Guess a number between (?'Min'\\d+) and (?'Max'\\d+)[.]&quot;">
-          <Eval>
-            <![CDATA[
-            Guess:=CalcGuess(Min,Max);
-            Global[Key]:=
-            {
-              "Guess":Guess,
-              "Min":Min,
-              "Max":Max,
-              "Nr":1
-            }
-            ]]>
-          </Eval>
-          <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
-          <Count counter="Tx"/>
-          <Count counter="Guesses"/>
+          <Group title="Starting game">
+            <Eval>
+              <![CDATA[
+              Guess:=CalcGuess(Min,Max);
+              Global[Key]:=
+              {
+                "Guess":Guess,
+                "Min":Min,
+                "Max":Max,
+                "Nr":1
+              }
+              ]]>
+            </Eval>
+            <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+            <Count counter="Tx"/>
+            <Count counter="Guesses"/>
+          </Group>
         </Condition>
         <Otherwise>
           <Eval>State:=Global[Key]</Eval>
           <Conditional>
             <Condition condition="e.Body like &quot;(?'Guess'\\d+)&quot;">
-              <Conditional>
-                <Condition condition="Guess=State.Number">
-                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Correct"/>
-                  <Count counter="Tx"/>
-                </Condition>
-                <Condition condition="Guess&lt;State.Number">
-                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Larger"/>
-                  <Count counter="Tx"/>
-                </Condition>
-                <Otherwise>
-                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Smaller"/>
-                  <Count counter="Tx"/>
-                </Otherwise>
-              </Conditional>
-            </Condition>
-            <Condition condition="e.Body='Larger'">
-              <Eval>
-                <![CDATA[
-                State.Min:=State.Guess+1;
-                Guess:=CalcGuess(State.Min,State.Max);
-                State.Guess:=Guess;
-                State.Nr:=State.Nr+1
-                ]]>
-              </Eval>
-              <Count counter="Guesses"/>
-              <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
-              <Count counter="Tx"/>
-            </Condition>
-            <Condition condition="e.Body='Smaller'">
-              <Eval>
-                <![CDATA[
-                State.Max:=State.Guess-1;
-                Guess:=CalcGuess(State.Min,State.Max);
-                State.Guess:=Guess;
-                State.Nr:=State.Nr+1
-                ]]>
-              </Eval>
-              <Count counter="Guesses"/>
-              <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
-              <Count counter="Tx"/>
-            </Condition>
-            <Condition condition="e.Body='Correct'">
-              <Sample name="GameGuesses">
-                <Script>State.Nr</Script>
-              </Sample>
-              <Dec counter="Games"/>
-              <Count counter="Finished"/>
-              <Count counter="Tx"/>
+              <Group title="Responding to guess">
+                <Conditional>
+                  <Condition condition="Guess=State.Number">
+                    <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Correct"/>
+                    <Count counter="Tx"/>
+                  </Condition>
+                  <Condition condition="Guess&lt;State.Number">
+                    <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Larger"/>
+                    <Count counter="Tx"/>
+                  </Condition>
+                  <Otherwise>
+                    <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Smaller"/>
+                    <Count counter="Tx"/>
+                  </Otherwise>
+                </Conditional>
+              </Group>
             </Condition>
             <Otherwise>
-              <Dec counter="Games"/>
-              <Count counter="Terminated"/>
-              <Eval>Log.Debug(e.Body,[])</Eval>
+              <Group title="Guessing number">
+                <Conditional>
+                  <Condition condition="e.Body='Larger'">
+                    <Eval>
+                      <![CDATA[
+                      State.Min:=State.Guess+1;
+                      Guess:=CalcGuess(State.Min,State.Max);
+                      State.Guess:=Guess;
+                      State.Nr:=State.Nr+1
+                      ]]>
+                    </Eval>
+                    <Count counter="Guesses"/>
+                    <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+                    <Count counter="Tx"/>
+                  </Condition>
+                  <Condition condition="e.Body='Smaller'">
+                    <Eval>
+                      <![CDATA[
+                      State.Max:=State.Guess-1;
+                      Guess:=CalcGuess(State.Min,State.Max);
+                      State.Guess:=Guess;
+                      State.Nr:=State.Nr+1
+                      ]]>
+                    </Eval>
+                    <Count counter="Guesses"/>
+                    <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+                    <Count counter="Tx"/>
+                  </Condition>
+                  <Condition condition="e.Body='Correct'">
+                    <Sample name="GameGuesses">
+                      <Script>State.Nr</Script>
+                    </Sample>
+                    <Dec counter="Games"/>
+                    <Count counter="Finished"/>
+                    <Count counter="Tx"/>
+                  </Condition>
+                  <Otherwise>
+                    <Dec counter="Games"/>
+                    <Count counter="Terminated"/>
+                    <Eval>Log.Debug(e.Body,[])</Eval>
+                  </Otherwise>
+                </Conditional>
+              </Group>
             </Otherwise>
           </Conditional>
         </Otherwise>
