@@ -20,6 +20,7 @@ using TAG.Simulator.Statistics;
 using System.Text;
 using Waher.Script;
 using Waher.Script.Objects;
+using TAG.Simulator.ObjectModel.Graphs;
 
 namespace TAG.Simulator
 {
@@ -49,8 +50,10 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, IActivity> activities = new Dictionary<string, IActivity>();
 		private readonly Dictionary<string, LinkedListNode<IActivityNode>> activityNodes = new Dictionary<string, LinkedListNode<IActivityNode>>();
 		private readonly Dictionary<string, IEvent> eventsWithId = new Dictionary<string, IEvent>();
+		private readonly Dictionary<string, IGraph> graphsFor = new Dictionary<string, IGraph>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
+		private readonly LinkedList<IGraph> graphs = new LinkedList<IGraph>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 		private readonly Variables variables = new Variables();
 		private EventStatistics eventStatistics;
@@ -374,6 +377,38 @@ namespace TAG.Simulator
 		public bool TryGetActivityNode(string Id, out LinkedListNode<IActivityNode> ActivityNode)
 		{
 			return this.activityNodes.TryGetValue(Id, out ActivityNode);
+		}
+
+		/// <summary>
+		/// Registers a graph with the runtime environment of the model.
+		/// </summary>
+		/// <param name="Graph">Graph object.</param>
+		public void Register(IGraph Graph)
+		{
+			string For = Graph.For;
+			if (!string.IsNullOrEmpty(For))
+			{
+				if (this.graphsFor.ContainsKey(For))
+					throw new Exception("A graph for " + For + " already registered.");
+
+				this.graphsFor[For] = Graph;
+
+				if (Graph is IBucket Bucket)
+					this.samples.Register(Bucket);
+			}
+
+			this.graphs.AddLast(Graph);
+		}
+
+		/// <summary>
+		/// Tries to get a registered graph from the model.
+		/// </summary>
+		/// <param name="For">ID of entity the graph would be for.</param>
+		/// <param name="Graph">Graph if found.</param>
+		/// <returns>If a graph was found.</returns>
+		public bool TryGetGraph(string For, out IGraph Graph)
+		{
+			return this.graphsFor.TryGetValue(For, out Graph);
 		}
 
 		/// <summary>
@@ -703,8 +738,16 @@ namespace TAG.Simulator
 
 				foreach (string ID in this.samples.IDs)
 				{
-					if (this.samples.TryGetBucket(ID, out Bucket Bucket))
-						Bucket.ExportSampleHistoryGraph(ID, "Mean(" + ID + ")", Output, this);
+					if (this.graphsFor.TryGetValue(ID, out IGraph Graph))
+						Graph.ExportSampleHistoryGraph(Output);
+					else if (this.samples.TryGetBucket(ID, out IBucket Bucket))
+						Bucket.ExportSampleHistoryGraph(ID, "Mean " + ID, Output, this);
+				}
+
+				foreach (IGraph Graph in this.graphs)
+				{
+					if (string.IsNullOrEmpty(Graph.For))
+						Graph.ExportSampleHistoryGraph(Output);
 				}
 			}
 
@@ -749,7 +792,7 @@ namespace TAG.Simulator
 
 		internal void ExportActivityCharts(string ActivityId, StreamWriter Output)
 		{
-			if (this.activityStartStatistics.TryGetBucket(ActivityId, out Bucket _))
+			if (this.activityStartStatistics.TryGetBucket(ActivityId, out IBucket _))
 			{
 				string[] Order = this.ActivityOrder();
 				int i = -1;
@@ -757,7 +800,7 @@ namespace TAG.Simulator
 
 				foreach (string Id in Order)
 				{
-					if (!this.activityStartStatistics.TryGetBucket(Id, out Bucket _))
+					if (!this.activityStartStatistics.TryGetBucket(Id, out IBucket _))
 						continue;
 
 					if (Id == ActivityId)
@@ -775,7 +818,7 @@ namespace TAG.Simulator
 				}
 			}
 
-			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out Bucket Bucket))
+			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out IBucket Bucket))
 				Bucket.ExportSampleHistoryGraph("Execution time of " + ActivityId, "Mean execution time (s)", Output, this);
 		}
 

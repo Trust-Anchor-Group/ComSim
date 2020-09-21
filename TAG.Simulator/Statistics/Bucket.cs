@@ -13,7 +13,7 @@ namespace TAG.Simulator.Statistics
 	/// <summary>
 	/// Statistical bucket
 	/// </summary>
-	public class Bucket : IEnumerable<Statistic>
+	public class Bucket : IPeriodBucket
 	{
 		private readonly LinkedList<Statistic> statistics = new LinkedList<Statistic>();
 		private readonly LinkedList<double> samples;
@@ -348,6 +348,9 @@ namespace TAG.Simulator.Statistics
 		public void ExportSampleHistoryGraph(string Title, string LabelY, StreamWriter Output, Model Model)
 		{
 			this.Flush();
+
+			if (!(this.unit is null))
+				LabelY += " (" + this.unit.ToString() + ")";
 
 			lock (this)
 			{

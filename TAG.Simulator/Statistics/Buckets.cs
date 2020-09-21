@@ -14,7 +14,7 @@ namespace TAG.Simulator.Statistics
 	/// </summary>
 	public class Buckets
 	{
-		private readonly SortedDictionary<string, Bucket> buckets = new SortedDictionary<string, Bucket>();
+		private readonly SortedDictionary<string, IBucket> buckets = new SortedDictionary<string, IBucket>();
 		private readonly Duration bucketTime;
 		private DateTime start;
 
@@ -53,14 +53,14 @@ namespace TAG.Simulator.Statistics
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
 		/// <param name="Buckets">Predefined buckets.</param>
-		public Buckets(DateTime StartTime, Duration BucketTime, params Bucket[] Buckets)
+		public Buckets(DateTime StartTime, Duration BucketTime, params IBucket[] Buckets)
 		{
 			this.start = StartTime;
 			this.bucketTime = BucketTime;
 
 			if (!(Buckets is null))
 			{
-				foreach (Bucket Bucket in Buckets)
+				foreach (IBucket Bucket in Buckets)
 					this.buckets[Bucket.Id] = Bucket;
 			}
 		}
@@ -71,7 +71,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Counter">Counter ID</param>
 		public void CountEvent(string Counter)
 		{
-			Bucket Bucket;
+			IBucket Bucket;
 
 			lock (this.buckets)
 			{
@@ -91,7 +91,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Counter">Counter ID</param>
 		public void IncrementCounter(string Counter)
 		{
-			Bucket Bucket;
+			IBucket Bucket;
 
 			lock (this.buckets)
 			{
@@ -111,7 +111,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Counter">Counter ID</param>
 		public void DecrementCounter(string Counter)
 		{
-			Bucket Bucket;
+			IBucket Bucket;
 
 			lock (this.buckets)
 			{
@@ -132,7 +132,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Value">Value</param>
 		public void Sample(string Counter, double Value)
 		{
-			Bucket Bucket;
+			IBucket Bucket;
 
 			lock (this.buckets)
 			{
@@ -153,7 +153,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Value">Value</param>
 		public void Sample(string Counter, PhysicalQuantity Value)
 		{
-			Bucket Bucket;
+			IBucket Bucket;
 
 			lock (this.buckets)
 			{
@@ -194,14 +194,14 @@ namespace TAG.Simulator.Statistics
 			{
 				if (Order is null)
 				{
-					foreach (Bucket Bucket in this.buckets.Values)
+					foreach (IBucket Bucket in this.buckets.Values)
 						Result.Add(Bucket.Id, Bucket.TotalCount);
 				}
 				else
 				{
 					foreach (string Id in Order)
 					{
-						if (this.buckets.TryGetValue(Id, out Bucket Bucket))
+						if (this.buckets.TryGetValue(Id, out IBucket Bucket))
 							Result.Add(Bucket.Id, Bucket.TotalCount);
 					}
 				}
@@ -220,15 +220,15 @@ namespace TAG.Simulator.Statistics
 		{
 			Output.WriteStartElement(TableElement);
 
-			Bucket[] Buckets;
+			IBucket[] Buckets;
 
 			lock (this.buckets)
 			{
-				Buckets = new Bucket[this.buckets.Count];
+				Buckets = new IBucket[this.buckets.Count];
 				this.buckets.Values.CopyTo(Buckets, 0);
 			}
 
-			foreach (Bucket Bucket in Buckets)
+			foreach (IBucket Bucket in Buckets)
 				Bucket.ExportXml(Output, RowElement);
 
 			Output.WriteEndElement();
@@ -240,11 +240,26 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Id">Bucket ID</param>
 		/// <param name="Bucket">Bucket, if found.</param>
 		/// <returns>If a bucket was found.</returns>
-		public bool TryGetBucket(string Id, out Bucket Bucket)
+		public bool TryGetBucket(string Id, out IBucket Bucket)
 		{
 			lock (this.buckets)
 			{
 				return this.buckets.TryGetValue(Id, out Bucket);
+			}
+		}
+
+		/// <summary>
+		/// Registers a custom bucket.
+		/// </summary>
+		/// <param name="Bucket">Bucket</param>
+		public void Register(IBucket Bucket)
+		{
+			lock (this.buckets)
+			{
+				if (this.buckets.ContainsKey(Bucket.Id))
+					throw new Exception("A bucket with ID " + Bucket.Id + " already registered.");
+
+				this.buckets[Bucket.Id] = Bucket;
 			}
 		}
 
@@ -268,27 +283,30 @@ namespace TAG.Simulator.Statistics
 
 				foreach (string ActivityId in Order)
 				{
-					if (this.TryGetBucket(ActivityId, out Bucket Bucket))
+					if (this.TryGetBucket(ActivityId, out IBucket Bucket))
 					{
-						Bucket.Flush();
-
-						Statistic Last = null;
-
-						foreach (Statistic Rec in Bucket)
+						if (Bucket is IPeriodBucket PeriodBucket)
 						{
-							if (!Counts.ContainsKey(Rec.Start))
-								Counts[Rec.Start] = 0;
+							PeriodBucket.Flush();
 
-							Last = Rec;
-						}
+							Statistic Last = null;
 
-						if (!(Last is null))
-						{
-							if (!Counts.ContainsKey(Last.Stop))
-								Counts[Last.Stop] = 0;
+							foreach (Statistic Rec in PeriodBucket)
+							{
+								if (!Counts.ContainsKey(Rec.Start))
+									Counts[Rec.Start] = 0;
+
+								Last = Rec;
+							}
+
+							if (!(Last is null))
+							{
+								if (!Counts.ContainsKey(Last.Stop))
+									Counts[Last.Stop] = 0;
+							}
+
+							Count++;
 						}
-				
-						Count++;
 					}
 				}
 
@@ -328,59 +346,62 @@ namespace TAG.Simulator.Statistics
 
 				foreach (string ActivityId in Order)
 				{
-					if (this.TryGetBucket(ActivityId, out Bucket Bucket))
+					if (this.TryGetBucket(ActivityId, out IBucket Bucket))
 					{
-						foreach (Statistic Rec in Bucket)
+						if (Bucket is IPeriodBucket PeriodBucket)
 						{
-							if (!Counts.TryGetValue(Rec.Stop, out long Value))
-								Value = 0;
-
-							Value += Rec.Count;
-							Counts[Rec.Stop] = Value;
-						}
-
-						First = true;
-						Color = Palette[i++];
-
-						Script.Append(ActivityId);
-						Script.Append("Count:=[");
-
-						bool Skip = true;
-
-						foreach (long Value in Counts.Values)
-						{
-							if (Skip)
+							foreach (Statistic Rec in PeriodBucket)
 							{
-								Skip = false;
-								continue;
+								if (!Counts.TryGetValue(Rec.Stop, out long Value))
+									Value = 0;
+
+								Value += Rec.Count;
+								Counts[Rec.Stop] = Value;
 							}
 
-							if (First)
-								First = false;
-							else
+							First = true;
+							Color = Palette[i++];
+
+							Script.Append(ActivityId);
+							Script.Append("Count:=[");
+
+							bool Skip = true;
+
+							foreach (long Value in Counts.Values)
+							{
+								if (Skip)
+								{
+									Skip = false;
+									continue;
+								}
+
+								if (First)
+									First = false;
+								else
+									Script.Append(',');
+
+								Script.Append(t = Value.ToString());
 								Script.Append(',');
+								Script.Append(t);
+							}
 
-							Script.Append(t = Value.ToString());
-							Script.Append(',');
-							Script.Append(t);
+							Script.AppendLine("];");
+
+							if (PlotScript is null)
+								PlotScript = new StringBuilder();
+							else
+								PlotScript.Append('+');
+
+							PlotScript.Append("plot2dlinearea(Time,");
+							PlotScript.Append(ActivityId);
+							PlotScript.Append("Count,rgb(");
+							PlotScript.Append(Color.Red.ToString());
+							PlotScript.Append(',');
+							PlotScript.Append(Color.Green.ToString());
+							PlotScript.Append(',');
+							PlotScript.Append(Color.Blue.ToString());
+							PlotScript.Append("))");
 						}
-
-						Script.AppendLine("];");
-
-						if (PlotScript is null)
-							PlotScript = new StringBuilder();
-						else
-							PlotScript.Append('+');
-
-						PlotScript.Append("plot2dlinearea(Time,");
-						PlotScript.Append(ActivityId);
-						PlotScript.Append("Count,rgb(");
-						PlotScript.Append(Color.Red.ToString());
-						PlotScript.Append(',');
-						PlotScript.Append(Color.Green.ToString());
-						PlotScript.Append(',');
-						PlotScript.Append(Color.Blue.ToString());
-						PlotScript.Append("))");
 					}
 				}
 

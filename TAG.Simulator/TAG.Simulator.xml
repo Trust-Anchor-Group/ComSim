@@ -345,6 +345,20 @@
             <param name="ActivityNode">ActivityNode if found.</param>
             <returns>If an activity node was found.</returns>
         </member>
+        <member name="M:TAG.Simulator.Model.Register(TAG.Simulator.ObjectModel.Graphs.IGraph)">
+            <summary>
+            Registers a graph with the runtime environment of the model.
+            </summary>
+            <param name="Graph">Graph object.</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.TryGetGraph(System.String,TAG.Simulator.ObjectModel.Graphs.IGraph@)">
+            <summary>
+            Tries to get a registered graph from the model.
+            </summary>
+            <param name="For">ID of entity the graph would be for.</param>
+            <param name="Graph">Graph if found.</param>
+            <returns>If a graph was found.</returns>
+        </member>
         <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean},System.Boolean)">
             <summary>
             Runs the simulation.
@@ -2804,6 +2818,185 @@
             </summary>
             <param name="Output">Output node</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.CustomGraph">
+            <summary>
+            Defines a custom graph (for a counter, variable, sample, etc.)
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Defines a custom graph (for a counter, variable, sample, etc.)
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.CustomGraph.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.CustomGraph.For">
+            <summary>
+            If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Id">
+            <summary>
+            Bucket ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.CustomGraph.TotalCount">
+            <summary>
+            Total Counter
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Inc">
+            <summary>
+            Increments counter.
+            </summary>
+            <returns>Start time of bucket that was incremented.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Dec">
+            <summary>
+            Decrements counter.
+            </summary>
+            <returns>Start time of bucket that was incremented.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(Waher.Script.Objects.PhysicalQuantity)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value">Sample value reported</param>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(System.Double)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value">Sample value reported</param>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.CountOccurrence">
+            <summary>
+            Counts one occurrence
+            </summary>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Flush">
+            <summary>
+            Terminates the ongoing collection of data.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportSampleHistoryGraph(System.String,System.String,System.IO.StreamWriter,TAG.Simulator.Model)">
+            <summary>
+            Exports historical counts as a graph.
+            </summary>
+            <param name="Title">Title of graph.</param>
+            <param name="LabelY">Label for Y-axis.</param>
+            <param name="Output">Export destination</param>
+            <param name="Model">Simulation model</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportXml(System.Xml.XmlWriter,System.String)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
+            <param name="RowElement">XML Row element name.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportSampleHistoryGraph(System.IO.StreamWriter)">
+            <summary>
+            Exports the graph to a markdown output.
+            </summary>
+            <param name="Output">Markdown output</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Graph">
+            <summary>
+            Abstract base class for graph nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for graph nodes
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Graph.For">
+            <summary>
+            If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.ExportSampleHistoryGraph(System.IO.StreamWriter)">
+            <summary>
+            Exports the graph to a markdown output.
+            </summary>
+            <param name="Output">Markdown output</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Graphs">
+            <summary>
+            Container for graphs.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graphs.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Container for graphs.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Graphs.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graphs.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.IGraph">
+            <summary>
+            Interface for graph nodes
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.IGraph.For">
+            <summary>
+            If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportSampleHistoryGraph(System.IO.StreamWriter)">
+            <summary>
+            Exports the graph to a markdown output.
+            </summary>
+            <param name="Output">Markdown output</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Description">
             <summary>
             Description of model
@@ -3872,7 +4065,7 @@
             <param name="CalcStdDev">If standard deviation is to be calculated.</param>
             <param name="IDs">Predefined IDs</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,TAG.Simulator.Statistics.Bucket[])">
+        <member name="M:TAG.Simulator.Statistics.Buckets.#ctor(System.DateTime,Waher.Content.Duration,TAG.Simulator.Statistics.IBucket[])">
             <summary>
             A collection of buckets
             </summary>
@@ -3932,13 +4125,19 @@
             <param name="TableElement">XML Table element name.</param>
             <param name="RowElement">XML Row element name.</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.TryGetBucket(System.String,TAG.Simulator.Statistics.Bucket@)">
+        <member name="M:TAG.Simulator.Statistics.Buckets.TryGetBucket(System.String,TAG.Simulator.Statistics.IBucket@)">
             <summary>
             Tries to get a bucket, given its ID.
             </summary>
             <param name="Id">Bucket ID</param>
             <param name="Bucket">Bucket, if found.</param>
             <returns>If a bucket was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.Register(TAG.Simulator.Statistics.IBucket)">
+            <summary>
+            Registers a custom bucket.
+            </summary>
+            <param name="Bucket">Bucket</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.ExportCountHistoryGraph(System.String,System.Collections.Generic.IEnumerable{System.String},System.IO.StreamWriter,TAG.Simulator.Model,SkiaSharp.SKColor[])">
             <summary>
@@ -4032,6 +4231,79 @@
             Exports accumulated statistics to XML
             </summary>
             <param name="Output">XML output</param>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.IBucket">
+            <summary>
+            Interface for buckets.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.IBucket.Id">
+            <summary>
+            Bucket ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Statistics.IBucket.TotalCount">
+            <summary>
+            Total Counter
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Inc">
+            <summary>
+            Increments counter.
+            </summary>
+            <returns>Start time of bucket that was incremented.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Dec">
+            <summary>
+            Decrements counter.
+            </summary>
+            <returns>Start time of bucket that was incremented.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(Waher.Script.Objects.PhysicalQuantity)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value">Sample value reported</param>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(System.Double)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value">Sample value reported</param>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.CountOccurrence">
+            <summary>
+            Counts one occurrence
+            </summary>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Flush">
+            <summary>
+            Terminates the ongoing collection of data.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.ExportSampleHistoryGraph(System.String,System.String,System.IO.StreamWriter,TAG.Simulator.Model)">
+            <summary>
+            Exports historical counts as a graph.
+            </summary>
+            <param name="Title">Title of graph.</param>
+            <param name="LabelY">Label for Y-axis.</param>
+            <param name="Output">Export destination</param>
+            <param name="Model">Simulation model</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.ExportXml(System.Xml.XmlWriter,System.String)">
+            <summary>
+            Exports data to XML
+            </summary>
+            <param name="Output">XML Output</param>
+            <param name="RowElement">XML Row element name.</param>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.IPeriodBucket">
+            <summary>
+            Statistical bucket with periods
+            </summary>
         </member>
         <member name="T:TAG.Simulator.Statistics.Statistic">
             <summary>

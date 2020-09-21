@@ -62,6 +62,14 @@
             </xs:choice>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Graphs" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="CustomGraph" type="CustomGraph"/>
+              <xs:any namespace="##other"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
       <xs:attribute name="timeBase" use="optional" default="ComputerClock">
         <xs:simpleType>
@@ -376,6 +384,16 @@
           <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="title" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CustomGraph" mixed="true">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:attribute name="for" type="xs:string" use="required"/>
+        <xs:attribute name="timeVariable" type="xs:string" use="optional"/>
+        <xs:attribute name="valueVariable" type="xs:string" use="optional"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

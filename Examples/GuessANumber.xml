@@ -181,4 +181,16 @@
       <Stop/>
     </Activity>
   </Activities>
+  <Graphs>
+    <CustomGraph for="Number">
+      <![CDATA[
+      [Labels,Counts]:=Histogram(Number,0,100,20);
+      G:=VerticalBars(Labels,Counts);
+      G.LabelX:="Game number";
+      G.LabelY:="Number of times used";
+      G.Title:="Distribution of numbers selected in games";
+      G
+      ]]>
+    </CustomGraph>
+  </Graphs>
 </Model>

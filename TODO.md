@@ -8,6 +8,7 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
+	[ ] Guards
 [x] Meta-data
 	[x] Title
 	[x] Description
@@ -41,12 +42,12 @@ Features
 		[x] Use case charts
 		[x] Distribution (expected) charts
 	[x] Data as XML
-	[ ] Report as Markdown
+	[x] Report as Markdown
 		[x] Distributions
 		[x] Models
 		[x] Activity charts
 		[x] Statistics
-		[ ] Custom graphs
+		[x] Custom graphs
 		[x] Event log statistics
 [ ] Distributions
 	[ ] Regular distribution: fixed interval, for sampling
