@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Runtime.Inventory;
 
 namespace TAG.Simulator.ObjectModel
 {
@@ -38,6 +39,9 @@ namespace TAG.Simulator.ObjectModel
 			{
 				List<ISimulationNode> Children = new List<ISimulationNode>();
 
+				if (!(this.children is null))
+					Children.AddRange(this.children);
+
 				foreach (XmlNode N in Definition.ChildNodes)
 				{
 					if (N is XmlElement E)
@@ -48,6 +52,22 @@ namespace TAG.Simulator.ObjectModel
 			}
 			else
 				this.children = new ISimulationNode[0];
+		}
+
+		/// <summary>
+		/// Adds a child node.
+		/// </summary>
+		/// <param name="Child">Child Node</param>
+		protected void AddChild(ISimulationNode Child)
+		{
+			if (this.children is null)
+				this.children = new ISimulationNode[] { Child };
+			else
+			{
+				int c = this.children.Length;
+				Array.Resize<ISimulationNode>(ref this.children, c + 1);
+				this.children[c] = Child;
+			}
 		}
 
 		/// <summary>

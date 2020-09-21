@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using SkiaSharp;
 using Waher.Content;
+using Waher.Script.Objects;
 
 namespace TAG.Simulator.Statistics
 {
@@ -130,6 +131,27 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Counter">Counter ID</param>
 		/// <param name="Value">Value</param>
 		public void Sample(string Counter, double Value)
+		{
+			Bucket Bucket;
+
+			lock (this.buckets)
+			{
+				if (!this.buckets.TryGetValue(Counter, out Bucket))
+				{
+					Bucket = new Bucket(Counter, true, this.start, this.bucketTime);
+					this.buckets[Counter] = Bucket;
+				}
+			}
+
+			this.start = Bucket.Sample(Value);
+		}
+
+		/// <summary>
+		/// Samples a value
+		/// </summary>
+		/// <param name="Counter">Counter ID</param>
+		/// <param name="Value">Value</param>
+		public void Sample(string Counter, PhysicalQuantity Value)
 		{
 			Bucket Bucket;
 

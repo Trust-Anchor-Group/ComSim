@@ -10,7 +10,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Executes script in an activity.
 	/// </summary>
-	public class Eval : ActivityNode 
+	public class Eval : ActivityNode
 	{
 		private string script;
 		private Expression expression;
@@ -57,7 +57,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.script = Definition.InnerText;
+			this.script = Values.Script.RemoveIndent(Definition.InnerText);
 			this.expression = new Expression(this.script);
 
 			return base.FromXml(Definition);
@@ -124,7 +124,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 					Indent(Output, Indentation);
 				}
 
-				Output.Write(Row);
+				if (Row.EndsWith(";"))
+					Output.Write(Row.Substring(0, Row.Length - 1));
+				else
+					Output.Write(Row);
 			}
 
 			if (!First && Delimiters)

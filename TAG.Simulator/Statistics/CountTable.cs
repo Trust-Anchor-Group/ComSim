@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Xml;
+using Waher.Content;
 
 namespace TAG.Simulator.Statistics
 {
@@ -156,7 +157,7 @@ namespace TAG.Simulator.Statistics
 				Output.WriteLine("    <Cell>");
 				Output.WriteLine("      <Margins left=\"1mm\" top=\"1mm\" bottom=\"1mm\" right=\"1mm\">");
 				Output.Write("        <RoundedRectangle radiusX=\"3mm\" radiusY=\"3mm\" width=\"");
-				Output.Write((P.Value * 100 + HalfMaxCount) / this.maxCount);
+				Output.Write(CommonTypes.Encode(((P.Value * 10000 + HalfMaxCount) / this.maxCount)*0.01));
 				Output.Write("%\" height=\"1cm\" fill=\"");
 				Output.Write(P.Key);
 				Output.Write("Bg");

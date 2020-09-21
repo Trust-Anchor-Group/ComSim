@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
+using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -140,6 +141,8 @@ namespace TAG.Simulator.ObjectModel.Events
 			}
 			catch (Exception ex)
 			{
+				ex = Log.UnnestException(ex);
+
 				if (Tags2 is null)
 					Tags2 = new KeyValuePair<string, object>[0];
 

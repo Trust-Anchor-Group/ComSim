@@ -79,7 +79,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.Write("else (otherwise)");
+			Output.WriteLine("else (otherwise)");
 
 			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 		}

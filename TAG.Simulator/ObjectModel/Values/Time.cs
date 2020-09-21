@@ -25,6 +25,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		}
 
 		/// <summary>
+		/// Time value.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Value">Value</param>
+		public Time(ISimulationNode Parent, Model Model, TimeSpan Value)
+			: base(Parent, Model)
+		{
+			this.value = Value;
+		}
+
+		/// <summary>
 		/// Value
 		/// </summary>
 		public TimeSpan Value => this.value;

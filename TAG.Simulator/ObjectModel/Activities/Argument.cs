@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
@@ -22,6 +23,90 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public Argument(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, Waher.Script.Expression Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Script(this, Model, Value));
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, System.DateTime Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Values.DateTime(this, Model, Value));
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, Waher.Content.Duration Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Duration(this, Model, Value));
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, double Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Number(this, Model, Value));
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, string Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Values.String(this, Model, Value));
+		}
+
+		/// <summary>
+		/// Defines an argument in an action.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Name of argument.</param>
+		/// <param name="Value">Argument value.</param>
+		public Argument(ISimulationNode Parent, Model Model, string Name, TimeSpan Value)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.AddChild(new Time(this, Model, Value));
 		}
 
 		/// <summary>

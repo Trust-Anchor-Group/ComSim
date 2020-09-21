@@ -258,6 +258,7 @@
       <xs:element name="GoTo" type="ReferenceActivityNode"/>
       <xs:element name="Finished" type="ActivityNode"/>
       <xs:element name="Parallel" type="ParallelActivityNode"/>
+      <xs:element name="Sample" type="SampleActivityNode"/>
       <xs:any namespace="##other"/>
     </xs:choice>
   </xs:group>
@@ -303,6 +304,7 @@
         </xs:sequence>
         <xs:attribute name="actor" type="xs:string" use="required"/>
         <xs:attribute name="action" type="xs:string" use="required"/>
+        <xs:anyAttribute processContents="lax"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -351,6 +353,17 @@
             </xs:complexType>
           </xs:element>
         </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SampleActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:choice minOccurs="1" maxOccurs="1">
+          <xs:group ref="Value"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

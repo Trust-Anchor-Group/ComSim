@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using Waher.Content;
+using Waher.Script.Objects;
+using Waher.Script.Units;
 
 namespace TAG.Simulator.Statistics
 {
@@ -20,6 +22,7 @@ namespace TAG.Simulator.Statistics
 		private readonly bool calcStdDev;
 		private DateTime start;
 		private DateTime stop;
+		private Unit unit = null;
 		private long count = 0;
 		private long totCount = 0;
 		private double sum = 0;
@@ -186,6 +189,26 @@ namespace TAG.Simulator.Statistics
 			this.count = 0;
 			this.start = this.stop;
 			this.stop = this.start + this.bucketTime;
+		}
+
+		/// <summary>
+		/// Adds a sample
+		/// </summary>
+		/// <param name="Value">Sample value reported</param>
+		/// <returns>Start time of bucket to which the value was reported.</returns>
+		public DateTime Sample(PhysicalQuantity Value)
+		{
+			double v;
+
+			if (this.unit is null)
+			{
+				this.unit = Value.Unit;
+				v = Value.Magnitude;
+			}
+			else if (!Unit.TryConvert(Value.Magnitude, Value.Unit, this.unit, out v))
+				throw new Exception("Incompatible units: " + Value.Unit.ToString() + " and " + this.unit.ToString());
+
+			return this.Sample(v);
 		}
 
 		/// <summary>

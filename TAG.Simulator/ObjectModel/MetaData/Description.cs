@@ -49,7 +49,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.description = Definition.InnerText;
+			this.description = Values.Script.RemoveIndent(Definition.InnerText);
 
 			return Task.CompletedTask;
 		}

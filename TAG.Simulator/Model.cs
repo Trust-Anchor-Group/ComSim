@@ -19,6 +19,7 @@ using Waher.Events;
 using TAG.Simulator.Statistics;
 using System.Text;
 using Waher.Script;
+using Waher.Script.Objects;
 
 namespace TAG.Simulator
 {
@@ -650,6 +651,26 @@ namespace TAG.Simulator
 		public void DecrementCounter(string CounterName)
 		{
 			this.samples.DecrementCounter(CounterName);
+		}
+
+		/// <summary>
+		/// Records a sample
+		/// </summary>
+		/// <param name="CounterName">Counter name</param>
+		/// <param name="Value">Value</param>
+		public void Sample(string CounterName, double Value)
+		{
+			this.samples.Sample(CounterName, Value);
+		}
+
+		/// <summary>
+		/// Records a sample
+		/// </summary>
+		/// <param name="CounterName">Counter name</param>
+		/// <param name="Value">Value</param>
+		public void Sample(string CounterName, PhysicalQuantity Value)
+		{
+			this.samples.Sample(CounterName, Value);
 		}
 
 		/// <summary>

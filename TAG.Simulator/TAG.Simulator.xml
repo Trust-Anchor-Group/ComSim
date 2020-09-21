@@ -453,6 +453,20 @@
             </summary>
             <param name="CounterName">Counter name</param>
         </member>
+        <member name="M:TAG.Simulator.Model.Sample(System.String,System.Double)">
+            <summary>
+            Records a sample
+            </summary>
+            <param name="CounterName">Counter name</param>
+            <param name="Value">Value</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.Sample(System.String,Waher.Script.Objects.PhysicalQuantity)">
+            <summary>
+            Records a sample
+            </summary>
+            <param name="CounterName">Counter name</param>
+            <param name="Value">Value</param>
+        </member>
         <member name="M:TAG.Simulator.Model.ExportMarkdown(System.IO.StreamWriter)">
             <summary>
             Exports Markdown
@@ -718,6 +732,60 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,Waher.Script.Expression)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,System.DateTime)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,Waher.Content.Duration)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,System.Double)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,System.String)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Argument.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,System.TimeSpan)">
+            <summary>
+            Defines an argument in an action.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Name of argument.</param>
+            <param name="Value">Argument value.</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Argument.LocalName">
             <summary>
@@ -1410,6 +1478,63 @@
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Parallel.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.Sample">
+            <summary>
+            Sets a variable value when an event is triggered.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sets a variable value when an event is triggered.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Sample.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Sample.Name">
+            <summary>
+            Name of variable within the scope of the event.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
             <summary>
             Exports PlantUML
             </summary>
@@ -2920,6 +3045,12 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.AddChild(TAG.Simulator.ISimulationNode)">
+            <summary>
+            Adds a child node.
+            </summary>
+            <param name="Child">Child Node</param>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.SimulationNodeChildren.ParseChildren">
             <summary>
             If children are 
@@ -3017,6 +3148,14 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.DateTime)">
+            <summary>
+            DateTime value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Value">Value.</param>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.DateTime.Value">
             <summary>
             Value
@@ -3067,6 +3206,14 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,Waher.Content.Duration)">
+            <summary>
+            Duration value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Value">Value</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.Duration.Value">
             <summary>
@@ -3164,6 +3311,14 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Double)">
+            <summary>
+            Number value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Value">Value</param>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.Number.Value">
             <summary>
             Value
@@ -3210,10 +3365,18 @@
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Values.Script.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
-            Abstract base class of values
+            Value defined by script.
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,Waher.Script.Expression)">
+            <summary>
+            Value defined by script.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Script">Script expression</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.Script.ScriptString">
             <summary>
@@ -3244,6 +3407,13 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.RemoveIndent(System.String)">
+            <summary>
+            Removes indentation from a block of text.
+            </summary>
+            <param name="Text">Text</param>
+            <returns>Unindented text</returns>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Values.Script.Evaluate(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
@@ -3270,6 +3440,14 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String)">
+            <summary>
+            String value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Value">Value</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.String.Value">
             <summary>
@@ -3321,6 +3499,14 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.TimeSpan)">
+            <summary>
+            Time value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Value">Value</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.Time.Value">
             <summary>
@@ -3556,6 +3742,13 @@
             </summary>
             <returns>Start time of bucket that was incremented.</returns>
         </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(Waher.Script.Objects.PhysicalQuantity)">
+            <summary>
+            Adds a sample
+            </summary>
+            <param name="Value">Sample value reported</param>
+            <returns>Start time of bucket to which the value was reported.</returns>
+        </member>
         <member name="M:TAG.Simulator.Statistics.Bucket.Sample(System.Double)">
             <summary>
             Adds a sample
@@ -3660,6 +3853,13 @@
             <param name="Counter">Counter ID</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.Sample(System.String,System.Double)">
+            <summary>
+            Samples a value
+            </summary>
+            <param name="Counter">Counter ID</param>
+            <param name="Value">Value</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.Sample(System.String,Waher.Script.Objects.PhysicalQuantity)">
             <summary>
             Samples a value
             </summary>

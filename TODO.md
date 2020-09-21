@@ -83,7 +83,7 @@ Examples
 --------------
 
 [x] Simple chat
-[ ] Guess a number
+[x] Guess a number
 [ ] Federation
 [ ] Web Server Load (HTTP GET)
 [ ] External events to determine activity node transitions

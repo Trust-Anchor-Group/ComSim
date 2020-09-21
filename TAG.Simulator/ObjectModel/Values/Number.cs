@@ -25,6 +25,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		}
 
 		/// <summary>
+		/// Number value.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Value">Value</param>
+		public Number(ISimulationNode Parent, Model Model, double Value)
+			: base(Parent, Model)
+		{
+			this.value = Value;
+		}
+
+		/// <summary>
 		/// Value
 		/// </summary>
 		public double Value => this.value;

@@ -9,7 +9,6 @@ using System.Xml;
 using System.Xml.Schema;
 using TAG.Simulator;
 using TAG.Simulator.Events;
-using TAG.Simulator.Statistics;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
 using Waher.Events;

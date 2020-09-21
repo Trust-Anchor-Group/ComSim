@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Values;
+using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -61,8 +63,46 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
-			this.action = XML.Attribute(Definition, "action");
+			foreach (XmlAttribute Attribute in Definition.Attributes)
+			{
+				switch (Attribute.Name)
+				{
+					case "actor":
+						this.actor = Attribute.Value;
+						break;
+
+					case "action":
+						this.action = Attribute.Value;
+						break;
+
+					case "id":
+					case "xmlns":
+						break;
+
+					default:
+						if (Attribute.Prefix == "xmlns")
+							break;
+
+						string s = Attribute.Value;
+
+						if (s.StartsWith("{") && s.EndsWith("}"))
+						{
+							this.AddChild(new Argument(this, this.Model, Attribute.Name,
+								new Expression(s.Substring(1, s.Length - 2).Trim())));
+						}
+						else if (CommonTypes.TryParse(s, out double d))
+							this.AddChild(new Argument(this, this.Model, Attribute.Name, d));
+						else if (XML.TryParse(s, out System.DateTime TP))
+							this.AddChild(new Argument(this, this.Model, Attribute.Name, TP));
+						else if (Waher.Content.Duration.TryParse(s, out Waher.Content.Duration Duration))
+							this.AddChild(new Argument(this, this.Model, Attribute.Name, Duration));
+						else if (TimeSpan.TryParse(s, out TimeSpan TS))
+							this.AddChild(new Argument(this, this.Model, Attribute.Name, TS));
+						else
+							this.AddChild(new Argument(this, this.Model, Attribute.Name, s));
+						break;
+				}
+			}
 
 			return base.FromXml(Definition);
 		}
@@ -97,7 +137,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			if (!Variables.TryGetVariable(this.actor, out Variable v))
+			if (!Variables.TryGetVariable(this.actor, out Waher.Script.Variable v))
 				throw new Exception("Actor not found: " + this.actor);
 
 			object Actor = v.ValueObject;

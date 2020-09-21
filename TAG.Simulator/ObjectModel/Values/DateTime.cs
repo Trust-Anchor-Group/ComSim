@@ -25,6 +25,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		}
 
 		/// <summary>
+		/// DateTime value.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Value">Value.</param>
+		public DateTime(ISimulationNode Parent, Model Model, System.DateTime Value)
+			: base(Parent, Model)
+		{
+			this.value = Value;
+		}
+
+		/// <summary>
 		/// Value
 		/// </summary>
 		public System.DateTime Value => this.value;

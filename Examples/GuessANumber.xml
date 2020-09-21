@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT10S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+  <Meta>
+    <Title>Guessing a Number</Title>
+    <Description>Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) playing the simple game of guessing a number with each other randomly over chat. Simulation lasts 10 minutes, and games are started randomly with an expected intensity of 100 started games per minute.</Description>
+    <ModelScript>
+      <![CDATA[
+      MinValue:=1;
+      MaxValue:=100;
+      CalcGuess(Min,Max):=Round((Min+Max)/2)
+      ]]>
+    </ModelScript>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.XMPP.dll"/>
+  </Assemblies>
+  <Actors>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorTcp>
+    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorBosh>
+    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
+        <Parameter name="e"/>
+      </ExternalEvent>
+    </xmpp:XmppActorWebSocket>
+  </Actors>
+  <Distributions>
+    <Uniform id="HundredPerMinute" from="0" to="60" N="100"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="HundredPerMinute" activity="StartGame">
+      <Description>A game session between two random XMPP clients is started at a frequency of a hundred times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+        <FromPopulation actor="XmppBosh"/>
+        <FromPopulation actor="XmppWebSocket"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+        <FromPopulation actor="XmppBosh"/>
+        <FromPopulation actor="XmppWebSocket"/>
+      </ActorReference>
+    </StochasticEvent>
+    <EventHandler id="MessageReceived" activity="RespondToMessage">
+      <Description>Once a message is received from an actor, a proper response should be sent, or the game session be closed.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="StartGame">
+      <Description>This activity starts a game session, by randomly selecting a number between 1 and 100, and sending an introductory chat message to a random recipient.</Description>
+      <Start/>
+      <Count counter="Started"/>
+      <Inc counter="Games"/>
+      <Eval>
+        <![CDATA[
+        N:=Round(Uniform(MinValue,MaxValue));
+        Key:=From.FullJID+" "+To.FullJID;
+        Global[Key]:=
+        {
+          "Number":N,
+          "Min":MinValue,
+          "Max":MaxValue
+        }
+        ]]>
+      </Eval>
+      <Sample name="Number">
+        <Script>N</Script>
+      </Sample>
+      <Action actor="From" action="SendChatMessage" To="{To.FullJID}" Body="{'Hello. Guess a number between '+MinValue+' and '+MaxValue+'.'}"/>
+      <Count counter="Tx"/>
+      <Stop/>
+    </Activity>
+    <Activity id="RespondToMessage">
+      <Description>This activity responds to incoming chat messages, with the aim at guessing the number selected by the sender.</Description>
+      <Start/>
+      <Count counter="Rx"/>
+      <Eval>Key:=To.FullJID+" "+e.From</Eval>
+      <Delay duration="PT2S"/>
+      <Conditional>
+        <Condition condition="e.Body like &quot;Hello[.] Guess a number between (?'Min'\\d+) and (?'Max'\\d+)[.]&quot;">
+          <Eval>
+            <![CDATA[
+            Guess:=CalcGuess(Min,Max);
+            Global[Key]:=
+            {
+              "Guess":Guess,
+              "Min":Min,
+              "Max":Max,
+              "Nr":1
+            }
+            ]]>
+          </Eval>
+          <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+          <Count counter="Tx"/>
+          <Count counter="Guesses"/>
+        </Condition>
+        <Otherwise>
+          <Eval>State:=Global[Key]</Eval>
+          <Conditional>
+            <Condition condition="e.Body like &quot;(?'Guess'\\d+)&quot;">
+              <Conditional>
+                <Condition condition="Guess=State.Number">
+                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Correct"/>
+                  <Count counter="Tx"/>
+                </Condition>
+                <Condition condition="Guess&lt;State.Number">
+                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Larger"/>
+                  <Count counter="Tx"/>
+                </Condition>
+                <Otherwise>
+                  <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Smaller"/>
+                  <Count counter="Tx"/>
+                </Otherwise>
+              </Conditional>
+            </Condition>
+            <Condition condition="e.Body='Larger'">
+              <Eval>
+                <![CDATA[
+                State.Min:=State.Guess+1;
+                Guess:=CalcGuess(State.Min,State.Max);
+                State.Guess:=Guess;
+                State.Nr:=State.Nr+1
+                ]]>
+              </Eval>
+              <Count counter="Guesses"/>
+              <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+              <Count counter="Tx"/>
+            </Condition>
+            <Condition condition="e.Body='Smaller'">
+              <Eval>
+                <![CDATA[
+                State.Max:=State.Guess-1;
+                Guess:=CalcGuess(State.Min,State.Max);
+                State.Guess:=Guess;
+                State.Nr:=State.Nr+1
+                ]]>
+              </Eval>
+              <Count counter="Guesses"/>
+              <Action actor="To" action="SendChatMessage" To="{e.From}" Body="{Str(Guess)}"/>
+              <Count counter="Tx"/>
+            </Condition>
+            <Condition condition="e.Body='Correct'">
+              <Sample name="GameGuesses">
+                <Script>State.Nr</Script>
+              </Sample>
+              <Dec counter="Games"/>
+              <Count counter="Finished"/>
+              <Count counter="Tx"/>
+            </Condition>
+            <Otherwise>
+              <Dec counter="Games"/>
+              <Count counter="Terminated"/>
+              <Eval>Log.Debug(e.Body,[])</Eval>
+            </Otherwise>
+          </Conditional>
+        </Otherwise>
+      </Conditional>
+      <Stop/>
+    </Activity>
+  </Activities>
+</Model>

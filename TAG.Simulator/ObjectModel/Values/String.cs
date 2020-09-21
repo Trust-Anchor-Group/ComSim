@@ -24,6 +24,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		}
 
 		/// <summary>
+		/// String value.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Value">Value</param>
+		public String(ISimulationNode Parent, Model Model, string Value)
+			: base(Parent, Model)
+		{
+			this.value = Value;
+		}
+
+		/// <summary>
 		/// Value
 		/// </summary>
 		public string Value => this.value;
@@ -50,7 +62,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.value = Definition.InnerText;
+			this.value = Script.RemoveIndent(Definition.InnerText);
 
 			return Task.CompletedTask;
 		}

@@ -26,6 +26,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		}
 
 		/// <summary>
+		/// Duration value.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Value">Value</param>
+		public Duration(ISimulationNode Parent, Model Model, Waher.Content.Duration Value)
+			: base(Parent, Model)
+		{
+			this.value = Value;
+		}
+
+		/// <summary>
 		/// Value
 		/// </summary>
 		public Waher.Content.Duration Value => this.value;
