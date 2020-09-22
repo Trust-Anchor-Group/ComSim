@@ -16,6 +16,8 @@ namespace TAG.Simulator.ObjectModel.Events
 	{
 		private string distributionId;
 		private IDistribution distribution;
+		private Expression guard;
+		private int guardLimit;
 
 		/// <summary>
 		/// Stochastic Event
@@ -60,6 +62,12 @@ namespace TAG.Simulator.ObjectModel.Events
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.distributionId = XML.Attribute(Definition, "distribution");
+			this.guardLimit = XML.Attribute(Definition, "guardLimit", 1000);
+
+			if (Definition.HasAttribute("guard"))
+				this.guard = new Expression(Definition.GetAttribute("guard"));
+			else
+				this.guard = null;
 
 			return base.FromXml(Definition);
 		}
@@ -86,7 +94,7 @@ namespace TAG.Simulator.ObjectModel.Events
 			int n = this.distribution.CheckTrigger(t1, t2, NrCycles);
 			while (n > 0)
 			{
-				this.Trigger(this.Model.GetEventVariables());
+				this.Trigger(this.Model.GetEventVariables(), this.guard, this.guardLimit);
 				n--;
 			}
 		}
@@ -103,6 +111,13 @@ namespace TAG.Simulator.ObjectModel.Events
 			Output.Write("Triggered in accordance with distribution ");
 			Output.WriteLine(this.distributionId);
 			Output.WriteLine("end note");
+
+			if (!(this.guard is null))
+			{
+				Output.WriteLine("note left of UC1");
+				Output.WriteLine("Additional conditions, guarded by script");
+				Output.WriteLine("end note");
+			}
 		}
 
 		/// <summary>

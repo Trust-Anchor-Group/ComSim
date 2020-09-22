@@ -75,6 +75,7 @@ namespace TAG.Simulator
 		private double timeUnitMs;
 		private double timeCycleMs;
 		private double timeCycleUnits;
+		private bool executing;
 
 		/// <summary>
 		/// Root node of a simulation model
@@ -419,6 +420,8 @@ namespace TAG.Simulator
 		/// <returns>If simulation completed successfully.</returns>
 		public async Task<bool> Run(TaskCompletionSource<bool> Done, bool EmitDots)
 		{
+			this.executing = true;
+
 			Console.Out.WriteLine("Initializing...");
 			await this.ForEach(async (Node) => await Node.Initialize(), true);
 
@@ -438,7 +441,7 @@ namespace TAG.Simulator
 				bool Result = true;
 				bool Emitted = false;
 
-				while ((TP = DateTime.Now) <= this.end)
+				while ((TP = DateTime.Now) < this.end)
 				{
 					t = (TP - this.start).TotalMilliseconds;
 					t1 = t2;
@@ -483,6 +486,8 @@ namespace TAG.Simulator
 			}
 			finally
 			{
+				this.executing = false;
+
 				if (EmitDots)
 					Console.Out.WriteLine('.');
 
@@ -630,7 +635,9 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
 		{
-			this.activityStartStatistics.CountEvent(ActivityId);
+			if (this.executing)
+				this.activityStartStatistics.CountEvent(ActivityId);
+
 			Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
@@ -643,7 +650,9 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityFinishedCount(string ActivityId, string SourceId, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
-			this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			if (this.executing)
+				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			
 			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
@@ -657,7 +666,9 @@ namespace TAG.Simulator
 		/// <param name="Tags">Meta-data tags related to the event.</param>
 		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
-			this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			if (this.executing)
+				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			
 			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}
 
@@ -667,7 +678,8 @@ namespace TAG.Simulator
 		/// <param name="CounterName">Counter name</param>
 		public void CountEvent(string CounterName)
 		{
-			this.counters.CountEvent(CounterName);
+			if (this.executing)
+				this.counters.CountEvent(CounterName);
 		}
 
 		/// <summary>
@@ -676,7 +688,8 @@ namespace TAG.Simulator
 		/// <param name="CounterName">Counter name</param>
 		public void IncrementCounter(string CounterName)
 		{
-			this.samples.IncrementCounter(CounterName);
+			if (this.executing)
+				this.samples.IncrementCounter(CounterName);
 		}
 
 		/// <summary>
@@ -685,7 +698,8 @@ namespace TAG.Simulator
 		/// <param name="CounterName">Counter name</param>
 		public void DecrementCounter(string CounterName)
 		{
-			this.samples.DecrementCounter(CounterName);
+			if (this.executing)
+				this.samples.DecrementCounter(CounterName);
 		}
 
 		/// <summary>
@@ -695,7 +709,8 @@ namespace TAG.Simulator
 		/// <param name="Value">Value</param>
 		public void Sample(string CounterName, double Value)
 		{
-			this.samples.Sample(CounterName, Value);
+			if (this.executing)
+				this.samples.Sample(CounterName, Value);
 		}
 
 		/// <summary>
@@ -705,7 +720,8 @@ namespace TAG.Simulator
 		/// <param name="Value">Value</param>
 		public void Sample(string CounterName, PhysicalQuantity Value)
 		{
-			this.samples.Sample(CounterName, Value);
+			if (this.executing)
+				this.samples.Sample(CounterName, Value);
 		}
 
 		/// <summary>

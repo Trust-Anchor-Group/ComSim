@@ -145,6 +145,8 @@ namespace TAG.Simulator.ObjectModel.Events
 				{
 					ActorPopulation.ReturnIndividual(InstanceActor);
 				}
+
+				Variables.Remove(this.name2);
 			}
 		}
 

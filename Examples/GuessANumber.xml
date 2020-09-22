@@ -13,7 +13,20 @@
       <![CDATA[
       MinValue:=1;
       MaxValue:=100;
-      CalcGuess(Min,Max):=Round((Min+Max)/2)
+      CalcGuess(Min,Max):=Round((Min+Max)/2);
+      LogGame(State):=
+      (
+        Tags:=
+        {
+          Object:State.GM,
+          Actor:State.Player,
+          N:State.Guess,
+          NrGuesses:State.Nr
+        };
+        i:=1;
+        foreach Guess in State.Guesses do Tags.("Guess"+Str(i++)):=Guess;
+        LogNotice("Game ended.",Tags);
+      )
       ]]>
     </ModelScript>
   </Meta>
@@ -41,7 +54,8 @@
     <Uniform id="HundredPerMinute" from="0" to="60" N="100"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="HundredPerMinute" activity="StartGame">
+    <StochasticEvent distribution="HundredPerMinute" activity="StartGame" 
+                     guard="!Global.ContainsVariable(From.FullJID+' '+To.FullJID) and !Global.ContainsVariable(To.FullJID+' '+From.FullJID)">
       <Description>A game session between two random XMPP clients is started at a frequency of a hundred times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
@@ -63,7 +77,7 @@
       <Description>This activity starts a game session, by randomly selecting a number between 1 and 100, and sending an introductory chat message to a random recipient.</Description>
       <Start/>
       <Count counter="Started"/>
-      <Inc counter="Games"/>
+      <Inc counter="ConcurrentGames"/>
       <Eval>
         <![CDATA[
         N:=Round(Uniform(MinValue,MaxValue));
@@ -91,13 +105,16 @@
       <Delay duration="PT2S"/>
       <Conditional>
         <Condition condition="e.Body like &quot;Hello[.] Guess a number between (?'Min'\\d+) and (?'Max'\\d+)[.]&quot;">
-          <Group title="Starting game">
+          <Group title="First guess">
             <Eval>
               <![CDATA[
               Guess:=CalcGuess(Min,Max);
               Global[Key]:=
               {
+                GM:e.From,
+                Player:e.To,
                 Guess:Guess,
+                Guesses:[Guess],
                 Min:Min,
                 Max:Max,
                 Nr:1
@@ -118,6 +135,7 @@
                   <Condition condition="Guess=State.Number">
                     <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Correct"/>
                     <Count counter="Tx"/>
+                    <Eval>Global.Remove(Key)</Eval>
                   </Condition>
                   <Condition condition="Guess&lt;State.Number">
                     <Action actor="To" action="SendChatMessage" To="{e.From}" Body="Larger"/>
@@ -139,7 +157,8 @@
                       State.Min:=State.Guess+1;
                       Guess:=CalcGuess(State.Min,State.Max);
                       State.Guess:=Guess;
-                      State.Nr:=State.Nr+1
+                      State.Guesses:=join(State.Guesses,Guess);
+                      State.Nr++
                       ]]>
                     </Eval>
                     <Count counter="Guesses"/>
@@ -151,8 +170,9 @@
                       <![CDATA[
                       State.Max:=State.Guess-1;
                       Guess:=CalcGuess(State.Min,State.Max);
+                      State.Guesses:=join(State.Guesses,Guess);
                       State.Guess:=Guess;
-                      State.Nr:=State.Nr+1
+                      State.Nr++
                       ]]>
                     </Eval>
                     <Count counter="Guesses"/>
@@ -163,14 +183,17 @@
                     <Sample name="GameGuesses">
                       <Script>State.Nr</Script>
                     </Sample>
-                    <Dec counter="Games"/>
+                    <Dec counter="ConcurrentGames"/>
+                    <Eval>LogGame(State)</Eval>
+                    <Eval>Global.Remove(Key)</Eval>
                     <Count counter="Finished"/>
                     <Count counter="Tx"/>
                   </Condition>
                   <Otherwise>
-                    <Dec counter="Games"/>
+                    <Dec counter="ConcurrentGames"/>
+                    <Eval>Global.Remove(Key)</Eval>
                     <Count counter="Terminated"/>
-                    <Eval>Log.Debug(e.Body,[])</Eval>
+                    <Eval>LogDebug(e.Body)</Eval>
                   </Otherwise>
                 </Conditional>
               </Group>

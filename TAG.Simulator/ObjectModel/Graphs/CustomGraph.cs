@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -18,7 +17,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// </summary>
 	public class CustomGraph : Graph, IBucket
 	{
-		private LinkedList<KeyValuePair<DateTime, double>> statistics = new LinkedList<KeyValuePair<DateTime, double>>();
+		private readonly LinkedList<KeyValuePair<DateTime, double>> statistics = new LinkedList<KeyValuePair<DateTime, double>>();
 		private string _for;
 		private string script;
 		private StringBuilder times = null;

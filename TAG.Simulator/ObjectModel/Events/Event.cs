@@ -107,25 +107,56 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
-		public async void Trigger(Variables Variables)
+		/// <param name="Guard">Optional guard expression.</param>
+		/// <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
+		public async void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
 		{
+			List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
 			KeyValuePair<string, object>[] Tags2 = null;
 			DateTime Start = DateTime.Now;
 
 			try
 			{
-				List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
-
 				if (!(this.preparationNodes is null))
 				{
 					foreach (IEventPreparation Node in this.preparationNodes)
 						Node.Prepare(Variables, Tags);
 				}
 
-				Tags2 = Tags.ToArray();
-
 				try
 				{
+					if (!(Guard is null))
+					{
+						object Obj = Guard.Evaluate(Variables);
+						if (!(Obj is bool b))
+							throw new Exception("Guard expression did not evaluate to a boolean value.");
+
+						while (!b)
+						{
+							if (--GuardLimit < 0)
+								throw new Exception("Guard limit exceeded. Event could not be triggered properly.");
+
+							if (!(this.preparationNodes is null))
+							{
+								foreach (IEventPreparation Node in this.preparationNodes)
+									Node.Release(Variables);
+
+								Tags.Clear();
+
+								foreach (IEventPreparation Node in this.preparationNodes)
+									Node.Prepare(Variables, Tags);
+							}
+
+							Obj = Guard.Evaluate(Variables);
+							if (!(Obj is bool b2))
+								throw new Exception("Guard expression did not evaluate to a boolean value.");
+
+							b = b2;
+						}
+					}
+
+					Tags2 = Tags.ToArray();
+
 					this.Model.IncActivityStartCount(this.activityId, this.id, Tags2);
 					await this.activity.ExecuteTask(Variables);
 					this.Model.IncActivityFinishedCount(this.activityId, this.id, DateTime.Now - Start, Tags2);
@@ -144,7 +175,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				ex = Log.UnnestException(ex);
 
 				if (Tags2 is null)
-					Tags2 = new KeyValuePair<string, object>[0];
+					Tags2 = Tags.ToArray();
 
 				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, DateTime.Now - Start, Tags2);
 			}

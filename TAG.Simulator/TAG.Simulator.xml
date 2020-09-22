@@ -2306,11 +2306,13 @@
             </summary>
             <param name="ExternalEvent">External event.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Trigger(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Trigger(Waher.Script.Variables,Waher.Script.Expression,System.Int32)">
             <summary>
             Triggers the event.
             </summary>
             <param name="Variables">Event variables</param>
+            <param name="Guard">Optional guard expression.</param>
+            <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportMarkdown(System.IO.StreamWriter)">
             <summary>
@@ -2590,11 +2592,13 @@
             ID of event.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Trigger(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Trigger(Waher.Script.Variables,Waher.Script.Expression,System.Int32)">
             <summary>
             Triggers the event.
             </summary>
             <param name="Variables">Event variables</param>
+            <param name="Guard">Optional guard expression.</param>
+            <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Register(TAG.Simulator.ObjectModel.Events.IEventPreparation)">
             <summary>

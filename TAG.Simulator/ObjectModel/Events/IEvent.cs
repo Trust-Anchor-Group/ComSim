@@ -25,7 +25,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
-		void Trigger(Variables Variables);
+		/// <param name="Guard">Optional guard expression.</param>
+		/// <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
+		void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue);
 
 		/// <summary>
 		/// Registers an event preparation node.

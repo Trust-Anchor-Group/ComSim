@@ -8,7 +8,7 @@ Features
 	[x] Stochastic events
 	[x] External events
 	[x] Trigger activities
-	[ ] Guards
+	[x] Guards
 [x] Meta-data
 	[x] Title
 	[x] Description

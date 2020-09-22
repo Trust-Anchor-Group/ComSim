@@ -204,6 +204,8 @@
     <xs:complexContent>
       <xs:extension base="Event">
         <xs:attribute name="distribution" type="xs:string" use="required"/>
+        <xs:attribute name="guard" type="xs:string" use="optional"/>
+        <xs:attribute name="guardLimit" type="xs:positiveInteger" use="optional"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
