@@ -114,23 +114,23 @@ namespace TAG.Simulator.ObjectModel.Values
 
 			bool First = true;
 
-			Append(Output, Duration.Years, "years", ref First);
-			Append(Output, Duration.Months, "months", ref First);
-			Append(Output, Duration.Days, "d", ref First);
-			Append(Output, Duration.Hours, "h", ref First);
-			Append(Output, Duration.Minutes, "min", ref First);
+			Append(Output, Duration.Years, "years", "year", ref First);
+			Append(Output, Duration.Months, "months", "month", ref First);
+			Append(Output, Duration.Days, "d", null, ref First);
+			Append(Output, Duration.Hours, "h", null, ref First);
+			Append(Output, Duration.Minutes, "min", null, ref First);
 
 			int s = (int)Duration.Seconds;
-			Append(Output, s, "s", ref First);
+			Append(Output, s, "s", null, ref First);
 
 			int ms = (int)((Duration.Seconds - s) * 1000);
-			Append(Output, ms, "ms", ref First);
+			Append(Output, ms, "ms", null, ref First);
 
 			if (Duration.Negation)
 				Output.Append(')');
 		}
 
-		private static void Append(StringBuilder Output, int Nr, string Unit, ref bool First)
+		private static void Append(StringBuilder Output, int Nr, string SingUnit, string PlurUnit, ref bool First)
 		{
 			if (Nr != 0)
 			{
@@ -141,7 +141,7 @@ namespace TAG.Simulator.ObjectModel.Values
 
 				Output.Append(Nr.ToString());
 				Output.Append(' ');
-				Output.Append(Unit);
+				Output.Append(Nr == 1 ? SingUnit : (PlurUnit ?? SingUnit));
 			}
 		}
 	}

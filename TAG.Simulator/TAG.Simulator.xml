@@ -1839,6 +1839,13 @@
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
+            <summary>
+            Allows the actor to add notes related to the actor in use case diagrams.
+            </summary>
+            <param name="Output">Use Case diagram output.</param>
+            <param name="Id">ID of actor in use case diagram.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
             Container for actors.
@@ -1924,6 +1931,13 @@
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
+            <summary>
+            Allows the actor to add notes related to the actor in use case diagrams.
+            </summary>
+            <param name="Output">Use Case diagram output.</param>
+            <param name="Id">ID of actor in use case diagram.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.IActors">
             <summary>
             Interface for collections of actors.
@@ -1934,6 +1948,78 @@
             Registers an actor with the collection of actors.
             </summary>
             <param name="Actor">Actor</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Actors.TimerActor">
+            <summary>
+            Represents an internal clock.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Represents an internal clock.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Represents an internal clock.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.TimerActor.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.CreateInstance(System.Int32,System.String)">
+            <summary>
+            Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.InitializeInstance">
+            <summary>
+            Initializes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.StartInstance">
+            <summary>
+            Starts an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.FinalizeInstance">
+            <summary>
+            Finalizes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
+            <summary>
+            Allows the actor to add notes related to the actor in use case diagrams.
+            </summary>
+            <param name="Output">Use Case diagram output.</param>
+            <param name="Id">ID of actor in use case diagram.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distribution">
             <summary>

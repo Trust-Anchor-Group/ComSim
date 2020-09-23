@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 	ProjectSection(SolutionItems) = preProject
 		Examples\EventXmlToHtml.xslt = Examples\EventXmlToHtml.xslt
 		Examples\GuessANumber.xml = Examples\GuessANumber.xml
+		Examples\Performance.ws = Examples\Performance.ws
+		Examples\ServerPerformance.xml = Examples\ServerPerformance.xml
 		Examples\SimpleChatMessages.xml = Examples\SimpleChatMessages.xml
 		Examples\SnifferXmlToHtml.xslt = Examples\SnifferXmlToHtml.xslt
 	EndProjectSection

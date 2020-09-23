@@ -9,6 +9,7 @@ Features
 	[x] External events
 	[x] Trigger activities
 	[x] Guards
+	[ ] Clocks
 [x] Meta-data
 	[x] Title
 	[x] Description
@@ -50,7 +51,6 @@ Features
 		[x] Custom graphs
 		[x] Event log statistics
 [ ] Distributions
-	[ ] Regular distribution: fixed interval, for sampling
 	[ ] Script-based PDF and CDF
 	[ ] Arcsine distribution
 	[ ] Beta distribution
@@ -72,6 +72,10 @@ Features
 [ ] HTTP
 	[ ] GET
 	[ ] POST
+		[ ] String
+		[ ] JSON
+		[ ] Xml
+		[ ] Signed XML
 	[ ] HEAD
 	[ ] PUT
 	[ ] DELETE

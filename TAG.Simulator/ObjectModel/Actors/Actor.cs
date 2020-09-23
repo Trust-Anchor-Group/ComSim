@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Events;
@@ -231,5 +232,15 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
 		public virtual object ActivityObject => this;
+
+		/// <summary>
+		/// Allows the actor to add notes related to the actor in use case diagrams.
+		/// </summary>
+		/// <param name="Output">Use Case diagram output.</param>
+		/// <param name="Id">ID of actor in use case diagram.</param>
+		public virtual void AnnotateActorUseCaseUml(StreamWriter Output, string Id)
+		{
+		}
+
 	}
 }

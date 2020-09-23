@@ -7,6 +7,7 @@ using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.Script;
+using Waher.Script.Operators.Comparisons;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
@@ -225,6 +226,7 @@ namespace TAG.Simulator.ObjectModel.Events
 			if (!(this.externalEvents is null))
 			{
 				int i = 0;
+				string s;
 
 				foreach (ExternalEvent ExternalEvent in this.externalEvents)
 				{
@@ -235,30 +237,27 @@ namespace TAG.Simulator.ObjectModel.Events
 
 					if (string.IsNullOrEmpty(ExternalEvent.ActorName))
 					{
-						Output.Write(ExternalEvent.Actor.Id);
-						Output.Write("\" as ");
-						Output.Write(ExternalEvent.Actor.Id);
-						Output.Write("_B");
-						Output.Write(i.ToString());
+						s = ExternalEvent.Actor.Id + "_B" + i.ToString();
 
 						Output.Write(ExternalEvent.Actor.Id);
+						Output.Write("\" as ");
+						Output.WriteLine(s);
 					}
 					else
 					{
+						s = ExternalEvent.ActorName + "_B" + i.ToString();
+
 						Output.Write(ExternalEvent.ActorName);
 						Output.Write("\" as ");
-						Output.Write(ExternalEvent.ActorName);
-						Output.Write("_B");
-						Output.Write(i.ToString());
+						Output.Write(s);
 						Output.Write(" <<");
 						Output.Write(ExternalEvent.Actor.Id);
 						Output.WriteLine(">>");
-
-						Output.Write(ExternalEvent.ActorName);
 					}
 
-					Output.Write("_B");
-					Output.Write(i.ToString());
+					ExternalEvent.Actor.AnnotateActorUseCaseUml(Output, s);
+
+					Output.Write(s);
 					Output.Write(" --> UC1 : ");
 					Output.Write(ExternalEvent.Name);
 					Output.Write("(");

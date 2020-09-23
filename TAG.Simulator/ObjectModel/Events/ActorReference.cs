@@ -160,19 +160,19 @@ namespace TAG.Simulator.ObjectModel.Events
 
 			foreach (IActor Actor in this.actors)
 			{
+				string s = this.name + "_A" + i.ToString();
+
 				Output.Write("actor \"");
 				Output.Write(this.name);
 				Output.Write("\" as ");
-				Output.Write(this.name);
-				Output.Write("_A");
-				Output.Write(i.ToString());
+				Output.Write(s);
 				Output.Write(" <<");
 				Output.Write(Actor.Id);
 				Output.WriteLine(">>");
 
-				Output.Write(this.name);
-				Output.Write("_A");
-				Output.Write(i.ToString());
+				Actor.AnnotateActorUseCaseUml(Output, s);
+
+				Output.Write(s);
 				Output.WriteLine(" --> UC1");
 
 				i++;

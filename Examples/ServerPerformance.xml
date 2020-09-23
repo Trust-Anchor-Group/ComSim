@@ -7,13 +7,37 @@
        timeCycle="PT1M"
        duration="PT10M">
   <Meta>
-    <Title>Guessing a Number</Title>
-    <Description>Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) playing the simple game of guessing a number with each other randomly over chat. Simulation lasts 10 minutes, and games are started randomly with an expected intensity of 100 started games per minute. Based on the `SimpleChatMessages.xml` example.</Description>
+    <Title>Server Performance</Title>
+    <Description>
+      <![CDATA[
+      Measures server CPU, Network traffic and available Memory, as the simulator simulates 40 XMPP clients
+      (20 TCP, 10 BOSH, 10 Web-sockets) playing the simple game of guessing a number with each other
+      randomly over chat. Simulation lasts 10 minutes, and games are started randomly with an expected
+      intensity of 100 started games per minute. Based on the `GuessANumber.xml` example.
+
+      **Note**: For this simulation to work, the `Performance.ws` Web Service script available in the
+      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
+      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
+      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
+      script contais the following script, executed when the resource is accessed:
+
+          {
+              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
+              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
+              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue()
+          }
+      ]]>
+    </Description>
     <ModelScript>
       <![CDATA[
+      GetPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
+      
       MinValue:=1;
       MaxValue:=100;
+      
       CalcGuess(Min,Max):=Round((Min+Max)/2);
+      
       LogGame(State):=
       (
         Tags:=
@@ -26,7 +50,7 @@
         i:=1;
         foreach Guess in State.Guesses do Tags.("Guess"+Str(i++)):=Guess;
         LogNotice("Game ended.",Tags);
-      )
+      );
       ]]>
     </ModelScript>
   </Meta>
@@ -34,6 +58,9 @@
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
+    <Timer id="PerformanceTimer" N="1" period="PT2S">
+      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+    </Timer>
     <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
         <Parameter name="e"/>
@@ -54,7 +81,7 @@
     <Uniform id="HundredPerMinute" from="0" to="60" N="100"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="HundredPerMinute" activity="StartGame" 
+    <StochasticEvent distribution="HundredPerMinute" activity="StartGame"
                      guard="!Global.ContainsVariable(From.FullJID+' '+To.FullJID) and !Global.ContainsVariable(To.FullJID+' '+From.FullJID)">
       <Description>A game session between two random XMPP clients is started at a frequency of a hundred times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
@@ -71,8 +98,26 @@
     <EventHandler id="MessageReceived" activity="RespondToMessage">
       <Description>Once a message is received from an actor, a proper response should be sent, or the game session be closed.</Description>
     </EventHandler>
+    <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
+      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+    </EventHandler>
   </Events>
   <Activities>
+    <Activity id="ReadPerformanceCounters">
+      <Description>This activity measures server performance, by calling a web service and reporting the measured values in the returning JSON object back to the simulator.</Description>
+      <Start/>
+      <Eval>M:=GetPerformance()</Eval>
+      <Sample name="CPU (%)">
+        <Script>M.cpuPercent</Script>
+      </Sample>
+      <Sample name="Network (kB/s)">
+        <Script>M.networkBytesPerSec/1024</Script>
+      </Sample>
+      <Sample name="Free Memory (GB)">
+        <Script>M.memoryMBytesFree/1024</Script>
+      </Sample>
+      <Stop/>
+    </Activity>
     <Activity id="StartGame">
       <Description>This activity starts a game session, by randomly selecting a number between 1 and 100, and sending an introductory chat message to a random recipient.</Description>
       <Start/>

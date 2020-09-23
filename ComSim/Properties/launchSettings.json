@@ -2,7 +2,7 @@
   "profiles": {
     "ComSim": {
       "commandName": "Project",
-      "commandLineArgs": "-d Data -e -i ..\\..\\..\\..\\Examples\\GuessANumber.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\GuessANumber.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\GuessANumber.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\GuessANumber.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
+      "commandLineArgs": "-d Data -e -i ..\\..\\..\\..\\Examples\\ServerPerformance.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\ServerPerformance.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\ServerPerformance.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\ServerPerformance.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
     }
   }
 }
