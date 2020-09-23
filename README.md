@@ -83,10 +83,10 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 Following is a list of simulation examples that introduces different concenpts in simple examples. They can also be used as the basis for 
 new simulation models:
 
-| Example                                                   | Description                                                                                                                                                                                   | Simulation Report                                              |
-|:----------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------|
-| [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. Illustrates stochastic and external events.                                                                        | [Report](https://lab.tagroot.io/Reports/SimpleChatMessages.md) |
-| [GuessANumber.xml](Examples/GuessANumber.xml)             | Simulates a few users using XMPP to play the simple game of guessing a number. Demonstrates how to persist states across events, use of event guards, custom logging, and simplified actions. | [Report](https://lab.tagroot.io/Reports/GuessANumber.md)       |
+| Example                                                   | Description                                                                                                                                                                                              | Simulation Report                                              |
+|:----------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------|
+| [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using XMPP to send chat messages between each other. Illustrates stochastic and external events.                                                                                   | [Report](https://lab.tagroot.io/Reports/SimpleChatMessages.md) |
+| [GuessANumber.xml](Examples/GuessANumber.xml)             | Simulates a few users using XMPP to play the simple game of guessing a number. Demonstrates how to persist states across events, use event guards, custom logging, simplified actions and custom graphs. | [Report](https://lab.tagroot.io/Reports/GuessANumber.md)       |
 
 ## Extending the Simulator
 
