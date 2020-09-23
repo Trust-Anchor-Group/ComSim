@@ -9,7 +9,7 @@ Features
 	[x] External events
 	[x] Trigger activities
 	[x] Guards
-	[ ] Clocks
+	[x] Clocks
 [x] Meta-data
 	[x] Title
 	[x] Description
@@ -22,9 +22,9 @@ Features
 	[x] Counters
 	[x] Stat activity node: Increments counters
 	[ ]	Sensor data (local/remote)
-	[ ] Measurements
-	[ ] Performance counters
-	[ ] CPU/Memory
+	[x] Measurements
+	[x] Performance counters
+	[x] CPU/Memory
 	[x] Global variables
 	[ ] Timing of, and between events/activities. (communication roundtrip)
 [ ] Simulation output
@@ -70,10 +70,10 @@ Features
 	[ ] Message action node
 	[ ] Presence action node
 [ ] HTTP
-	[ ] GET
-	[ ] POST
-		[ ] String
-		[ ] JSON
+	[x] GET
+	[x] POST
+		[x] String
+		[x] JSON
 		[ ] Xml
 		[ ] Signed XML
 	[ ] HEAD
@@ -89,8 +89,8 @@ Examples
 
 [x] Simple chat
 [x] Guess a number
+[x] Web Server Load (HTTP GET)
 [ ] Federation
-[ ] Web Server Load (HTTP GET)
 [ ] External events to determine activity node transitions
 [ ] Parallel threads in activity
 [ ] Timing of communication roundtrip
