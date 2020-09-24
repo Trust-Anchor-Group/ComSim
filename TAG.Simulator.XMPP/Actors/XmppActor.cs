@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.XMPP.Events;
 using Waher.Content.Xml;
 using Waher.Networking.DNS;
 using Waher.Networking.DNS.ResourceRecords;
@@ -12,13 +13,23 @@ using Waher.Networking.XMPP;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 
-namespace TAG.Simulator.XMPP
+namespace TAG.Simulator.XMPP.Actors
 {
 	/// <summary>
 	/// Abstract base class for XMPP actors.
 	/// </summary>
 	public abstract class XmppActor : Actor
 	{
+		/// <summary>
+		/// http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd
+		/// </summary>
+		public const string XmppNamespace = "http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd";
+
+		/// <summary>
+		/// TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd
+		/// </summary>
+		public const string XmppSchema = "TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd";
+
 		private XmppClient client;
 		private ISniffer sniffer;
 		private AccountCredentials credentials;
@@ -66,12 +77,12 @@ namespace TAG.Simulator.XMPP
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => "http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd";
+		public override string Namespace => XmppNamespace;
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
 		/// </summary>
-		public override string SchemaResource => "TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd";
+		public override string SchemaResource => XmppSchema;
 
 		/// <summary>
 		/// If instance is online.
@@ -92,6 +103,11 @@ namespace TAG.Simulator.XMPP
 		/// Host
 		/// </summary>
 		public string Host => this.host;
+
+		/// <summary>
+		/// XMPP Client
+		/// </summary>
+		public XmppClient Client => this.client;
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
@@ -218,6 +234,15 @@ namespace TAG.Simulator.XMPP
 			this.client.OnRosterItemAdded += Client_OnRosterItemAdded;
 			this.client.OnRosterItemRemoved += Client_OnRosterItemRemoved;
 			this.client.OnRosterItemUpdated += Client_OnRosterItemUpdated;
+
+			if (this.Parent is IActor ParentActor)
+			{
+				foreach (ISimulationNode Node in ParentActor.Children)
+				{
+					if (Node is HandlerNode HandlerNode)
+						HandlerNode.RegisterHandlers(this, this.client);
+				}
+			}
 
 			this.connected = new TaskCompletionSource<bool>();
 

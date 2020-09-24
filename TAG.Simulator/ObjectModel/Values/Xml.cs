@@ -62,7 +62,11 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <returns>Evaluated value.</returns>
 		public override object Evaluate(Variables Variables)
 		{
-			return this.value;
+			string s = Expression.Transform(this.value, "{", "}", Variables);
+			XmlDocument Doc = new XmlDocument();
+			Doc.LoadXml(s);
+
+			return Doc;
 		}
 
 		/// <summary>

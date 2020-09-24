@@ -7,7 +7,6 @@ using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.Script;
-using Waher.Script.Operators.Comparisons;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
@@ -17,7 +16,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	public abstract class Event : SimulationNodeChildren, IEvent
 	{
 		private LinkedList<IEventPreparation> preparationNodes = null;
-		private LinkedList<ExternalEvent> externalEvents = null;
+		private LinkedList<IExternalEvent> externalEvents = null;
 		private IActivity activity;
 		private string activityId;
 		private string id;
@@ -96,10 +95,10 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Registers an external event.
 		/// </summary>
 		/// <param name="ExternalEvent">External event.</param>
-		public void Register(ExternalEvent ExternalEvent)
+		public void Register(IExternalEvent ExternalEvent)
 		{
 			if (this.externalEvents is null)
-				this.externalEvents = new LinkedList<ExternalEvent>();
+				this.externalEvents = new LinkedList<IExternalEvent>();
 
 			this.externalEvents.AddLast(ExternalEvent);
 		}
@@ -112,6 +111,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
 		public async void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
 		{
+			if (this.activity is null)
+				return;	// Not initialized yet.
+
 			List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
 			KeyValuePair<string, object>[] Tags2 = null;
 			DateTime Start = DateTime.Now;
@@ -228,7 +230,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				int i = 0;
 				string s;
 
-				foreach (ExternalEvent ExternalEvent in this.externalEvents)
+				foreach (IExternalEvent ExternalEvent in this.externalEvents)
 				{
 					if (ExternalEvent.Actor is null)
 						continue;
@@ -274,7 +276,7 @@ namespace TAG.Simulator.ObjectModel.Events
 							else
 								Output.Write(", ");
 
-							if (!string.IsNullOrEmpty(P.Variable))
+							if (!string.IsNullOrEmpty(P.Variable) && P.Variable != P.Name)
 							{
 								Output.Write(P.Variable);
 								Output.Write('=');

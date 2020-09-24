@@ -13,7 +13,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// </summary>
 	public abstract class Actor : SimulationNodeChildren, IActor
 	{
-		private Dictionary<string, ExternalEvent> externalEvents = null;
+		private Dictionary<string, IExternalEvent> externalEvents = null;
 		private List<IActor> freeIndividuals = null;
 		private IActor[] instances;
 		private string id;
@@ -168,12 +168,12 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Registers an external event on the actor.
 		/// </summary>
 		/// <param name="ExternalEvent">External event</param>
-		public void Register(ExternalEvent ExternalEvent)
+		public void Register(IExternalEvent ExternalEvent)
 		{
 			string Name = ExternalEvent.Name;
 
 			if (this.externalEvents is null)
-				this.externalEvents = new Dictionary<string, ExternalEvent>();
+				this.externalEvents = new Dictionary<string, IExternalEvent>();
 
 			if (this.externalEvents.ContainsKey(Name))
 				throw new Exception("External event named " + Name + " already registered on actor " + this.id);
@@ -187,7 +187,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="Name">Name of external event.</param>
 		/// <param name="ExternalEvent">External event object.</param>
 		/// <returns>If an external event with the corresponding name was found.</returns>
-		public bool TryGetExternalEvent(string Name, out ExternalEvent ExternalEvent)
+		public bool TryGetExternalEvent(string Name, out IExternalEvent ExternalEvent)
 		{
 			if (this.externalEvents is null)
 			{

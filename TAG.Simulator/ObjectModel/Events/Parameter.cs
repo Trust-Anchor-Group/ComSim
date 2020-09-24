@@ -24,6 +24,20 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// Sets a variable to the value of an event parameter.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="Name">Parameter name</param>
+		/// <param name="Variable">Variable name</param>
+		public Parameter(ISimulationNode Parent, Model Model, string Name, string Variable)
+			: base(Parent, Model)
+		{
+			this.name = Name;
+			this.variable = Variable;
+		}
+
+		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => "Parameter";

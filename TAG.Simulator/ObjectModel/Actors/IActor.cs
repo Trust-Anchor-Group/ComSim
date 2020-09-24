@@ -8,7 +8,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
 	/// in simulator models.
 	/// </summary>
-	public interface IActor : ISimulationNode
+	public interface IActor : ISimulationNodeChildren
 	{
 		/// <summary>
 		/// ID of actor.
@@ -30,7 +30,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Registers an external event on the actor.
 		/// </summary>
 		/// <param name="ExternalEvent">External event</param>
-		void Register(ExternalEvent ExternalEvent);
+		void Register(IExternalEvent ExternalEvent);
 
 		/// <summary>
 		/// Tries to get an external event, given its name.
@@ -38,7 +38,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="Name">Name of external event.</param>
 		/// <param name="ExternalEvent">External event object.</param>
 		/// <returns>If an external event with the corresponding name was found.</returns>
-		bool TryGetExternalEvent(string Name, out ExternalEvent ExternalEvent);
+		bool TryGetExternalEvent(string Name, out IExternalEvent ExternalEvent);
 
 		/// <summary>
 		/// Number of individuals in population that are free.

@@ -11,7 +11,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// <summary>
 	/// Handles an incoming event raised from an external source
 	/// </summary>
-	public class ExternalEvent : SimulationNodeChildren
+	public class ExternalEvent : SimulationNodeChildren, IExternalEvent
 	{
 		private Dictionary<string, Parameter> parameters = null;
 		private IEvent eventReference;

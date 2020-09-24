@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 		Examples\ServerPerformance.xml = Examples\ServerPerformance.xml
 		Examples\SimpleChatMessages.xml = Examples\SimpleChatMessages.xml
 		Examples\SnifferXmlToHtml.xslt = Examples\SnifferXmlToHtml.xslt
+		Examples\XmlMessages.xml = Examples\XmlMessages.xml
+		Examples\XmlMessages.xsd = Examples\XmlMessages.xsd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E852FEDB-C91F-4124-A25F-9526AB4F668C}"

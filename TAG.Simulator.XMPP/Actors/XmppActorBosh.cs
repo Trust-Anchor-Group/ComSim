@@ -1,31 +1,32 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Xml;
+using Waher.Content.Xml;
 
-namespace TAG.Simulator.XMPP
+namespace TAG.Simulator.XMPP.Actors
 {
 	/// <summary>
-	/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+	/// XMPP Actor connecting to the XMPP network using BOSH (HTTP).
 	/// </summary>
-	public class XmppActorTcp : XmppActor
+	public class XmppActorBosh : XmppActorEndpoint
 	{
 		/// <summary>
-		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+		/// XMPP Actor connecting to the XMPP network using BOSH (HTTP).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public XmppActorTcp(ISimulationNode Parent, Model Model)
+		public XmppActorBosh(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+		/// XMPP Actor connecting to the XMPP network using BOSH (HTTP).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public XmppActorTcp(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+		public XmppActorBosh(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
 			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
@@ -33,7 +34,7 @@ namespace TAG.Simulator.XMPP
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "XmppActorTcp";
+		public override string LocalName => "XmppActorBosh";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -43,7 +44,7 @@ namespace TAG.Simulator.XMPP
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new XmppActorTcp(Parent, Model);
+			return new XmppActorBosh(Parent, Model);
 		}
 
 		/// <summary>
@@ -56,7 +57,12 @@ namespace TAG.Simulator.XMPP
 		/// <returns>Actor instance.</returns>
 		protected override XmppActor CreateInstanceObject(int InstanceIndex, string InstanceId)
 		{
-			return new XmppActorTcp(this, this.Model, InstanceIndex, InstanceId);
+			return new XmppActorBosh(this, this.Model, InstanceIndex, InstanceId);
 		}
+
+		/// <summary>
+		/// Type of XRD link representing endpoint.
+		/// </summary>
+		protected override string EndpointType => "urn:xmpp:alt-connections:xbosh";
 	}
 }

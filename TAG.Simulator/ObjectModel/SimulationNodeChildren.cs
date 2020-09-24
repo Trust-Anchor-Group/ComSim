@@ -10,7 +10,7 @@ namespace TAG.Simulator.ObjectModel
 	/// <summary>
 	/// Abstract base class for simulation nodes with children
 	/// </summary>
-	public abstract class SimulationNodeChildren : SimulationNode
+	public abstract class SimulationNodeChildren : SimulationNode, ISimulationNodeChildren
 	{
 		private ISimulationNode[] children;
 

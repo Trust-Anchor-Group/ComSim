@@ -11,7 +11,7 @@ using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP;
 
-namespace TAG.Simulator.XMPP
+namespace TAG.Simulator.XMPP.Actors
 {
 	/// <summary>
 	/// Abstract base class for XMPP actors with custom endpoint.

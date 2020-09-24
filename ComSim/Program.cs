@@ -373,10 +373,8 @@ namespace ComSim
 						Last = s;
 						if (!Schemas.ContainsKey(s))
 						{
-							if (!Factory.TryGetSchemaResource(s, out KeyValuePair<string, Assembly> P))
-								throw new Exception("Namespace " + s + " not defined in a schema in any of the loaded modules.");
-
-							Schemas[s] = XSL.LoadSchema(P.Key, P.Value);
+							if (Factory.TryGetSchemaResource(s, out KeyValuePair<string, Assembly> P))
+								Schemas[s] = XSL.LoadSchema(P.Key, P.Value);
 						}
 					}
 				}

@@ -7,7 +7,7 @@ namespace TAG.Simulator.ObjectModel.Values
 	/// <summary>
 	/// Interface for nodes holding a value node
 	/// </summary>
-	public interface IValueRecipient : ISimulationNode
+	public interface IValueRecipient : ISimulationNodeChildren
 	{
 		/// <summary>
 		/// Registers a value for the argument.

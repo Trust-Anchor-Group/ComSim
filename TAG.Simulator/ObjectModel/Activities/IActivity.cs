@@ -9,7 +9,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// <summary>
 	/// Interface for activities
 	/// </summary>
-	public interface IActivity : ISimulationNode
+	public interface IActivity : ISimulationNodeChildren
 	{
 		/// <summary>
 		/// ID of activity.

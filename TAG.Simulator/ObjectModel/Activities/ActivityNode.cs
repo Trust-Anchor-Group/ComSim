@@ -105,8 +105,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public virtual void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			foreach (IActivityNode Node in this.activityNodes)
-				Node.ExportPlantUml(Output, Indentation, QuoteChar);
+			if (!(this.activityNodes is null))
+			{
+				foreach (IActivityNode Node in this.activityNodes)
+					Node.ExportPlantUml(Output, Indentation, QuoteChar);
+			}
 		}
 	}
 }

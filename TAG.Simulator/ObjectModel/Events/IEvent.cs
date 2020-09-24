@@ -39,6 +39,6 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Registers an external event.
 		/// </summary>
 		/// <param name="ExternalEvent">External event.</param>
-		void Register(ExternalEvent ExternalEvent);
+		void Register(IExternalEvent ExternalEvent);
 	}
 }

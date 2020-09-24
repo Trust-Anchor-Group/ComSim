@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
+using Waher.Content.Xml;
+using Waher.Script;
+
+namespace TAG.Simulator.ObjectModel.Events
+{
+	/// <summary>
+	/// Interface for external events.
+	/// </summary>
+	public interface IExternalEvent : ISimulationNode
+	{
+		/// <summary>
+		/// Name of external event
+		/// </summary>
+		string Name
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Optional name for actor variable reference of sender of external event.
+		/// </summary>
+		string ActorName
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Actor reference.
+		/// </summary>
+		IActor Actor
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Parameters
+		/// </summary>
+		IEnumerable<Parameter> Parameters
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Method called when an external event has been received.
+		/// </summary>
+		/// <param name="Source">Actor receiving the event.</param>
+		/// <param name="Arguments">Event arguments.</param>
+		/// <returns>If event was handled</returns>
+		void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments);
+
+	}
+}

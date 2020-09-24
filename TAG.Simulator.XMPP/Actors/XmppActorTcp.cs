@@ -1,32 +1,31 @@
 ﻿using System;
-using TAG.Simulator.ObjectModel.Actors;
-using Waher.Networking.XMPP;
+using System.Threading.Tasks;
 
-namespace TAG.Simulator.XMPP
+namespace TAG.Simulator.XMPP.Actors
 {
 	/// <summary>
-	/// XMPP Actor connecting to the XMPP network using web-sockets.
+	/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
 	/// </summary>
-	public class XmppActorWebSocket : XmppActorEndpoint
+	public class XmppActorTcp : XmppActor
 	{
 		/// <summary>
-		/// XMPP Actor connecting to the XMPP network using web-sockets.
+		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public XmppActorWebSocket(ISimulationNode Parent, Model Model)
+		public XmppActorTcp(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// XMPP Actor connecting to the XMPP network using web-sockets.
+		/// XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
-		public XmppActorWebSocket(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+		public XmppActorTcp(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
 			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
@@ -34,7 +33,7 @@ namespace TAG.Simulator.XMPP
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "XmppActorWebSocket";
+		public override string LocalName => "XmppActorTcp";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -44,7 +43,7 @@ namespace TAG.Simulator.XMPP
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new XmppActorWebSocket(Parent, Model);
+			return new XmppActorTcp(Parent, Model);
 		}
 
 		/// <summary>
@@ -57,12 +56,7 @@ namespace TAG.Simulator.XMPP
 		/// <returns>Actor instance.</returns>
 		protected override XmppActor CreateInstanceObject(int InstanceIndex, string InstanceId)
 		{
-			return new XmppActorWebSocket(this, this.Model, InstanceIndex, InstanceId);
+			return new XmppActorTcp(this, this.Model, InstanceIndex, InstanceId);
 		}
-
-		/// <summary>
-		/// Type of XRD link representing endpoint.
-		/// </summary>
-		protected override string EndpointType => "urn:xmpp:alt-connections:websocket";
 	}
 }

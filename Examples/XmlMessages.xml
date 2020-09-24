@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT10S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+  <Meta>
+    <Title>XML Messages</Title>
+    <Description>
+      <![CDATA[ 
+      Simulates 100 XMPP clients over TCP exchanging signed and unsigned machine-readable XML messages randomly between each other 
+      during 10 minutes, at a total frequency of 1000 messages per minute.
+      
+      **Note**: Simulation measures server performance during simulation. It uses the method described in the `ServerPerformance.xml`
+      example.
+      ]]>
+    </Description>
+    <ModelScript>
+      <![CDATA[
+      GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
+      
+      CalcElapsed(XmlTimestamp):=
+      (
+        TP:=Now;
+        Waher.Content.Xml.XML.TryParse(XmlTimestamp,TP)
+        Now.Subtract(TP).TotalMilliseconds
+      );
+      ]]>
+    </ModelScript>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.XMPP.dll"/>
+  </Assemblies>
+  <Actors>
+    <Timer id="PerformanceTimer" N="1" period="PT2S">
+      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+    </Timer>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="UnsignedMessageReceived" actorName="To" eventArgs="e"/>
+    </xmpp:XmppActorTcp>
+  </Actors>
+  <Distributions>
+    <Uniform id="FiveHundredPerMinute" from="0" to="60" N="500"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="FiveHundredPerMinute" activity="SendUnsignedMessage">
+      <Description>Sends an unsigned XML message from one random XMPP client to another, at a frequency of five hundred times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <StochasticEvent distribution="FiveHundredPerMinute" activity="SendSignedMessage">
+      <Description>Sends a signed XML message from one random XMPP client to another, at a frequency of five hundred times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <EventHandler id="UnsignedMessageReceived" activity="ProcessUnsignedMessage">
+      <Description>Event triggered when an unsigned message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
+      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="ReadPerformanceCounters">
+      <Description>This activity measures the performance of the broker, as well as the machine performing the simulation.</Description>
+      <Start/>
+      <Parallel>
+        <Thread>
+          <Eval>M:=GetBrokerPerformance()</Eval>
+          <Sample name="Broker CPU (%)">
+            <Script>M.cpuPercent</Script>
+          </Sample>
+          <Sample name="Broker Network (kB/s)">
+            <Script>M.networkBytesPerSec/1024</Script>
+          </Sample>
+          <Sample name="Broker Free Memory (GB)">
+            <Script>M.memoryMBytesFree/1024</Script>
+          </Sample>
+        </Thread>
+      </Parallel>
+      <Stop/>
+    </Activity>
+    <Activity id="SendUnsignedMessage">
+      <Description>This activity starts a chat session, by sending a chat message to a random recipient.</Description>
+      <Start/>
+      <xmpp:SendMessage actor="From" to="{To.FullJID}">
+        <Xml>
+          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+          </Msg>
+        </Xml>
+      </xmpp:SendMessage>
+      <Count counter="UnsignedSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessUnsignedMessage">
+      <Description>Processes a received unsigned message.</Description>
+      <Start/>
+      <Count counter="UnsignedReceived"/>
+      <Sample name="Unsigned Turnaround (ms)">
+        <Script>CalcElapsed(e.Content["StartTime"].InnerText)</Script>
+      </Sample>
+      <Stop/>
+    </Activity>
+    <Activity id="SendSignedMessage">
+      <Description>This activity starts a chat session, by sending a chat message to a random recipient.</Description>
+      <Start/>
+      <Count counter="SignedSent"/>
+      <Stop/>
+    </Activity>
+  </Activities>
+</Model>

@@ -125,6 +125,7 @@
   <xs:complexType name="Actor" abstract="true">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="ExternalEvent"/>
+      <xs:any namespace="##other"/>
     </xs:choice>
     <xs:attribute name="id" type="xs:ID" use="required"/>
     <xs:attribute name="N" type="xs:positiveInteger" use="required"/>
@@ -185,7 +186,7 @@
       <xs:element name="Xml">
         <xs:complexType>
           <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:any namespace="##any"/>
+            <xs:any namespace="##any" processContents="lax"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

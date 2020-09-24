@@ -49,4 +49,73 @@
   <xs:element name="XmppActorBosh" type="XmppActorEndpoint"/>
   <xs:element name="XmppActorWebSocket" type="XmppActorEndpoint"/>
 
+  <xs:element name="SendMessage">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="to" type="xs:string" use="required"/>
+          <xs:attribute name="subject" type="xs:string" use="optional"/>
+          <xs:attribute name="language" type="xs:string" use="optional"/>
+          <xs:attribute name="threadId" type="xs:string" use="optional"/>
+          <xs:attribute name="parentThreadId" type="xs:string" use="optional"/>
+          <xs:attribute name="type" type="MessageType" use="optional" default="Normal"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="MessageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Chat"/>
+      <xs:enumeration value="Error"/>
+      <xs:enumeration value="GroupChat"/>
+      <xs:enumeration value="Headline"/>
+      <xs:enumeration value="Normal"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="HandlerNode">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="namespace" type="xs:string" use="required"/>
+    <xs:attribute name="event" type="xs:string" use="required"/>
+    <xs:attribute name="actorName" type="xs:string" use="optional"/>
+    <xs:attribute name="eventArgs" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="MessageHandler">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="HandlerNode"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IqGetHandler">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="HandlerNode"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IqSetHandler">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="HandlerNode"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PresenceHandler">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="HandlerNode"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
 </xs:schema>

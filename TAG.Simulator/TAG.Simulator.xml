@@ -139,6 +139,16 @@
             </summary>
             <param name="Output">Output node</param>
         </member>
+        <member name="T:TAG.Simulator.ISimulationNodeChildren">
+            <summary>
+            Basic interface for simulator nodes with child nodes.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ISimulationNodeChildren.Children">
+            <summary>
+            Child nodes.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.TimeBase">
             <summary>
             Base of simulation time
@@ -1801,13 +1811,13 @@
             Finalizes an instance of an actor.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
             <summary>
             Registers an external event on the actor.
             </summary>
             <param name="ExternalEvent">External event</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
             <summary>
             Tries to get an external event, given its name.
             </summary>
@@ -1893,13 +1903,13 @@
             ID of actor instance.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
             <summary>
             Registers an external event on the actor.
             </summary>
             <param name="ExternalEvent">External event</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.ExternalEvent@)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
             <summary>
             Tries to get an external event, given its name.
             </summary>
@@ -2386,7 +2396,7 @@
             </summary>
             <param name="PreparationNode">Preparation node.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
             <summary>
             Registers an external event.
             </summary>
@@ -2692,7 +2702,7 @@
             </summary>
             <param name="PreparationNode">Preparation node.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Register(TAG.Simulator.ObjectModel.Events.ExternalEvent)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
             <summary>
             Registers an external event.
             </summary>
@@ -2722,6 +2732,39 @@
             </summary>
             <param name="Output">Output stream.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.IExternalEvent">
+            <summary>
+            Interface for external events.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Name">
+            <summary>
+            Name of external event
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.ActorName">
+            <summary>
+            Optional name for actor variable reference of sender of external event.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Actor">
+            <summary>
+            Actor reference.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Parameters">
+            <summary>
+            Parameters
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IExternalEvent.Trigger(TAG.Simulator.ObjectModel.Actors.IActor,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            Method called when an external event has been received.
+            </summary>
+            <param name="Source">Actor receiving the event.</param>
+            <param name="Arguments">Event arguments.</param>
+            <returns>If event was handled</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent">
             <summary>
             Interface for events that can be triggered by elapsed time.
@@ -2746,6 +2789,15 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.String,System.String)">
+            <summary>
+            Sets a variable to the value of an event parameter.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="Name">Parameter name</param>
+            <param name="Variable">Variable name</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Events.Parameter.LocalName">
             <summary>

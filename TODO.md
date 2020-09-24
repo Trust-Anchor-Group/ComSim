@@ -27,6 +27,7 @@ Features
 	[x] CPU/Memory
 	[x] Global variables
 	[ ] Timing of, and between events/activities. (communication roundtrip)
+	[ ] Actor variables
 [ ] Simulation output
 	[ ] Statistics
 		[x] Activities
@@ -61,13 +62,13 @@ Features
 	[ ] Student-t distribution
 [x] Generate action documentation (xml, xslt) automatically
 [ ] XMPP
-	[ ] Message handlers
-	[ ] Iq handlers
-	[ ] Presence handlers
+	[x] Message handlers
+	[x] Iq handlers
+	[x] Presence handlers
 	[ ] Extension libraries
 	[ ] UDP
 	[ ] Iq action node
-	[ ] Message action node
+	[x] Message action node
 	[ ] Presence action node
 [ ] HTTP
 	[x] GET
@@ -90,10 +91,10 @@ Examples
 [x] Simple chat
 [x] Guess a number
 [x] Web Server Load (HTTP GET)
+[ ] Timing of communication roundtrip
 [ ] Federation
 [ ] External events to determine activity node transitions
 [ ] Parallel threads in activity
-[ ] Timing of communication roundtrip
 
 Documentation
 --------------------

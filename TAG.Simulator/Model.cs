@@ -618,7 +618,7 @@ namespace TAG.Simulator
 		/// <returns>If event was handled</returns>
 		public bool ExternalEvent(IActor Source, string Name, params KeyValuePair<string, object>[] Arguments)
 		{
-			if (Source.TryGetExternalEvent(Name, out ExternalEvent ExternalEvent))
+			if (Source.TryGetExternalEvent(Name, out IExternalEvent ExternalEvent))
 			{
 				ExternalEvent.Trigger(Source, Arguments);
 				return true;
