@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       xmlns:xmldsig="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT10S"
        timeUnit="PT1S"
@@ -25,6 +26,7 @@
   </Meta>
   <Assemblies>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
+    <Assembly fileName="TAG.Simulator.XMLDSIG.dll"/>
   </Assemblies>
   <Actors>
     <Timer id="PerformanceTimer" N="1" period="PT2S">
@@ -32,6 +34,7 @@
     </Timer>
     <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="UnsignedMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="SignedMsg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="SignedMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
   </Actors>
   <Distributions>
@@ -64,6 +67,9 @@
     </StochasticEvent>
     <EventHandler id="UnsignedMessageReceived" activity="ProcessUnsignedMessage">
       <Description>Event triggered when an unsigned message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="SignedMessageReceived" activity="ProcessSignedMessage">
+      <Description>Event triggered when a signed message has been received.</Description>
     </EventHandler>
     <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
       <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
@@ -106,20 +112,43 @@
       <Description>Processes a received unsigned message.</Description>
       <Start/>
       <Count counter="UnsignedReceived"/>
-      <Sample name="Unsigned Turnaround (ms)">
+      <Sample name="Unsigned Roundtrip (ms)">
         <Script>
           <![CDATA[
           StartTime:=DateTime(e.Content["StartTime"].InnerText);
           Now.Subtract(StartTime).TotalMilliseconds
           ]]>
-      </Script>
+        </Script>
       </Sample>
       <Stop/>
     </Activity>
     <Activity id="SendSignedMessage">
       <Description>This activity starts a chat session, by sending a chat message to a random recipient.</Description>
       <Start/>
+      <xmpp:SendMessage actor="From" to="{To.FullJID}">
+        <xmldsig:Sign rsaKeyName="{From.BareJID}" rsaKeySize="4096">
+          <Xml>
+            <SignedMsg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+              <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+            </SignedMsg>
+          </Xml>
+        </xmldsig:Sign>
+      </xmpp:SendMessage>
       <Count counter="SignedSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessSignedMessage">
+      <Description>Processes a received signed message.</Description>
+      <Start/>
+      <Count counter="SignedReceived"/>
+      <Sample name="Signed Roundtrip (ms)">
+        <Script>
+          <![CDATA[
+          StartTime:=DateTime(e.Content["StartTime"].InnerText);
+          Now.Subtract(StartTime).TotalMilliseconds
+          ]]>
+        </Script>
+      </Sample>
       <Stop/>
     </Activity>
   </Activities>

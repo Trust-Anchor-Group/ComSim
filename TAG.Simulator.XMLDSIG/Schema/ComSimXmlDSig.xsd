@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSim"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
+
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+
+  <xs:element name="Sign">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="cs:Xml"/>
+      </xs:sequence>
+      <xs:attribute name="rsaKeyName" type="xs:string" use="required"/>
+      <xs:attribute name="rsaKeySize" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

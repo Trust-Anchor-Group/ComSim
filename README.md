@@ -101,9 +101,10 @@ interface, or derive from the [Actor](TAG.Simulator/ObjectModel/Actors/Actor.cs)
 
 Following is a list of extension modules provided in the repository:
 
-| Example                                  | Description                                                  |
-|:-----------------------------------------|:-------------------------------------------------------------|
-| [TAG.Simulator.XMPP](TAG.Simulator.XMPP) | Defines simulation extensions for actors communicating XMPP. |
+| Example                                        | Description                                                                                                |
+|:-----------------------------------------------|:-----------------------------------------------------------------------------------------------------------|
+| [TAG.Simulator.XMLDSIG](TAG.Simulator.XMLDSIG) | Defines simulation extensions for [XML Digital Signatures (XMLDSIG)](https://www.w3.org/TR/xmldsig-core/). |
+| [TAG.Simulator.XMPP](TAG.Simulator.XMPP)       | Defines simulation extensions for actors communicating [XMPP](https://xmpp.org/).                          |
 
 ## Script extensions
 

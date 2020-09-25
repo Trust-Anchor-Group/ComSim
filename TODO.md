@@ -75,7 +75,7 @@ Features
 	[x] POST
 		[x] String
 		[x] JSON
-		[ ] Xml
+		[x] Xml
 		[ ] Signed XML
 	[ ] HEAD
 	[ ] PUT

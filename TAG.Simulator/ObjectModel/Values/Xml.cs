@@ -15,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		private string rootName;
 
 		/// <summary>
-		/// String value.
+		/// XML value.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
@@ -69,7 +69,12 @@ namespace TAG.Simulator.ObjectModel.Values
 		public override object Evaluate(Variables Variables)
 		{
 			string s = Expression.Transform(this.value, "{", "}", Variables);
-			XmlDocument Doc = new XmlDocument();
+
+			XmlDocument Doc = new XmlDocument()
+			{
+				PreserveWhitespace = true
+			};
+
 			Doc.LoadXml(s);
 
 			if (string.IsNullOrEmpty(this.rootName))
@@ -86,7 +91,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Activities.Eval.ExportPlantUml("\"" + this.value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
+			Activities.Eval.ExportPlantUml("<" + this.rootName + "...>", Output, Indentation, QuoteChar, false);
 		}
 	}
 }

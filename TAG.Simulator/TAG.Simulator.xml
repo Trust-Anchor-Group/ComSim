@@ -4018,7 +4018,7 @@
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Values.Xml.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
-            String value.
+            XML value.
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
