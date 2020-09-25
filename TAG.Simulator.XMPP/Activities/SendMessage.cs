@@ -168,6 +168,14 @@ namespace TAG.Simulator.XMPP.Activities
 			if (!string.IsNullOrEmpty(this.parentThreadId))
 				this.AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId, QuoteChar);
 
+			if (!(this.value is null))
+			{
+				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
+					this.AppendArgument(Output, Indentation, "Content", Xml.RootName, QuoteChar);
+				else
+					this.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
+			}
+
 			Output.WriteLine(");");
 		}
 
@@ -176,6 +184,12 @@ namespace TAG.Simulator.XMPP.Activities
 			this.AppendArgument(Output, Indentation, Name);
 
 			Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
+		}
+
+		private void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
+		{
+			this.AppendArgument(Output, Indentation, Name);
+			Value.ExportPlantUml(Output, Indentation, QuoteChar);
 		}
 
 		private void AppendArgument(StreamWriter Output, int Indentation, string Name)

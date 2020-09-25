@@ -12,6 +12,7 @@ namespace TAG.Simulator.ObjectModel.Values
 	public class Xml : Value
 	{
 		private string value;
+		private string rootName;
 
 		/// <summary>
 		/// String value.
@@ -27,6 +28,11 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// Value
 		/// </summary>
 		public string Value => this.value;
+
+		/// <summary>
+		/// Root name
+		/// </summary>
+		public string RootName => this.rootName;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -65,6 +71,9 @@ namespace TAG.Simulator.ObjectModel.Values
 			string s = Expression.Transform(this.value, "{", "}", Variables);
 			XmlDocument Doc = new XmlDocument();
 			Doc.LoadXml(s);
+
+			if (string.IsNullOrEmpty(this.rootName))
+				this.rootName = Doc.DocumentElement.LocalName;
 
 			return Doc;
 		}

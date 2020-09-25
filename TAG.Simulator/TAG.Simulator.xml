@@ -4028,6 +4028,11 @@
             Value
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Xml.RootName">
+            <summary>
+            Root name
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.ObjectModel.Values.Xml.LocalName">
             <summary>
             Local name of XML element defining contents of class.

@@ -20,13 +20,6 @@
     <ModelScript>
       <![CDATA[
       GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
-      
-      CalcElapsed(XmlTimestamp):=
-      (
-        TP:=Now;
-        Waher.Content.Xml.XML.TryParse(XmlTimestamp,TP)
-        Now.Subtract(TP).TotalMilliseconds
-      );
       ]]>
     </ModelScript>
   </Meta>
@@ -114,7 +107,12 @@
       <Start/>
       <Count counter="UnsignedReceived"/>
       <Sample name="Unsigned Turnaround (ms)">
-        <Script>CalcElapsed(e.Content["StartTime"].InnerText)</Script>
+        <Script>
+          <![CDATA[
+          StartTime:=DateTime(e.Content["StartTime"].InnerText);
+          Now.Subtract(StartTime).TotalMilliseconds
+          ]]>
+      </Script>
       </Sample>
       <Stop/>
     </Activity>
