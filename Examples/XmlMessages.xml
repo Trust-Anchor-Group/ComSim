@@ -112,13 +112,14 @@
       <Description>Processes a received unsigned message.</Description>
       <Start/>
       <Count counter="UnsignedReceived"/>
-      <Sample name="Unsigned Roundtrip (ms)">
-        <Script>
-          <![CDATA[
+      <Eval>
+        <![CDATA[
           StartTime:=DateTime(e.Content["StartTime"].InnerText);
-          Now.Subtract(StartTime).TotalMilliseconds
-          ]]>
-        </Script>
+          Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+        ]]>
+      </Eval>
+      <Sample name="Unsigned Roundtrip (ms)">
+        <Variable name="Elapsed"/>
       </Sample>
       <Stop/>
     </Activity>
@@ -141,13 +142,17 @@
       <Description>Processes a received signed message.</Description>
       <Start/>
       <Count counter="SignedReceived"/>
-      <Sample name="Signed Roundtrip (ms)">
-        <Script>
-          <![CDATA[
+      <xmldsig:Verify rsaKeyName="{e.FromBareJID}">
+        <Script>e.Content</Script>
+      </xmldsig:Verify>
+      <Eval>
+        <![CDATA[
           StartTime:=DateTime(e.Content["StartTime"].InnerText);
-          Now.Subtract(StartTime).TotalMilliseconds
-          ]]>
-        </Script>
+          Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+        ]]>
+      </Eval>
+      <Sample name="Signed Roundtrip (ms)">
+        <Variable name="Elapsed"/>
       </Sample>
       <Stop/>
     </Activity>

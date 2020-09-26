@@ -153,25 +153,25 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			this.AppendArgument(Output, Indentation, "To", this.to, QuoteChar);
-			this.AppendArgument(Output, Indentation, "Type", this.type.ToString(), QuoteChar);
+			this.AppendArgument(Output, Indentation, "To", this.to, true, QuoteChar);
+			this.AppendArgument(Output, Indentation, "Type", this.type.ToString(), false, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.subject))
-				this.AppendArgument(Output, Indentation, "Subject", this.subject, QuoteChar);
+				this.AppendArgument(Output, Indentation, "Subject", this.subject, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.language))
-				this.AppendArgument(Output, Indentation, "Language", this.language, QuoteChar);
+				this.AppendArgument(Output, Indentation, "Language", this.language, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.threadId))
-				this.AppendArgument(Output, Indentation, "ThreadId", this.threadId, QuoteChar);
+				this.AppendArgument(Output, Indentation, "ThreadId", this.threadId, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.parentThreadId))
-				this.AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId, QuoteChar);
+				this.AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId, true, QuoteChar);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					this.AppendArgument(Output, Indentation, "Content", Xml.RootName, QuoteChar);
+					this.AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
 					this.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
 			}
@@ -179,11 +179,14 @@ namespace TAG.Simulator.XMPP.Activities
 			Output.WriteLine(");");
 		}
 
-		private void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, char QuoteChar)
+		private void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
 		{
 			this.AppendArgument(Output, Indentation, Name);
 
-			Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
+			if (Quotes)
+				Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
+			else
+				Eval.ExportPlantUml(Value, Output, Indentation, QuoteChar, false);
 		}
 
 		private void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)

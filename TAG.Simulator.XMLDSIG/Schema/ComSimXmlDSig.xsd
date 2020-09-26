@@ -11,11 +11,24 @@
 
   <xs:element name="Sign">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="cs:Xml"/>
-      </xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:group ref="cs:Value"/>
+      </xs:choice>
       <xs:attribute name="rsaKeyName" type="xs:string" use="required"/>
       <xs:attribute name="rsaKeySize" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Verify">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="rsaKeyName" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
     </xs:complexType>
   </xs:element>
 

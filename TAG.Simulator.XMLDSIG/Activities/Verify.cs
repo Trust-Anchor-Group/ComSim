@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
@@ -9,24 +10,23 @@ using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Script;
 
-namespace TAG.Simulator.XMLDSIG.Values
+namespace TAG.Simulator.XMLDSIG.Activities
 {
 	/// <summary>
-	/// Signed XML document.
+	/// Verifies a Signed XML document.
 	/// </summary>
-	public class Sign : Value, ISimulationNodeChildren
+	public class Verify : ActivityNode, IValueRecipient
 	{
 		private IValue value;
 		private string rsaKeyName;
 		private string rootName;
-		private int rsaKeySize;
 
 		/// <summary>
-		/// Signed XML document.
+		/// Verifies a Signed XML document.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Sign(ISimulationNode Parent, Model Model)
+		public Verify(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -34,7 +34,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Sign";
+		public override string LocalName => "Verify";
 
 		/// <summary>
 		/// XML Namespace where the element is defined.
@@ -47,20 +47,6 @@ namespace TAG.Simulator.XMLDSIG.Values
 		public override string SchemaResource => "TAG.Simulator.XMLDSIG.Schema.ComSimXmlDSig.xsd";
 
 		/// <summary>
-		/// Child nodes.
-		/// </summary>
-		public ISimulationNode[] Children
-		{
-			get
-			{
-				if (this.value is null)
-					return new ISimulationNode[0];
-				else
-					return new ISimulationNode[] { this.value };
-			}
-		}
-
-		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -68,41 +54,38 @@ namespace TAG.Simulator.XMLDSIG.Values
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Sign(Parent, Model);
+			return new Verify(Parent, Model);
 		}
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
-		public override async Task FromXml(XmlElement Definition)
+		public override Task FromXml(XmlElement Definition)
 		{
 			this.rsaKeyName = XML.Attribute(Definition, "rsaKeyName");
-			this.rsaKeySize = XML.Attribute(Definition, "rsaKeySize", 0);
 
-			foreach (XmlNode N in Definition.ChildNodes)
-			{
-				if (N is XmlElement E)
-				{
-					if (!(this.value is null))
-						throw new Exception("The Sign element can only have one value child element.");
-
-					ISimulationNode Node = await Factory.Create(E, this, this.Model);
-
-					if (Node is IValue Value)
-						this.value = Value;
-					else
-						throw new Exception("The Sign element only accepts a value child element.");
-				}
-			}
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
-		/// Evaluates the value.
+		/// Registers a value for the argument.
+		/// </summary>
+		/// <param name="Value">Value node</param>
+		public void Register(IValue Value)
+		{
+			if (this.value is null)
+				this.value = Value;
+			else
+				throw new Exception("The Verify element can only have one value child element.");
+		}
+
+		/// <summary>
+		/// Executes a node.
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			object Result = this.value.Evaluate(Variables);
 
@@ -127,40 +110,31 @@ namespace TAG.Simulator.XMLDSIG.Values
 					Doc.LoadXml(s);
 				}
 				else
-					throw new Exception("Expected XML to sign.");
+					throw new Exception("Expected XML to verify.");
 			}
 
 			if (string.IsNullOrEmpty(this.rootName))
 				this.rootName = Doc.DocumentElement.LocalName;
 
+			SignedXml SignedXml = new SignedXml(Doc);
+			XmlNodeList SignatureElements = Doc.GetElementsByTagName("Signature");
+			if (SignatureElements.Count == 0)
+				throw new Exception("XML not signed.");
+
+			SignedXml.LoadXml((XmlElement)SignatureElements[0]);
+
 			CspParameters CspParams = new CspParameters()
 			{
-				KeyContainerName = Expression.Transform(this.rsaKeyName, "{", "}", Variables)
+				KeyContainerName = Expression.Transform(this.rsaKeyName, "{", "}", Variables),
+				Flags = CspProviderFlags.UseExistingKey
 			};
 
-			RSACryptoServiceProvider RsaKey = new RSACryptoServiceProvider(this.rsaKeySize, CspParams);
+			RSACryptoServiceProvider RsaKey = new RSACryptoServiceProvider(CspParams);
 
-			SignedXml SignedXml = new SignedXml(Doc)
-			{
-				SigningKey = RsaKey
-			};
+			if (!SignedXml.CheckSignature(RsaKey))
+				throw new Exception("XML signature invalid.");
 
-			Reference Reference = new Reference()
-			{
-				Uri = string.Empty
-			};
-
-			XmlDsigEnvelopedSignatureTransform Env = new XmlDsigEnvelopedSignatureTransform();
-			Reference.AddTransform(Env);
-
-			SignedXml.AddReference(Reference);
-			SignedXml.ComputeSignature();
-
-			XmlElement XmlDigitalSignature = SignedXml.GetXml();
-
-			Doc.DocumentElement.AppendChild(Doc.ImportNode(XmlDigitalSignature, true));
-
-			return Doc;
+			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}
 
 		/// <summary>
@@ -179,8 +153,10 @@ namespace TAG.Simulator.XMLDSIG.Values
 					this.rootName = this.value?.LocalName;
 			}
 
-			Eval.ExportPlantUml("Sign(" + this.rootName + ")", Output, Indentation, QuoteChar, false);
+			Indent(Output, Indentation);
+			Output.Write(":Verify(");
+			Output.Write(this.rootName);
+			Output.WriteLine(");");
 		}
-
 	}
 }

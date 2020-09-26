@@ -43,6 +43,7 @@ Features
 		[x] History charts
 		[x] Use case charts
 		[x] Distribution (expected) charts
+		[ ] Custom comparison graphs (between counters/samples/etc)
 	[x] Data as XML
 	[x] Report as Markdown
 		[x] Distributions
