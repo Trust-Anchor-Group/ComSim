@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="ComSim"
+<xs:schema id="ComSimXmlDSig"
            targetNamespace="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
            elementFormDefault="qualified"
            xmlns="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"

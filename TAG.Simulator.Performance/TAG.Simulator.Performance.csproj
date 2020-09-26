@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TAG.Simulator.Performance</RootNamespace>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Description>Defines simulation extensions for sampling of local performance counters.</Description>
+    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.Performance\TAG.Simulator.Performance.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
+  </Target>
+
+  <ItemGroup>
+    <None Remove="Schema\ComSimPerformance.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\ComSimPerformance.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>

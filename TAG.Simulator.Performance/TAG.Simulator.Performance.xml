@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator.Performance</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.Performance.Values.Performance">
+            <summary>
+            Value of a performance counter
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Value of a performance counter
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.Performance.Values.Performance.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Performance.Values.Performance.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Performance.Values.Performance.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Performance.Values.Performance.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+    </members>
+</doc>
