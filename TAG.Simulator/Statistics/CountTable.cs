@@ -120,12 +120,7 @@ namespace TAG.Simulator.Statistics
 				if (this.bgColors.TryGetValue(P.Key, out string s))
 					Output.Write(s);
 				else
-				{
-					Output.Write('#');
-					Output.Write(Color.Red.ToString("X2"));
-					Output.Write(Color.Green.ToString("X2"));
-					Output.Write(Color.Blue.ToString("X2"));
-				}
+					Output.Write(Model.ToString(Color));
 
 				Output.WriteLine("\"/>");
 			}

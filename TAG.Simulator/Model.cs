@@ -245,9 +245,9 @@ namespace TAG.Simulator
 			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
-			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Nr %ID%", this);
-			this.samples = new Buckets(this.start, this.bucketTime, "%ID%", "Mean %ID%", this);
-			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Nr %ID%", this);
+			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
+			this.samples = new Buckets(this.start, this.bucketTime, "%ID%", "Mean", this);
+			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
 			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time (s)", this);
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime, this);
 			Log.Register(this.eventStatistics);
@@ -786,7 +786,7 @@ namespace TAG.Simulator
 		{
 			if (this.executing)
 				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
-			
+
 			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
@@ -802,7 +802,7 @@ namespace TAG.Simulator
 		{
 			if (this.executing)
 				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
-			
+
 			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}
 
@@ -880,6 +880,8 @@ namespace TAG.Simulator
 				this.counters.ExportCountHistoryGraph("Counters", null, Output, this, null);
 			}
 
+			string s;
+
 			if (this.samples.Count > 0)
 			{
 				Output.WriteLine("Measurements");
@@ -891,19 +893,38 @@ namespace TAG.Simulator
 					if (this.customSampleGraph.ContainsKey(ID))
 						continue;
 
-					if (this.graphsFor.TryGetValue(ID, out IGraph Graph))
-						Graph.ExportGraph(Output);
-					else if (this.samples.TryGetBucket(ID, out IBucket Bucket))
-						Bucket.ExportGraph(Output);
-				}
+					if (!this.graphsFor.TryGetValue(ID, out IGraph Graph))
+					{
+						if (this.samples.TryGetBucket(ID, out IBucket Bucket))
+							Graph = Bucket;
+						else
+							continue;
+					}
 
-				foreach (IGraph Graph in this.graphs)
-				{
-					if (Graph is ICustomGraph CustomGraph && !string.IsNullOrEmpty(CustomGraph.For))
-						continue;
+					if (!string.IsNullOrEmpty(s = Graph.Header))
+					{
+						Output.WriteLine(s);
+						Output.WriteLine(new string('-', s.Length + 3));
+						Output.WriteLine();
+					}
 
 					Graph.ExportGraph(Output);
 				}
+			}
+
+			foreach (IGraph Graph in this.graphs)
+			{
+				if (Graph is ICustomGraph CustomGraph && !string.IsNullOrEmpty(CustomGraph.For))
+					continue;
+
+				if (!string.IsNullOrEmpty(s = Graph.Header))
+				{
+					Output.WriteLine(s);
+					Output.WriteLine(new string('-', s.Length + 3));
+					Output.WriteLine();
+				}
+
+				Graph.ExportGraph(Output);
 			}
 
 			this.eventStatistics.ExportMarkdown(Output, this);
@@ -1020,6 +1041,23 @@ namespace TAG.Simulator
 		public Variables GetEventVariables()
 		{
 			return new EventVariables(this.variables, this);
+		}
+
+		/// <summary>
+		/// Gets the string representation of a color.
+		/// </summary>
+		/// <param name="Color">Color</param>
+		/// <returns>String representation</returns>
+		public static string ToString(SKColor Color)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append('#');
+			sb.Append(Color.Red.ToString("X2"));
+			sb.Append(Color.Green.ToString("X2"));
+			sb.Append(Color.Blue.ToString("X2"));
+
+			return sb.ToString();
 		}
 	}
 }

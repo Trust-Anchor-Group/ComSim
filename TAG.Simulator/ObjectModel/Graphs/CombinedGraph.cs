@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using SkiaSharp;
 using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Graphs
@@ -14,14 +15,16 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	public abstract class CombinedGraph : Graph, ISourceRecipient
 	{
 		private readonly LinkedList<ISource> sources = new LinkedList<ISource>();
+		private int count = 0;
 		private string title;
+		private bool legend;
 
 		/// <summary>
 		/// Abstract base class for combined graphs
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public CombinedGraph(ISimulationNode Parent, Model Model) 
+		public CombinedGraph(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -38,6 +41,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.title = XML.Attribute(Definition, "title");
+			this.legend = XML.Attribute(Definition, "legend", true);
 
 			return base.FromXml(Definition);
 		}
@@ -49,6 +53,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public virtual void Register(ISource Source)
 		{
 			this.sources.AddLast(Source);
+			this.count++;
 		}
 
 		/// <summary>
@@ -60,14 +65,77 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			Output.WriteLine("{");
 			Output.WriteLine("GraphWidth:=1000;");
 			Output.WriteLine("GraphHeight:=400;");
-			Output.Write("G:=");
-			this.ExportGraphScript(Output);
-			Output.WriteLine(";");
-			Output.Write("G.Title:=\"");
-			Output.Write(this.title.Replace("\"", "\\\""));
-			Output.WriteLine("\";");
-			Output.WriteLine("G");
+			this.ExportGraphScript(Output, null);
 			Output.WriteLine("}");
+			Output.WriteLine();
+
+			if (this.legend)
+			{
+				List<string> Labels = new List<string>();
+
+				foreach (Source Source in this.sources)
+					Labels.Add(Source.Reference);
+
+				ExportLegend(Output, Labels.ToArray());
+			}
+		}
+
+		/// <summary>
+		/// Exports a legend.
+		/// </summary>
+		/// <param name="Output">Markdown output</param>
+		/// <param name="Labels">Labels to add to legend.</param>
+		/// <param name="Palette">Palette to use</param>
+		public static void ExportLegend(StreamWriter Output, string[] Labels, params SKColor[] Palette)
+		{
+			int i = 0;
+
+			if (Palette is null || Palette.Length < Labels.Length)
+				Palette = Model.CreatePalette(Labels.Length);
+
+			Output.WriteLine("```layout: Legend");
+			Output.WriteLine("<Layout2D xmlns=\"http://waher.se/Layout/Layout2D.xsd\"");
+			Output.WriteLine("          background=\"WhiteBackground\" pen=\"BlackPen\"");
+			Output.WriteLine("          font=\"Text\" textColor=\"Black\">");
+			Output.WriteLine("  <SolidPen id=\"BlackPen\" color=\"Black\" width=\"1px\"/>");
+			Output.WriteLine("  <SolidBackground id=\"WhiteBackground\" color=\"WhiteSmoke\"/>");
+
+			foreach (string Label in Labels)
+			{
+				SKColor Color = Palette[i++];
+
+				Output.Write("  <SolidBackground id=\"");
+				Output.Write(Label);
+				Output.Write("Bg\" color=\"");
+				Output.Write(Model.ToString(Color));
+				Output.WriteLine("\"/>");
+			}
+
+			Output.WriteLine("  <Font id=\"Text\" name=\"Arial\" size=\"8pt\" color=\"Black\"/>");
+			Output.WriteLine("  <Grid columns=\"2\">");
+
+			foreach (string Label in Labels)
+			{
+				Output.WriteLine("    <Cell>");
+				Output.WriteLine("      <Margins left=\"1mm\" top=\"1mm\" bottom=\"1mm\" right=\"1mm\">");
+				Output.Write("        <RoundedRectangle radiusX=\"1mm\" radiusY=\"1mm\" width=\"5mm\" height=\"5mm\" fill=\"");
+				Output.Write(Label);
+				Output.Write("Bg");
+				Output.WriteLine("\"/>");
+				Output.WriteLine("      </Margins>");
+				Output.WriteLine("    </Cell>");
+				Output.WriteLine("    <Cell>");
+				Output.WriteLine("      <Margins left=\"0.5em\" right=\"0.5em\">");
+				Output.Write("        <Label text=\"");
+				Output.Write(Label);
+				Output.WriteLine("\" x=\"0%\" y=\"50%\" halign=\"Left\" valign=\"Center\" font=\"Text\"/>");
+				Output.WriteLine("      </Margins>");
+				Output.WriteLine("    </Cell>");
+			}
+
+			Output.WriteLine("  </Grid>");
+			Output.WriteLine("</Layout2D>");
+			Output.WriteLine("```");
 			Output.WriteLine();
 		}
 
@@ -75,28 +143,35 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public override void ExportGraphScript(StreamWriter Output)
+		/// <param name="CustomColor">Optional custom color</param>
+		public override void ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
+			SKColor[] Palette = Model.CreatePalette(this.count);
 			IGraph Graph;
-			bool First = true;
+			int i = 0;
 
-			Output.WriteLine("Sum([(");
+			Output.WriteLine("G:=Sum([(");
 
 			foreach (Source Source in this.sources)
 			{
-				if (First)
-					First = false;
-				else
+				if (i > 0)
 					Output.WriteLine("), (");
 
 				Graph = this.GetGraph(Source.Reference);
 				if (Graph is null)
 					throw new Exception("Graph for " + Source.Reference + " could not be found.");
-				
-				Graph.ExportGraphScript(Output);
+
+				Graph.ExportGraphScript(Output, Model.ToString(Palette[i++]));
 			}
 
-			Output.Write(")])");
+			Output.WriteLine(")]);");
+			Output.Write("G.LabelX:=\"Time × ");
+			Output.Write(Model.TimeUnitStr);
+			Output.WriteLine("\";");
+			Output.Write("G.Title:=\"");
+			Output.Write(this.title.Replace("\"", "\\\""));
+			Output.WriteLine("\";");
+			Output.WriteLine("G");
 		}
 
 		/// <summary>

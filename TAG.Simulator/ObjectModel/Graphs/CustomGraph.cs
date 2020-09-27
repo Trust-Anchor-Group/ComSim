@@ -290,7 +290,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 
 				Output.WriteLine("GraphWidth:=1000;");
 				Output.WriteLine("GraphHeight:=400;");
-				this.ExportGraphScript(Output);
+				this.ExportGraphScript(Output, null);
 				Output.WriteLine(";");
 				Output.WriteLine("}");
 				Output.WriteLine();
@@ -301,7 +301,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public override void ExportGraphScript(StreamWriter Output)
+		/// <param name="CustomColor">Optional custom color</param>
+		public override void ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			string s = this.script.Trim();
 			if (s.EndsWith(";"))

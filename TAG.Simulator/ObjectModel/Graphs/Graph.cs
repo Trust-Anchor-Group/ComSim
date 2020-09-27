@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using TAG.Simulator.Statistics;
+using System.Xml;
+using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Graphs
 {
@@ -10,6 +11,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// </summary>
 	public abstract class Graph : SimulationNodeChildren, IGraph
 	{
+		private string header;
+
 		/// <summary>
 		/// Abstract base class for graph nodes
 		/// </summary>
@@ -18,6 +21,22 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public Graph(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
+		}
+
+		/// <summary>
+		/// Optional header
+		/// </summary>
+		public string Header => this.header;
+
+		/// <summary>
+		/// Sets properties and attributes of class in accordance with XML definition.
+		/// </summary>
+		/// <param name="Definition">XML definition</param>
+		public override Task FromXml(XmlElement Definition)
+		{
+			this.header = XML.Attribute(Definition, "header");
+
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
@@ -39,6 +58,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public abstract void ExportGraphScript(StreamWriter Output);
+		/// <param name="CustomColor">Optional custom color</param>
+		public abstract void ExportGraphScript(StreamWriter Output, string CustomColor);
 	}
 }

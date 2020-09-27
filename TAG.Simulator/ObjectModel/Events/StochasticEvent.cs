@@ -125,7 +125,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Exports Probability Script graph.
 		/// </summary>
 		/// <param name="Output">Output</param>
-		public override void ExportPdfScript(StringBuilder Output)
+		/// <returns>If a PDF graph was added.</returns>
+		public override bool ExportPdfScript(StringBuilder Output)
 		{
 			if (!(this.distribution is null))
 			{
@@ -165,7 +166,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				}
 
 				Output.AppendLine(";");
-				Output.AppendLine("G:=plot2dline(t,y,\"Blue\");");
+				Output.AppendLine("G:=plot2dline(t,y,\"Blue\",3);");
 				Output.Append("G.LabelX:=\"Time × ");
 				Output.Append(this.Model.TimeUnitStr);
 				Output.AppendLine("\";");
@@ -177,7 +178,11 @@ namespace TAG.Simulator.ObjectModel.Events
 				Output.AppendLine("\";");
 				Output.AppendLine("G");
 				Output.Append(")");
+
+				return true;
 			}
+			else
+				return false;
 		}
 
 	}

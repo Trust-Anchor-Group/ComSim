@@ -64,6 +64,11 @@ namespace TAG.Simulator.Statistics
 		public string Id => this.id;
 
 		/// <summary>
+		/// Optional header
+		/// </summary>
+		public string Header => string.Empty;
+
+		/// <summary>
 		/// Counter
 		/// </summary>
 		public long Count
@@ -360,7 +365,7 @@ namespace TAG.Simulator.Statistics
 			Output.WriteLine("GraphWidth:=1000;");
 			Output.WriteLine("GraphHeight:=400;");
 
-			this.ExportGraphScript(Output);
+			this.ExportGraphScript(Output, null);
 
 			Output.WriteLine("}");
 			Output.WriteLine();
@@ -370,7 +375,8 @@ namespace TAG.Simulator.Statistics
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public void ExportGraphScript(StreamWriter Output)
+		/// <param name="CustomColor">Optional custom color</param>
+		public void ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			this.Flush();
 
@@ -456,10 +462,38 @@ namespace TAG.Simulator.Statistics
 					Output.WriteLine(MaxScript.ToString());
 				}
 
-				if (this.sampleGraph)
-					Output.WriteLine("G:=polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+				Output.Write("G:=");
+
+				if (string.IsNullOrEmpty(CustomColor))
+				{
+					if (this.sampleGraph)
+						Output.WriteLine("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+					else
+						Output.WriteLine("plot2dline(Time,Mean,\"Red\",5)+plot2dlinearea(Time,Mean,alpha(\"Red\",32));");
+				}
 				else
-					Output.WriteLine("G:=plot2dline(Time,Mean,\"Red\",5);");
+				{
+					if (this.sampleGraph)
+					{
+						Output.Write("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"");
+						Output.Write(CustomColor);
+						Output.Write("\",32))+plot2dline(Time,Min,alpha(\"");
+						Output.Write(CustomColor);
+						Output.Write("\",128))+plot2dline(Time,Max,alpha(\"");
+						Output.Write(CustomColor);
+						Output.Write("\",128))+plot2dline(Time,Mean,\"");
+						Output.Write(CustomColor);
+						Output.WriteLine("\",5);");
+					}
+					else
+					{
+						Output.Write("plot2dline(Time,Mean,\"");
+						Output.Write(CustomColor);
+						Output.Write("\",5)+plot2dlinearea(Time,Mean,alpha(\"");
+						Output.Write(CustomColor);
+						Output.WriteLine("\",32));");
+					}
+				}
 
 				Output.Write("G.LabelX:=\"Time × ");
 				Output.Write(this.model.TimeUnitStr);

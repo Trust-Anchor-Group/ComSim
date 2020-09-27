@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using SkiaSharp;
 using TAG.Simulator.ObjectModel.Events;
+using TAG.Simulator.ObjectModel.Graphs;
 using Waher.Content;
 using Waher.Script.Objects;
 
@@ -56,18 +57,13 @@ namespace TAG.Simulator.Statistics
 			if (!(IDs is null))
 			{
 				foreach (string ID in IDs)
-					this.buckets[ID] = new Bucket(ID, this.GetTitle(ID), this.GetLabelY(ID), this.model, CalcStdDev, StartTime, BucketTime);
+					this.buckets[ID] = new Bucket(ID, this.GetTitle(ID), this.labelY, this.model, CalcStdDev, StartTime, BucketTime);
 			}
 		}
 
 		private string GetTitle(string ID)
 		{
 			return this.title.Replace("%ID%", ID);
-		}
-
-		private string GetLabelY(string ID)
-		{
-			return this.labelY.Replace("%ID%", ID);
 		}
 
 		/// <summary>
@@ -106,7 +102,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -126,7 +122,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -146,7 +142,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -167,7 +163,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -188,7 +184,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -301,7 +297,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Model">Simulation model</param>
 		/// <param name="Event">Associated event object.</param>
 		/// <param name="Palette">Optional predefined palette</param>
-		public void ExportCountHistoryGraph(string Title, IEnumerable<string> Order, StreamWriter Output, Model Model, 
+		public void ExportCountHistoryGraph(string Title, IEnumerable<string> Order, StreamWriter Output, Model Model,
 			IEvent Event, SKColor[] Palette = null)
 		{
 			lock (this.buckets)
@@ -341,6 +337,8 @@ namespace TAG.Simulator.Statistics
 					}
 				}
 
+				List<string> Labels = new List<string>();
+				List<SKColor> LabelColors = new List<SKColor>();
 				StringBuilder Script = new StringBuilder();
 				StringBuilder PlotScript = null;
 				SKColor Color;
@@ -374,6 +372,8 @@ namespace TAG.Simulator.Statistics
 				}
 
 				Script.AppendLine("];");
+
+				StringBuilder PlotScript2 = null;
 
 				foreach (string ActivityId in Order)
 				{
@@ -419,24 +419,49 @@ namespace TAG.Simulator.Statistics
 							Script.AppendLine("];");
 
 							if (PlotScript is null)
+							{
 								PlotScript = new StringBuilder();
+								PlotScript2 = new StringBuilder();
+							}
 							else
+							{
 								PlotScript.Append('+');
+								PlotScript2.Append('+');
+							}
 
 							PlotScript.Append("plot2dlinearea(Time,");
 							PlotScript.Append(ActivityId);
-							PlotScript.Append("Count,rgb(");
+							PlotScript.Append("Count,rgba(");
 							PlotScript.Append(Color.Red.ToString());
 							PlotScript.Append(',');
 							PlotScript.Append(Color.Green.ToString());
 							PlotScript.Append(',');
 							PlotScript.Append(Color.Blue.ToString());
-							PlotScript.Append("))");
+							PlotScript.Append(",64))");
+
+							PlotScript2.Append("plot2dline(Time,");
+							PlotScript2.Append(ActivityId);
+							PlotScript2.Append("Count,rgb(");
+							PlotScript2.Append(Color.Red.ToString());
+							PlotScript2.Append(',');
+							PlotScript2.Append(Color.Green.ToString());
+							PlotScript2.Append(',');
+							PlotScript2.Append(Color.Blue.ToString());
+							PlotScript2.Append("),3)");
+
+							Labels.Add(ActivityId);
+							LabelColors.Add(Color);
 						}
 					}
 				}
 
-				Event?.ExportPdfScript(PlotScript);
+				if (!(PlotScript2 is null))
+				{
+					PlotScript.Append('+');
+					PlotScript.Append(PlotScript2.ToString());
+				}
+
+				bool PdfShown = Event?.ExportPdfScript(PlotScript) ?? false;
 
 				Script.AppendLine("GraphWidth:=1000;");
 				Script.AppendLine("GraphHeight:=400;");
@@ -458,6 +483,13 @@ namespace TAG.Simulator.Statistics
 				Output.WriteLine(Script.ToString());
 				Output.WriteLine("}");
 				Output.WriteLine();
+
+				if (PdfShown)
+				{
+					Labels.Add("Expected intensity");
+					LabelColors.Add(SKColors.Blue);
+					CombinedGraph.ExportLegend(Output, Labels.ToArray(), LabelColors.ToArray());
+				}
 			}
 		}
 

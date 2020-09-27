@@ -26,7 +26,7 @@ Features
 	[x] Performance counters
 	[x] CPU/Memory
 	[x] Global variables
-	[ ] Timing of, and between events/activities. (communication roundtrip)
+	[x] Timing of, and between events/activities. (communication roundtrip)
 	[ ] Actor variables
 [ ] Simulation output
 	[ ] Statistics
@@ -43,7 +43,7 @@ Features
 		[x] History charts
 		[x] Use case charts
 		[x] Distribution (expected) charts
-		[ ] Custom comparison graphs (between counters/samples/etc)
+		[x] Custom comparison graphs (between counters/samples/etc)
 	[x] Data as XML
 	[x] Report as Markdown
 		[x] Distributions
@@ -92,10 +92,10 @@ Examples
 [x] Simple chat
 [x] Guess a number
 [x] Web Server Load (HTTP GET)
-[ ] Timing of communication roundtrip
+[x] Timing of communication roundtrip
+[x] Parallel threads in activity
 [ ] Federation
 [ ] External events to determine activity node transitions
-[ ] Parallel threads in activity
 
 Documentation
 --------------------

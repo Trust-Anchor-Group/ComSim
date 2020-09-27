@@ -47,6 +47,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Exports Probability Script graph.
 		/// </summary>
 		/// <param name="Output">Output</param>
-		void ExportPdfScript(StringBuilder Output);
+		/// <returns>If a PDF graph was added.</returns>
+		bool ExportPdfScript(StringBuilder Output);
 	}
 }

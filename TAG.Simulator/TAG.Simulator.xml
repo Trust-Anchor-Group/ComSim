@@ -581,6 +581,13 @@
             </summary>
             <returns>Variables collection</returns>
         </member>
+        <member name="M:TAG.Simulator.Model.ToString(SkiaSharp.SKColor)">
+            <summary>
+            Gets the string representation of a color.
+            </summary>
+            <param name="Color">Color</param>
+            <returns>String representation</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
             Represents an action on an actor.
@@ -2501,6 +2508,7 @@
             Exports Probability Script graph.
             </summary>
             <param name="Output">Output</param>
+            <returns>If a PDF graph was added.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.EventHandler">
             <summary>
@@ -2793,6 +2801,7 @@
             Exports Probability Script graph.
             </summary>
             <param name="Output">Output</param>
+            <returns>If a PDF graph was added.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.IEventPreparation">
             <summary>
@@ -3045,6 +3054,7 @@
             Exports Probability Script graph.
             </summary>
             <param name="Output">Output</param>
+            <returns>If a PDF graph was added.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.CombinedCounterGraph">
             <summary>
@@ -3195,11 +3205,20 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.ExportGraphScript(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.ExportLegend(System.IO.StreamWriter,System.String[],SkiaSharp.SKColor[])">
+            <summary>
+            Exports a legend.
+            </summary>
+            <param name="Output">Markdown output</param>
+            <param name="Labels">Labels to add to legend.</param>
+            <param name="Palette">Palette to use</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="CustomColor">Optional custom color</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.GetGraph(System.String)">
             <summary>
@@ -3352,11 +3371,12 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportGraphScript(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="CustomColor">Optional custom color</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graph">
             <summary>
@@ -3370,6 +3390,17 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Graph.Header">
+            <summary>
+            Optional header
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.Start">
             <summary>
             Starts the node.
@@ -3381,11 +3412,12 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.ExportGraphScript(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.ExportGraphScript(System.IO.StreamWriter,System.String)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="CustomColor">Optional custom color</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graphs">
             <summary>
@@ -3427,17 +3459,23 @@
             Interface for graph nodes
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.IGraph.Header">
+            <summary>
+            Optional header
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportGraph(System.IO.StreamWriter)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportGraphScript(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="CustomColor">Optional custom color</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.ISource">
             <summary>
@@ -4458,6 +4496,11 @@
             Bucket ID
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.Header">
+            <summary>
+            Optional header
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Statistics.Bucket.Count">
             <summary>
             Counter
@@ -4553,11 +4596,12 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.ExportGraphScript(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.ExportGraphScript(System.IO.StreamWriter,System.String)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
+            <param name="CustomColor">Optional custom color</param>
         </member>
         <member name="M:TAG.Simulator.Statistics.Bucket.ExportXml(System.Xml.XmlWriter,System.String)">
             <summary>

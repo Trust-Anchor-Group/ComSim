@@ -432,6 +432,7 @@
 
   <xs:complexType name="GraphNode">
     <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="header" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <xs:complexType name="CustomGraph" mixed="true">
@@ -455,6 +456,7 @@
           </xs:element>
         </xs:sequence>
         <xs:attribute name="title" type="xs:string" use="required"/>
+        <xs:attribute name="legend" type="xs:boolean" use="optional" default="true"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

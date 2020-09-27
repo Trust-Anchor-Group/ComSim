@@ -145,8 +145,8 @@
           Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
         ]]>
       </Eval>
-      <Sample name="Unsigned Roundtrip (ms)">
-        <Variable name="Elapsed"/>
+      <Sample name="Unsigned Roundtrip">
+        <Script>Elapsed ms</Script>
       </Sample>
       <Stop/>
     </Activity>
@@ -178,42 +178,42 @@
           Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
         ]]>
       </Eval>
-      <Sample name="Signed Roundtrip (ms)">
-        <Variable name="Elapsed"/>
+      <Sample name="Signed Roundtrip">
+        <Script>Elapsed ms</Script>
       </Sample>
       <Stop/>
     </Activity>
   </Activities>
   <Graphs>
-    <CombinedExecutionsGraph title="Nr Messages sent">
+    <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
       <Source ref="SendUnsignedMessage"/>
       <Source ref="SendSignedMessage"/>
     </CombinedExecutionsGraph>
-    <CombinedExecutionTimeGraph title="Time sending Messages">
+    <CombinedExecutionTimeGraph title="Time sending Messages" legend="false">
       <Source ref="SendUnsignedMessage"/>
       <Source ref="SendSignedMessage"/>
     </CombinedExecutionTimeGraph>
-    <CombinedExecutionsGraph title="Nr Messages processed">
+    <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
       <Source ref="ProcessUnsignedMessage"/>
       <Source ref="ProcessSignedMessage"/>
     </CombinedExecutionsGraph>
-    <CombinedExecutionTimeGraph title="Time processing Messages">
+    <CombinedExecutionTimeGraph title="Time processing Messages" legend="false">
       <Source ref="ProcessUnsignedMessage"/>
       <Source ref="ProcessSignedMessage"/>
     </CombinedExecutionTimeGraph>
-    <CombinedSampleGraph title="Message roundtrip">
-      <Source ref="Signed Roundtrip (ms)"/>
-      <Source ref="Unsigned Roundtrip (ms)"/>
+    <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
+      <Source ref="Unsigned Roundtrip"/>
+      <Source ref="Signed Roundtrip"/>
     </CombinedSampleGraph>
-    <CombinedSampleGraph title="CPU %">
+    <CombinedSampleGraph title="CPU %" legend="true">
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
     </CombinedSampleGraph>
-    <CombinedSampleGraph title="Free Memory (GB)">
+    <CombinedSampleGraph title="Free Memory (GB)" legend="true">
       <Source ref="Broker Free Memory (GB)"/>
       <Source ref="Simulator Free Memory (GB)"/>
     </CombinedSampleGraph>
-    <CombinedSampleGraph title="Network (kB/s)">
+    <CombinedSampleGraph title="Network (kB/s)" legend="true">
       <Source ref="Broker Network (kB/s)"/>
       <Source ref="Simulator Network (kB/s)"/>
     </CombinedSampleGraph>
