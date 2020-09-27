@@ -87,17 +87,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public abstract Task<LinkedListNode<IActivityNode>> Execute(Variables Variables);
 
 		/// <summary>
-		/// Adds indentation to the current row.
-		/// </summary>
-		/// <param name="Output">Output.</param>
-		/// <param name="Indentation">Number of tabs to indent.</param>
-		protected static void Indent(StreamWriter Output, int Indentation)
-		{
-			if (Indentation > 0)
-				Output.Write(new string('\t', Indentation));
-		}
-
-		/// <summary>
 		/// Exports PlantUML
 		/// </summary>
 		/// <param name="Output">Output node</param>

@@ -730,13 +730,6 @@
             <param name="Variables">Set of variables for the activity.</param>
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.Indent(System.IO.StreamWriter,System.Int32)">
-            <summary>
-            Adds indentation to the current row.
-            </summary>
-            <param name="Output">Output.</param>
-            <param name="Indentation">Number of tabs to indent.</param>
-        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.ActivityNode.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
             <summary>
             Exports PlantUML
@@ -3402,6 +3395,13 @@
             Exports XML
             </summary>
             <param name="Output">Output node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Indent(System.IO.StreamWriter,System.Int32)">
+            <summary>
+            Adds indentation to the current row.
+            </summary>
+            <param name="Output">Output.</param>
+            <param name="Indentation">Number of tabs to indent.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNodeChildren">
             <summary>

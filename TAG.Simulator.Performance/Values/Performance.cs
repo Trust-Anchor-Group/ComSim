@@ -156,22 +156,22 @@ namespace TAG.Simulator.Performance.Values
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			StringBuilder sb = new StringBuilder();
+			Output.Write("Performance(");
+			Output.Write(this.category.Replace('"', QuoteChar));
+			Output.WriteLine(',');
 
-			sb.Append("Performance(\"");
-			sb.Append(this.category.Replace("\"", "\\\""));
-			sb.Append("\", \"");
+			Indent(Output, Indentation + 1);
 
 			if (!string.IsNullOrEmpty(this.instance))
 			{
-				sb.Append(this.instance.Replace("\"", "\\\""));
-				sb.Append("\", \"");
+				Output.Write(this.instance.Replace('"', QuoteChar));
+				Output.WriteLine(',');
+
+				Indent(Output, Indentation + 1);
 			}
 
-			sb.Append(this.counter.Replace("\"", "\\\""));
-			sb.Append("\")");
-
-			Eval.ExportPlantUml(sb.ToString(), Output, Indentation, QuoteChar, false);
+			Output.Write(this.counter.Replace('"', QuoteChar));
+			Output.Write(')');
 		}
 
 	}

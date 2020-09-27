@@ -121,6 +121,16 @@ namespace TAG.Simulator.ObjectModel
 			return Task.CompletedTask;
 		}
 
+		/// <summary>
+		/// Adds indentation to the current row.
+		/// </summary>
+		/// <param name="Output">Output.</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		protected static void Indent(StreamWriter Output, int Indentation)
+		{
+			if (Indentation > 0)
+				Output.Write(new string('\t', Indentation));
+		}
 
 	}
 }

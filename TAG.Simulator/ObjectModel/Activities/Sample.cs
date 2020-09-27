@@ -105,8 +105,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Indent(Output, Indentation);
 			Output.Write(":Sample(");
 			Output.Write(this.name);
-			Output.Write(',');
-			this.value?.ExportPlantUml(Output, Indentation, QuoteChar);
+			Output.WriteLine(',');
+
+			Indent(Output, Indentation + 1);
+			this.value?.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 			Output.WriteLine(");");
 		}
 
