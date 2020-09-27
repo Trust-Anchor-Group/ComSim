@@ -802,7 +802,7 @@ namespace TAG.Simulator
 
 				Table.ExportTableGraph(Output, "Total activity counts");
 
-				this.activityStartStatistics.ExportCountHistoryGraph("Activities", Order, Output, this);
+				this.activityStartStatistics.ExportCountHistoryGraph("Total Activities", Order, Output, this);
 			}
 		}
 
