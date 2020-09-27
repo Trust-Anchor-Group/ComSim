@@ -8,7 +8,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// <summary>
 	/// Abstract base class for graph nodes
 	/// </summary>
-	public abstract class Graph : SimulationNode, IGraph
+	public abstract class Graph : SimulationNodeChildren, IGraph
 	{
 		/// <summary>
 		/// Abstract base class for graph nodes
@@ -18,14 +18,6 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public Graph(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
-		}
-
-		/// <summary>
-		/// If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
-		/// </summary>
-		public abstract string For
-		{
-			get;
 		}
 
 		/// <summary>
@@ -41,6 +33,12 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public abstract void ExportSampleHistoryGraph(StreamWriter Output);
+		public abstract void ExportGraph(StreamWriter Output);
+
+		/// <summary>
+		/// Exports the graph to a markdown output.
+		/// </summary>
+		/// <param name="Output">Markdown output</param>
+		public abstract void ExportGraphScript(StreamWriter Output);
 	}
 }

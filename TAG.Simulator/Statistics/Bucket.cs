@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Graphs;
 using Waher.Content;
 using Waher.Script.Objects;
 using Waher.Script.Units;
@@ -17,7 +18,10 @@ namespace TAG.Simulator.Statistics
 	{
 		private readonly LinkedList<Statistic> statistics = new LinkedList<Statistic>();
 		private readonly LinkedList<double> samples;
+		private readonly Model model;
 		private readonly string id;
+		private readonly string title;
+		private readonly string labelY;
 		private readonly Duration bucketTime;
 		private readonly bool calcStdDev;
 		private DateTime start;
@@ -29,17 +33,24 @@ namespace TAG.Simulator.Statistics
 		private double min = double.MaxValue;
 		private double max = double.MinValue;
 		private bool hasSamples = false;
+		private bool sampleGraph = false;
 
 		/// <summary>
 		/// Statistical bucket
 		/// </summary>
 		/// <param name="Id">ID of bucket.</param>
+		/// <param name="Title">Title of bucket</param>
+		/// <param name="LabelY">Y-label of bucket.</param>
+		/// <param name="Model">Simulation model.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
-		public Bucket(string Id, bool CalcStdDev, DateTime StartTime, Duration BucketTime)
+		public Bucket(string Id, string Title, string LabelY, Model Model, bool CalcStdDev, DateTime StartTime, Duration BucketTime)
 		{
 			this.id = Id;
+			this.title = Title;
+			this.labelY = LabelY;
+			this.model = Model;
 			this.samples = CalcStdDev ? new LinkedList<double>() : null;
 			this.calcStdDev = CalcStdDev;
 			this.bucketTime = BucketTime;
@@ -178,6 +189,7 @@ namespace TAG.Simulator.Statistics
 				else
 					this.statistics.AddLast(new Statistic(this.start, this.stop, this.count, Mean, this.min, this.max));
 
+				this.sampleGraph = true;
 				this.hasSamples = false;
 				this.sum = 0;
 				this.min = double.MaxValue;
@@ -339,15 +351,30 @@ namespace TAG.Simulator.Statistics
 
 
 		/// <summary>
-		/// Exports historical counts as a graph.
+		/// Exports the graph to a markdown output.
 		/// </summary>
-		/// <param name="Title">Title of graph.</param>
-		/// <param name="LabelY">Label for Y-axis.</param>
-		/// <param name="Output">Export destination</param>
-		/// <param name="Model">Simulation model</param>
-		public void ExportSampleHistoryGraph(string Title, string LabelY, StreamWriter Output, Model Model)
+		/// <param name="Output">Markdown output</param>
+		public void ExportGraph(StreamWriter Output)
+		{
+			Output.WriteLine("{");
+			Output.WriteLine("GraphWidth:=1000;");
+			Output.WriteLine("GraphHeight:=400;");
+
+			this.ExportGraphScript(Output);
+
+			Output.WriteLine("}");
+			Output.WriteLine();
+		}
+
+		/// <summary>
+		/// Exports the graph to a markdown output.
+		/// </summary>
+		/// <param name="Output">Markdown output</param>
+		public void ExportGraphScript(StreamWriter Output)
 		{
 			this.Flush();
+
+			string LabelY = this.labelY;
 
 			if (!(this.unit is null))
 				LabelY += " (" + this.unit.ToString() + ")";
@@ -356,8 +383,8 @@ namespace TAG.Simulator.Statistics
 			{
 				StringBuilder TimeScript = new StringBuilder("Time:=[");
 				StringBuilder MinScript = new StringBuilder("Min:=[");
-				StringBuilder MeanScript = new StringBuilder("Mean:=[");
 				StringBuilder MaxScript = new StringBuilder("Max:=[");
+				StringBuilder MeanScript = new StringBuilder("Mean:=[");
 				bool First = true;
 
 				foreach (Statistic Rec in this.statistics)
@@ -367,23 +394,18 @@ namespace TAG.Simulator.Statistics
 					else
 					{
 						TimeScript.Append(',');
-						MinScript.Append(',');
 						MeanScript.Append(',');
-						MaxScript.Append(',');
+
+						if (this.sampleGraph)
+						{
+							MinScript.Append(',');
+							MaxScript.Append(',');
+						}
 					}
 
-					TimeScript.Append(CommonTypes.Encode(Model.GetTimeCoordinates(Rec.Start)));
+					TimeScript.Append(CommonTypes.Encode(this.model.GetTimeCoordinates(Rec.Start)));
 					TimeScript.Append(',');
-					TimeScript.Append(CommonTypes.Encode(Model.GetTimeCoordinates(Rec.Stop)));
-
-					if (Rec.Min.HasValue)
-					{
-						MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
-						MinScript.Append(',');
-						MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
-					}
-					else
-						MinScript.Append("null,null");
+					TimeScript.Append(CommonTypes.Encode(this.model.GetTimeCoordinates(Rec.Stop)));
 
 					if (Rec.Mean.HasValue)
 					{
@@ -392,44 +414,63 @@ namespace TAG.Simulator.Statistics
 						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
 					}
 					else
-						MeanScript.Append("null,null");
-
-					if (Rec.Max.HasValue)
 					{
-						MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
-						MaxScript.Append(',');
-						MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
+						MeanScript.Append(Rec.Count.ToString());
+						MeanScript.Append(',');
+						MeanScript.Append(Rec.Count.ToString());
 					}
-					else
-						MaxScript.Append("null,null");
+
+					if (this.sampleGraph)
+					{
+						if (Rec.Min.HasValue)
+						{
+							MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
+							MinScript.Append(',');
+							MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
+						}
+						else
+							MinScript.Append("null,null");
+
+						if (Rec.Max.HasValue)
+						{
+							MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
+							MaxScript.Append(',');
+							MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
+						}
+						else
+							MaxScript.Append("null,null");
+					}
 				}
 
 				TimeScript.Append("];");
-				MinScript.Append("];");
 				MeanScript.Append("];");
+				MinScript.Append("];");
 				MaxScript.Append("];");
 
-				Output.WriteLine("{");
 				Output.WriteLine(TimeScript.ToString());
-				Output.WriteLine(MinScript.ToString());
 				Output.WriteLine(MeanScript.ToString());
-				Output.WriteLine(MaxScript.ToString());
 
-				Output.WriteLine("GraphWidth:=1000;");
-				Output.WriteLine("GraphHeight:=400;");
-				Output.WriteLine("G:=polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+				if (this.sampleGraph)
+				{
+					Output.WriteLine(MinScript.ToString());
+					Output.WriteLine(MaxScript.ToString());
+				}
+
+				if (this.sampleGraph)
+					Output.WriteLine("G:=polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+				else
+					Output.WriteLine("G:=plot2dline(Time,Mean,\"Red\",5);");
+
 				Output.Write("G.LabelX:=\"Time × ");
-				Output.Write(Model.TimeUnitStr);
+				Output.Write(this.model.TimeUnitStr);
 				Output.WriteLine("\";");
 				Output.Write("G.LabelY:=\"");
 				Output.Write(LabelY);
 				Output.WriteLine("\";");
 				Output.Write("G.Title:=\"");
-				Output.Write(Title);
+				Output.Write(this.title.Replace("\"", "\\\""));
 				Output.WriteLine("\";");
 				Output.WriteLine("G");
-				Output.WriteLine("}");
-				Output.WriteLine();
 			}
 		}
 

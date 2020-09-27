@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
@@ -190,7 +191,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Output">Output node</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
-			this.Model.ExportUseCasesIntroduction(Output);
+			this.Model.ExportActivitiesIntroduction(Output);
 
 			string Header = string.IsNullOrEmpty(this.Id) ? this.ActivityId : this.Id;
 			Output.WriteLine(Header);
@@ -207,6 +208,9 @@ namespace TAG.Simulator.ObjectModel.Events
 			Output.WriteLine("@enduml");
 			Output.WriteLine("```");
 			Output.WriteLine();
+
+			if (!(this.activity is null))
+				await this.activity.ExportMarkdown(Output, false, this);
 		}
 
 		/// <summary>
@@ -291,6 +295,15 @@ namespace TAG.Simulator.ObjectModel.Events
 					i++;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Exports Probability Script graph.
+		/// </summary>
+		/// <param name="Output">Output</param>
+		public virtual void ExportPdfScript(StringBuilder Output)
+		{ 
+			// Nothing by default.
 		}
 
 	}

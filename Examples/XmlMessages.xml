@@ -184,4 +184,38 @@
       <Stop/>
     </Activity>
   </Activities>
+  <Graphs>
+    <CombinedExecutionsGraph title="Nr Messages sent">
+      <Source ref="SendUnsignedMessage"/>
+      <Source ref="SendSignedMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time sending Messages">
+      <Source ref="SendUnsignedMessage"/>
+      <Source ref="SendSignedMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedExecutionsGraph title="Nr Messages processed">
+      <Source ref="ProcessUnsignedMessage"/>
+      <Source ref="ProcessSignedMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time processing Messages">
+      <Source ref="ProcessUnsignedMessage"/>
+      <Source ref="ProcessSignedMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedSampleGraph title="Message roundtrip">
+      <Source ref="Signed Roundtrip (ms)"/>
+      <Source ref="Unsigned Roundtrip (ms)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="CPU %">
+      <Source ref="Broker CPU (%)"/>
+      <Source ref="Simulator CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Free Memory (GB)">
+      <Source ref="Broker Free Memory (GB)"/>
+      <Source ref="Simulator Free Memory (GB)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Network (kB/s)">
+      <Source ref="Broker Network (kB/s)"/>
+      <Source ref="Simulator Network (kB/s)"/>
+    </CombinedSampleGraph>
+  </Graphs>
 </Model>

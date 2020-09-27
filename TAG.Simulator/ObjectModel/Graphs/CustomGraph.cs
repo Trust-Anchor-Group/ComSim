@@ -15,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// <summary>
 	/// Defines a custom graph (for a counter, variable, sample, etc.)
 	/// </summary>
-	public class CustomGraph : Graph, IBucket
+	public class CustomGraph : Graph, ICustomGraph, IBucket
 	{
 		private readonly LinkedList<KeyValuePair<DateTime, double>> statistics = new LinkedList<KeyValuePair<DateTime, double>>();
 		private string _for;
@@ -47,7 +47,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
 		/// </summary>
-		public override string For => this._for;
+		public string For => this._for;
 
 		/// <summary>
 		/// Bucket ID
@@ -69,6 +69,11 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		{
 			return new CustomGraph(Parent, Model);
 		}
+
+		/// <summary>
+		/// If children are to be parsed by <see cref="FromXml(XmlElement)"/>
+		/// </summary>
+		public override bool ParseChildren => false;
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
@@ -227,18 +232,6 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		}
 
 		/// <summary>
-		/// Exports historical counts as a graph.
-		/// </summary>
-		/// <param name="Title">Title of graph.</param>
-		/// <param name="LabelY">Label for Y-axis.</param>
-		/// <param name="Output">Export destination</param>
-		/// <param name="Model">Simulation model</param>
-		public void ExportSampleHistoryGraph(string Title, string LabelY, StreamWriter Output, Model Model)
-		{
-			this.ExportSampleHistoryGraph(Output);
-		}
-
-		/// <summary>
 		/// Exports data to XML
 		/// </summary>
 		/// <param name="Output">XML Output</param>
@@ -272,7 +265,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		public override void ExportSampleHistoryGraph(StreamWriter Output)
+		public override void ExportGraph(StreamWriter Output)
 		{
 			this.Flush();
 
@@ -297,10 +290,25 @@ namespace TAG.Simulator.ObjectModel.Graphs
 
 				Output.WriteLine("GraphWidth:=1000;");
 				Output.WriteLine("GraphHeight:=400;");
-				Output.WriteLine(this.script);
+				this.ExportGraphScript(Output);
+				Output.WriteLine(";");
 				Output.WriteLine("}");
 				Output.WriteLine();
 			}
 		}
+
+		/// <summary>
+		/// Exports the graph to a markdown output.
+		/// </summary>
+		/// <param name="Output">Markdown output</param>
+		public override void ExportGraphScript(StreamWriter Output)
+		{
+			string s = this.script.Trim();
+			if (s.EndsWith(";"))
+				s = s.Substring(0, s.Length - 1);
+
+			Output.Write(s);
+		}
+
 	}
 }

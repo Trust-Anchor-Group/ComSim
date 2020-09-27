@@ -71,7 +71,7 @@ namespace TAG.Simulator.ObjectModel
 		}
 
 		/// <summary>
-		/// If children are 
+		/// If children are to be parsed by <see cref="FromXml(XmlElement)"/>
 		/// </summary>
 		public virtual bool ParseChildren => true;
 

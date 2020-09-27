@@ -66,8 +66,7 @@
         <xs:element name="Graphs" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="CustomGraph" type="CustomGraph"/>
-              <xs:any namespace="##other"/>
+              <xs:group ref="Graph"/>
             </xs:choice>
           </xs:complexType>
         </xs:element>
@@ -420,12 +419,42 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:group name="Graph">
+    <xs:choice>
+      <xs:element name="CustomGraph" type="CustomGraph"/>
+      <xs:element name="CombinedExecutionsGraph" type="CombinedGraph"/>
+      <xs:element name="CombinedExecutionTimeGraph" type="CombinedGraph"/>
+      <xs:element name="CombinedCounterGraph" type="CombinedGraph"/>
+      <xs:element name="CombinedSampleGraph" type="CombinedGraph"/>
+      <xs:any namespace="##other"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="GraphNode">
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+
   <xs:complexType name="CustomGraph" mixed="true">
     <xs:complexContent>
-      <xs:extension base="ActivityNode">
+      <xs:extension base="GraphNode">
         <xs:attribute name="for" type="xs:string" use="required"/>
         <xs:attribute name="timeVariable" type="xs:string" use="optional"/>
         <xs:attribute name="valueVariable" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CombinedGraph" mixed="true">
+    <xs:complexContent>
+      <xs:extension base="GraphNode">
+        <xs:sequence minOccurs="2" maxOccurs="unbounded">
+          <xs:element name="Source">
+            <xs:complexType>
+              <xs:attribute name="ref" type="xs:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="title" type="xs:string" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

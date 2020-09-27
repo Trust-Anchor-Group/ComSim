@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using SkiaSharp;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Content;
 using Waher.Script.Objects;
 
@@ -16,6 +17,9 @@ namespace TAG.Simulator.Statistics
 	{
 		private readonly SortedDictionary<string, IBucket> buckets = new SortedDictionary<string, IBucket>();
 		private readonly Duration bucketTime;
+		private readonly string title;
+		private readonly string labelY;
+		private readonly Model model;
 		private DateTime start;
 
 		/// <summary>
@@ -23,8 +27,11 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
-		public Buckets(DateTime StartTime, Duration BucketTime)
-			: this(StartTime, BucketTime, false, null)
+		/// <param name="Title">Title of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="LabelY">Y-label of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="Model">Simulation model.</param>
+		public Buckets(DateTime StartTime, Duration BucketTime, string Title, string LabelY, Model Model)
+			: this(StartTime, BucketTime, Title, LabelY, Model, false, null)
 		{
 		}
 
@@ -33,18 +40,34 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+		/// <param name="Title">Title of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="LabelY">Y-label of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="Model">Simulation model.</param>
 		/// <param name="CalcStdDev">If standard deviation is to be calculated.</param>
 		/// <param name="IDs">Predefined IDs</param>
-		public Buckets(DateTime StartTime, Duration BucketTime, bool CalcStdDev, string[] IDs)
+		public Buckets(DateTime StartTime, Duration BucketTime, string Title, string LabelY, Model Model, bool CalcStdDev, string[] IDs)
 		{
 			this.start = StartTime;
 			this.bucketTime = BucketTime;
+			this.title = Title;
+			this.labelY = LabelY;
+			this.model = Model;
 
 			if (!(IDs is null))
 			{
 				foreach (string ID in IDs)
-					this.buckets[ID] = new Bucket(ID, CalcStdDev, StartTime, BucketTime);
+					this.buckets[ID] = new Bucket(ID, this.GetTitle(ID), this.GetLabelY(ID), this.model, CalcStdDev, StartTime, BucketTime);
 			}
+		}
+
+		private string GetTitle(string ID)
+		{
+			return this.title.Replace("%ID%", ID);
+		}
+
+		private string GetLabelY(string ID)
+		{
+			return this.labelY.Replace("%ID%", ID);
 		}
 
 		/// <summary>
@@ -52,11 +75,17 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
+		/// <param name="Title">Title of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="LabelY">Y-label of buckets. %ID% will be replaced by the ID of each bucket.</param>
+		/// <param name="Model">Simulation model.</param>
 		/// <param name="Buckets">Predefined buckets.</param>
-		public Buckets(DateTime StartTime, Duration BucketTime, params IBucket[] Buckets)
+		public Buckets(DateTime StartTime, Duration BucketTime, string Title, string LabelY, Model Model, params IBucket[] Buckets)
 		{
 			this.start = StartTime;
 			this.bucketTime = BucketTime;
+			this.title = Title;
+			this.labelY = LabelY;
+			this.model = Model;
 
 			if (!(Buckets is null))
 			{
@@ -77,7 +106,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -97,7 +126,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -117,7 +146,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, false, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -138,7 +167,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, true, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -159,7 +188,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.GetLabelY(Counter), this.model, true, this.start, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -270,8 +299,10 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Order">Preferred order, can be null.</param>
 		/// <param name="Output">Export destination</param>
 		/// <param name="Model">Simulation model</param>
+		/// <param name="Event">Associated event object.</param>
 		/// <param name="Palette">Optional predefined palette</param>
-		public void ExportCountHistoryGraph(string Title, IEnumerable<string> Order, StreamWriter Output, Model Model, SKColor[] Palette = null)
+		public void ExportCountHistoryGraph(string Title, IEnumerable<string> Order, StreamWriter Output, Model Model, 
+			IEvent Event, SKColor[] Palette = null)
 		{
 			lock (this.buckets)
 			{
@@ -404,6 +435,8 @@ namespace TAG.Simulator.Statistics
 						}
 					}
 				}
+
+				Event?.ExportPdfScript(PlotScript);
 
 				Script.AppendLine("GraphWidth:=1000;");
 				Script.AppendLine("GraphHeight:=400;");

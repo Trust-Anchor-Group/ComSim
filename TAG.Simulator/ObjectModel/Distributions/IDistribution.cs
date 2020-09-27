@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Xml;
-using Waher.Content.Xml;
+using System.Text;
 
 namespace TAG.Simulator.ObjectModel.Distributions
 {
@@ -32,6 +29,6 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Exports the PDF function, if not already exported.
 		/// </summary>
 		/// <param name="Output">Export output</param>
-		void ExportPdfOnceOnly(StreamWriter Output);
+		void ExportPdfOnceOnly(StringBuilder Output);
 	}
 }

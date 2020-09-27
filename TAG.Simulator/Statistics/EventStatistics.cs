@@ -21,7 +21,8 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="StartTime">Starting time</param>
 		/// <param name="BucketTime">Duration of one bucket, where statistics is collected.</param>
-		public EventStatistics(DateTime StartTime, Duration BucketTime)
+		/// <param name="Model">Simulation Model.</param>
+		public EventStatistics(DateTime StartTime, Duration BucketTime, Model Model)
 			: base("Event Statistics")
 		{
 			List<string> IDs = new List<string>();
@@ -29,7 +30,7 @@ namespace TAG.Simulator.Statistics
 			foreach (Enum T in Enum.GetValues(typeof(EventType)))
 				IDs.Add(T.ToString());
 
-			this.buckets = new Buckets(StartTime, BucketTime, false, IDs.ToArray());
+			this.buckets = new Buckets(StartTime, BucketTime, "Total event counts", "%ID%", Model, false, IDs.ToArray());
 		}
 
 		/// <summary>
@@ -69,7 +70,7 @@ namespace TAG.Simulator.Statistics
 				SKColors.Black
 			};
 
-			this.buckets.ExportCountHistoryGraph("Events", Order, Output, Model, Palette);
+			this.buckets.ExportCountHistoryGraph("Events", Order, Output, Model, null, Palette);
 		}
 
 		private CountTable GetTable(out string[] Order)

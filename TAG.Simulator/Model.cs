@@ -52,6 +52,10 @@ namespace TAG.Simulator
 		private readonly Dictionary<string, IEvent> eventsWithId = new Dictionary<string, IEvent>();
 		private readonly Dictionary<string, IGraph> graphsFor = new Dictionary<string, IGraph>();
 		private readonly Dictionary<string, string> keyValues = new Dictionary<string, string>();
+		private readonly Dictionary<string, IGraph> customSampleGraph = new Dictionary<string, IGraph>();
+		private readonly Dictionary<string, IGraph> customCounterGraph = new Dictionary<string, IGraph>();
+		private readonly Dictionary<string, IGraph> customExecutionsGraph = new Dictionary<string, IGraph>();
+		private readonly Dictionary<string, IGraph> customExecutionTimesGraph = new Dictionary<string, IGraph>();
 		private readonly LinkedList<ITimeTriggerEvent> timeTriggeredEvents = new LinkedList<ITimeTriggerEvent>();
 		private readonly LinkedList<IGraph> graphs = new LinkedList<IGraph>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
@@ -72,6 +76,7 @@ namespace TAG.Simulator
 		private string bucketTimeStr;
 		private string snifferFolder;
 		private string snifferTransformFileName;
+		private double bucketTimeMs;
 		private double timeUnitMs;
 		private double timeCycleMs;
 		private double timeCycleUnits;
@@ -146,6 +151,11 @@ namespace TAG.Simulator
 		/// Time to collect events, for statistical purposes.
 		/// </summary>
 		public string BucketTimeStr => this.bucketTimeStr;
+
+		/// <summary>
+		/// Bucket time, in milliseconds
+		/// </summary>
+		public double BucketTimeMs => this.bucketTimeMs;
 
 		/// <summary>
 		/// Start time
@@ -230,15 +240,16 @@ namespace TAG.Simulator
 
 			this.end = this.start + this.duration;
 
+			this.bucketTimeMs = ((this.start + this.bucketTime) - this.start).TotalMilliseconds;
 			this.timeUnitMs = ((this.start + this.timeUnit) - this.start).TotalMilliseconds;
 			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
-			this.counters = new Buckets(this.start, this.bucketTime);
-			this.samples = new Buckets(this.start, this.bucketTime);
-			this.activityStartStatistics = new Buckets(this.start, this.bucketTime);
-			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime);
-			this.eventStatistics = new EventStatistics(this.start, this.bucketTime);
+			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Nr %ID%", this);
+			this.samples = new Buckets(this.start, this.bucketTime, "%ID%", "Mean %ID%", this);
+			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Nr %ID%", this);
+			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time (s)", this);
+			this.eventStatistics = new EventStatistics(this.start, this.bucketTime, this);
 			Log.Register(this.eventStatistics);
 
 			await base.Initialize();
@@ -386,17 +397,20 @@ namespace TAG.Simulator
 		/// <param name="Graph">Graph object.</param>
 		public void Register(IGraph Graph)
 		{
-			string For = Graph.For;
-			if (!string.IsNullOrEmpty(For))
+			if (Graph is ICustomGraph CustomGraph)
 			{
-				if (this.graphsFor.ContainsKey(For))
-					throw new Exception("A graph for " + For + " already registered.");
+				string For = CustomGraph.For;
+				if (!string.IsNullOrEmpty(For))
+				{
+					if (this.graphsFor.ContainsKey(For))
+						throw new Exception("A graph for " + For + " already registered.");
 
-				this.graphsFor[For] = Graph;
-
-				if (Graph is IBucket Bucket)
-					this.samples.Register(Bucket);
+					this.graphsFor[For] = Graph;
+				}
 			}
+
+			if (Graph is IBucket Bucket)
+				this.samples.Register(Bucket);
 
 			this.graphs.AddLast(Graph);
 		}
@@ -410,6 +424,126 @@ namespace TAG.Simulator
 		public bool TryGetGraph(string For, out IGraph Graph)
 		{
 			return this.graphsFor.TryGetValue(For, out Graph);
+		}
+
+		/// <summary>
+		/// Tries to get a registered sample graph from the model.
+		/// </summary>
+		/// <param name="For">ID of entity the graph would be for.</param>
+		/// <param name="Graph">Graph if found.</param>
+		/// <returns>If a graph was found.</returns>
+		public bool TryGetSampleGraph(string For, out IGraph Graph)
+		{
+			if (this.samples.TryGetBucket(For, out IBucket Bucket))
+			{
+				Graph = Bucket;
+				return true;
+			}
+			else
+			{
+				Graph = null;
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Tries to get a registered counter graph from the model.
+		/// </summary>
+		/// <param name="For">ID of entity the graph would be for.</param>
+		/// <param name="Graph">Graph if found.</param>
+		/// <returns>If a graph was found.</returns>
+		public bool TryGetCounterGraph(string For, out IGraph Graph)
+		{
+			if (this.counters.TryGetBucket(For, out IBucket Bucket))
+			{
+				Graph = Bucket;
+				return true;
+			}
+			else
+			{
+				Graph = null;
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Tries to get a registered executuions graph from the model.
+		/// </summary>
+		/// <param name="For">ID of entity the graph would be for.</param>
+		/// <param name="Graph">Graph if found.</param>
+		/// <returns>If a graph was found.</returns>
+		public bool TryGetExecutionsGraph(string For, out IGraph Graph)
+		{
+			if (this.activityStartStatistics.TryGetBucket(For, out IBucket Bucket))
+			{
+				Graph = Bucket;
+				return true;
+			}
+			else
+			{
+				Graph = null;
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Tries to get a registered executuion times graph from the model.
+		/// </summary>
+		/// <param name="For">ID of entity the graph would be for.</param>
+		/// <param name="Graph">Graph if found.</param>
+		/// <returns>If a graph was found.</returns>
+		public bool TryGetExecutionTimesGraph(string For, out IGraph Graph)
+		{
+			if (this.activityTimeStatistics.TryGetBucket(For, out IBucket Bucket))
+			{
+				Graph = Bucket;
+				return true;
+			}
+			else
+			{
+				Graph = null;
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Registers a custom samples graph
+		/// </summary>
+		/// <param name="Id">ID of graph</param>
+		/// <param name="Graph">Graph</param>
+		public void RegisterCustomSampleGraph(string Id, IGraph Graph)
+		{
+			this.customSampleGraph[Id] = Graph;
+		}
+
+		/// <summary>
+		/// Registers a custom counter graph
+		/// </summary>
+		/// <param name="Id">ID of graph</param>
+		/// <param name="Graph">Graph</param>
+		public void RegisterCustomCounterGraph(string Id, IGraph Graph)
+		{
+			this.customCounterGraph[Id] = Graph;
+		}
+
+		/// <summary>
+		/// Registers a custom executions graph
+		/// </summary>
+		/// <param name="Id">ID of graph</param>
+		/// <param name="Graph">Graph</param>
+		public void RegisterCustomExecutionsGraph(string Id, IGraph Graph)
+		{
+			this.customExecutionsGraph[Id] = Graph;
+		}
+
+		/// <summary>
+		/// Registers a custom execution times graph
+		/// </summary>
+		/// <param name="Id">ID of graph</param>
+		/// <param name="Graph">Graph</param>
+		public void RegisterCustomExecutionTimesGraph(string Id, IGraph Graph)
+		{
+			this.customExecutionTimesGraph[Id] = Graph;
 		}
 
 		/// <summary>
@@ -743,7 +877,7 @@ namespace TAG.Simulator
 				CountTable Table = this.counters.GetTotalCountTable();
 				Table.ExportTableGraph(Output, "Counters");
 
-				this.counters.ExportCountHistoryGraph("Counters", null, Output, this);
+				this.counters.ExportCountHistoryGraph("Counters", null, Output, this, null);
 			}
 
 			if (this.samples.Count > 0)
@@ -754,35 +888,26 @@ namespace TAG.Simulator
 
 				foreach (string ID in this.samples.IDs)
 				{
+					if (this.customSampleGraph.ContainsKey(ID))
+						continue;
+
 					if (this.graphsFor.TryGetValue(ID, out IGraph Graph))
-						Graph.ExportSampleHistoryGraph(Output);
+						Graph.ExportGraph(Output);
 					else if (this.samples.TryGetBucket(ID, out IBucket Bucket))
-						Bucket.ExportSampleHistoryGraph(ID, "Mean " + ID, Output, this);
+						Bucket.ExportGraph(Output);
 				}
 
 				foreach (IGraph Graph in this.graphs)
 				{
-					if (string.IsNullOrEmpty(Graph.For))
-						Graph.ExportSampleHistoryGraph(Output);
+					if (Graph is ICustomGraph CustomGraph && !string.IsNullOrEmpty(CustomGraph.For))
+						continue;
+
+					Graph.ExportGraph(Output);
 				}
 			}
 
 			this.eventStatistics.ExportMarkdown(Output, this);
 		}
-
-		internal void ExportUseCasesIntroduction(StreamWriter Output)
-		{
-			if (this.useCasesIntroduction)
-				return;
-
-			this.useCasesIntroduction = true;
-
-			Output.WriteLine("Use Cases");
-			Output.WriteLine("=============");
-			Output.WriteLine();
-		}
-
-		private bool useCasesIntroduction;
 
 		internal void ExportActivitiesIntroduction(StreamWriter Output)
 		{
@@ -802,11 +927,11 @@ namespace TAG.Simulator
 
 				Table.ExportTableGraph(Output, "Total activity counts");
 
-				this.activityStartStatistics.ExportCountHistoryGraph("Total Activities", Order, Output, this);
+				this.activityStartStatistics.ExportCountHistoryGraph("Total Activities", Order, Output, this, null);
 			}
 		}
 
-		internal void ExportActivityCharts(string ActivityId, StreamWriter Output)
+		internal void ExportActivityCharts(string ActivityId, StreamWriter Output, IEvent Event)
 		{
 			if (this.activityStartStatistics.TryGetBucket(ActivityId, out IBucket _))
 			{
@@ -830,12 +955,12 @@ namespace TAG.Simulator
 					SKColor[] Palette = CreatePalette(Index);
 
 					this.activityStartStatistics.ExportCountHistoryGraph("Executions of " + ActivityId,
-						new string[] { ActivityId }, Output, this, new SKColor[] { Palette[i] });
+						new string[] { ActivityId }, Output, this, Event, new SKColor[] { Palette[i] });
 				}
 			}
 
 			if (this.activityTimeStatistics.TryGetBucket(ActivityId, out IBucket Bucket))
-				Bucket.ExportSampleHistoryGraph("Execution time of " + ActivityId, "Mean execution time (s)", Output, this);
+				Bucket.ExportGraph(Output);
 		}
 
 		private string[] ActivityOrder()

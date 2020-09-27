@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
-using Waher.Content.Xml;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -38,5 +38,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		Task ExecuteTask(Variables Variables);
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Title">It title should be exported.</param>
+		/// <param name="Event">Connected event object.</param>
+		Task ExportMarkdown(StreamWriter Output, bool Title, IEvent Event);
 	}
 }

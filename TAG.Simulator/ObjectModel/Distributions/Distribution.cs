@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
@@ -110,7 +110,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Exports the PDF function, if not already exported.
 		/// </summary>
 		/// <param name="Output">Export output</param>
-		public void ExportPdfOnceOnly(StreamWriter Output)
+		public void ExportPdfOnceOnly(StringBuilder Output)
 		{
 			if (!this.exported)
 			{
@@ -125,32 +125,32 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Exports the PDF function.
 		/// </summary>
 		/// <param name="Output">Export output</param>
-		public virtual void ExportPdf(StreamWriter Output)
+		public virtual void ExportPdf(StringBuilder Output)
 		{
-			Output.Write(this.id);
-			Output.Write("PDF(t):=");
+			Output.Append(this.id);
+			Output.Append("PDF(t):=");
 			if (this.n != 1 || this.Model.TimeCycleUnits != 1)
 			{
-				Output.Write(CommonTypes.Encode(this.n));
+				Output.Append(CommonTypes.Encode(this.n));
 
 				if (this.Model.TimeCycleUnits != 1)
 				{
-					Output.Write('/');
-					Output.Write(CommonTypes.Encode(this.Model.TimeCycleUnits));
+					Output.Append('/');
+					Output.Append(CommonTypes.Encode(this.Model.TimeCycleUnits));
 				}
 
-				Output.Write('*');
+				Output.Append('*');
 			}
-			Output.Write('(');
+			Output.Append('(');
 			this.ExportPdfBody(Output);
-			Output.WriteLine(");");
+			Output.AppendLine(");");
 		}
 
 		/// <summary>
 		/// Exports the PDF function body.
 		/// </summary>
 		/// <param name="Output">Export output</param>
-		public abstract void ExportPdfBody(StreamWriter Output);
+		public abstract void ExportPdfBody(StringBuilder Output);
 
 	}
 }

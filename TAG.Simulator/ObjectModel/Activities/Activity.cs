@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -129,13 +130,32 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Exports PlantUML
 		/// </summary>
 		/// <param name="Output">Output node</param>
-		public override async Task ExportMarkdown(StreamWriter Output)
+		public override Task ExportMarkdown(StreamWriter Output)
 		{
-			this.Model.ExportActivitiesIntroduction(Output);
+			if (!this.markdownExported)
+				return this.ExportMarkdown(Output, true, null);
+			else
+				return Task.CompletedTask;
+		}
 
-			Output.WriteLine(this.id);
-			Output.WriteLine(new string('-', this.id.Length + 3));
-			Output.WriteLine();
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output node</param>
+		/// <param name="Title">It title should be exported.</param>
+		/// <param name="Event">Connected event object.</param>
+		public async Task ExportMarkdown(StreamWriter Output, bool Title, IEvent Event)
+		{
+			this.markdownExported = true;
+
+			if (Title)
+			{
+				this.Model.ExportActivitiesIntroduction(Output);
+			
+				Output.WriteLine(this.id);
+				Output.WriteLine(new string('-', this.id.Length + 3));
+				Output.WriteLine();
+			}
 
 			await base.ExportMarkdown(Output);
 
@@ -149,8 +169,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("```");
 			Output.WriteLine();
 
-			this.Model.ExportActivityCharts(this.id, Output);
+			this.Model.ExportActivityCharts(this.id, Output, Event);
 		}
+
+		private bool markdownExported = false;
 
 	}
 }

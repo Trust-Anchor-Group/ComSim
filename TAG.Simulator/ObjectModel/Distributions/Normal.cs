@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
@@ -120,17 +120,17 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// Exports the PDF function body.
 		/// </summary>
 		/// <param name="Output">Export output</param>
-		public override void ExportPdfBody(StreamWriter Output)
+		public override void ExportPdfBody(StringBuilder Output)
 		{
 			string s;
 
-			Output.Write("exp(-(((t-");
-			Output.Write(CommonTypes.Encode(this.μ));
-			Output.Write(")/");
-			Output.Write(s = CommonTypes.Encode(this.σ));
-			Output.Write(").^2)/2)/(");
-			Output.Write(s);
-			Output.Write("*sqrt(2*pi))");
+			Output.Append("exp(-(((t-");
+			Output.Append(CommonTypes.Encode(this.μ));
+			Output.Append(")/");
+			Output.Append(s = CommonTypes.Encode(this.σ));
+			Output.Append(").^2)/2)/(");
+			Output.Append(s);
+			Output.Append("*sqrt(2*pi))");
 		}
 
 	}

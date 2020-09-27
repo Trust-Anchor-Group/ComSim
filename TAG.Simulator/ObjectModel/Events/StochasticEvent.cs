@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Distributions;
@@ -121,59 +122,61 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
-		/// Exports PlantUML
+		/// Exports Probability Script graph.
 		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override async Task ExportMarkdown(StreamWriter Output)
+		/// <param name="Output">Output</param>
+		public override void ExportPdfScript(StringBuilder Output)
 		{
-			await base.ExportMarkdown(Output);
-
 			if (!(this.distribution is null))
 			{
 				double t2 = Model.GetTimeCoordinates(this.Model.EndTime);
 				double dt = t2 / 1000;
 				string s;
 
-				Output.WriteLine("{");
-				Output.WriteLine("GraphWidth:=1000;");
-				Output.WriteLine("GraphHeight:=400;");
-
+				Output.Append("+(");
 				this.distribution.ExportPdfOnceOnly(Output);
 
-				Output.Write("t:=0..");
-				Output.Write(CommonTypes.Encode(t2));
-				Output.Write("|");
-				Output.Write(CommonTypes.Encode(dt));
-				Output.WriteLine(";");
+				Output.Append("t:=0..");
+				Output.Append(CommonTypes.Encode(t2));
+				Output.Append("|");
+				Output.Append(CommonTypes.Encode(dt));
+				Output.AppendLine(";");
 
 				if (this.Model.TimeCycleUnits != 1)
 				{
-					Output.Write("ct:=t/");
-					Output.Write(s = CommonTypes.Encode(this.Model.TimeCycleUnits));
-					Output.WriteLine(";");
-					Output.Write("ct:=(ct-floor(ct))*");
-					Output.Write(s);
-					Output.WriteLine(";");
+					Output.Append("ct:=t/");
+					Output.Append(s = CommonTypes.Encode(this.Model.TimeCycleUnits));
+					Output.AppendLine(";");
+					Output.Append("ct:=(ct-floor(ct))*");
+					Output.Append(s);
+					Output.AppendLine(";");
 				}
 				else
-					Output.WriteLine("ct:=t-floor(t);");
+					Output.AppendLine("ct:=t-floor(t);");
 
-				Output.Write("y:=");
-				Output.Write(this.distributionId);
-				Output.WriteLine("PDF(ct);");
-				Output.WriteLine("G:=plot2dlinearea(t,y,Alpha(\"Blue\",64))+plot2dline(t,y,\"Blue\");");
-				Output.Write("G.LabelX:=\"Time × ");
-				Output.Write(this.Model.TimeUnitStr);
-				Output.WriteLine("\";");
-				Output.Write("G.LabelY:=\"Intensity (/ ");
-				Output.Write(this.Model.TimeUnitStr);
-				Output.WriteLine(")\";");
-				Output.Write("G.Title:=\"Probability Density Function of ");
-				Output.Write(this.distributionId);
-				Output.WriteLine("\";");
-				Output.WriteLine("G");
-				Output.WriteLine("}");
-				Output.WriteLine();
+				Output.Append("y:=");
+				Output.Append(this.distributionId);
+				Output.Append("PDF(ct)");
+
+				if (this.Model.BucketTimeMs != this.Model.TimeUnitMs)
+				{
+					Output.Append(".*");
+					Output.Append(CommonTypes.Encode(this.Model.BucketTimeMs / this.Model.TimeUnitMs));
+				}
+
+				Output.AppendLine(";");
+				Output.AppendLine("G:=plot2dline(t,y,\"Blue\");");
+				Output.Append("G.LabelX:=\"Time × ");
+				Output.Append(this.Model.TimeUnitStr);
+				Output.AppendLine("\";");
+				Output.Append("G.LabelY:=\"Intensity (/ ");
+				Output.Append(this.Model.TimeUnitStr);
+				Output.AppendLine(")\";");
+				Output.Append("G.Title:=\"Probability Density Function of ");
+				Output.Append(this.distributionId);
+				Output.AppendLine("\";");
+				Output.AppendLine("G");
+				Output.Append(")");
 			}
 		}
 

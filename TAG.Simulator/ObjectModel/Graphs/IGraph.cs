@@ -7,20 +7,18 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// <summary>
 	/// Interface for graph nodes
 	/// </summary>
-	public interface IGraph : ISimulationNode
+	public interface IGraph
 	{
 		/// <summary>
-		/// If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
+		/// Exports the graph to a markdown output.
 		/// </summary>
-		string For
-		{
-			get;
-		}
+		/// <param name="Output">Markdown output</param>
+		void ExportGraph(StreamWriter Output);
 
 		/// <summary>
 		/// Exports the graph to a markdown output.
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
-		void ExportSampleHistoryGraph(StreamWriter Output);
+		void ExportGraphScript(StreamWriter Output);
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Graphs;
 using Waher.Content;
 using Waher.Script.Objects;
 using Waher.Script.Units;
@@ -13,7 +14,7 @@ namespace TAG.Simulator.Statistics
 	/// <summary>
 	/// Interface for buckets.
 	/// </summary>
-	public interface IBucket
+	public interface IBucket : IGraph
 	{
 		/// <summary>
 		/// Bucket ID
@@ -67,15 +68,6 @@ namespace TAG.Simulator.Statistics
 		/// Terminates the ongoing collection of data.
 		/// </summary>
 		void Flush();
-
-		/// <summary>
-		/// Exports historical counts as a graph.
-		/// </summary>
-		/// <param name="Title">Title of graph.</param>
-		/// <param name="LabelY">Label for Y-axis.</param>
-		/// <param name="Output">Export destination</param>
-		/// <param name="Model">Simulation model</param>
-		void ExportSampleHistoryGraph(string Title, string LabelY, StreamWriter Output, Model Model);
 
 		/// <summary>
 		/// Exports data to XML
