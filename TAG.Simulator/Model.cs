@@ -1014,6 +1014,9 @@ namespace TAG.Simulator
 			if (this.counters.Count > 0)
 				this.counters.ExportXml(Output, "Counters", "Counter");
 
+			if (this.samples.Count > 0)
+				this.samples.ExportXml(Output, "Samples", "Series");
+
 			this.eventStatistics.ExportXml(Output);
 		}
 
