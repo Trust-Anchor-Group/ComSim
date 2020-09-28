@@ -302,13 +302,16 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
-		public override void ExportGraphScript(StreamWriter Output, string CustomColor)
+		/// <returns>If script was exported.</returns>
+		public override bool ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			string s = this.script.Trim();
 			if (s.EndsWith(";"))
 				s = s.Substring(0, s.Length - 1);
 
 			Output.Write(s);
+
+			return true;
 		}
 
 	}

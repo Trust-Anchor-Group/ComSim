@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using SkiaSharp;
 using Waher.Content.Xml;
+using Waher.Events;
 
 namespace TAG.Simulator.ObjectModel.Graphs
 {
@@ -144,24 +145,31 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
-		public override void ExportGraphScript(StreamWriter Output, string CustomColor)
+		/// <returns>If script was exported.</returns>
+		public override bool ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			SKColor[] Palette = Model.CreatePalette(this.count);
 			IGraph Graph;
 			int i = 0;
+			bool First = true;
 
 			Output.WriteLine("G:=Sum([(");
 
 			foreach (Source Source in this.sources)
 			{
-				if (i > 0)
-					Output.WriteLine("), (");
-
 				Graph = this.GetGraph(Source.Reference);
 				if (Graph is null)
-					throw new Exception("Graph for " + Source.Reference + " could not be found.");
+					Log.Error("Graph for " + Source.Reference + " could not be found.");
+				else
+				{
+					if (!First)
+						Output.WriteLine("), (");
 
-				Graph.ExportGraphScript(Output, Model.ToString(Palette[i++]));
+					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i])))
+						First = false;
+				}
+
+				i++;
 			}
 
 			Output.WriteLine(")]);");
@@ -172,6 +180,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			Output.Write(this.title.Replace("\"", "\\\""));
 			Output.WriteLine("\";");
 			Output.WriteLine("G");
+
+			return true;
 		}
 
 		/// <summary>

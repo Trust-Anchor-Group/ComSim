@@ -28,6 +28,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
-		void ExportGraphScript(StreamWriter Output, string CustomColor);
+		/// <returns>If script was exported.</returns>
+		bool ExportGraphScript(StreamWriter Output, string CustomColor);
 	}
 }

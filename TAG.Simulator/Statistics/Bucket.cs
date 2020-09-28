@@ -376,7 +376,8 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
-		public void ExportGraphScript(StreamWriter Output, string CustomColor)
+		/// <returns>If script was exported.</returns>
+		public bool ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			this.Flush();
 
@@ -448,6 +449,9 @@ namespace TAG.Simulator.Statistics
 					}
 				}
 
+				if (First)
+					return false;
+
 				TimeScript.Append("];");
 				MeanScript.Append("];");
 				MinScript.Append("];");
@@ -505,6 +509,8 @@ namespace TAG.Simulator.Statistics
 				Output.Write(this.title.Replace("\"", "\\\""));
 				Output.WriteLine("\";");
 				Output.WriteLine("G");
+
+				return true;
 			}
 		}
 

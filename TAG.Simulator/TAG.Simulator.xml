@@ -3219,6 +3219,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <returns>If script was exported.</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.GetGraph(System.String)">
             <summary>
@@ -3377,6 +3378,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graph">
             <summary>
@@ -3418,6 +3420,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graphs">
             <summary>
@@ -3476,6 +3479,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.ISource">
             <summary>
@@ -4602,6 +4606,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <returns>If script was exported.</returns>
         </member>
         <member name="M:TAG.Simulator.Statistics.Bucket.ExportXml(System.Xml.XmlWriter,System.String)">
             <summary>

@@ -7,7 +7,7 @@
        bucketTime="PT10S"
        timeUnit="PT1S"
        timeCycle="PT1M"
-       duration="PT1M">
+       duration="PT10M">
   <Meta>
     <Title>XML Messages</Title>
     <Description>
