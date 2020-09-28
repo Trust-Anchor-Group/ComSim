@@ -124,10 +124,12 @@ The simulator itself provides the following extensions:
 
 Syntax of simulation nodes are defined in XML Schema files. The following table lists XML Schema files defined by the project:
 
-| Schema                                                     | Namespace                                            | Description                                                                |
-|:-----------------------------------------------------------|:-----------------------------------------------------|:---------------------------------------------------------------------------|
-| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)              | `http://trustanchorgroup.com/Schema/ComSim.xsd`      | Defines the main structure of a simulation model file.                     |
-| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd) | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd` | Defines simulation extensions for actors communicating XMPP.               |
+| Schema                                                                          | Namespace                                                         | Description                                                                |
+|:--------------------------------------------------------------------------------|:------------------------------------------------------------------|:---------------------------------------------------------------------------|
+| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)                                   | `http://trustanchorgroup.com/Schema/ComSim.xsd`                   | Defines the main structure of a simulation model file.                     |
+| [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd` | Defines simulation extensions for Performance Counters.                    |
+| [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd`     | Defines simulation extensions for Digital XML Signatures.                  |
+| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.               |
 
 ## Contact
 
