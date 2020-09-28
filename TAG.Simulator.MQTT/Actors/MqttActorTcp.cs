@@ -8,6 +8,8 @@ using Waher.Networking.Sniffers;
 using Waher.Networking.MQTT;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
+using Waher.Script;
+using Waher.Script.Persistence.SQL;
 
 namespace TAG.Simulator.MQTT.Actors
 {
@@ -26,13 +28,14 @@ namespace TAG.Simulator.MQTT.Actors
 		/// </summary>
 		public const string MqttSchema = "TAG.Simulator.MQTT.Schema.ComSimMqtt.xsd";
 
+		private KeyValuePair<string, MqttQualityOfService>[] subscriptions;
 		private AccountCredentials credentials;
 		private MqttClient client;
 		private ISniffer sniffer;
 		private string domain;
-		private int port;
 		private string userName;
 		private string password;
+		private int port;
 		private bool encrypted;
 		private bool trustServer;
 		private bool isOnline = false;
@@ -141,6 +144,21 @@ namespace TAG.Simulator.MQTT.Actors
 				password = this.password,
 				trustServer = this.trustServer
 			};
+
+			Variables Variables = new Variables();
+			ObjectProperties Properties = new ObjectProperties(Result, Variables);
+			List<KeyValuePair<string, MqttQualityOfService>> Topics = new List<KeyValuePair<string, MqttQualityOfService>>();
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is Subscribe Subscribe)
+				{
+					string Topic = Expression.Transform(Subscribe.Topic, "{", "}", Properties);
+					Topics.Add(new KeyValuePair<string, MqttQualityOfService>(Topic, Subscribe.QoS));
+				}
+			}
+
+			Result.subscriptions = Topics.ToArray();
 
 			return Result;
 		}
@@ -267,6 +285,8 @@ namespace TAG.Simulator.MQTT.Actors
 
 					if (string.IsNullOrEmpty(this.credentials.ObjectId))
 						Database.Insert(this.credentials);
+
+					this.client.SUBSCRIBE(this.subscriptions);
 
 					this.connected?.TrySetResult(true);
 					break;

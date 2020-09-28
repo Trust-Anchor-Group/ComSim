@@ -34,6 +34,68 @@
             Password hash
             </summary>
         </member>
+        <member name="T:TAG.Simulator.MQTT.Activities.Publish">
+            <summary>
+            Publishes content to a topic.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Publishes content to a topic.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Activities.Publish.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Activities.Publish.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Activities.Publish.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Activities.Publish.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
         <member name="T:TAG.Simulator.MQTT.Actors.MqttActorTcp">
             <summary>
             MQTT Actor connecting to the MQTT network using traditional TCP.
@@ -143,6 +205,57 @@
             <summary>
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
+        </member>
+        <member name="T:TAG.Simulator.MQTT.Actors.Subscribe">
+            <summary>
+            Represents a topic subscription
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.Subscribe.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Represents a topic subscription
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.Subscribe.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.Subscribe.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.Subscribe.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.Subscribe.Topic">
+            <summary>
+            Topic
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.Subscribe.QoS">
+            <summary>
+            Quality of Service
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.Subscribe.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.Subscribe.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
         </member>
     </members>
 </doc>

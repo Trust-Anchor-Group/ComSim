@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <PackageReference Include="Waher.Networking.MQTT" Version="1.1.1" />
+    <PackageReference Include="Waher.Script" Version="1.0.41" />
+    <PackageReference Include="Waher.Script.Persistence" Version="1.0.18" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,20 +11,21 @@
     <Title>Protocols</Title>
     <Description>
       <![CDATA[ 
-      Simulates 100 XMPP clients, 100 MQTT client and 100 MQ clients exchanging XML messages randomly between each other (users of the
+      Simulates 10 XMPP clients, 10 MQTT client and 10 MQ clients exchanging XML messages randomly between each other (users of the
       same protocol) during 10 minutes, at a total frequency of 1000 messages per minute per protocol.
       ]]>
     </Description>
   </Meta>
   <Assemblies>
+    <Assembly fileName="TAG.Simulator.MQTT.dll"/>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
-    <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="100" encrypted="true" port="8883">
-      <mqtt:Subscribe topic="Msg/{id}"/>
+    <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="10" encrypted="true" port="8883" trustServer="true">
+      <mqtt:Subscribe topic="Msg/{Id}"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
