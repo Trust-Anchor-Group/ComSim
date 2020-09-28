@@ -2,7 +2,7 @@
   "profiles": {
     "ComSim": {
       "commandName": "Project",
-      "commandLineArgs": "-d ..\\..\\Debug\\netcoreapp2.2\\Data -e -i ..\\..\\..\\..\\Examples\\XmlMessages.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\XmlMessages.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\XmlMessages.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\XmlMessages.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
+      "commandLineArgs": "-d ..\\..\\Debug\\netcoreapp2.2\\Data -e -i ..\\..\\..\\..\\Examples\\Protocols.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Protocols.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Protocols.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Protocols.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
     }
   }
 }

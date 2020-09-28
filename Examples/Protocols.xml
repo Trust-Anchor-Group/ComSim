@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT10S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+  <Meta>
+    <Title>Protocols</Title>
+    <Description>
+      <![CDATA[ 
+      Simulates 100 XMPP clients, 100 MQTT client and 100 MQ clients exchanging XML messages randomly between each other (users of the
+      same protocol) during 10 minutes, at a total frequency of 1000 messages per minute per protocol.
+      ]]>
+    </Description>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.XMPP.dll"/>
+  </Assemblies>
+  <Actors>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
+    </xmpp:XmppActorTcp>
+  </Actors>
+  <Distributions>
+    <Uniform id="ThousandPerMinute" from="0" to="60" N="1000"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="ThousandPerMinute" activity="SendXmppMessage">
+      <Description>Sends an XML message from one random XMPP client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <EventHandler id="XmppMessageReceived" activity="ProcessXmppMessage">
+      <Description>Event triggered when an XMPP message has been received.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="SendXmppMessage">
+      <Description>This activity sends an XML message to a random XMPP recipient.</Description>
+      <Start/>
+      <xmpp:SendMessage actor="From" to="{To.FullJID}">
+        <Xml>
+          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+          </Msg>
+        </Xml>
+      </xmpp:SendMessage>
+      <Count counter="XmppSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessXmppMessage">
+      <Description>Processes a received XMPP message.</Description>
+      <Start/>
+      <Count counter="XmppReceived"/>
+      <Eval>
+        <![CDATA[
+          StartTime:=DateTime(e.Content["StartTime"].InnerText);
+          Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+        ]]>
+      </Eval>
+      <Sample name="XMPP Roundtrip">
+        <Script>Elapsed ms</Script>
+      </Sample>
+      <Stop/>
+    </Activity>
+  </Activities>
+  <Graphs>
+    <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
+      <Source ref="SendXmppMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time sending Messages" legend="false">
+      <Source ref="SendXmppMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
+      <Source ref="ProcessXmppMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time processing Messages" legend="false">
+      <Source ref="ProcessXmppMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
+      <Source ref="XMPP Roundtrip"/>
+    </CombinedSampleGraph>
+  </Graphs>
+</Model>

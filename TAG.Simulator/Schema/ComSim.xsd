@@ -448,7 +448,7 @@
   <xs:complexType name="CombinedGraph" mixed="true">
     <xs:complexContent>
       <xs:extension base="GraphNode">
-        <xs:sequence minOccurs="2" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
           <xs:element name="Source">
             <xs:complexType>
               <xs:attribute name="ref" type="xs:string" use="required"/>
