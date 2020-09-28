@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSimMqtt"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
+
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+
+  <xs:element name="MqttActorTcp">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:Actor">
+          <xs:attribute name="domain" type="xs:string" use="required"/>
+          <xs:attribute name="encrypted" type="xs:boolean" use="optional"/>
+          <xs:attribute name="port" type="cs:PortNumber" use="optional"/>
+          <xs:attribute name="userName" type="xs:string" use="required"/>
+          <xs:attribute name="password" type="xs:string" use="optional"/>
+          <xs:attribute name="trustServer" type="xs:boolean" use="optional" default="false"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Publish">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="topic" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Subscribe">
+    <xs:complexType>
+      <xs:attribute name="topic" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

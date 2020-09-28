@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator.MQTT</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.MQTT.AccountCredentials">
+            <summary>
+            MQTT Account credentials
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.AccountCredentials.#ctor">
+            <summary>
+            MQTT Account credentials
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.AccountCredentials.ObjectId">
+            <summary>
+            Object ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.AccountCredentials.Domain">
+            <summary>
+            Account user name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.AccountCredentials.UserName">
+            <summary>
+            Account user name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.AccountCredentials.Password">
+            <summary>
+            Password hash
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.MQTT.Actors.MqttActorTcp">
+            <summary>
+            MQTT Actor connecting to the MQTT network using traditional TCP.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActorTcp.MqttNamespace">
+            <summary>
+            http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActorTcp.MqttSchema">
+            <summary>
+            TAG.Simulator.MQTT.Schema.ComSimMqtt.xsd
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            MQTT Actor connecting to the MQTT network using traditional TCP.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Abstract base class for MQTT actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.IsOnline">
+            <summary>
+            If instance is online.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.TrustServer">
+            <summary>
+            If server is to be trusted, regardless of state of certificate.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.Domain">
+            <summary>
+            Domain
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.Client">
+            <summary>
+            MQTT Client
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.CreateInstance(System.Int32,System.String)">
+            <summary>
+            Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.InitializeInstance">
+            <summary>
+            Initializes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.StartInstance">
+            <summary>
+            Starts an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.FinalizeInstance">
+            <summary>
+            Finalizes an instance of an actor.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQTT.Actors.MqttActorTcp.ActivityObject">
+            <summary>
+            Returns the object that will be used by the actor for actions during an activity.
+            </summary>
+        </member>
+    </members>
+</doc>
