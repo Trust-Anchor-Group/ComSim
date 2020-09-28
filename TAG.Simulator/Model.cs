@@ -20,6 +20,7 @@ using TAG.Simulator.Statistics;
 using System.Text;
 using Waher.Script;
 using Waher.Script.Objects;
+using Waher.Script.Units;
 using TAG.Simulator.ObjectModel.Graphs;
 
 namespace TAG.Simulator
@@ -60,6 +61,7 @@ namespace TAG.Simulator
 		private readonly LinkedList<IGraph> graphs = new LinkedList<IGraph>();
 		private readonly RandomNumberGenerator rnd = RandomNumberGenerator.Create();
 		private readonly Variables variables = new Variables();
+		private readonly Unit seconds = new Unit("s");
 		private EventStatistics eventStatistics;
 		private Buckets activityStartStatistics;
 		private Buckets activityTimeStatistics;
@@ -785,7 +787,10 @@ namespace TAG.Simulator
 		public void IncActivityFinishedCount(string ActivityId, string SourceId, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
 			if (this.executing)
-				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			{
+				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, seconds);
+				this.activityTimeStatistics.Sample(ActivityId, Q);
+			}
 
 			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
@@ -801,7 +806,10 @@ namespace TAG.Simulator
 		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
 			if (this.executing)
-				this.activityTimeStatistics.Sample(ActivityId, ElapsedTime.TotalSeconds);
+			{
+				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, seconds);
+				this.activityTimeStatistics.Sample(ActivityId, Q);
+			}
 
 			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
 		}

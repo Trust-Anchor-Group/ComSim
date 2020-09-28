@@ -29,6 +29,7 @@ namespace TAG.Simulator.Statistics
 		private Unit unit = null;
 		private long count = 0;
 		private long totCount = 0;
+		private long relativeCounter = 0;
 		private double sum = 0;
 		private double min = double.MaxValue;
 		private double max = double.MinValue;
@@ -160,7 +161,7 @@ namespace TAG.Simulator.Statistics
 		{
 			lock (this)
 			{
-				return this.Sample(++this.totCount);
+				return this.Sample(++this.relativeCounter);
 			}
 		}
 
@@ -172,7 +173,7 @@ namespace TAG.Simulator.Statistics
 		{
 			lock (this)
 			{
-				return this.Sample(--this.totCount);
+				return this.Sample(--this.relativeCounter);
 			}
 		}
 
@@ -243,6 +244,7 @@ namespace TAG.Simulator.Statistics
 
 				this.sum += Value;
 				this.count++;
+				this.totCount++;
 
 				if (this.hasSamples)
 				{
@@ -528,6 +530,9 @@ namespace TAG.Simulator.Statistics
 				Output.WriteStartElement(RowElement);
 				Output.WriteAttributeString("type", this.id);
 				Output.WriteAttributeString("count", this.totCount.ToString());
+
+				if (!(this.unit is null))
+					Output.WriteAttributeString("unit", this.unit.ToString());
 
 				foreach (Statistic Rec in this.statistics)
 					Rec.ExportXml(Output);
