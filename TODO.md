@@ -29,7 +29,7 @@ Features
 	[x] Timing of, and between events/activities. (communication roundtrip)
 	[ ] Actor variables
 [ ] Simulation output
-	[ ] Statistics
+	[x] Statistics
 		[x] Activities
 		[x] Actions
 		[x] Events
@@ -38,7 +38,7 @@ Features
 		[x] Mean, stddev, var, min, max
 		[x] Errors, Exceptions (from Log)
 		[x] Event type histogram over time
-		[ ] Custom SQL
+		[x] Custom SQL
 	[x] Charts
 		[x] History charts
 		[x] Use case charts
@@ -77,14 +77,11 @@ Features
 		[x] String
 		[x] JSON
 		[x] Xml
-		[ ] Signed XML
-	[ ] HEAD
-	[ ] PUT
-	[ ] DELETE
+		[x] Signed XML
 	[ ] Web Service (SOAP)
-[ ] MQTT
-	[ ] PUBLISH
-	[ ] SUBSCRIBE
+[x] MQTT
+	[x] PUBLISH
+	[x] SUBSCRIBE
 
 Examples
 --------------
@@ -94,6 +91,7 @@ Examples
 [x] Web Server Load (HTTP GET)
 [x] Timing of communication roundtrip
 [x] Parallel threads in activity
+[ ] Protocols comparison
 [ ] Federation
 [ ] External events to determine activity node transitions
 
