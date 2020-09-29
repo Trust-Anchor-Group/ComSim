@@ -29,7 +29,7 @@
     <PackageReference Include="SkiaSharp" Version="2.80.2" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="Waher.Content" Version="1.0.26" />
-    <PackageReference Include="Waher.Content.Xml" Version="1.0.9" />
+    <PackageReference Include="Waher.Content.Xml" Version="1.0.10" />
     <PackageReference Include="Waher.Events" Version="1.0.12" />
     <PackageReference Include="Waher.Networking" Version="1.0.17" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.13" />

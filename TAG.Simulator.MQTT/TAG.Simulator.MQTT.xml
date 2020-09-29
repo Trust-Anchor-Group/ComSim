@@ -96,6 +96,21 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
+        <member name="T:TAG.Simulator.MQTT.Actors.MqttActivityObject">
+            <summary>
+            Object used in simulation activities.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActivityObject.Client">
+            <summary>
+            MQTT Client reference
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActivityObject.UserName">
+            <summary>
+            User name used in connection
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.MQTT.Actors.MqttActorTcp">
             <summary>
             MQTT Actor connecting to the MQTT network using traditional TCP.

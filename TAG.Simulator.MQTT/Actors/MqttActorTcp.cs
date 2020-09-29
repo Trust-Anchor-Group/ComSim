@@ -338,7 +338,17 @@ namespace TAG.Simulator.MQTT.Actors
 		/// <summary>
 		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
-		public override object ActivityObject => this.client;
+		public override object ActivityObject
+		{
+			get
+			{
+				return new MqttActivityObject()
+				{
+					Client = this.client,
+					UserName = this.userName
+				};
+			}
+		}
 
 	}
 }

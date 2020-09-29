@@ -181,7 +181,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (Tags2 is null)
 					Tags2 = Tags.ToArray();
 
-				this.Model.IncActivityErrorCount(this.activityId, this.id, ex.Message, DateTime.Now - Start, Tags2);
+				this.Model.IncActivityErrorCount(this.activityId, this.id, ex, DateTime.Now - Start, Tags2);
 			}
 		}
 

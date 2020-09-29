@@ -102,10 +102,10 @@ namespace TAG.Simulator.MQTT.Activities
 			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
 				throw new Exception("Actor not found: " + this.actor);
 
-			if (!(v.ValueObject is MqttClient Client))
-				throw new Exception("Actor not an MQTT client.");
+			if (!(v.ValueObject is MqttActivityObject MqttActor))
+				throw new Exception("Actor not an MQTT actor.");
 
-			Client.PUBLISH(Topic, this.qos, this.retain, Bin);
+			MqttActor.Client.PUBLISH(Topic, this.qos, this.retain, Bin);
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}

@@ -514,14 +514,14 @@
             <param name="ElapsedTime">Elapsed time.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.String,System.TimeSpan,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.Exception,System.TimeSpan,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is stopped, due to error.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
             <param name="ElapsedTime">Elapsed time.</param>
-            <param name="ErrorMessage">Error message.</param>
+            <param name="Error">Error exception.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.Model.CountEvent(System.String)">

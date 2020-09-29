@@ -32,7 +32,7 @@
     </mqtt:MqttActorTcp>
   </Actors>
   <Distributions>
-    <Uniform id="ThousandPerMinute" from="0" to="60" N="1000"/>
+    <Uniform id="ThousandPerMinute" from="0" to="60" N="100"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="ThousandPerMinute" activity="SendXmppMessage">

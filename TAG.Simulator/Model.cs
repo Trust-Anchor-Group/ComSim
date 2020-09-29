@@ -250,7 +250,7 @@ namespace TAG.Simulator
 			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
 			this.samples = new Buckets(this.start, this.bucketTime, "%ID%", "Mean", this);
 			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
-			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time (s)", this);
+			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time", this);
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime, this);
 			Log.Register(this.eventStatistics);
 
@@ -801,9 +801,9 @@ namespace TAG.Simulator
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
 		/// <param name="ElapsedTime">Elapsed time.</param>
-		/// <param name="ErrorMessage">Error message.</param>
+		/// <param name="Error">Error exception.</param>
 		/// <param name="Tags">Meta-data tags related to the event.</param>
-		public void IncActivityErrorCount(string ActivityId, string SourceId, string ErrorMessage, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
+		public void IncActivityErrorCount(string ActivityId, string SourceId, Exception Error, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
 		{
 			if (this.executing)
 			{
@@ -811,7 +811,8 @@ namespace TAG.Simulator
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 
-			Log.Error("Activity stopped due to error: " + ErrorMessage, ActivityId, SourceId, "ActivityError", Tags);
+			Log.Critical("Activity stopped due to error: " + Error.Message, ActivityId, SourceId, "ActivityError", EventLevel.Medium,
+				string.Empty, string.Empty, Error.StackTrace, Tags);
 		}
 
 		/// <summary>
