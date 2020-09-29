@@ -11,7 +11,7 @@
     <Title>Protocols</Title>
     <Description>
       <![CDATA[ 
-      Simulates 10 XMPP clients, 10 MQTT client and 10 MQ clients exchanging XML messages randomly between each other (users of the
+      Simulates 20 XMPP clients, 20 MQTT client and 20 MQ clients exchanging XML messages randomly between each other (users of the
       same protocol) during 10 minutes, at a total frequency of 1000 messages per minute per protocol.
       ]]>
     </Description>
@@ -21,10 +21,10 @@
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
-    <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="10" encrypted="true" port="8883" trustServer="true">
+    <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="20" encrypted="true" port="8883" trustServer="true">
       <mqtt:Subscribe topic="Msg/{InstanceId}" qos="AtMostOnce"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
@@ -83,7 +83,7 @@
     <Activity id="SendMqttMessage">
       <Description>This activity sends an XML message to a random MQTT recipient.</Description>
       <Start/>
-      <mqtt:Publish actor="From" topic="Msg/{To.UserName}" qos="AtMostOnce">
+      <mqtt:Publish actor="From" topic="Msg/{To.InstanceId}" qos="AtMostOnce">
         <Xml>
           <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>

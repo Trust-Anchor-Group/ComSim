@@ -17,5 +17,10 @@ namespace TAG.Simulator.MQTT.Actors
 		/// User name used in connection
 		/// </summary>
 		public string UserName;
+
+		/// <summary>
+		/// Instance ID
+		/// </summary>
+		public string InstanceId;
 	}
 }

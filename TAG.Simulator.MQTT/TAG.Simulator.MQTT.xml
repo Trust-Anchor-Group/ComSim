@@ -111,6 +111,11 @@
             User name used in connection
             </summary>
         </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActivityObject.InstanceId">
+            <summary>
+            Instance ID
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.MQTT.Actors.MqttActorTcp">
             <summary>
             MQTT Actor connecting to the MQTT network using traditional TCP.
