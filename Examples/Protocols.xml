@@ -25,7 +25,7 @@
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
     <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="10" encrypted="true" port="8883" trustServer="true">
-      <mqtt:Subscribe topic="Msg/{InstanceId}"/>
+      <mqtt:Subscribe topic="Msg/{InstanceId}" qos="AtLeastOnce"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
@@ -83,7 +83,7 @@
     <Activity id="SendMqttMessage">
       <Description>This activity sends an XML message to a random MQTT recipient.</Description>
       <Start/>
-      <mqtt:Publish actor="From" topic="Msg/{To.UserName}">
+      <mqtt:Publish actor="From" topic="Msg/{To.UserName}" qos="AtLeastOnce">
         <Xml>
           <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>

@@ -99,7 +99,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 				this.expression.Evaluate(Variables);
 				return true;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return false;
 			}
