@@ -25,7 +25,7 @@
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
     <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="10" encrypted="true" port="8883" trustServer="true">
-      <mqtt:Subscribe topic="Msg/{Id}"/>
+      <mqtt:Subscribe topic="Msg/{InstanceId}"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
@@ -112,16 +112,37 @@
       <Description>Processes a received MQTT message.</Description>
       <Start/>
       <Count counter="MqttReceived"/>
-      <Eval>Msg:=Decode(Content.Data,"text/xml")</Eval>
-      <Eval>
-        <![CDATA[
-          StartTime:=DateTime(Msg["StartTime"].InnerText);
-          Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
-        ]]>
-      </Eval>
-      <Sample name="MQTT Roundtrip">
-        <Script>Elapsed ms</Script>
-      </Sample>
+      <Conditional>
+        <Try condition="Msg:=Decode(Content.Data,'text/xml')">
+          <Eval>
+            <![CDATA[
+              StartTime:=DateTime(Msg["StartTime"].InnerText);
+              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+            ]]>
+          </Eval>
+          <Sample name="MQTT Roundtrip">
+            <Script>Elapsed ms</Script>
+          </Sample>
+        </Try>
+        <Try condition="Msg:=Decode(Content.Data,'text/plain')">
+          <Eval>
+            <![CDATA[
+            LogError("Non-XML message received: "+Msg,
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqttContentError"/>
+        </Try>
+        <Otherwise>
+          <Eval>
+            <![CDATA[
+            LogError("Binary message received: "+Base64Encode(Content.Data),
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqttContentError"/>
+        </Otherwise>
+      </Conditional>
       <Stop/>
     </Activity>
   </Activities>
