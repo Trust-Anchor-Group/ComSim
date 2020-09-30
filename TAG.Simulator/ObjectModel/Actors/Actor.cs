@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Actors
 {
@@ -13,6 +14,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// </summary>
 	public abstract class Actor : SimulationNodeChildren, IActor
 	{
+		private readonly Variables variables;
 		private Dictionary<string, IExternalEvent> externalEvents = null;
 		private List<IActor> freeIndividuals = null;
 		private IActor[] instances;
@@ -27,7 +29,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
 		public Actor(ISimulationNode Parent, Model Model)
-			: base(Parent, Model)
+			: this(Parent, Model, 0, string.Empty)
 		{
 		}
 
@@ -43,6 +45,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		{
 			this.instanceIndex = InstanceIndex;
 			this.instanceId = InstanceId;
+			this.variables = new Variables(new Variable("this", this));
 		}
 
 		/// <summary>
@@ -64,6 +67,11 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Actor instance index.
 		/// </summary>
 		public int InstanceIndex => this.instanceIndex;
+
+		/// <summary>
+		/// Collection of actor-variables.
+		/// </summary>
+		public Variables Variables => this.variables;
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.

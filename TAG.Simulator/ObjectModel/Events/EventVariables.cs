@@ -1,4 +1,5 @@
 ﻿using System;
+using TAG.Simulator.ObjectModel.Actors;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -15,13 +16,17 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="ModelVariables">Model variables.</param>
 		/// <param name="Model">Simulation model.</param>
-		public EventVariables(Variables ModelVariables, Model Model)
+		/// <param name="Actor">Optional Actor</param>
+		public EventVariables(Variables ModelVariables, Model Model, IActor Actor)
 			: base()
 		{
 			this.modelVariables = ModelVariables;
 
 			this.Add("Global", ModelVariables);
 			this.Add("Model", Model);
+
+			if (!(Actor is null))
+				this.Add("Actor", Actor.Variables);
 		}
 
 		/// <summary>

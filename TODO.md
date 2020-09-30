@@ -19,6 +19,10 @@ Features
 	[x] Populations
 	[x] Execution
 	[ ] Activity node with external event conditions, or stochastic conditions
+		[ ] Wait element (cf. Conditional)
+		[ ] Trigger event
+		[ ] Timeout (cf. Otherwise)
+		[ ] Call activity
 	[x] Counters
 	[x] Stat activity node: Increments counters
 	[ ]	Sensor data (local/remote)
@@ -27,7 +31,7 @@ Features
 	[x] CPU/Memory
 	[x] Global variables
 	[x] Timing of, and between events/activities. (communication roundtrip)
-	[ ] Actor variables
+	[x] Actor variables
 [ ] Simulation output
 	[x] Statistics
 		[x] Activities

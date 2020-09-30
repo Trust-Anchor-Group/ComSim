@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TAG.Simulator.ObjectModel.Events;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Actors
 {
@@ -22,6 +23,14 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// ID of actor instance.
 		/// </summary>
 		string InstanceId
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Collection of actor-variables.
+		/// </summary>
+		Variables Variables
 		{
 			get;
 		}

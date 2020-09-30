@@ -130,7 +130,7 @@ namespace TAG.Simulator.XMPP.Events
 		/// <returns>If event was handled</returns>
 		public virtual void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
 		{
-			Variables Variables = this.Model.GetEventVariables();
+			Variables Variables = this.Model.GetEventVariables(Source);
 
 			if (!string.IsNullOrEmpty(this.actorName))
 				Variables[this.actorName] = Source.ActivityObject;

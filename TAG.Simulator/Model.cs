@@ -1049,10 +1049,11 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Gets a collection of variables for a new event.
 		/// </summary>
+		/// <param name="Actor">Optional Actor</param>
 		/// <returns>Variables collection</returns>
-		public Variables GetEventVariables()
+		public Variables GetEventVariables(IActor Actor)
 		{
-			return new EventVariables(this.variables, this);
+			return new EventVariables(this.variables, this, Actor);
 		}
 
 		/// <summary>

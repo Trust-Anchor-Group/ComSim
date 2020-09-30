@@ -95,7 +95,7 @@ namespace TAG.Simulator.ObjectModel.Events
 			int n = this.distribution.CheckTrigger(t1, t2, NrCycles);
 			while (n > 0)
 			{
-				this.Trigger(this.Model.GetEventVariables(), this.guard, this.guardLimit);
+				this.Trigger(this.Model.GetEventVariables(null), this.guard, this.guardLimit);
 				n--;
 			}
 		}
