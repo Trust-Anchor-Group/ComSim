@@ -2,6 +2,7 @@
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        xmlns:mqtt="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+       xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT10S"
        timeUnit="PT1S"
@@ -11,20 +12,62 @@
     <Title>Protocols</Title>
     <Description>
       <![CDATA[ 
-      Simulates 20 XMPP clients, 20 MQTT client and 20 MQ clients exchanging XML messages randomly between each other (users of the
-      same protocol) during 10 minutes, at a total frequency of 1000 messages per minute per protocol.
+      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 100 MQ clients exchanging XML messages randomly between 
+      each other (users of the same protocol) during 10 minutes, at a total frequency of 10'000 messages per minute per protocol. During the
+      simulation, performance metrics are sampled for local simulator performance, broker performance, and for the individiual protocol 
+      service performances.
+
+      **Note**: For this simulation to work, the `ProtocolPerformance.ws` Web Service script available in the
+      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
+      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
+      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server.
+      
+      Also, the [mosquitto](https://mosquitto.org/download/) MQTT broker and the
+      [IBM MQ Server](https://developer.ibm.com/components/ibm-mq/articles/mq-downloads) needs
+      to be installed on the same machine as the Neuron, to make metrics comparable.
+      
+      For readability, the web performance counter service script referenced above, contais the following 
+      script, executed when the resource is accessed:
+      
+          {
+              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
+              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
+              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue(),
+              "xmppCpu":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","% Processor Time").NextValue(),
+              "mqttCpu":PerformanceCounters.GetCounter("Process","mosquitto","% Processor Time").NextValue(),
+              "mqCpu":PerformanceCounters.GetCounter("Process","runmqlsr","% Processor Time").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","% Processor Time").NextValue(),
+              "xmppMemory":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Working Set - Private").NextValue(),
+              "mqttMemory":PerformanceCounters.GetCounter("Process","mosquitto","Working Set - Private").NextValue(),
+              "mqMemory":PerformanceCounters.GetCounter("Process","runmqlsr","Working Set - Private").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","Working Set - Private").NextValue(),
+              "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Data Bytes/sec").NextValue(),
+              "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Data Bytes/sec").NextValue(),
+              "mqIo":PerformanceCounters.GetCounter("Process","runmqlsr","IO Data Bytes/sec").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","IO Data Bytes/sec").NextValue()
+          }      
       ]]>
     </Description>
+    <ModelScript>
+      <![CDATA[
+      GetPerformance():=Post("https://lab.tagroot.io/Reports/ProtocolPerformance.ws","","application/json");
+      ]]>
+    </ModelScript>
   </Meta>
   <Assemblies>
     <Assembly fileName="TAG.Simulator.MQTT.dll"/>
+    <Assembly fileName="TAG.Simulator.Performance.dll"/>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <Timer id="PerformanceTimer" N="1" period="PT2S">
+      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+    </Timer>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
-    <mqtt:MqttActorTcp domain="mqtt.eclipse.org" userName="MqttTcp" id="MqttTcp" N="20" encrypted="true" port="8883" trustServer="true">
+    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcp" id="MqttTcp" N="100" encrypted="false" port="1883" trustServer="true">
       <mqtt:Subscribe topic="Msg/{InstanceId}" qos="AtMostOnce"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
@@ -32,10 +75,10 @@
     </mqtt:MqttActorTcp>
   </Actors>
   <Distributions>
-    <Uniform id="ThousandPerMinute" from="0" to="60" N="100"/>
+    <Uniform id="TenThousandPerMinute" from="0" to="60" N="10000"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="ThousandPerMinute" activity="SendXmppMessage">
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
@@ -47,7 +90,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="ThousandPerMinute" activity="SendMqttMessage">
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttMessage">
       <Description>Sends an XML message from one random MQTT client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcp"/>
@@ -65,9 +108,89 @@
     <EventHandler id="MqttMessageReceived" activity="ProcessMqttMessage">
       <Description>Event triggered when an MQTT message has been received.</Description>
     </EventHandler>
+    <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
+      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+    </EventHandler>
   </Events>
   <Activities>
-    <Activity id="SendXmppMessage">
+    <Activity id="ReadPerformanceCounters">
+      <Description>This activity measures server performance, by calling a web service and reporting the measured values in the returning JSON object back to the simulator.</Description>
+      <Start/>
+      <Parallel>
+        <Thread>
+          <Eval>M:=GetPerformance()</Eval>
+          <Group title="Broker Performance">
+            <Sample name="Broker CPU (%)">
+              <Script>M.cpuPercent</Script>
+            </Sample>
+            <Sample name="Broker Network (kB/s)">
+              <Script>M.networkBytesPerSec/1024</Script>
+            </Sample>
+            <Sample name="Broker Free Memory (GB)">
+              <Script>M.memoryMBytesFree/1024</Script>
+            </Sample>
+          </Group>
+          <Group title="XMPP Performance">
+            <Sample name="XMPP CPU (%)">
+              <Script>M.xmppCpu</Script>
+            </Sample>
+            <Sample name="XMPP I/O (kB/s)">
+              <Script>M.xmppIo/1024</Script>
+            </Sample>
+            <Sample name="XMPP Memory Usage (MB)">
+              <Script>M.xmppMemory/1048576</Script>
+            </Sample>
+          </Group>
+          <Group title="MQTT Performance">
+            <Sample name="MQTT CPU (%)">
+              <Script>M.mqttCpu</Script>
+            </Sample>
+            <Sample name="MQTT I/O (kB/s)">
+              <Script>M.mqttIo/1024</Script>
+            </Sample>
+            <Sample name="MQTT Memory Usage (MB)">
+              <Script>M.mqttMemory/1048576</Script>
+            </Sample>
+          </Group>
+          <Group title="MQ Performance">
+            <Sample name="MQ CPU (%)">
+              <Script>M.mqCpu</Script>
+            </Sample>
+            <Sample name="MQ I/O (kB/s)">
+              <Script>M.mqIo/1024</Script>
+            </Sample>
+            <Sample name="MQ Memory Usage (MB)">
+              <Script>M.mqMemory/1048576</Script>
+            </Sample>
+          </Group>
+        </Thread>
+        <Thread>
+          <Group title="Performance at Simulator Machine">
+            <!-- NOTE: Performance counter names, instance names and category names depends on configuration and locale of operating system of the machine running the simulator. Might have to be changed. -->
+            <Sample name="Simulator CPU (%)">
+              <!-- Swedish: -->
+              <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/>
+              <!-- English:
+                 <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/> -->
+            </Sample>
+            <Sample name="Simulator Network (kB/s)">
+              <!-- Swedish: -->
+              <perf:Performance category="Nätverksgränssnitt" instance="Intel[R] Wireless-AC 9560 160MHz" counter="Totalt antal byte/s" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Network Interface" instance="Microsoft Hyper-V Network Adapter" counter="Bytes Total/sec" divider="1024"/> -->
+            </Sample>
+            <Sample name="Simulator Free Memory (GB)">
+              <!-- Swedish: -->
+              <perf:Performance category="Minne" counter="Tillgängliga megabyte" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Memory" counter="Available MBytes" divider="1024"/>-->
+            </Sample>
+          </Group>
+        </Thread>
+      </Parallel>
+      <Stop/>
+    </Activity>
+    <Activity id="SendXmppMessage" logStart="false" logEnd="false">
       <Description>This activity sends an XML message to a random XMPP recipient.</Description>
       <Start/>
       <xmpp:SendMessage actor="From" to="{To.FullJID}">
@@ -80,7 +203,7 @@
       <Count counter="XmppSent"/>
       <Stop/>
     </Activity>
-    <Activity id="SendMqttMessage">
+    <Activity id="SendMqttMessage" logStart="false" logEnd="false">
       <Description>This activity sends an XML message to a random MQTT recipient.</Description>
       <Start/>
       <mqtt:Publish actor="From" topic="Msg/{To.InstanceId}" qos="AtMostOnce">
@@ -93,7 +216,7 @@
       <Count counter="MqttSent"/>
       <Stop/>
     </Activity>
-    <Activity id="ProcessXmppMessage">
+    <Activity id="ProcessXmppMessage" logStart="false" logEnd="false">
       <Description>Processes a received XMPP message.</Description>
       <Start/>
       <Count counter="XmppReceived"/>
@@ -108,7 +231,7 @@
       </Sample>
       <Stop/>
     </Activity>
-    <Activity id="ProcessMqttMessage">
+    <Activity id="ProcessMqttMessage" logStart="false" logEnd="false">
       <Description>Processes a received MQTT message.</Description>
       <Start/>
       <Count counter="MqttReceived"/>
@@ -157,6 +280,33 @@
     <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
       <Source ref="XMPP Roundtrip"/>
       <Source ref="MQTT Roundtrip"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
+      <Source ref="Broker CPU (%)"/>
+      <Source ref="Simulator CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Service CPU %" legend="true">
+      <Source ref="XMPP CPU (%)"/>
+      <Source ref="MQTT CPU (%)"/>
+      <Source ref="MQ CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Free Memory (GB)" legend="true" header="Memory Performance">
+      <Source ref="Broker Free Memory (GB)"/>
+      <Source ref="Simulator Free Memory (GB)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Used Memory (MB)" legend="true">
+      <Source ref="XMPP Memory Usage (MB)"/>
+      <Source ref="MQTT Memory Usage (MB)"/>
+      <Source ref="MQ Memory Usage (MB)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
+      <Source ref="Broker Network (kB/s)"/>
+      <Source ref="Simulator Network (kB/s)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Service Input/Output (kB/s)" legend="true">
+      <Source ref="XMPP I/O (kB/s)"/>
+      <Source ref="MQTT I/O (kB/s)"/>
+      <Source ref="MQ I/O (kB/s)"/>
     </CombinedSampleGraph>
   </Graphs>
 </Model>

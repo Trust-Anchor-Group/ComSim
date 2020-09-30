@@ -183,9 +183,9 @@ namespace TAG.Simulator.ObjectModel.Events
 							T.TrySetResult(true);
 					}
 
-					this.Model.IncActivityStartCount(this.activityId, this.id, Tags2);
+					this.Model.IncActivityStartCount(this.activityId, this.id, this.activity.LogStart, Tags2);
 					await this.activity.ExecuteTask(Variables);
-					this.Model.IncActivityFinishedCount(this.activityId, this.id, DateTime.Now - Start, Tags2);
+					this.Model.IncActivityFinishedCount(this.activityId, this.id, DateTime.Now - Start, this.activity.LogEnd, Tags2);
 				}
 				finally
 				{

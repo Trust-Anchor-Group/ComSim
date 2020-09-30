@@ -17,6 +17,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		private LinkedList<IActivityNode> activityNodes = null;
 		private string id;
 		private int executionCount = 0;
+		private bool logStart;
+		private bool logEnd;
 
 		/// <summary>
 		/// Represents an activity that can be executed as the result of triggered events.
@@ -37,6 +39,16 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// Execution count
 		/// </summary>
 		public int ExecutionCount => this.executionCount;
+
+		/// <summary>
+		/// If event should be logged at each start of the activity.
+		/// </summary>
+		public bool LogStart => this.logStart;
+
+		/// <summary>
+		/// If event should be logged at the end of each activity.
+		/// </summary>
+		public bool LogEnd => this.logEnd;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -61,6 +73,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.id = XML.Attribute(Definition, "id");
+			this.logStart = XML.Attribute(Definition, "logStart", true);
+			this.logEnd = XML.Attribute(Definition, "logEnd", true);
 
 			return base.FromXml(Definition);
 		}

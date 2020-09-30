@@ -769,12 +769,14 @@ namespace TAG.Simulator
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
 		/// <param name="Tags">Meta-data tags related to the event.</param>
-		public void IncActivityStartCount(string ActivityId, string SourceId, params KeyValuePair<string, object>[] Tags)
+		/// <param name="LogEvent">If event should be logged.</param>
+		public void IncActivityStartCount(string ActivityId, string SourceId, bool LogEvent, params KeyValuePair<string, object>[] Tags)
 		{
 			if (this.executing)
 				this.activityStartStatistics.CountEvent(ActivityId);
 
-			Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
+			if (LogEvent)
+				Log.Informational("Activity started.", ActivityId, SourceId, "ActivityStarted", Tags);
 		}
 
 		/// <summary>
@@ -783,8 +785,9 @@ namespace TAG.Simulator
 		/// <param name="ActivityId">Activity ID</param>
 		/// <param name="SourceId">ID of node activating activity.</param>
 		/// <param name="ElapsedTime">Elapsed time.</param>
+		/// <param name="LogEvent">If event should be logged.</param>
 		/// <param name="Tags">Meta-data tags related to the event.</param>
-		public void IncActivityFinishedCount(string ActivityId, string SourceId, TimeSpan ElapsedTime, params KeyValuePair<string, object>[] Tags)
+		public void IncActivityFinishedCount(string ActivityId, string SourceId, TimeSpan ElapsedTime, bool LogEvent, params KeyValuePair<string, object>[] Tags)
 		{
 			if (this.executing)
 			{
@@ -792,7 +795,8 @@ namespace TAG.Simulator
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 
-			Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
+			if (LogEvent)
+				Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
 
 		/// <summary>

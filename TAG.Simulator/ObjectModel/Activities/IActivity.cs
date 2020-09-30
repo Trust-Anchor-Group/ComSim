@@ -20,6 +20,22 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
+		/// If event should be logged at each start of the activity.
+		/// </summary>
+		bool LogStart
+		{
+			get;
+		}
+
+		/// <summary>
+		/// If event should be logged at the end of each activity.
+		/// </summary>
+		bool LogEnd
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Execution count
 		/// </summary>
 		int ExecutionCount

@@ -497,21 +497,23 @@
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityStartCount(System.String,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.IncActivityStartCount(System.String,System.String,System.Boolean,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is started.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
+            <param name="LogEvent">If event should be logged.</param>
         </member>
-        <member name="M:TAG.Simulator.Model.IncActivityFinishedCount(System.String,System.String,System.TimeSpan,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.IncActivityFinishedCount(System.String,System.String,System.TimeSpan,System.Boolean,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is finished.
             </summary>
             <param name="ActivityId">Activity ID</param>
             <param name="SourceId">ID of node activating activity.</param>
             <param name="ElapsedTime">Elapsed time.</param>
+            <param name="LogEvent">If event should be logged.</param>
             <param name="Tags">Meta-data tags related to the event.</param>
         </member>
         <member name="M:TAG.Simulator.Model.IncActivityErrorCount(System.String,System.String,System.Exception,System.TimeSpan,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
@@ -701,6 +703,16 @@
         <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.ExecutionCount">
             <summary>
             Execution count
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.LogStart">
+            <summary>
+            If event should be logged at each start of the activity.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.LogEnd">
+            <summary>
+            If event should be logged at the end of each activity.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Activity.LocalName">
@@ -1425,6 +1437,16 @@
         <member name="P:TAG.Simulator.ObjectModel.Activities.IActivity.Id">
             <summary>
             ID of activity.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.IActivity.LogStart">
+            <summary>
+            If event should be logged at each start of the activity.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.IActivity.LogEnd">
+            <summary>
+            If event should be logged at the end of each activity.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.IActivity.ExecutionCount">

@@ -188,15 +188,15 @@
   </xs:group>
 
   <xs:element name="Script" type="xs:string"/>
-  
+
   <xs:element name="Variable">
     <xs:complexType>
       <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="String" type="xs:string"/>
-  
+
   <xs:element name="Xml">
     <xs:complexType>
       <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -204,25 +204,25 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="Number">
     <xs:complexType>
       <xs:attribute name="value" type="xs:double" use="required"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="Duration">
     <xs:complexType>
       <xs:attribute name="value" type="xs:duration" use="required"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="DateTime">
     <xs:complexType>
       <xs:attribute name="value" type="xs:dateTime" use="required"/>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="Time">
     <xs:complexType>
       <xs:attribute name="value" type="xs:time" use="required"/>
@@ -283,6 +283,8 @@
       </xs:element>
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="logStart" type="xs:boolean" use="optional" default="true"/>
+    <xs:attribute name="logEnd" type="xs:boolean" use="optional" default="true"/>
   </xs:complexType>
 
   <xs:group name="ActivityNodes">

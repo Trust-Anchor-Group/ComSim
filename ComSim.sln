@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 		Examples\EventXmlToHtml.xslt = Examples\EventXmlToHtml.xslt
 		Examples\GuessANumber.xml = Examples\GuessANumber.xml
 		Examples\Performance.ws = Examples\Performance.ws
+		Examples\ProtocolPerformance.ws = Examples\ProtocolPerformance.ws
 		Examples\Protocols.xml = Examples\Protocols.xml
 		Examples\ServerPerformance.xml = Examples\ServerPerformance.xml
 		Examples\SimpleChatMessages.xml = Examples\SimpleChatMessages.xml
@@ -37,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMLDSIG", "TA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.Performance", "TAG.Simulator.Performance\TAG.Simulator.Performance.csproj", "{39C7B168-5185-4DE9-83F6-B8F08C24EAF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.MQTT", "TAG.Simulator.MQTT\TAG.Simulator.MQTT.csproj", "{5D28DF68-1BF1-412A-901B-0370D88F59A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQTT", "TAG.Simulator.MQTT\TAG.Simulator.MQTT.csproj", "{5D28DF68-1BF1-412A-901B-0370D88F59A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
