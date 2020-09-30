@@ -32,7 +32,7 @@ Features
 	[x] Global variables
 	[x] Timing of, and between events/activities. (communication roundtrip)
 	[x] Actor variables
-[ ] Simulation output
+[x] Simulation output
 	[x] Statistics
 		[x] Activities
 		[x] Actions
