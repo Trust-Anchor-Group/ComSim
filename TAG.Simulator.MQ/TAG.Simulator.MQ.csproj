@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Description>Extension library to the ComSim simulator, providing support for IBM MQ communication.</Description>
+    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.MQ\TAG.Simulator.MQ.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IBMMQDotnetClient" Version="9.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
+  </Target>
+
+</Project>
