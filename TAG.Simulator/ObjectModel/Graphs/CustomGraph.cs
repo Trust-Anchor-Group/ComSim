@@ -306,7 +306,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public override bool ExportGraphScript(StreamWriter Output, string CustomColor)
 		{
 			string s = this.script.Trim();
-			if (s.EndsWith(";"))
+			if (!string.IsNullOrEmpty(s) && ";|<>/\\]}".IndexOf(s[s.Length - 1]) >= 0)
 				s = s.Substring(0, s.Length - 1);
 
 			Output.Write(s);

@@ -124,10 +124,13 @@ namespace TAG.Simulator.ObjectModel.Activities
 					Indent(Output, Indentation);
 				}
 
-				if (Row.EndsWith(";"))
-					Output.Write(Row.Substring(0, Row.Length - 1));
-				else
-					Output.Write(Row);
+				if (!string.IsNullOrEmpty(Row))
+				{
+					if (";|<>/\\]}".IndexOf(Row[Row.Length - 1]) >= 0)
+						Output.Write(Row.Substring(0, Row.Length - 1));
+					else
+						Output.Write(Row);
+				}
 			}
 
 			if (!First && Delimiters)

@@ -19,9 +19,9 @@ Features
 	[x] Populations
 	[x] Execution
 	[ ] Activity node with external event conditions, or stochastic conditions
-		[ ] Wait element (cf. Conditional)
-		[ ] Trigger event
-		[ ] Timeout (cf. Otherwise)
+		[x] Wait element (cf. Conditional)
+		[x] Trigger event
+		[x] Timeout (cf. Otherwise)
 		[ ] Call activity
 	[x] Counters
 	[x] Stat activity node: Increments counters
@@ -97,7 +97,9 @@ Examples
 [x] Parallel threads in activity
 [ ] Protocols comparison
 [ ] Federation
-[ ] External events to determine activity node transitions
+[ ] State machines & External events to determine activity node transitions
+[ ] Req/Resp pattern
+[ ] Pub/Sub pattern
 
 Documentation
 --------------------

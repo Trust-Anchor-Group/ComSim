@@ -49,5 +49,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Output">Output</param>
 		/// <returns>If a PDF graph was added.</returns>
 		bool ExportPdfScript(StringBuilder Output);
+
+		/// <summary>
+		/// Gets a <see cref="Task"/> object, that will be completed when the event is triggered.
+		/// </summary>
+		/// <returns>Trigger task object.</returns>
+		Task GetTrigger();
 	}
 }

@@ -291,9 +291,11 @@
       <xs:element name="Count" type="CounterActivityNode"/>
       <xs:element name="Inc" type="CounterActivityNode"/>
       <xs:element name="Dec" type="CounterActivityNode"/>
+      <xs:element name="Trigger" type="TriggerActivityNode"/>
       <xs:element name="Eval" type="ExpressionActivityNode"/>
       <xs:element name="Action" type="ActionActivityNode"/>
       <xs:element name="Conditional" type="ConditionalActivityNode"/>
+      <xs:element name="Wait" type="WaitActivityNode"/>
       <xs:element name="GoTo" type="ReferenceActivityNode"/>
       <xs:element name="Finished" type="ActivityNode"/>
       <xs:element name="Parallel" type="ParallelActivityNode"/>
@@ -319,6 +321,14 @@
     <xs:complexContent>
       <xs:extension base="ActivityNode">
         <xs:attribute name="counter" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="TriggerActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:attribute name="event" type="xs:string" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -353,27 +363,58 @@
     <xs:complexContent>
       <xs:extension base="ActivityNode">
         <xs:sequence>
-          <xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-              <xs:attribute name="condition" type="xs:string" use="required"/>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="Try" minOccurs="0" maxOccurs="unbounded">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-              <xs:attribute name="condition" type="xs:string" use="required"/>
-            </xs:complexType>
-          </xs:element>
+          <xs:group ref="ConditionalOptions" minOccurs="0" maxOccurs="unbounded"/>
           <xs:element name="Otherwise" minOccurs="0" maxOccurs="1">
             <xs:complexType>
               <xs:sequence>
                 <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
               </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:group name="ConditionalOptions">
+    <xs:choice>
+      <xs:element name="Condition">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute name="condition" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Try">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute name="condition" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="WaitActivityNode">
+    <xs:complexContent>
+      <xs:extension base="ActivityNode">
+        <xs:sequence>
+          <xs:element name="Triggered" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+              </xs:sequence>
+              <xs:attribute name="event" type="xs:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Timeout" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+              </xs:sequence>
+              <xs:attribute name="limit" type="xs:duration" use="required"/>
             </xs:complexType>
           </xs:element>
         </xs:sequence>

@@ -16,11 +16,13 @@ namespace TAG.Simulator.ObjectModel.Events
 	/// </summary>
 	public abstract class Event : SimulationNodeChildren, IEvent
 	{
+		private readonly List<TaskCompletionSource<bool>> triggers = new List<TaskCompletionSource<bool>>();
 		private LinkedList<IEventPreparation> preparationNodes = null;
 		private LinkedList<IExternalEvent> externalEvents = null;
 		private IActivity activity;
 		private string activityId;
 		private string id;
+		private bool hasTriggers = false;
 
 		/// <summary>
 		/// Abstract base class for events
@@ -113,7 +115,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		public async void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
 		{
 			if (this.activity is null)
-				return;	// Not initialized yet.
+				return; // Not initialized yet.
 
 			List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
 			KeyValuePair<string, object>[] Tags2 = null;
@@ -160,6 +162,26 @@ namespace TAG.Simulator.ObjectModel.Events
 					}
 
 					Tags2 = Tags.ToArray();
+
+					TaskCompletionSource<bool>[] Triggers;
+
+					lock (this.triggers)
+					{
+						if (this.hasTriggers)
+						{
+							Triggers = this.triggers.ToArray();
+							this.triggers.Clear();
+							this.hasTriggers = false;
+						}
+						else
+							Triggers = null;
+					}
+
+					if (!(Triggers is null))
+					{
+						foreach (TaskCompletionSource<bool> T in Triggers)
+							T.TrySetResult(true);
+					}
 
 					this.Model.IncActivityStartCount(this.activityId, this.id, Tags2);
 					await this.activity.ExecuteTask(Variables);
@@ -305,6 +327,23 @@ namespace TAG.Simulator.ObjectModel.Events
 		public virtual bool ExportPdfScript(StringBuilder Output)
 		{
 			return false;
+		}
+
+		/// <summary>
+		/// Gets a <see cref="Task"/> object, that will be completed when the event is triggered.
+		/// </summary>
+		/// <returns>Trigger task object.</returns>
+		public Task GetTrigger()
+		{
+			TaskCompletionSource<bool> Trigger = new TaskCompletionSource<bool>();
+
+			lock (this.triggers)
+			{
+				this.triggers.Add(Trigger);
+				this.hasTriggers = true;
+			}
+
+			return Trigger.Task;
 		}
 
 	}

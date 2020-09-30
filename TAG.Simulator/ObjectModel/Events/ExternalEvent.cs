@@ -163,7 +163,7 @@ namespace TAG.Simulator.ObjectModel.Events
 				}
 			}
 
-			Event.Trigger(Variables);
+			this.eventReference.Trigger(Variables);
 		}
 
 	}
