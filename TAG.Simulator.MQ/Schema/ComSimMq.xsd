@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSimMq"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
+
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+
+  <xs:element name="MqActorTcp">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:Actor">
+          <xs:attribute name="queueManager" type="xs:string" use="required"/>
+          <xs:attribute name="host" type="xs:string" use="required"/>
+          <xs:attribute name="port" type="cs:PortNumber" use="optional" default="1414"/>
+          <xs:attribute name="channel" type="xs:string" use="required"/>
+          <xs:attribute name="queue" type="xs:string" use="required"/>
+          <xs:attribute name="cipher" type="xs:string" use="optional" default="TLS_RSA_WITH_AES_128_CBC_SHA256"/>
+          <xs:attribute name="cipherSuite" type="xs:string" use="optional" default="SSL_RSA_WITH_AES_128_CBC_SHA256"/>
+          <xs:attribute name="certificateStore" type="xs:string" use="optional" default="*USER"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Publish">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="topic" type="xs:string" use="required"/>
+          <xs:attribute name="qos" type="QualityOfService" use="optional" default="AtMostOnce"/>
+          <xs:attribute name="retain" type="xs:boolean" use="optional" default="false"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="QualityOfService">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AtMostOnce"/>
+      <xs:enumeration value="AtLeastOnce"/>
+      <xs:enumeration value="ExactlyOnce"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Subscribe">
+    <xs:complexType>
+      <xs:attribute name="topic" type="xs:string" use="required"/>
+      <xs:attribute name="qos" type="QualityOfService" use="optional" default="AtMostOnce"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

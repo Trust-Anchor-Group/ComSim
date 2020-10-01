@@ -14,7 +14,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Schema\ComSimMq.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\ComSimMq.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IBMMQDotnetClient" Version="9.2.0" />
+    <PackageReference Include="Waher.Networking" Version="1.0.17" />
+    <PackageReference Include="Waher.Script" Version="1.0.41" />
+    <PackageReference Include="Waher.Script.Persistence" Version="1.0.18" />
   </ItemGroup>
 
   <ItemGroup>

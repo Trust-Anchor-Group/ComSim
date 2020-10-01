@@ -25,7 +25,9 @@
       
       Also, the [mosquitto](https://mosquitto.org/download/) MQTT broker and the
       [IBM MQ Server](https://developer.ibm.com/components/ibm-mq/articles/mq-downloads) needs
-      to be installed on the same machine as the Neuron, to make metrics comparable.
+      to be installed on the same machine as the Neuron, to make metrics comparable. There are
+      [tutorials](https://developer.ibm.com/components/ibm-mq/tutorials/mq-connect-app-queue-manager-windows/)
+      on how to setup an IBM MQ server properly on Windows.
       ]]>
     </Description>
     <ModelScript>

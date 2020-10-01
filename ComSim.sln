@@ -44,6 +44,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQTT", "TAG.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.MQ", "TAG.Simulator.MQ\TAG.Simulator.MQ.csproj", "{30AAC2B4-B981-46D6-BE75-3FD454C5266D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.MQ.Test", "TAG.Simulator.MQ.Test\TAG.Simulator.MQ.Test.csproj", "{EA5F1169-5681-4E37-BBE2-94131939E206}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{30AAC2B4-B981-46D6-BE75-3FD454C5266D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30AAC2B4-B981-46D6-BE75-3FD454C5266D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30AAC2B4-B981-46D6-BE75-3FD454C5266D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA5F1169-5681-4E37-BBE2-94131939E206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA5F1169-5681-4E37-BBE2-94131939E206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA5F1169-5681-4E37-BBE2-94131939E206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA5F1169-5681-4E37-BBE2-94131939E206}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
