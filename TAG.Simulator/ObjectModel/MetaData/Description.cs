@@ -60,9 +60,12 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <param name="Output">Output node</param>
 		public override Task ExportMarkdown(StreamWriter Output)
 		{
-			Output.WriteLine("Description");
-			Output.WriteLine("==============");
-			Output.WriteLine();
+			if (this.Parent is Meta)
+			{
+				Output.WriteLine("Description");
+				Output.WriteLine("==============");
+				Output.WriteLine();
+			}
 
 			Output.WriteLine(this.description);
 			Output.WriteLine();
