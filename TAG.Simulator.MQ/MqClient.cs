@@ -280,14 +280,23 @@ namespace TAG.Simulator.MQ
 			{
 				while (!(Cancel?.WaitOne(0) ?? false))
 				{
-					string Message = this.ReadOne(QueueName, 1000);
-					this.Callback(Callback, new MqMessageEventArgs(this, Message, State));
+					try
+					{
+						string Message = this.ReadOne(QueueName, 1000);
+						this.Callback(Callback, new MqMessageEventArgs(this, Message, State));
+					}
+					catch (MQException ex)
+					{
+						if (ex.Reason == 2033)  // MQRC_NO_MSG_AVAILABLE
+							continue;
+						else
+							ExceptionDispatchInfo.Capture(ex).Throw();
+					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Log.Critical("Subscription cancelled due to exception: " + ex.Message, QueueName, string.Empty, string.Empty,
-					EventLevel.Major, string.Empty, string.Empty, ex.StackTrace);
+				this.Error("Subscription cancelled due to exception: " + ex.Message);
 			}
 			finally
 			{

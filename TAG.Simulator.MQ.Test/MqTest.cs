@@ -63,6 +63,9 @@ namespace TAG.Simulator.MQ.Test
 					return Task.CompletedTask;
 				}, null);
 
+			
+			Thread.Sleep(2000);
+
 			for (i = 1; i <= 10; i++)
 				this.client.Put("DEV.QUEUE.1", i.ToString());
 
