@@ -68,5 +68,12 @@ namespace TAG.Simulator.MQ.Test
 
 			Assert.IsTrue(Stopped.WaitOne(5000));
 		}
+
+		[TestMethod]
+		public void Test_05_CharacterEncoding()
+		{
+			this.client.Put("DEV.QUEUE.1", "你好");
+			Assert.AreEqual("你好", this.client.ReadOne("DEV.QUEUE.1"));
+		}
 	}
 }
