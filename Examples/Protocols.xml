@@ -44,6 +44,10 @@
       [tutorials](https://developer.ibm.com/components/ibm-mq/tutorials/mq-connect-app-queue-manager-windows/)
       on how to setup an IBM MQ server properly on Windows.
       
+      **Note**: The script setting up the IBM MQ Server described in the tutorial mentioned above, has been
+      modified, and is available in the Examples folder under then name `mq-dev-config.mqsc`. It does the same
+      things as the script in the tutorial, except it adds an additional 100 queues to be used for the simulation.
+      
       MQ authentication of clients is done against local machine users (or AD users). You will therefore need
       to create user accounts on the local machine (or the Active Directory). To generate a `CSV` file with
       user names and random passwords, you can use the following script:
