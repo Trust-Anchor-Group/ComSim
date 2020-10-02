@@ -52,8 +52,30 @@
           i:=1..N;
           UserName:="SimUser"+i;
           Password:=[foreach n in i do Base64Encode(RandomBytes(24))];
-          M:=[UserName,Password]T;
+          M:=[join("UserName",UserName),join("Password",Password)]T;
           SaveFile(M,"Users.csv")
+
+      Once the `CSV` file has been generated, you can create user accounts matching user
+      accounts on the server hosting the IBM MQ service using the following Power Shell script:
+      
+          $Users = Import-csv Users.csv
+          
+          foreach ($User in $Users)
+          {
+          	$UserName = $User.UserName
+          	$Password = $User.Password
+          	
+          	if (!(Get-LocalUser -Name $UserName))
+          	{
+          		New-LocalUser -AccountNeverExpires -Name $UserName -Password (convertto-securestring $Password -AsPlainText -Force) -PasswordNeverExpires
+          	}
+          	
+          	Add-LocalGroupMember -Group mqclient -Member $UserName
+          }
+      
+      **Note**: The above script assume you have setup the MQ broker using the tutorial mentioned
+      above. This tutorial provides authorization to queues based on membership in the local `mqclient`
+      group. More detailed authorization schemes are possible. You need to adapt the script accordingly.
       
       Performance Counters
       ------------------------
