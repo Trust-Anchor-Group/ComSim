@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using IBM.WMQ;
+using Waher.Events;
 using Waher.Networking.Sniffers;
 
 namespace TAG.Simulator.MQ
@@ -223,6 +225,86 @@ namespace TAG.Simulator.MQ
 			}
 
 			return Result;
+		}
+
+		/// <summary>
+		/// Subscribes to incoming messages.
+		/// </summary>
+		/// <param name="QueueName">Queue name.</param>
+		/// <param name="Callback">Method to call when new message has been read.</param>
+		/// <param name="State">State object to pass on to callback method.</param>
+		public void SubscribeIncoming(string QueueName, MqMessageEventHandler Callback, object State)
+		{
+			this.SubscribeIncoming(QueueName, null, null, Callback, State);
+		}
+
+		/// <summary>
+		/// Subscribes to incoming messages.
+		/// </summary>
+		/// <param name="QueueName">Queue name.</param>
+		/// <param name="Cancel">Cancel event. Set this event object, to cancel subscription.</param>
+		/// <param name="Callback">Method to call when new message has been read.</param>
+		/// <param name="State">State object to pass on to callback method.</param>
+		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, MqMessageEventHandler Callback, object State)
+		{
+			this.SubscribeIncoming(QueueName, Cancel, null, Callback, State);
+		}
+
+		/// <summary>
+		/// Subscribes to incoming messages.
+		/// </summary>
+		/// <param name="QueueName">Queue name.</param>
+		/// <param name="Cancel">Cancel event. Set this event object, to cancel subscription.</param>
+		/// <param name="Stopped">Optional Event that will be set when the subscription has ended.</param>
+		/// <param name="Callback">Method to call when new message has been read.</param>
+		/// <param name="State">State object to pass on to callback method.</param>
+		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, ManualResetEvent Stopped,
+			MqMessageEventHandler Callback, object State)
+		{
+			Thread T = new Thread(this.SubscriptionThread);
+			T.Name = "MQ Queue Subcription " + QueueName;
+			T.Priority = ThreadPriority.BelowNormal;
+			T.Start(new object[] { QueueName, Cancel, Stopped, Callback, State });
+		}
+
+		private void SubscriptionThread(object Parameter)
+		{
+			object[] P = (object[])Parameter;
+			string QueueName = (string)P[0];
+			ManualResetEvent Cancel = (ManualResetEvent)P[1];
+			ManualResetEvent Stopped = (ManualResetEvent)P[2];
+			MqMessageEventHandler Callback = (MqMessageEventHandler)P[3];
+			object State = P[4];
+
+			try
+			{
+				while (!(Cancel?.WaitOne(0) ?? false))
+				{
+					string Message = this.ReadOne(QueueName, 1000);
+					this.Callback(Callback, new MqMessageEventArgs(this, Message, State));
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Critical("Subscription cancelled due to exception: " + ex.Message, QueueName, string.Empty, string.Empty,
+					EventLevel.Major, string.Empty, string.Empty, ex.StackTrace);
+			}
+			finally
+			{
+				Stopped?.Set();
+			}
+		}
+
+		private async void Callback(MqMessageEventHandler Method, MqMessageEventArgs e)
+		{
+			try
+			{
+				await Method(this, e);
+			}
+			catch (Exception ex)
+			{
+				Log.Critical(ex);
+			}
 		}
 
 	}

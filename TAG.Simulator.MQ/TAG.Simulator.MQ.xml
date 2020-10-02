@@ -171,5 +171,67 @@
             <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
             <returns>Message read.</returns>
         </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+            <summary>
+            Subscribes to incoming messages.
+            </summary>
+            <param name="QueueName">Queue name.</param>
+            <param name="Callback">Method to call when new message has been read.</param>
+            <param name="State">State object to pass on to callback method.</param>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,System.Threading.ManualResetEvent,TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+            <summary>
+            Subscribes to incoming messages.
+            </summary>
+            <param name="QueueName">Queue name.</param>
+            <param name="Cancel">Cancel event. Set this event object, to cancel subscription.</param>
+            <param name="Callback">Method to call when new message has been read.</param>
+            <param name="State">State object to pass on to callback method.</param>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,System.Threading.ManualResetEvent,System.Threading.ManualResetEvent,TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+            <summary>
+            Subscribes to incoming messages.
+            </summary>
+            <param name="QueueName">Queue name.</param>
+            <param name="Cancel">Cancel event. Set this event object, to cancel subscription.</param>
+            <param name="Stopped">Optional Event that will be set when the subscription has ended.</param>
+            <param name="Callback">Method to call when new message has been read.</param>
+            <param name="State">State object to pass on to callback method.</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.MqMessageEventHandler">
+            <summary>
+            Delegate for MQ Message event handlers or callback methods.
+            </summary>
+            <param name="Sender">Sender of event.</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.MqMessageEventArgs">
+            <summary>
+            Event arguments for MQ Message events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqMessageEventArgs.#ctor(TAG.Simulator.MQ.MqClient,System.String,System.Object)">
+            <summary>
+            Event arguments for MQ Message events.
+            </summary>
+            <param name="Client">MQ Client</param>
+            <param name="Message">Message text</param>
+            <param name="State">State object</param>
+        </member>
+        <member name="P:TAG.Simulator.MQ.MqMessageEventArgs.Client">
+            <summary>
+            MQ Client object
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.MqMessageEventArgs.Message">
+            <summary>
+            Message text
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.MqMessageEventArgs.State">
+            <summary>
+            State object
+            </summary>
+        </member>
     </members>
 </doc>

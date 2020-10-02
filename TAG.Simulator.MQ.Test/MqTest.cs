@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Waher.Networking.Sniffers;
 
@@ -41,6 +43,30 @@ namespace TAG.Simulator.MQ.Test
 		public void Test_03_ReadOne()
 		{
 			Console.Out.WriteLine(this.client.ReadOne("DEV.QUEUE.1"));
+		}
+
+		[TestMethod]
+		public void Test_04_Subscribe()
+		{
+			ManualResetEvent Cancel = new ManualResetEvent(false);
+			ManualResetEvent Stopped = new ManualResetEvent(false);
+			int i;
+
+			this.client.SubscribeIncoming("DEV.QUEUE.1", Cancel, Stopped,
+				(sender, e) =>
+				{
+					Console.Out.WriteLine("Received: " + e.Message);
+
+					if (int.TryParse(e.Message, out int i) && i == 10)
+						Cancel.Set();
+
+					return Task.CompletedTask;
+				}, null);
+
+			for (i = 1; i <= 10; i++)
+				this.client.Put("DEV.QUEUE.1", i.ToString());
+
+			Assert.IsTrue(Stopped.WaitOne(5000));
 		}
 	}
 }
