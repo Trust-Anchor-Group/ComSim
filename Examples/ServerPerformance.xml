@@ -8,14 +8,29 @@
        duration="PT10M">
   <Meta>
     <Title>Server Performance</Title>
+    <Introduction>Measures performance of simulator and broker machines while XMPP clients send chat messages between each other.</Introduction>
     <Description>
       <![CDATA[
       Measures server CPU, Network traffic and available Memory, as the simulator simulates 40 XMPP clients
       (20 TCP, 10 BOSH, 10 Web-sockets) playing the simple game of guessing a number with each other
       randomly over chat. Simulation lasts 10 minutes, and games are started randomly with an expected
       intensity of 100 started games per minute. Based on the `GuessANumber.xml` example.
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      XMPP
+      ------
 
-      **Note**: For this simulation to work, the `Performance.ws` Web Service script available in the
+      The XMPP Client accounts are created automatically, if the broker being used supports 
+      [XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+      account registration process can be protected using keys and secrets, if the broker supports
+      [XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+
+      Performance Counters
+      ------------------------
+      
+      For this simulation to work, the `Performance.ws` Web Service script available in the
       [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
       [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
       `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
@@ -28,7 +43,7 @@
               "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue()
           }
       ]]>
-    </Description>
+    </Preparation>
     <ModelScript>
       <![CDATA[
       GetPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");

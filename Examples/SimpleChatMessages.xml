@@ -8,7 +8,21 @@
        duration="PT10M">
   <Meta>
     <Title>Simple Chat Messages</Title>
-    <Description>Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) chatting with each other randomly during 10 minutes, at a frequency of 100 started chat sessions per minute.</Description>
+    <Introduction>Simulates XMPP clients chatting with each other.</Introduction>
+    <Description>
+      <![CDATA[
+      Simulates 40 XMPP clients (20 TCP, 10 BOSH, 10 Web-sockets) chatting with each other randomly during 10 minutes, 
+      at a frequency of 100 started chat sessions per minute.
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      The XMPP Client accounts are created automatically, if the broker being used supports 
+      [XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+      account registration process can be protected using keys and secrets, if the broker supports
+      [XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+      ]]>
+    </Preparation>
   </Meta>
   <Assemblies>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>

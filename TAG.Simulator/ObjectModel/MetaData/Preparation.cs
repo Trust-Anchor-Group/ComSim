@@ -6,18 +6,18 @@ using System.Xml;
 namespace TAG.Simulator.ObjectModel.MetaData
 {
 	/// <summary>
-	/// Description of model
+	/// Preparation of model
 	/// </summary>
-	public class Description : SimulationNode
+	public class Preparation : SimulationNode
 	{
-		private string description;
+		private string preparation;
 
 		/// <summary>
 		/// Description of model
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Description(ISimulationNode Parent, Model Model)
+		public Preparation(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -25,12 +25,12 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Description";
+		public override string LocalName => "Preparation";
 
 		/// <summary>
 		/// Description string
 		/// </summary>
-		public string DescriptionString => this.description;
+		public string DescriptionString => this.preparation;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -40,7 +40,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Description(Parent, Model);
+			return new Preparation(Parent, Model);
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.description = Values.Script.RemoveIndent(Definition.InnerText);
+			this.preparation = Values.Script.RemoveIndent(Definition.InnerText);
 
 			return Task.CompletedTask;
 		}
@@ -60,11 +60,11 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <param name="Output">Output node</param>
 		public override Task ExportMarkdown(StreamWriter Output)
 		{
-			Output.WriteLine("Description");
+			Output.WriteLine("Preparation");
 			Output.WriteLine("==============");
 			Output.WriteLine();
 
-			Output.WriteLine(this.description);
+			Output.WriteLine(this.preparation);
 			Output.WriteLine();
 
 			return base.ExportMarkdown(Output);
@@ -76,7 +76,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <param name="Output">Output node</param>
 		public override Task ExportXml(XmlWriter Output)
 		{
-			Output.WriteElementString("Description", this.description);
+			Output.WriteElementString("Preparation", this.preparation);
 
 			return base.ExportXml(Output);
 		}

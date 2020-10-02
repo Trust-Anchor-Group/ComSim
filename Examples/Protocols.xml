@@ -10,26 +10,80 @@
        duration="PT1M">
   <Meta>
     <Title>Protocols</Title>
+    <Introduction>Simulates M2M messages being sent between clients using different protocols. Machine and Service performance is measured and compared.</Introduction>
     <Description>
       <![CDATA[ 
       Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 100 MQ clients exchanging XML messages randomly between 
       each other (users of the same protocol) during 10 minutes, at a total frequency of 10'000 messages per minute per protocol. During the
       simulation, performance metrics are sampled for local simulator performance, broker performance, and for the individiual protocol 
       service performances.
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      XMPP
+      ------
 
-      **Note**: For this simulation to work, the `ProtocolPerformance.ws` Web Service script available in the
+      The XMPP Client accounts are created automatically, if the broker being used supports 
+      [XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+      account registration process can be protected using keys and secrets, if the broker supports
+      [XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+      
+      MQTT
+      ------
+      
+      The MQTT protocol is tested by installing the [mosquitto](https://mosquitto.org/download/) MQTT 
+      broker on the same machine as the XMPP broker. It is important the brokers reside on the same
+      machine, so network performance metrics can be compared.
+      
+      MQ
+      ------
+      
+      The [IBM MQ Server](https://developer.ibm.com/components/ibm-mq/articles/mq-downloads) also needs
+      to be installed on the same machine as the XMPP broker, to make metrics comparable. There are
+      [tutorials](https://developer.ibm.com/components/ibm-mq/tutorials/mq-connect-app-queue-manager-windows/)
+      on how to setup an IBM MQ server properly on Windows.
+      
+      MQ authentication of clients is done against local machine users (or AD users). You will therefore need
+      to create user accounts on the local machine (or the Active Directory). To generate a `CSV` file with
+      user names and random passwords, you can use the following script:
+      
+          N:=100;
+          i:=1..N;
+          UserName:="SimUser"+i;
+          Password:=[foreach n in i do Base64Encode(RandomBytes(24))];
+          M:=[UserName,Password]T;
+          SaveFile(M,"Users.csv")
+      
+      Performance Counters
+      ------------------------
+      
+      For this simulation to work, the `ProtocolPerformance.ws` Web Service script available in the
       [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
       [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
       `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
-      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server.
-      
-      Also, the [mosquitto](https://mosquitto.org/download/) MQTT broker and the
-      [IBM MQ Server](https://developer.ibm.com/components/ibm-mq/articles/mq-downloads) needs
-      to be installed on the same machine as the Neuron, to make metrics comparable. There are
-      [tutorials](https://developer.ibm.com/components/ibm-mq/tutorials/mq-connect-app-queue-manager-windows/)
-      on how to setup an IBM MQ server properly on Windows.
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
+      script contais the following script, executed when the resource is accessed:
+
+          {
+              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
+              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
+              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue(),
+              "xmppCpu":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","% Processor Time").NextValue(),
+              "mqttCpu":PerformanceCounters.GetCounter("Process","mosquitto","% Processor Time").NextValue(),
+              "mqCpu":PerformanceCounters.GetCounter("Process","runmqlsr","% Processor Time").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","% Processor Time").NextValue(),
+              "xmppMemory":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Working Set - Private").NextValue(),
+              "mqttMemory":PerformanceCounters.GetCounter("Process","mosquitto","Working Set - Private").NextValue(),
+              "mqMemory":PerformanceCounters.GetCounter("Process","runmqlsr","Working Set - Private").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","Working Set - Private").NextValue(),
+              "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Data Bytes/sec").NextValue(),
+              "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Data Bytes/sec").NextValue(),
+              "mqIo":PerformanceCounters.GetCounter("Process","runmqlsr","IO Data Bytes/sec").NextValue()+
+              	PerformanceCounters.GetCounter("Process","amqsvc","IO Data Bytes/sec").NextValue()
+          }
       ]]>
-    </Description>
+    </Preparation>
     <ModelScript>
       <![CDATA[
       GetPerformance():=Post("https://lab.tagroot.io/Reports/ProtocolPerformance.ws","","application/json");

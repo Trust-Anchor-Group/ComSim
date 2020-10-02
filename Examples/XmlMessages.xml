@@ -10,15 +10,40 @@
        duration="PT10M">
   <Meta>
     <Title>XML Messages</Title>
+    <Introduction>Simulates XMPP Machine-to-Machine (M2M) messages being sent between participants. Some are signed, some are not.</Introduction>
     <Description>
       <![CDATA[ 
       Simulates 100 XMPP clients over TCP exchanging signed and unsigned machine-readable XML messages randomly between each other 
       during 10 minutes, at a total frequency of 1000 messages per minute.
-      
-      **Note**: Simulation measures server performance during simulation. It uses the method described in the `ServerPerformance.xml`
-      example.
       ]]>
     </Description>
+    <Preparation>
+      <![CDATA[
+      XMPP
+      ------
+
+      The XMPP Client accounts are created automatically, if the broker being used supports 
+      [XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+      account registration process can be protected using keys and secrets, if the broker supports
+      [XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+
+      Performance Counters
+      ------------------------
+      
+      For this simulation to work, the `Performance.ws` Web Service script available in the
+      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
+      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
+      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
+      script contais the following script, executed when the resource is accessed:
+
+          {
+              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
+              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
+              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue()
+          }
+      ]]>
+    </Preparation>
     <ModelScript>
       <![CDATA[
       GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
