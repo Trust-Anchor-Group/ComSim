@@ -130,6 +130,18 @@ namespace TAG.Simulator.ObjectModel.Values
 				Output.Append(')');
 		}
 
+		/// <summary>
+		/// Converts a duration to a string.
+		/// </summary>
+		/// <param name="Duration">Duration</param>
+		/// <returns>String representation of duration.</returns>
+		public static string ToString(Waher.Content.Duration Duration)
+		{
+			StringBuilder sb = new StringBuilder();
+			ExportText(Duration, sb);
+			return sb.ToString();
+		}
+
 		private static void Append(StringBuilder Output, int Nr, string SingUnit, string PlurUnit, ref bool First)
 		{
 			if (Nr != 0)

@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using IBM.WMQ;
+using TAG.Simulator.MQ.Tasks;
 using Waher.Events;
 using Waher.Networking.Sniffers;
 
@@ -20,6 +21,8 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		public const int DefaultPort = 1414;
 
+		private readonly LinkedList<MqTask> tasks = new LinkedList<MqTask>();
+		private readonly AutoResetEvent taskAdded = new AutoResetEvent(false);
 		private readonly Dictionary<string, MQQueue> inputQueues = new Dictionary<string, MQQueue>();
 		private readonly Dictionary<string, MQQueue> outputQueues = new Dictionary<string, MQQueue>();
 		private readonly string queueManager;
@@ -29,7 +32,9 @@ namespace TAG.Simulator.MQ
 		private readonly string certificateStore;
 		private readonly string host;
 		private readonly int port;
+		private readonly Thread thread;
 		private MQQueueManager manager;
+		private bool terminated;
 
 		/// <summary>
 		/// IBM MQ client
@@ -39,8 +44,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="Host">Host</param>
 		/// <param name="Port">Port number</param>
 		/// <param name="Sniffers">Sniffers</param>
-		public MqClient(string QueueManager, string Channel, string Host, int Port,
-			params ISniffer[] Sniffers)
+		public MqClient(string QueueManager, string Channel, string Host, int Port, params ISniffer[] Sniffers)
 			: this(QueueManager, Channel, string.Empty, string.Empty, string.Empty, Host, Port, Sniffers)
 		{
 		}
@@ -67,6 +71,14 @@ namespace TAG.Simulator.MQ
 			this.certificateStore = CertificateStore;
 			this.host = Host;
 			this.port = Port;
+
+			this.thread = new Thread(this.TaskExecutor)
+			{
+				Name = "MQ Executor",
+				Priority = ThreadPriority.BelowNormal
+			};
+
+			this.thread.Start();
 		}
 
 		/// <summary>
@@ -74,7 +86,89 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		public void Dispose()
 		{
-			this.Close();
+			this.terminated = true;
+			this.taskAdded.Set();
+		}
+
+		private void TaskExecutor()
+		{
+			try
+			{
+				MqTask Item;
+
+				while (!this.terminated)
+				{
+					if (!this.taskAdded.WaitOne(10))
+						continue;
+
+					while (true)
+					{
+						lock (this.tasks)
+						{
+							if (this.tasks.First is null)
+								break;
+
+							Item = this.tasks.First.Value;
+							this.tasks.RemoveFirst();
+						}
+
+						try
+						{
+							Item.DoWork(this);
+						}
+						catch (Exception ex)
+						{
+							this.Exception(ex);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Critical(ex);
+			}
+			finally
+			{
+				try
+				{
+					this.taskAdded.Dispose();
+
+					lock (this.tasks)
+					{
+						foreach (MqTask Task in this.tasks)
+						{
+							if (Task is IDisposable Disposable)
+								Disposable.Dispose();
+						}
+
+						this.tasks.Clear();
+					}
+
+					lock (this.inputQueues)
+					{
+						foreach (MQQueue Queue in this.inputQueues.Values)
+							Queue.Close();
+					}
+
+					lock (this.outputQueues)
+					{
+						foreach (MQQueue Queue in this.outputQueues.Values)
+							Queue.Close();
+					}
+
+					if (!(this.manager is null))
+					{
+						this.Information("Closing...");
+
+						this.manager?.Close();
+						this.manager = null;
+					}
+				}
+				catch (Exception ex)
+				{
+					Log.Critical(ex);
+				}
+			}
 		}
 
 		/// <summary>
@@ -84,33 +178,17 @@ namespace TAG.Simulator.MQ
 		/// <param name="Password">Password</param>
 		public Task ConnectAsync(string UserName, string Password)
 		{
-			TaskCompletionSource<bool> Result = new TaskCompletionSource<bool>();
-			Thread T = new Thread(this.ConnectionThread)
-			{
-				Name = "Connecting " + UserName,
-				Priority = ThreadPriority.BelowNormal
-			};
-
-			T.Start(new object[] { UserName, Password, Result });
-
-			return Result.Task;
+			ConnectionTask Item = new ConnectionTask(UserName, Password);
+			this.QueueTask(Item);
+			return Item.Completed;
 		}
 
-		private void ConnectionThread(object State)
+		internal void QueueTask(MqTask Item)
 		{
-			object[] P = (object[])State;
-			string UserName = (string)P[0];
-			string Password = (string)P[1];
-			TaskCompletionSource<bool> Result = (TaskCompletionSource<bool>)P[2];
-
-			try
+			lock (this.tasks)
 			{
-				this.Connect(UserName, Password);
-				Result.TrySetResult(true);
-			}
-			catch (Exception ex)
-			{
-				Result.TrySetException(ex);
+				this.tasks.AddLast(Item);
+				this.taskAdded.Set();
 			}
 		}
 
@@ -119,7 +197,7 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		/// <param name="UserName">User name</param>
 		/// <param name="Password">Password</param>
-		public void Connect(string UserName, string Password)
+		internal void Connect(string UserName, string Password)
 		{
 			this.Information("Connecting...");
 			try
@@ -153,41 +231,29 @@ namespace TAG.Simulator.MQ
 		}
 
 		/// <summary>
-		/// Closes the connection.
+		/// Puts a message onto a queue.
 		/// </summary>
-		public void Close()
+		/// <param name="QueueName">Queue name.</param>
+		/// <param name="Message">Message</param>
+		public Task PutAsync(string QueueName, string Message)
 		{
-			lock (this.inputQueues)
-			{
-				foreach (MQQueue Queue in this.inputQueues.Values)
-					Queue.Close();
-			}
-
-			lock (this.outputQueues)
-			{
-				foreach (MQQueue Queue in this.outputQueues.Values)
-					Queue.Close();
-			}
-
-			if (!(this.manager is null))
-			{
-				this.Information("Closing...");
-
-				this.manager?.Close();
-				this.manager = null;
-			}
+			PutTask Item = new PutTask(QueueName, Message);
+			this.QueueTask(Item);
+			return Item.Completed;
 		}
 
 		/// <summary>
-		/// Pushes an item onto a queue.
+		/// Puts a message onto a queue.
 		/// </summary>
 		/// <param name="QueueName">Queue name.</param>
-		/// <param name="Item">Item</param>
-		public void Put(string QueueName, string Item)
+		/// <param name="Message">Message</param>
+		internal void Put(string QueueName, string Message)
 		{
 			try
 			{
 				MQQueue Queue;
+
+				this.Information("Putting to " + QueueName + ":");
 
 				lock (this.outputQueues)
 				{
@@ -198,17 +264,17 @@ namespace TAG.Simulator.MQ
 					}
 				}
 
-				this.TransmitText(Item);
-
-				MQMessage Message = new MQMessage()
+				MQMessage MqMessage = new MQMessage()
 				{
 					CharacterSet = 1208, // UTF-8
 					Format = MQC.MQFMT_STRING
 				};
 
-				Message.WriteString(Item);
+				this.TransmitText(Message);
 
-				Queue.Put(Message);
+				MqMessage.WriteString(Message);
+
+				Queue.Put(MqMessage);
 			}
 			catch (Exception ex)
 			{
@@ -217,22 +283,22 @@ namespace TAG.Simulator.MQ
 		}
 
 		/// <summary>
-		/// Read one message from a queue.
+		/// Gets one message from a queue.
 		/// </summary>
 		/// <param name="QueueName">Name of queue.</param>
 		/// <returns>Message read.</returns>
-		public string ReadOne(string QueueName)
+		internal string GetOne(string QueueName)
 		{
-			return this.ReadOne(QueueName, MQC.MQWI_UNLIMITED);
+			return this.GetOne(QueueName, MQC.MQWI_UNLIMITED);
 		}
 
 		/// <summary>
-		/// Read one message from a queue.
+		/// Gets one message from a queue.
 		/// </summary>
 		/// <param name="QueueName">Name of queue.</param>
 		/// <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
-		/// <returns>Message read.</returns>
-		public string ReadOne(string QueueName, int TimeoutMilliseconds)
+		/// <returns>Message read, if received within the given time, null otherwise.</returns>
+		internal string GetOne(string QueueName, int TimeoutMilliseconds)
 		{
 			string Result = null;
 
@@ -261,6 +327,14 @@ namespace TAG.Simulator.MQ
 				Result = Message.ReadString(Message.MessageLength);
 				this.ReceiveText(Result);
 			}
+			catch (MQException ex)
+			{
+				if (ex.Reason == 2033)
+					return null;
+
+				this.Exception(ex);
+				ExceptionDispatchInfo.Capture(ex).Throw();
+			}
 			catch (Exception ex)
 			{
 				this.Exception(ex);
@@ -268,6 +342,29 @@ namespace TAG.Simulator.MQ
 			}
 
 			return Result;
+		}
+
+		/// <summary>
+		/// Gets one message from a queue.
+		/// </summary>
+		/// <param name="QueueName">Name of queue.</param>
+		/// <returns>Message read.</returns>
+		public Task<string> GetOneAsync(string QueueName)
+		{
+			return this.GetOneAsync(QueueName, MQC.MQWI_UNLIMITED);
+		}
+
+		/// <summary>
+		/// Gets one message from a queue.
+		/// </summary>
+		/// <param name="QueueName">Name of queue.</param>
+		/// <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
+		/// <returns>Message read, if received within the given time, null otherwise.</returns>
+		public Task<string> GetOneAsync(string QueueName, int TimeoutMilliseconds)
+		{
+			GetTask Item = new GetTask(QueueName, TimeoutMilliseconds);
+			this.QueueTask(Item);
+			return Item.Completed;
 		}
 
 		/// <summary>
@@ -301,65 +398,12 @@ namespace TAG.Simulator.MQ
 		/// <param name="Stopped">Optional Event that will be set when the subscription has ended.</param>
 		/// <param name="Callback">Method to call when new message has been read.</param>
 		/// <param name="State">State object to pass on to callback method.</param>
-		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, ManualResetEvent Stopped,
+		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, TaskCompletionSource<bool> Stopped,
 			MqMessageEventHandler Callback, object State)
 		{
-			Thread T = new Thread(this.SubscriptionThread)
-			{
-				Name = "MQ Queue Subcription " + QueueName,
-				Priority = ThreadPriority.BelowNormal
-			};
-
-			T.Start(new object[] { QueueName, Cancel, Stopped, Callback, State });
-		}
-
-		private void SubscriptionThread(object Parameter)
-		{
-			object[] P = (object[])Parameter;
-			string QueueName = (string)P[0];
-			ManualResetEvent Cancel = (ManualResetEvent)P[1];
-			ManualResetEvent Stopped = (ManualResetEvent)P[2];
-			MqMessageEventHandler Callback = (MqMessageEventHandler)P[3];
-			object State = P[4];
-
-			try
-			{
-				while (!(Cancel?.WaitOne(0) ?? false))
-				{
-					try
-					{
-						string Message = this.ReadOne(QueueName, 1000);
-						this.Callback(Callback, new MqMessageEventArgs(this, Message, State));
-					}
-					catch (MQException ex)
-					{
-						if (ex.Reason == 2033)  // MQRC_NO_MSG_AVAILABLE
-							continue;
-						else
-							ExceptionDispatchInfo.Capture(ex).Throw();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				this.Error("Subscription cancelled due to exception: " + ex.Message);
-			}
-			finally
-			{
-				Stopped?.Set();
-			}
-		}
-
-		private async void Callback(MqMessageEventHandler Method, MqMessageEventArgs e)
-		{
-			try
-			{
-				await Method(this, e);
-			}
-			catch (Exception ex)
-			{
-				Log.Critical(ex);
-			}
+			this.Information("Subscribing to messages from " + QueueName);
+			SubscriptionTask Item = new SubscriptionTask(QueueName, Cancel, Stopped, Callback, State);
+			this.QueueTask(Item);
 		}
 
 	}

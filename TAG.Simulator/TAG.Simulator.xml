@@ -4465,6 +4465,13 @@
             <param name="Duration">Duration value.</param>
             <param name="Output">Output node</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ToString(Waher.Content.Duration)">
+            <summary>
+            Converts a duration to a string.
+            </summary>
+            <param name="Duration">Duration</param>
+            <returns>String representation of duration.</returns>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.IValue">
             <summary>
             Interface for values

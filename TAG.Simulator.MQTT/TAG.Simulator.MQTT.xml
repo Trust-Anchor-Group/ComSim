@@ -116,6 +116,11 @@
             Instance ID
             </summary>
         </member>
+        <member name="F:TAG.Simulator.MQTT.Actors.MqttActivityObject.InstanceIndex">
+            <summary>
+            Instance Index
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.MQTT.Actors.MqttActorTcp">
             <summary>
             MQTT Actor connecting to the MQTT network using traditional TCP.

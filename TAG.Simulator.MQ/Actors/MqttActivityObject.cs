@@ -1,17 +1,16 @@
 ﻿using System;
-using Waher.Networking.MQTT;
 
-namespace TAG.Simulator.MQTT.Actors
+namespace TAG.Simulator.MQ.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities.
 	/// </summary>
-	public class MqttActivityObject
+	public class MqActivityObject
 	{
 		/// <summary>
-		/// MQTT Client reference
+		/// MQ Client reference
 		/// </summary>
-		public MqttClient Client;
+		public MqClient Client;
 
 		/// <summary>
 		/// User name used in connection

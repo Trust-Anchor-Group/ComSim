@@ -34,6 +34,124 @@
             Password hash
             </summary>
         </member>
+        <member name="T:TAG.Simulator.MQ.Activities.Get">
+            <summary>
+            Gets content to a topic.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Get.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Gets content to a topic.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Get.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Get.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Get.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Get.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Get.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Get.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Get.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Activities.Put">
+            <summary>
+            Puts content to a topic.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Puts content to a topic.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Put.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Put.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Activities.Put.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Activities.Put.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output node</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
         <member name="T:TAG.Simulator.MQ.Actors.MqActorTcp">
             <summary>
             MQ Actor connecting to the MQ network using traditional TCP.
@@ -129,6 +247,31 @@
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
         </member>
+        <member name="T:TAG.Simulator.MQ.Actors.MqActivityObject">
+            <summary>
+            Object used in simulation activities.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQ.Actors.MqActivityObject.Client">
+            <summary>
+            MQ Client reference
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQ.Actors.MqActivityObject.UserName">
+            <summary>
+            User name used in connection
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQ.Actors.MqActivityObject.InstanceId">
+            <summary>
+            Instance ID
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.MQ.Actors.MqActivityObject.InstanceIndex">
+            <summary>
+            Instance Index
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.MQ.MqClient">
             <summary>
             IBM MQ client
@@ -181,32 +324,49 @@
             <param name="UserName">User name</param>
             <param name="Password">Password</param>
         </member>
-        <member name="M:TAG.Simulator.MQ.MqClient.Close">
+        <member name="M:TAG.Simulator.MQ.MqClient.PutAsync(System.String,System.String)">
             <summary>
-            Closes the connection.
+            Puts a message onto a queue.
             </summary>
+            <param name="QueueName">Queue name.</param>
+            <param name="Message">Message</param>
         </member>
         <member name="M:TAG.Simulator.MQ.MqClient.Put(System.String,System.String)">
             <summary>
-            Pushes an item onto a queue.
+            Puts a message onto a queue.
             </summary>
             <param name="QueueName">Queue name.</param>
-            <param name="Item">Item</param>
+            <param name="Message">Message</param>
         </member>
-        <member name="M:TAG.Simulator.MQ.MqClient.ReadOne(System.String)">
+        <member name="M:TAG.Simulator.MQ.MqClient.GetOne(System.String)">
             <summary>
-            Read one message from a queue.
+            Gets one message from a queue.
             </summary>
             <param name="QueueName">Name of queue.</param>
             <returns>Message read.</returns>
         </member>
-        <member name="M:TAG.Simulator.MQ.MqClient.ReadOne(System.String,System.Int32)">
+        <member name="M:TAG.Simulator.MQ.MqClient.GetOne(System.String,System.Int32)">
             <summary>
-            Read one message from a queue.
+            Gets one message from a queue.
             </summary>
             <param name="QueueName">Name of queue.</param>
             <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
+            <returns>Message read, if received within the given time, null otherwise.</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.GetOneAsync(System.String)">
+            <summary>
+            Gets one message from a queue.
+            </summary>
+            <param name="QueueName">Name of queue.</param>
             <returns>Message read.</returns>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.GetOneAsync(System.String,System.Int32)">
+            <summary>
+            Gets one message from a queue.
+            </summary>
+            <param name="QueueName">Name of queue.</param>
+            <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
+            <returns>Message read, if received within the given time, null otherwise.</returns>
         </member>
         <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
             <summary>
@@ -225,7 +385,7 @@
             <param name="Callback">Method to call when new message has been read.</param>
             <param name="State">State object to pass on to callback method.</param>
         </member>
-        <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,System.Threading.ManualResetEvent,System.Threading.ManualResetEvent,TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+        <member name="M:TAG.Simulator.MQ.MqClient.SubscribeIncoming(System.String,System.Threading.ManualResetEvent,System.Threading.Tasks.TaskCompletionSource{System.Boolean},TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
             <summary>
             Subscribes to incoming messages.
             </summary>
@@ -269,6 +429,106 @@
             <summary>
             State object
             </summary>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.ConnectionTask">
+            <summary>
+            Task of connecting to an MQ Broker.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.#ctor(System.String,System.String)">
+            <summary>
+            Task of connecting to an MQ Broker.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Tasks.ConnectionTask.Completed">
+            <summary>
+            Completion task.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.DoWork(TAG.Simulator.MQ.MqClient)">
+            <summary>
+            Performs work defined by the task.
+            </summary>
+            <param name="Client">MQ Client</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.GetTask">
+            <summary>
+            Gets a message on a queue.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.#ctor(System.String,System.Int32)">
+            <summary>
+            Gets a message on a queue.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Tasks.GetTask.Completed">
+            <summary>
+            Completion task.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.DoWork(TAG.Simulator.MQ.MqClient)">
+            <summary>
+            Performs work defined by the task.
+            </summary>
+            <param name="Client">MQ Client</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.MqTask">
+            <summary>
+            Abstract base class for MQ tasks.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.#ctor">
+            <summary>
+            Abstract base class for MQ tasks.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.DoWork(TAG.Simulator.MQ.MqClient)">
+            <summary>
+            Performs work defined by the task.
+            </summary>
+            <param name="Client">MQ Client</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.PutTask">
+            <summary>
+            Puts a message on a queue.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.#ctor(System.String,System.String)">
+            <summary>
+            Puts a message on a queue.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Tasks.PutTask.Completed">
+            <summary>
+            Completion task.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.DoWork(TAG.Simulator.MQ.MqClient)">
+            <summary>
+            Performs work defined by the task.
+            </summary>
+            <param name="Client">MQ Client</param>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.SubscriptionTask">
+            <summary>
+            Subscribes to messages frmo a queue.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.#ctor(System.String,System.Threading.ManualResetEvent,System.Threading.Tasks.TaskCompletionSource{System.Boolean},TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+            <summary>
+            Subscribes to messages frmo a queue.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.Dispose">
+            <summary>
+            <see cref="T:System.IDisposable"/>
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.DoWork(TAG.Simulator.MQ.MqClient)">
+            <summary>
+            Performs work defined by the task.
+            </summary>
+            <param name="Client">MQ Client</param>
         </member>
     </members>
 </doc>

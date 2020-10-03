@@ -346,7 +346,8 @@ namespace TAG.Simulator.MQTT.Actors
 				{
 					Client = this.client,
 					UserName = this.userName,
-					InstanceId = this.InstanceId
+					InstanceId = this.InstanceId,
+					InstanceIndex = this.InstanceIndex
 				};
 			}
 		}

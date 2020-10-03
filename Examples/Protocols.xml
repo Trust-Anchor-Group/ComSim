@@ -48,6 +48,10 @@
       **Note**: The script setting up the IBM MQ Server described in the tutorial mentioned above, has been
       modified, and is available in the Examples folder under then name `mq-dev-config.mqsc`. It does the same
       things as the script in the tutorial, except it adds an additional 100 queues to be used for the simulation.
+      To make sure the users have access to these queues, you also need to execute the following IBM MQ command
+      at the command prompt:
+      
+          setmqaut -m QM1 -n SIM.** -t queue -g mqclient +put +get +browse +inq
       
       MQ authentication of clients is done against local machine users (or AD users). You will therefore need
       to create user accounts on the local machine (or the Active Directory). To generate a `CSV` file with
@@ -169,6 +173,18 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqMessage">
+      <Description>Sends an XML message from one random MQ client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="MqTcp"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="MqTcp"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
     <EventHandler id="XmppMessageReceived" activity="ProcessXmppMessage">
       <Description>Event triggered when an XMPP message has been received.</Description>
     </EventHandler>
@@ -281,6 +297,19 @@
         </Xml>
       </mqtt:Publish>
       <Count counter="MqttSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="SendMqMessage" logStart="false" logEnd="false">
+      <Description>This activity sends an XML message to a random MQ recipient.</Description>
+      <Start/>
+      <mq:Put actor="From" queue="SIM.QUEUE.{To.InstanceIndex}">
+        <Xml>
+          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+          </Msg>
+        </Xml>
+      </mq:Put>
+      <Count counter="MqSent"/>
       <Stop/>
     </Activity>
     <Activity id="ProcessXmppMessage" logStart="false" logEnd="false">
