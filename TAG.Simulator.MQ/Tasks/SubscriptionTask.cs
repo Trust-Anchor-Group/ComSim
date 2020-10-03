@@ -9,7 +9,7 @@ namespace TAG.Simulator.MQ.Tasks
 	/// <summary>
 	/// Subscribes to messages frmo a queue.
 	/// </summary>
-	internal class SubscriptionTask : MqTask, IDisposable
+	internal class SubscriptionTask : MqTask
 	{
 		private readonly ManualResetEvent cancel;
 		private readonly TaskCompletionSource<bool> stopped;
@@ -34,9 +34,10 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// <see cref="IDisposable"/>
 		/// </summary>
-		public void Dispose()
+		public override void Dispose()
 		{
 			this.stopped?.TrySetResult(true);
+			base.Dispose();
 		}
 
 		/// <summary>
@@ -52,7 +53,7 @@ namespace TAG.Simulator.MQ.Tasks
 			}
 			else
 			{
-				string Message = Client.GetOne(this.queue, 10);
+				string Message = Client.GetOne(this.queue, 1000);
 
 				if (!(Message is null))
 				{

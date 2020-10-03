@@ -57,6 +57,9 @@
   <xs:element name="Subscribe">
     <xs:complexType>
       <xs:attribute name="queue" type="xs:string" use="required"/>
+      <xs:attribute name="event" type="xs:string" use="required"/>
+      <xs:attribute name="variable" type="xs:string" use="required"/>
+      <xs:attribute name="actorName" type="xs:string" use="optional"/>
     </xs:complexType>
   </xs:element>
 

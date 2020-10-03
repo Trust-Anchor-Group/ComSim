@@ -143,6 +143,7 @@
       </ExternalEvent>
     </mqtt:MqttActorTcp>
     <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcp" N="100" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
+      <mq:Subscribe queue="SIM.QUEUE.{InstanceIndex}" event="MqMessageReceived" variable="Message" actorName="To"/>
     </mq:MqActorTcp>
   </Actors>
   <Distributions>
@@ -190,6 +191,9 @@
     </EventHandler>
     <EventHandler id="MqttMessageReceived" activity="ProcessMqttMessage">
       <Description>Event triggered when an MQTT message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="MqMessageReceived" activity="ProcessMqMessage">
+      <Description>Event triggered when an MQ message has been received.</Description>
     </EventHandler>
     <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
       <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
@@ -355,27 +359,60 @@
       </Conditional>
       <Stop/>
     </Activity>
+    <Activity id="ProcessMqMessage" logStart="false" logEnd="false">
+      <Description>Processes a received MQ message.</Description>
+      <Start/>
+      <Count counter="MqReceived"/>
+      <Conditional>
+        <Try condition="Msg:=Xml(Message).DocumentElement">
+          <Eval>
+            <![CDATA[
+              StartTime:=DateTime(Msg["StartTime"].InnerText);
+              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+            ]]>
+          </Eval>
+          <Sample name="MQ Roundtrip">
+            <Script>Elapsed ms</Script>
+          </Sample>
+        </Try>
+        <Otherwise>
+          <Eval>
+            <![CDATA[
+            LogError("Non-XML message received: "+Base64Encode(Content.Data),
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqContentError"/>
+        </Otherwise>
+      </Conditional>
+      <Stop/>
+    </Activity>
   </Activities>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
       <Source ref="SendXmppMessage"/>
       <Source ref="SendMqttMessage"/>
+      <Source ref="SendMqMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time sending Messages" legend="false">
       <Source ref="SendXmppMessage"/>
       <Source ref="SendMqttMessage"/>
+      <Source ref="SendMqMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
       <Source ref="ProcessXmppMessage"/>
       <Source ref="ProcessMqttMessage"/>
+      <Source ref="ProcessMqMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time processing Messages" legend="false">
       <Source ref="ProcessXmppMessage"/>
       <Source ref="ProcessMqttMessage"/>
+      <Source ref="ProcessMqMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
       <Source ref="XMPP Roundtrip"/>
       <Source ref="MQTT Roundtrip"/>
+      <Source ref="MQ Roundtrip"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using IBM.WMQ;
 using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
 using Waher.Networking.Sniffers;
 using Waher.Persistence;
@@ -179,13 +179,92 @@ namespace TAG.Simulator.MQ.Actors
 
 			if (string.IsNullOrEmpty(this.credentials.ObjectId))
 				await Database.Insert(this.credentials);
+
+			Variables Variables = new Variables();
+			ObjectProperties Properties = new ObjectProperties(this, Variables);
+			List<SubscriptionState> Subscriptions = new List<SubscriptionState>();
+
+			if (this.Parent is ISimulationNodeChildren Parent)
+			{
+				foreach (ISimulationNode Node in Parent.Children)
+				{
+					if (Node is Subscribe Subscribe)
+					{
+						SubscriptionState Subscription = new SubscriptionState()
+						{
+							Event = Expression.Transform(Subscribe.Event, "{", "}", Properties),
+							Queue = Expression.Transform(Subscribe.Queue, "{", "}", Properties),
+							Variable = Expression.Transform(Subscribe.Variable, "{", "}", Properties),
+							ActorName = Expression.Transform(Subscribe.ActorName, "{", "}", Properties),
+							Actor = this,
+							Model = this.Model,
+							Cancel = new ManualResetEvent(false),
+							Stopped = new TaskCompletionSource<bool>()
+						};
+
+						if (!this.Model.TryGetEvent(Subscription.Event, out Subscription.EventReference))
+							throw new Exception("Event not found: " + Subscription.Event);
+
+						Subscription.Subscribe(Client);
+						Subscriptions.Add(Subscription);
+					}
+				}
+			}
+
+			this.subscriptions = Subscriptions.ToArray();
+		}
+
+		private SubscriptionState[] subscriptions;
+
+		private class SubscriptionState : IDisposable
+		{
+			public IEvent EventReference;
+			public string Event;
+			public string Queue;
+			public string Variable;
+			public string ActorName;
+			public IActor Actor;
+			public Model Model;
+			public ManualResetEvent Cancel;
+			public TaskCompletionSource<bool> Stopped;
+
+			public void Dispose()
+			{
+				this.Cancel.Set();
+			}
+
+			public void Subscribe(MqClient Client)
+			{
+				Client.SubscribeIncoming(this.Queue, this.Cancel, this.Stopped, this.MessageReceived, null);
+			}
+
+			private Task MessageReceived(object Sender, MqMessageEventArgs e)
+			{
+				Variables Variables = this.Model.GetEventVariables(this.Actor);
+
+				if (!string.IsNullOrEmpty(this.ActorName))
+					Variables[this.ActorName] = this.Actor.ActivityObject;
+
+				if (!string.IsNullOrEmpty(this.Variable))
+					Variables[this.Variable] = e.Message;
+
+				this.EventReference.Trigger(Variables);
+
+				return Task.CompletedTask;
+			}
 		}
 
 		/// <summary>
 		/// Finalizes an instance of an actor.
 		/// </summary>
-		public override Task FinalizeInstance()
+		public override async Task FinalizeInstance()
 		{
+			foreach (SubscriptionState State in this.subscriptions)
+				State.Dispose();
+
+			foreach (SubscriptionState State in this.subscriptions)
+				await State.Stopped.Task;
+
 			this.client?.Dispose();
 			this.client = null;
 
@@ -196,8 +275,6 @@ namespace TAG.Simulator.MQ.Actors
 
 				this.sniffer = null;
 			}
-
-			return Task.CompletedTask;
 		}
 
 		/// <summary>

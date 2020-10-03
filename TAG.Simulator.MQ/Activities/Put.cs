@@ -105,7 +105,9 @@ namespace TAG.Simulator.MQ.Activities
 			if (!(v.ValueObject is MqActivityObject MqActor))
 				throw new Exception("Actor not an MQ actor.");
 
-			await MqActor.Client.PutAsync(Queue, Message);
+			//await MqActor.Client.PutAsync(Queue, Message);
+
+			MqActor.Client.Put(Queue, Message);
 
 			return null;
 		}

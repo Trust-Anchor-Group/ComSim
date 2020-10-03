@@ -141,7 +141,7 @@ namespace TAG.Simulator.XMPP.Events
 					Variables[Argument.Key] = Argument.Value;
 			}
 
-			this.Event.Trigger(Variables);
+			this._event?.Trigger(Variables);
 		}
 
 		/// <summary>

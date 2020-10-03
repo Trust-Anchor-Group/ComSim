@@ -136,10 +136,7 @@ namespace TAG.Simulator.MQ
 					lock (this.tasks)
 					{
 						foreach (MqTask Task in this.tasks)
-						{
-							if (Task is IDisposable Disposable)
-								Disposable.Dispose();
-						}
+							Task.Dispose();
 
 						this.tasks.Clear();
 					}
