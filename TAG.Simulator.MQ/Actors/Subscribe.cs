@@ -13,9 +13,7 @@ namespace TAG.Simulator.MQ.Actors
 	public class Subscribe : SimulationNode
 	{
 		private string queue;
-		private string _event;
-		private string variable;
-		private string actorName;
+		private string extEvent;
 
 		/// <summary>
 		/// Represents a topic subscription
@@ -48,19 +46,9 @@ namespace TAG.Simulator.MQ.Actors
 		public string Queue => this.queue;
 
 		/// <summary>
-		/// Event Name
+		/// External Event Name
 		/// </summary>
-		public string Event => this._event;
-
-		/// <summary>
-		/// Message variable name
-		/// </summary>
-		public string Variable => this.variable;
-
-		/// <summary>
-		/// Actor variable name
-		/// </summary>
-		public string ActorName => this.actorName;
+		public string ExtEvent => this.extEvent;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -80,9 +68,7 @@ namespace TAG.Simulator.MQ.Actors
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.queue = XML.Attribute(Definition, "queue");
-			this._event = XML.Attribute(Definition, "event");
-			this.variable = XML.Attribute(Definition, "variable");
-			this.actorName = XML.Attribute(Definition, "actorName");
+			this.extEvent = XML.Attribute(Definition, "extEvent");
 
 			return Task.CompletedTask;
 		}

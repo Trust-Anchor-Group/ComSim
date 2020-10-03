@@ -8,16 +8,16 @@
        bucketTime="PT1S"
        timeUnit="PT1S"
        timeCycle="PT1M"
-       duration="PT1M">
+       duration="PT10M">
   <Meta>
     <Title>Protocols</Title>
     <Introduction>Simulates M2M messages being sent between clients using different protocols. Machine and Service performance is measured and compared.</Introduction>
     <Description>
       <![CDATA[ 
-      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 100 MQ clients exchanging XML messages randomly between 
-      each other (users of the same protocol) during 10 minutes, at a total frequency of 10'000 messages per minute per protocol. During the
-      simulation, performance metrics are sampled for local simulator performance, broker performance, and for the individiual protocol 
-      service performances.
+      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 200 MQ clients (100 MQ queues, 2 clients for each queue,
+      one putting, one getting) exchanging XML messages randomly between each other (users of the same protocol) during 10 minutes, at a 
+      total frequency of 10'000 messages per minute per protocol. During the simulation, performance metrics are sampled for local simulator 
+      performance, broker performance, and for the individiual protocol service performances.
       ]]>
     </Description>
     <Preparation>
@@ -104,16 +104,13 @@
               "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue(),
               "xmppCpu":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","% Processor Time").NextValue(),
               "mqttCpu":PerformanceCounters.GetCounter("Process","mosquitto","% Processor Time").NextValue(),
-              "mqCpu":PerformanceCounters.GetCounter("Process","runmqlsr","% Processor Time").NextValue()+
-              	PerformanceCounters.GetCounter("Process","amqsvc","% Processor Time").NextValue(),
+              "mqCpu":PerformanceCounters.GetCounter("Process","amqrmppa","% Processor Time").NextValue(),
               "xmppMemory":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Working Set - Private").NextValue(),
               "mqttMemory":PerformanceCounters.GetCounter("Process","mosquitto","Working Set - Private").NextValue(),
-              "mqMemory":PerformanceCounters.GetCounter("Process","runmqlsr","Working Set - Private").NextValue()+
-              	PerformanceCounters.GetCounter("Process","amqsvc","Working Set - Private").NextValue(),
-              "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Data Bytes/sec").NextValue(),
-              "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Data Bytes/sec").NextValue(),
-              "mqIo":PerformanceCounters.GetCounter("Process","runmqlsr","IO Data Bytes/sec").NextValue()+
-              	PerformanceCounters.GetCounter("Process","amqsvc","IO Data Bytes/sec").NextValue()
+              "mqMemory":PerformanceCounters.GetCounter("Process","amqrmppa","Working Set - Private").NextValue(),
+              "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Other Bytes/sec").NextValue(),
+              "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Other Bytes/sec").NextValue(),
+              "mqIo":PerformanceCounters.GetCounter("Process","amqrmppa","IO Other Bytes/sec").NextValue()
           }
       ]]>
     </Preparation>
@@ -142,15 +139,19 @@
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
     </mqtt:MqttActorTcp>
-    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcp" N="100" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
-      <mq:Subscribe queue="SIM.QUEUE.{InstanceIndex}" event="MqMessageReceived" variable="Message" actorName="To"/>
+    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpPut" N="10" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword"/>
+    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpGet" N="10" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
+      <mq:Subscribe queue="SIM.QUEUE.{InstanceIndex}" extEvent="OnMessageReceived"/>
+      <ExternalEvent name="OnMessageReceived" event="MqMessageReceived" actorName="To">
+        <Parameter name="Message" variable="Message"/>
+      </ExternalEvent>
     </mq:MqActorTcp>
   </Actors>
   <Distributions>
-    <Uniform id="TenThousandPerMinute" from="0" to="60" N="10000"/>
+    <Uniform id="TwoThousandPerMinute" from="0" to="60" N="2000"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendXmppMessage">
+    <StochasticEvent distribution="TwoThousandPerMinute" activity="SendXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
@@ -162,7 +163,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttMessage">
+    <StochasticEvent distribution="TwoThousandPerMinute" activity="SendMqttMessage">
       <Description>Sends an XML message from one random MQTT client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcp"/>
@@ -174,13 +175,13 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqMessage">
+    <StochasticEvent distribution="TwoThousandPerMinute" activity="SendMqMessage">
       <Description>Sends an XML message from one random MQ client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
-        <FromPopulation actor="MqTcp"/>
+        <FromPopulation actor="MqTcpPut"/>
       </ActorReference>
       <ActorReference name="To" exclusive="false">
-        <FromPopulation actor="MqTcp"/>
+        <FromPopulation actor="MqTcpGet"/>
       </ActorReference>
       <SetVariable name="StartTime">
         <Script>Now</Script>
@@ -394,7 +395,7 @@
       <Source ref="SendMqttMessage"/>
       <Source ref="SendMqMessage"/>
     </CombinedExecutionsGraph>
-    <CombinedExecutionTimeGraph title="Time sending Messages" legend="false">
+    <CombinedExecutionTimeGraph title="Time sending Messages" legend="true">
       <Source ref="SendXmppMessage"/>
       <Source ref="SendMqttMessage"/>
       <Source ref="SendMqMessage"/>
@@ -404,7 +405,7 @@
       <Source ref="ProcessMqttMessage"/>
       <Source ref="ProcessMqMessage"/>
     </CombinedExecutionsGraph>
-    <CombinedExecutionTimeGraph title="Time processing Messages" legend="false">
+    <CombinedExecutionTimeGraph title="Time processing Messages" legend="true">
       <Source ref="ProcessXmppMessage"/>
       <Source ref="ProcessMqttMessage"/>
       <Source ref="ProcessMqMessage"/>

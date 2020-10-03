@@ -304,19 +304,9 @@
             Queue Name
             </summary>
         </member>
-        <member name="P:TAG.Simulator.MQ.Actors.Subscribe.Event">
+        <member name="P:TAG.Simulator.MQ.Actors.Subscribe.ExtEvent">
             <summary>
-            Event Name
-            </summary>
-        </member>
-        <member name="P:TAG.Simulator.MQ.Actors.Subscribe.Variable">
-            <summary>
-            Message variable name
-            </summary>
-        </member>
-        <member name="P:TAG.Simulator.MQ.Actors.Subscribe.ActorName">
-            <summary>
-            Actor variable name
+            External Event Name
             </summary>
         </member>
         <member name="M:TAG.Simulator.MQ.Actors.Subscribe.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">

@@ -192,18 +192,13 @@ namespace TAG.Simulator.MQ.Actors
 					{
 						SubscriptionState Subscription = new SubscriptionState()
 						{
-							Event = Expression.Transform(Subscribe.Event, "{", "}", Properties),
+							ExtEventName = Expression.Transform(Subscribe.ExtEvent, "{", "}", Properties),
 							Queue = Expression.Transform(Subscribe.Queue, "{", "}", Properties),
-							Variable = Expression.Transform(Subscribe.Variable, "{", "}", Properties),
-							ActorName = Expression.Transform(Subscribe.ActorName, "{", "}", Properties),
 							Actor = this,
 							Model = this.Model,
 							Cancel = new ManualResetEvent(false),
 							Stopped = new TaskCompletionSource<bool>()
 						};
-
-						if (!this.Model.TryGetEvent(Subscription.Event, out Subscription.EventReference))
-							throw new Exception("Event not found: " + Subscription.Event);
 
 						Subscription.Subscribe(Client);
 						Subscriptions.Add(Subscription);
@@ -218,12 +213,9 @@ namespace TAG.Simulator.MQ.Actors
 
 		private class SubscriptionState : IDisposable
 		{
-			public IEvent EventReference;
-			public string Event;
+			public string ExtEventName;
 			public string Queue;
-			public string Variable;
-			public string ActorName;
-			public IActor Actor;
+			public MqActorTcp Actor;
 			public Model Model;
 			public ManualResetEvent Cancel;
 			public TaskCompletionSource<bool> Stopped;
@@ -240,15 +232,9 @@ namespace TAG.Simulator.MQ.Actors
 
 			private Task MessageReceived(object Sender, MqMessageEventArgs e)
 			{
-				Variables Variables = this.Model.GetEventVariables(this.Actor);
-
-				if (!string.IsNullOrEmpty(this.ActorName))
-					Variables[this.ActorName] = this.Actor.ActivityObject;
-
-				if (!string.IsNullOrEmpty(this.Variable))
-					Variables[this.Variable] = e.Message;
-
-				this.EventReference.Trigger(Variables);
+				this.Model.ExternalEvent(this.Actor, this.ExtEventName,
+					new KeyValuePair<string, object>("Message", e.Message),
+					new KeyValuePair<string, object>("Client", this.Actor.client));
 
 				return Task.CompletedTask;
 			}
