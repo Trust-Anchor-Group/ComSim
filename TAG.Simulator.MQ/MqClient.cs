@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using System.Threading.Tasks;
 using IBM.WMQ;
 using Waher.Events;
 using Waher.Networking.Sniffers;
@@ -40,8 +41,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="Sniffers">Sniffers</param>
 		public MqClient(string QueueManager, string Channel, string Host, int Port,
 			params ISniffer[] Sniffers)
-			: this(QueueManager, Channel, "TLS_RSA_WITH_AES_128_CBC_SHA256",
-			"SSL_RSA_WITH_AES_128_CBC_SHA256", "*USER", Host, Port, Sniffers)
+			: this(QueueManager, Channel, string.Empty, string.Empty, string.Empty, Host, Port, Sniffers)
 		{
 		}
 
@@ -78,6 +78,43 @@ namespace TAG.Simulator.MQ
 		}
 
 		/// <summary>
+		/// Connects to the Queue Manager asynchronously.
+		/// </summary>
+		/// <param name="UserName">User name</param>
+		/// <param name="Password">Password</param>
+		public Task ConnectAsync(string UserName, string Password)
+		{
+			TaskCompletionSource<bool> Result = new TaskCompletionSource<bool>();
+			Thread T = new Thread(this.ConnectionThread)
+			{
+				Name = "Connecting " + UserName,
+				Priority = ThreadPriority.BelowNormal
+			};
+
+			T.Start(new object[] { UserName, Password, Result });
+
+			return Result.Task;
+		}
+
+		private void ConnectionThread(object State)
+		{
+			object[] P = (object[])State;
+			string UserName = (string)P[0];
+			string Password = (string)P[1];
+			TaskCompletionSource<bool> Result = (TaskCompletionSource<bool>)P[2];
+
+			try
+			{
+				this.Connect(UserName, Password);
+				Result.TrySetResult(true);
+			}
+			catch (Exception ex)
+			{
+				Result.TrySetException(ex);
+			}
+		}
+
+		/// <summary>
 		/// Connects to the Queue Manager
 		/// </summary>
 		/// <param name="UserName">User name</param>
@@ -94,11 +131,17 @@ namespace TAG.Simulator.MQ
 					{ MQC.PORT_PROPERTY, this.port },
 					{ MQC.CHANNEL_PROPERTY, this.channel },
 					{ MQC.USER_ID_PROPERTY, UserName },
-					{ MQC.PASSWORD_PROPERTY, Password },
-					//{ MQC.SSL_CIPHER_SPEC_PROPERTY, this.cipher },
-					//{ MQC.SSL_CIPHER_SUITE_PROPERTY, this.cipherSuite },
-					//{ MQC.SSL_CERT_STORE_PROPERTY, this.certificateStore }
+					{ MQC.PASSWORD_PROPERTY, Password }
 				};
+
+				if (!string.IsNullOrEmpty(this.cipher))
+					ConnectionParameters[MQC.SSL_CIPHER_SPEC_PROPERTY] = this.cipher;
+
+				if (!string.IsNullOrEmpty(this.cipher))
+					ConnectionParameters[MQC.SSL_CIPHER_SUITE_PROPERTY] = this.cipherSuite;
+
+				if (!string.IsNullOrEmpty(this.cipher))
+					ConnectionParameters[MQC.SSL_CERT_STORE_PROPERTY] = this.certificateStore;
 
 				this.manager = new MQQueueManager(this.queueManager, ConnectionParameters);
 			}
@@ -261,9 +304,12 @@ namespace TAG.Simulator.MQ
 		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, ManualResetEvent Stopped,
 			MqMessageEventHandler Callback, object State)
 		{
-			Thread T = new Thread(this.SubscriptionThread);
-			T.Name = "MQ Queue Subcription " + QueueName;
-			T.Priority = ThreadPriority.BelowNormal;
+			Thread T = new Thread(this.SubscriptionThread)
+			{
+				Name = "MQ Queue Subcription " + QueueName,
+				Priority = ThreadPriority.BelowNormal
+			};
+
 			T.Start(new object[] { QueueName, Cancel, Stopped, Callback, State });
 		}
 

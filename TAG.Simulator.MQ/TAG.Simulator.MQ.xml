@@ -4,6 +4,36 @@
         <name>TAG.Simulator.MQ</name>
     </assembly>
     <members>
+        <member name="T:TAG.Simulator.MQ.AccountCredentials">
+            <summary>
+            MQ Account credentials
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.AccountCredentials.#ctor">
+            <summary>
+            MQ Account credentials
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.AccountCredentials.ObjectId">
+            <summary>
+            Object ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.AccountCredentials.Host">
+            <summary>
+            Broker host name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.AccountCredentials.UserName">
+            <summary>
+            Account user name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.AccountCredentials.Password">
+            <summary>
+            Password hash
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.MQ.Actors.MqActorTcp">
             <summary>
             MQ Actor connecting to the MQ network using traditional TCP.
@@ -136,6 +166,13 @@
             <summary>
             <see cref="M:System.IDisposable.Dispose"/>
             </summary>
+        </member>
+        <member name="M:TAG.Simulator.MQ.MqClient.ConnectAsync(System.String,System.String)">
+            <summary>
+            Connects to the Queue Manager asynchronously.
+            </summary>
+            <param name="UserName">User name</param>
+            <param name="Password">Password</param>
         </member>
         <member name="M:TAG.Simulator.MQ.MqClient.Connect(System.String,System.String)">
             <summary>

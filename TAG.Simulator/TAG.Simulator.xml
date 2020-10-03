@@ -16,15 +16,21 @@
             Event arguments for key events.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.Events.KeyEventArgs.#ctor(System.String)">
+        <member name="M:TAG.Simulator.Events.KeyEventArgs.#ctor(System.String,System.String)">
             <summary>
             Event arguments for key events.
             </summary>
             <param name="Name">Key name.</param>
+            <param name="LookupValue">Lookup value.</param>
         </member>
         <member name="P:TAG.Simulator.Events.KeyEventArgs.Name">
             <summary>
             Key name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Events.KeyEventArgs.LookupValue">
+            <summary>
+            Key lookup value.
             </summary>
         </member>
         <member name="P:TAG.Simulator.Events.KeyEventArgs.Value">
@@ -469,11 +475,12 @@
             <param name="MaxValueExclusive">Maximum value (exclusive)</param>
             <returns>Random integer value 0 - <paramref name="MaxValueExclusive"/>-1.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.GetKey(System.String)">
+        <member name="M:TAG.Simulator.Model.GetKey(System.String,System.String)">
             <summary>
             Gets a key from the database. If it does not exist, it prompts the user for input.
             </summary>
             <param name="KeyName">Name of key.</param>
+            <param name="LookupValue">Lookup value. Can be used to return different values for different keys, and for importing keys.</param>
             <returns>Value of key.</returns>
         </member>
         <member name="E:TAG.Simulator.Model.OnGetKey">

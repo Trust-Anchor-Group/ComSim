@@ -1,22 +1,22 @@
 ﻿using System;
 using Waher.Persistence.Attributes;
 
-namespace TAG.Simulator.MQTT
+namespace TAG.Simulator.MQ
 {
 	/// <summary>
-	/// MQTT Account credentials
+	/// MQ Account credentials
 	/// </summary>
 	[CollectionName("MqttCredentials")]
-	[Index("Domain", "UserName")]
+	[Index("Host", "UserName")]
 	public class AccountCredentials
 	{
 		private string objectId = null;
-		private string domain = string.Empty;
+		private string host = string.Empty;
 		private string userName = string.Empty;
 		private string password = string.Empty;
 
 		/// <summary>
-		/// MQTT Account credentials
+		/// MQ Account credentials
 		/// </summary>
 		public AccountCredentials()
 		{
@@ -33,12 +33,12 @@ namespace TAG.Simulator.MQTT
 		}
 
 		/// <summary>
-		/// Broker domain name
+		/// Broker host name
 		/// </summary>
-		public string Domain
+		public string Host
 		{
-			get => this.domain;
-			set => this.domain = value;
+			get => this.host;
+			set => this.host = value;
 		}
 
 		/// <summary>

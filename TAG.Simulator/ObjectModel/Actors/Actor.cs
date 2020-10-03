@@ -125,8 +125,15 @@ namespace TAG.Simulator.ObjectModel.Actors
 		{
 			await base.Start();
 
+			Console.Out.Write(this.id);
+
 			foreach (Actor Actor in this.instances)
+			{
 				await Actor.StartInstance();
+				Console.Out.Write('.');
+			}
+
+			Console.Out.WriteLine();
 		}
 
 		/// <summary>

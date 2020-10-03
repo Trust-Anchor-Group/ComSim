@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Schema;
 using TAG.Simulator;
 using TAG.Simulator.Events;
+using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Content.Xsl;
 using Waher.Events;
@@ -55,18 +56,25 @@ namespace ComSim
 	/// -css RELNAME          Adds a CSS file declaration to the top of markdown
 	///                       reports. The reference must be relative to the generated
 	///                       report file.
+	/// -ik KEYNAME FILENAME  Import keys from a CSV file. The CSV file must consist of
+	///                       two columns. The first, contains lookup values, the second,
+	///                       the key values corresponding to the lookup values. The
+	///                       KEYNAME argument defines the key name to which the keys
+	///                       are associated. FILENAME must point to a CSV file.
 	/// -?                    Displays command-line help.
 	/// </summary>
 	class Program
 	{
+		private static readonly Dictionary<string, Dictionary<string, string>> importedKeys = new Dictionary<string, Dictionary<string, string>>();
+
 		static int Main(string[] args)
 		{
 			try
 			{
-				XmlDocument Model = null;
-				Encoding Encoding = Encoding.UTF8;
 				LinkedList<string> Master = new LinkedList<string>();
 				LinkedList<string> Css = new LinkedList<string>();
+				Encoding Encoding = Encoding.UTF8;
+				XmlDocument Model = null;
 				string ProgramDataFolder = null;
 				string SnifferFolder = null;
 				string LogFileName = null;
@@ -221,6 +229,37 @@ namespace ComSim
 							Css.AddLast(args[i++]);
 							break;
 
+						case "-ik":
+							if (i >= c)
+								throw new Exception("Missing key name.");
+
+							string KeyName = args[i++];
+
+							if (i >= c)
+								throw new Exception("Missing CSV filename.");
+
+							string CsvFileName = args[i++];
+							string Csv = File.ReadAllText(CsvFileName);
+							Dictionary<string, string> Lookup;
+
+							if (!importedKeys.TryGetValue(KeyName, out Lookup))
+							{ 
+								Lookup = new Dictionary<string, string>();
+								importedKeys[KeyName] = Lookup;
+							}
+
+							string[][] Records = CSV.Parse(Csv);
+
+							foreach (string[] Record in Records)
+							{
+								if (Record.Length != 2)
+									throw new Exception("CSV file must contain records with two columns: Lookup, and value.");
+
+								Lookup[Record[0]] = Record[1];
+							}
+
+							break;
+
 						case "-?":
 							Help = true;
 							break;
@@ -264,6 +303,11 @@ namespace ComSim
 					Console.Out.WriteLine("-css RELNAME          Adds a CSS file declaration to the top of markdown");
 					Console.Out.WriteLine("                      reports. The reference must be relative to the generated");
 					Console.Out.WriteLine("                      report file.");
+					Console.Out.WriteLine("-ik KEYNAME FILENAME  Import keys from a CSV file. The CSV file must consist of");
+					Console.Out.WriteLine("                      two columns. The first, contains lookup values, the second,");
+					Console.Out.WriteLine("                      the key values corresponding to the lookup values. The");
+					Console.Out.WriteLine("                      KEYNAME argument defines the key name to which the keys");
+					Console.Out.WriteLine("                      are associated. FILENAME must point to a CSV file.");
 					Console.Out.WriteLine("-?                    Displays command-line help.");
 					Console.Out.WriteLine();
 
@@ -550,8 +594,32 @@ namespace ComSim
 
 		private static void Model_OnGetKey(object Sender, KeyEventArgs e)
 		{
-			Console.Out.Write("Input value for key " + e.Name + ": ");
-			e.Value = Console.In.ReadLine();
+			if (importedKeys.TryGetValue(e.Name, out Dictionary<string, string> Keys) &&
+				Keys.TryGetValue(e.LookupValue, out string Key))
+			{
+				e.Value = Key;
+
+				Console.Out.Write("Key for ");
+				Console.Out.Write(e.Name);
+				Console.Out.Write(".");
+				Console.Out.Write(e.LookupValue);
+				Console.Out.WriteLine(" imported.");
+			}
+			else
+			{
+				Console.Out.Write("Input value for key ");
+				Console.Out.Write(e.Name);
+
+				if (!string.IsNullOrEmpty(e.LookupValue))
+				{
+					Console.Out.Write('.');
+					Console.Out.Write(e.LookupValue);
+				}
+
+				Console.Out.Write(": ");
+
+				e.Value = Console.In.ReadLine();
+			}
 		}
 
 		private static void WriteLine(string Row, ConsoleColor ForegroundColor, ConsoleColor BackgrounColor)

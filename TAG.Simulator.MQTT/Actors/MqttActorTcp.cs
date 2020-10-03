@@ -178,7 +178,7 @@ namespace TAG.Simulator.MQTT.Actors
 				{
 					Domain = this.domain,
 					UserName = this.userName,
-					Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password)
+					Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
 				};
 			}
 

@@ -29,11 +29,14 @@ namespace TAG.Simulator.MQ.Actors
 		/// </summary>
 		public const string MqSchema = "TAG.Simulator.MQ.Schema.ComSimMq.xsd";
 
+		private AccountCredentials credentials;
 		private MqClient client;
 		private ISniffer sniffer;
+		private Task connectionTask;
 		private string queueManager;
 		private string channel;
-		private string queue;
+		private string userName;
+		private string password;
 		private string cipher;
 		private string cipherSuite;
 		private string certificateStore;
@@ -103,10 +106,11 @@ namespace TAG.Simulator.MQ.Actors
 			this.port = XML.Attribute(Definition, "port", 1414);
 			this.queueManager = XML.Attribute(Definition, "queueManager");
 			this.channel = XML.Attribute(Definition, "channel");
-			this.queue = XML.Attribute(Definition, "queue");
-			this.cipher = XML.Attribute(Definition, "cipher", "TLS_RSA_WITH_AES_128_CBC_SHA256");
-			this.cipherSuite = XML.Attribute(Definition, "cipherSuite", "SSL_RSA_WITH_AES_128_CBC_SHA256");
-			this.certificateStore = XML.Attribute(Definition, "certificateStore", "*USER");
+			this.userName = XML.Attribute(Definition, "userName");
+			this.password = XML.Attribute(Definition, "password");
+			this.cipher = XML.Attribute(Definition, "cipher");
+			this.cipherSuite = XML.Attribute(Definition, "cipherSuite");
+			this.certificateStore = XML.Attribute(Definition, "certificateStore");
 
 			return base.FromXml(Definition);
 		}
@@ -127,7 +131,8 @@ namespace TAG.Simulator.MQ.Actors
 				port = this.port,
 				queueManager = this.queueManager,
 				channel = this.channel,
-				queue = this.queue + InstanceIndex.ToString(),
+				userName = this.userName + InstanceIndex.ToString(),
+				password = this.password,
 				cipher = this.cipher,
 				cipherSuite = this.cipherSuite,
 				certificateStore = this.certificateStore
@@ -139,25 +144,41 @@ namespace TAG.Simulator.MQ.Actors
 		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
-		public override Task InitializeInstance()
+		public override async Task InitializeInstance()
 		{
-			this.sniffer = this.Model.GetSniffer(this.queue);
+			this.credentials = await Database.FindFirstIgnoreRest<AccountCredentials>(new FilterAnd(
+				new FilterFieldEqualTo("Host", this.host),
+				new FilterFieldEqualTo("UserName", this.userName)));
+
+			if (this.credentials is null)
+			{
+				this.credentials = new AccountCredentials()
+				{
+					Host = this.host,
+					UserName = this.userName,
+					Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
+				};
+			}
+
+			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 
 			if (this.sniffer is null)
 				this.client = new MqClient(this.queueManager, this.channel, this.cipher, this.cipherSuite, this.certificateStore, this.host, this.port);
 			else
 				this.client = new MqClient(this.queueManager, this.channel, this.cipher, this.cipherSuite, this.certificateStore, this.host, this.port, this.sniffer);
 
-			return Task.CompletedTask;
+			this.connectionTask = this.client.ConnectAsync(this.credentials.UserName, this.credentials.Password);
 		}
 
 		/// <summary>
 		/// Starts an instance of an actor.
 		/// </summary>
-		public override Task StartInstance()
+		public override async Task StartInstance()
 		{
-			this.client.Connect("USER", "PASSWORD");
-			return Task.CompletedTask;
+			await this.connectionTask;
+
+			if (string.IsNullOrEmpty(this.credentials.ObjectId))
+				await Database.Insert(this.credentials);
 		}
 
 		/// <summary>

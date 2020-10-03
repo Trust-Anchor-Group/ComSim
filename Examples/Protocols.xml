@@ -2,6 +2,7 @@
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        xmlns:mqtt="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+       xmlns:mq="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
        xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
@@ -77,7 +78,9 @@
           	Add-LocalGroupMember -Group mqclient -Member $UserName
           }
       
-      **Note**: The above script assume you have setup the MQ broker using the tutorial mentioned
+      **Note**: The `CSV` file should also be imported to the simulator using the `-ik MqPassword Users.csv` option.
+      
+      **Note 2**: The above script assume you have setup the MQ broker using the tutorial mentioned
       above. This tutorial provides authorization to queues based on membership in the local `mqclient`
       group. More detailed authorization schemes are possible. You need to adapt the script accordingly.
       
@@ -135,6 +138,8 @@
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
     </mqtt:MqttActorTcp>
+    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcp" N="100" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
+    </mq:MqActorTcp>
   </Actors>
   <Distributions>
     <Uniform id="TenThousandPerMinute" from="0" to="60" N="10000"/>

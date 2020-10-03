@@ -468,8 +468,8 @@ namespace TAG.Simulator.XMPP.Actors
 			if (this.credentials is null)
 			{
 				Result.AllowRegistration = true;
-				Result.FormSignatureKey = await this.Model.GetKey(this.apiKey);
-				Result.FormSignatureSecret = await this.Model.GetKey(this.secret);
+				Result.FormSignatureKey = await this.Model.GetKey(this.apiKey, string.Empty);
+				Result.FormSignatureSecret = await this.Model.GetKey(this.secret, string.Empty);
 				Result.Password = Convert.ToBase64String(this.Model.GetRandomBytes(32));
 			}
 			else

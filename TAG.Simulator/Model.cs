@@ -694,34 +694,39 @@ namespace TAG.Simulator
 		/// Gets a key from the database. If it does not exist, it prompts the user for input.
 		/// </summary>
 		/// <param name="KeyName">Name of key.</param>
+		/// <param name="LookupValue">Lookup value. Can be used to return different values for different keys, and for importing keys.</param>
 		/// <returns>Value of key.</returns>
-		public async Task<string> GetKey(string KeyName)
+		public async Task<string> GetKey(string KeyName, string LookupValue)
 		{
+			string Key = "KEY." + KeyName;
 			string Result;
+
+			if (!string.IsNullOrEmpty(LookupValue))
+				Key += "." + LookupValue;
 
 			lock (this.keyValues)
 			{
-				if (this.keyValues.TryGetValue(KeyName, out Result))
+				if (this.keyValues.TryGetValue(Key, out Result))
 					return Result;
 			}
 
-			Result = await RuntimeSettings.GetAsync("KEY." + KeyName, string.Empty);
+			Result = await RuntimeSettings.GetAsync(Key, string.Empty);
 
 			if (string.IsNullOrEmpty(Result))
 			{
-				KeyEventArgs e = new KeyEventArgs(KeyName);
+				KeyEventArgs e = new KeyEventArgs(KeyName, LookupValue);
 				this.OnGetKey?.Invoke(this, e);
 
 				if (string.IsNullOrEmpty(e.Value))
 					throw new Exception("Unable to get value for key " + KeyName);
 
 				Result = e.Value;
-				await RuntimeSettings.SetAsync("KEY." + KeyName, Result);
+				await RuntimeSettings.SetAsync(Key, Result);
 			}
 
 			lock (this.keyValues)
 			{
-				this.keyValues[KeyName] = Result;
+				this.keyValues[Key] = Result;
 			}
 
 			return Result;
