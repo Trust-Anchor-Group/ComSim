@@ -44,12 +44,14 @@ namespace TAG.Simulator.MQ.Tasks
 		/// Performs work defined by the task.
 		/// </summary>
 		/// <param name="Client">MQ Client</param>
-		public override void DoWork(MqClient Client)
+		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
+		public override bool DoWork(MqClient Client)
 		{
 			if (this.cancel?.WaitOne(0) ?? false)
 			{
 				Client.Information("Cancelling subscription to messages from " + this.queue);
 				this.stopped?.TrySetResult(true);
+				return false;
 			}
 			else
 			{
@@ -67,7 +69,7 @@ namespace TAG.Simulator.MQ.Tasks
 					}
 				}
 
-				Client.QueueTask(this);
+				return true;
 			}
 		}
 	}

@@ -26,6 +26,7 @@ namespace TAG.Simulator.MQ.Tasks
 		/// Performs work defined by the task.
 		/// </summary>
 		/// <param name="Client">MQ Client</param>
-		public abstract void DoWork(MqClient Client);
+		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
+		public abstract bool DoWork(MqClient Client);
 	}
 }

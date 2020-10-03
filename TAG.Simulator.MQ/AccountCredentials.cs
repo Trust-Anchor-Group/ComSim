@@ -6,7 +6,7 @@ namespace TAG.Simulator.MQ
 	/// <summary>
 	/// MQ Account credentials
 	/// </summary>
-	[CollectionName("MqttCredentials")]
+	[CollectionName("MqCredentials")]
 	[Index("Host", "UserName")]
 	public class AccountCredentials
 	{

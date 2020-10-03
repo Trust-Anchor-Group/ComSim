@@ -21,8 +21,6 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		public const int DefaultPort = 1414;
 
-		private readonly LinkedList<MqTask> tasks = new LinkedList<MqTask>();
-		private readonly AutoResetEvent taskAdded = new AutoResetEvent(false);
 		private readonly Dictionary<string, MQQueue> inputQueues = new Dictionary<string, MQQueue>();
 		private readonly Dictionary<string, MQQueue> outputQueues = new Dictionary<string, MQQueue>();
 		private readonly string queueManager;
@@ -32,7 +30,6 @@ namespace TAG.Simulator.MQ
 		private readonly string certificateStore;
 		private readonly string host;
 		private readonly int port;
-		private readonly Thread thread;
 		private MQQueueManager manager;
 		private bool terminated;
 
@@ -71,14 +68,6 @@ namespace TAG.Simulator.MQ
 			this.certificateStore = CertificateStore;
 			this.host = Host;
 			this.port = Port;
-
-			this.thread = new Thread(this.TaskExecutor)
-			{
-				Name = "MQ Executor",
-				Priority = ThreadPriority.BelowNormal
-			};
-
-			this.thread.Start();
 		}
 
 		/// <summary>
@@ -86,85 +75,33 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		public void Dispose()
 		{
-			this.terminated = true;
-			this.taskAdded.Set();
-		}
-
-		private void TaskExecutor()
-		{
 			try
 			{
-				MqTask Item;
+				this.terminated = true;
 
-				while (!this.terminated)
+				lock (this.inputQueues)
 				{
-					if (!this.taskAdded.WaitOne(10))
-						continue;
+					foreach (MQQueue Queue in this.inputQueues.Values)
+						Queue.Close();
+				}
 
-					while (true)
-					{
-						lock (this.tasks)
-						{
-							if (this.tasks.First is null)
-								break;
+				lock (this.outputQueues)
+				{
+					foreach (MQQueue Queue in this.outputQueues.Values)
+						Queue.Close();
+				}
 
-							Item = this.tasks.First.Value;
-							this.tasks.RemoveFirst();
-						}
+				if (!(this.manager is null))
+				{
+					this.Information("Closing...");
 
-						try
-						{
-							Item.DoWork(this);
-						}
-						catch (Exception ex)
-						{
-							this.Exception(ex);
-						}
-					}
+					this.manager?.Close();
+					this.manager = null;
 				}
 			}
 			catch (Exception ex)
 			{
 				Log.Critical(ex);
-			}
-			finally
-			{
-				try
-				{
-					this.taskAdded.Dispose();
-
-					lock (this.tasks)
-					{
-						foreach (MqTask Task in this.tasks)
-							Task.Dispose();
-
-						this.tasks.Clear();
-					}
-
-					lock (this.inputQueues)
-					{
-						foreach (MQQueue Queue in this.inputQueues.Values)
-							Queue.Close();
-					}
-
-					lock (this.outputQueues)
-					{
-						foreach (MQQueue Queue in this.outputQueues.Values)
-							Queue.Close();
-					}
-
-					if (!(this.manager is null))
-					{
-						this.Information("Closing...");
-
-						this.manager?.Close();
-						this.manager = null;
-					}
-				}
-				catch (Exception ex)
-				{
-					Log.Critical(ex);
-				}
 			}
 		}
 
@@ -176,16 +113,33 @@ namespace TAG.Simulator.MQ
 		public Task ConnectAsync(string UserName, string Password)
 		{
 			ConnectionTask Item = new ConnectionTask(UserName, Password);
-			this.QueueTask(Item);
+			this.ExecuteTask(Item);
 			return Item.Completed;
 		}
 
-		internal void QueueTask(MqTask Item)
+		private void ExecuteTask(MqTask Item)
 		{
-			lock (this.tasks)
+			Thread T = new Thread(this.TaskExecutor)
 			{
-				this.tasks.AddLast(Item);
-				this.taskAdded.Set();
+				Name = "MQ Async Thread",
+				Priority = ThreadPriority.BelowNormal
+			};
+
+			T.Start(Item);
+		}
+
+		private void TaskExecutor(object State)
+		{
+			MqTask Item = (MqTask)State;
+
+			try
+			{
+				while (!this.terminated && Item.DoWork(this))
+					;
+			}
+			catch (Exception ex)
+			{
+				Log.Critical(ex);
 			}
 		}
 
@@ -194,7 +148,7 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		/// <param name="UserName">User name</param>
 		/// <param name="Password">Password</param>
-		internal void Connect(string UserName, string Password)
+		public void Connect(string UserName, string Password)
 		{
 			this.Information("Connecting...");
 			try
@@ -235,7 +189,7 @@ namespace TAG.Simulator.MQ
 		public Task PutAsync(string QueueName, string Message)
 		{
 			PutTask Item = new PutTask(QueueName, Message);
-			this.QueueTask(Item);
+			this.ExecuteTask(Item);
 			return Item.Completed;
 		}
 
@@ -244,7 +198,7 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		/// <param name="QueueName">Queue name.</param>
 		/// <param name="Message">Message</param>
-		internal void Put(string QueueName, string Message)
+		public void Put(string QueueName, string Message)
 		{
 			try
 			{
@@ -284,7 +238,7 @@ namespace TAG.Simulator.MQ
 		/// </summary>
 		/// <param name="QueueName">Name of queue.</param>
 		/// <returns>Message read.</returns>
-		internal string GetOne(string QueueName)
+		public string GetOne(string QueueName)
 		{
 			return this.GetOne(QueueName, MQC.MQWI_UNLIMITED);
 		}
@@ -295,7 +249,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="QueueName">Name of queue.</param>
 		/// <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
 		/// <returns>Message read, if received within the given time, null otherwise.</returns>
-		internal string GetOne(string QueueName, int TimeoutMilliseconds)
+		public string GetOne(string QueueName, int TimeoutMilliseconds)
 		{
 			string Result = null;
 
@@ -360,7 +314,7 @@ namespace TAG.Simulator.MQ
 		public Task<string> GetOneAsync(string QueueName, int TimeoutMilliseconds)
 		{
 			GetTask Item = new GetTask(QueueName, TimeoutMilliseconds);
-			this.QueueTask(Item);
+			this.ExecuteTask(Item);
 			return Item.Completed;
 		}
 
@@ -400,7 +354,7 @@ namespace TAG.Simulator.MQ
 		{
 			this.Information("Subscribing to messages from " + QueueName);
 			SubscriptionTask Item = new SubscriptionTask(QueueName, Cancel, Stopped, Callback, State);
-			this.QueueTask(Item);
+			this.ExecuteTask(Item);
 		}
 
 	}

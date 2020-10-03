@@ -8,7 +8,7 @@ using Waher.Networking.Sniffers;
 namespace TAG.Simulator.MQ.Test
 {
 	[TestClass]
-	public class MqTests
+	public class MqAsyncTests
 	{
 		private ConsoleOutSniffer sniffer;
 		private MqClient client;

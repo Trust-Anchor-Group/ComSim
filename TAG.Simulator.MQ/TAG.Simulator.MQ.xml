@@ -511,6 +511,7 @@
             Performs work defined by the task.
             </summary>
             <param name="Client">MQ Client</param>
+            <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.GetTask">
             <summary>
@@ -532,6 +533,7 @@
             Performs work defined by the task.
             </summary>
             <param name="Client">MQ Client</param>
+            <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.MqTask">
             <summary>
@@ -553,6 +555,7 @@
             Performs work defined by the task.
             </summary>
             <param name="Client">MQ Client</param>
+            <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.PutTask">
             <summary>
@@ -574,6 +577,7 @@
             Performs work defined by the task.
             </summary>
             <param name="Client">MQ Client</param>
+            <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.SubscriptionTask">
             <summary>
@@ -595,6 +599,7 @@
             Performs work defined by the task.
             </summary>
             <param name="Client">MQ Client</param>
+            <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
     </members>
 </doc>
