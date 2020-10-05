@@ -648,6 +648,9 @@ namespace TAG.Simulator
 					if (this.sampleEpsilon)
 						this.epsilon.Sample(Epsilon);
 
+					if (Epsilon >= 1000)
+						Log.Warning("Simulation step diverges. Either a performance barrier is reached, or something is blocking the simulation core.");
+
 					if ((Epsilon > 1 && Done.Task.IsCompleted) || Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
 					{
 						Result = false;
