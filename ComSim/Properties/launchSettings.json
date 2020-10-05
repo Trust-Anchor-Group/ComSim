@@ -2,7 +2,7 @@
   "profiles": {
     "ComSim": {
       "commandName": "Project",
-      "commandLineArgs": "-d ..\\..\\Debug\\netcoreapp2.2\\Data -e -i ..\\..\\..\\..\\Examples\\Breakpoint.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Breakpoint.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Breakpoint.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\Breakpoint.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
+      "commandLineArgs": "-d ..\\..\\Debug\\netcoreapp2.2\\Data -e -i ..\\..\\..\\..\\Examples\\BreakingPoint.xml -s Sniffers -st ..\\..\\..\\..\\..\\Examples\\SnifferXmlToHtml.xslt -mr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\BreakingPoint.md\" -xr \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\BreakingPoint.xml\" -master /Master.md -l \"C:\\ProgramData\\IoT Gateway\\Root\\Reports\\BreakingPoint.Log.xml\" -lt \"C:\\ProgramData\\IoT Gateway\\Transforms\\EventXmlToHtml.xslt\""
     }
   }
 }

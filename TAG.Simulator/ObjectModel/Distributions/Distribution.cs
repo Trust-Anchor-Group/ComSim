@@ -129,16 +129,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		{
 			Output.Append(this.id);
 			Output.Append("PDF(t):=");
-			if (this.n != 1 || this.Model.TimeCycleUnits != 1)
+			if (this.n != 1)
 			{
 				Output.Append(CommonTypes.Encode(this.n));
-
-				if (this.Model.TimeCycleUnits != 1)
-				{
-					Output.Append('/');
-					Output.Append(CommonTypes.Encode(this.Model.TimeCycleUnits));
-				}
-
 				Output.Append('*');
 			}
 			Output.Append('(');

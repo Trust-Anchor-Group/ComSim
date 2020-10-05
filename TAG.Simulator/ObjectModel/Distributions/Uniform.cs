@@ -110,7 +110,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				Output.Append(CommonTypes.Encode(this.to));
 				Output.Append(" or t>=");
 				Output.Append(CommonTypes.Encode(this.from));
-				Output.Append(" ? 1 : 0");
+				Output.Append(" ? 1/");
+				Output.Append(CommonTypes.Encode(this.Model.TimeCycleUnits - (this.from - this.to)));
+				Output.Append(" : 0");
 			}
 			else
 			{
@@ -118,7 +120,9 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				Output.Append(CommonTypes.Encode(this.from));
 				Output.Append(" and t<=");
 				Output.Append(CommonTypes.Encode(this.to));
-				Output.Append(" ? 1 : 0");
+				Output.Append(" ? 1/");
+				Output.Append(CommonTypes.Encode(this.to - this.from));
+				Output.Append(" : 0");
 			}
 		}
 
