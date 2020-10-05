@@ -475,6 +475,26 @@
             <param name="EmitDots">If dots should be emitted to the console to mark the passage of time.</param>
             <returns>If simulation completed successfully.</returns>
         </member>
+        <member name="E:TAG.Simulator.Model.OnInitializing">
+            <summary>
+            Event raised when model is being initialized.
+            </summary>
+        </member>
+        <member name="E:TAG.Simulator.Model.OnStarting">
+            <summary>
+            Event raised when model is being started.
+            </summary>
+        </member>
+        <member name="E:TAG.Simulator.Model.OnRunning">
+            <summary>
+            Event raised when model is about to run.
+            </summary>
+        </member>
+        <member name="E:TAG.Simulator.Model.OnFinalizing">
+            <summary>
+            Event raised when model is being finalized.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.Model.GetTimeCoordinates(System.DateTime)">
             <summary>
             Converts a <see cref="T:System.DateTime"/> to uncycled (linear) time coordinates.

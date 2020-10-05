@@ -486,21 +486,23 @@
             Task of connecting to an MQ Broker.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.#ctor(System.String,System.String)">
+        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.#ctor(TAG.Simulator.MQ.MqClient,System.String,System.String)">
             <summary>
             Task of connecting to an MQ Broker.
             </summary>
+            <param name="Client">MQ Client</param>
+            <param name="UserName">User Name</param>
+            <param name="Password">Password</param>
         </member>
         <member name="P:TAG.Simulator.MQ.Tasks.ConnectionTask.Completed">
             <summary>
             Completion task.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.DoWork(TAG.Simulator.MQ.MqClient)">
+        <member name="M:TAG.Simulator.MQ.Tasks.ConnectionTask.DoWork">
             <summary>
             Performs work defined by the task.
             </summary>
-            <param name="Client">MQ Client</param>
             <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.GetTask">
@@ -508,21 +510,23 @@
             Gets a message on a queue.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.#ctor(System.String,System.Int32)">
+        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.#ctor(TAG.Simulator.MQ.MqClient,System.String,System.Int32)">
             <summary>
             Gets a message on a queue.
             </summary>
+            <param name="Client">MQ Client</param>
+            <param name="Queue">Queue Name</param>
+            <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
         </member>
         <member name="P:TAG.Simulator.MQ.Tasks.GetTask.Completed">
             <summary>
             Completion task.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.DoWork(TAG.Simulator.MQ.MqClient)">
+        <member name="M:TAG.Simulator.MQ.Tasks.GetTask.DoWork">
             <summary>
             Performs work defined by the task.
             </summary>
-            <param name="Client">MQ Client</param>
             <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.MqTask">
@@ -530,9 +534,14 @@
             Abstract base class for MQ tasks.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.#ctor">
+        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.#ctor(TAG.Simulator.MQ.MqClient)">
             <summary>
             Abstract base class for MQ tasks.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.MQ.Tasks.MqTask.Client">
+            <summary>
+            MQ Client
             </summary>
         </member>
         <member name="M:TAG.Simulator.MQ.Tasks.MqTask.Dispose">
@@ -540,33 +549,44 @@
             <see cref="M:System.IDisposable.Dispose"/>
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.DoWork(TAG.Simulator.MQ.MqClient)">
+        <member name="M:TAG.Simulator.MQ.Tasks.MqTask.DoWork">
             <summary>
             Performs work defined by the task.
             </summary>
-            <param name="Client">MQ Client</param>
             <returns>If work should be continued (true), or if it is completed (false).</returns>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.MqTasks">
+            <summary>
+            Static class, managing MQ-related tasks that must be executed.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.MQ.Tasks.MqTaskThread">
+            <summary>
+            Manages a thread executing MQ-related tasks.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.PutTask">
             <summary>
             Puts a message on a queue.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.#ctor(System.String,System.String)">
+        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.#ctor(TAG.Simulator.MQ.MqClient,System.String,System.String)">
             <summary>
             Puts a message on a queue.
             </summary>
+            <param name="Client">MQ Client</param>
+            <param name="Queue">Queue Name</param>
+            <param name="Message">Message to put.</param>
         </member>
         <member name="P:TAG.Simulator.MQ.Tasks.PutTask.Completed">
             <summary>
             Completion task.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.DoWork(TAG.Simulator.MQ.MqClient)">
+        <member name="M:TAG.Simulator.MQ.Tasks.PutTask.DoWork">
             <summary>
             Performs work defined by the task.
             </summary>
-            <param name="Client">MQ Client</param>
             <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
         <member name="T:TAG.Simulator.MQ.Tasks.SubscriptionTask">
@@ -574,21 +594,26 @@
             Subscribes to messages frmo a queue.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.#ctor(System.String,System.Threading.ManualResetEvent,System.Threading.Tasks.TaskCompletionSource{System.Boolean},TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
+        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.#ctor(TAG.Simulator.MQ.MqClient,System.String,System.Threading.ManualResetEvent,System.Threading.Tasks.TaskCompletionSource{System.Boolean},TAG.Simulator.MQ.MqMessageEventHandler,System.Object)">
             <summary>
             Subscribes to messages frmo a queue.
             </summary>
+            <param name="Client">MQ Client</param>
+            <param name="Queue">Quene Name</param>
+            <param name="Callback">Event object that can be used to cancel subscription.</param>
+            <param name="Cancel">Event object that can be used to wait for the subscription to be stopped.</param>
+            <param name="State">Method to call when messages are received.</param>
+            <param name="Stopped">State object to pass on to callback method.</param>
         </member>
         <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.Dispose">
             <summary>
             <see cref="T:System.IDisposable"/>
             </summary>
         </member>
-        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.DoWork(TAG.Simulator.MQ.MqClient)">
+        <member name="M:TAG.Simulator.MQ.Tasks.SubscriptionTask.DoWork">
             <summary>
             Performs work defined by the task.
             </summary>
-            <param name="Client">MQ Client</param>
             <returns>If work should be continued (true), or if it is completed (false).</returns>
         </member>
     </members>

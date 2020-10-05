@@ -31,7 +31,6 @@ namespace TAG.Simulator.MQ
 		private readonly string host;
 		private readonly int port;
 		private MQQueueManager manager;
-		private bool terminated;
 
 		/// <summary>
 		/// IBM MQ client
@@ -77,8 +76,6 @@ namespace TAG.Simulator.MQ
 		{
 			try
 			{
-				this.terminated = true;
-
 				lock (this.inputQueues)
 				{
 					foreach (MQQueue Queue in this.inputQueues.Values)
@@ -112,35 +109,9 @@ namespace TAG.Simulator.MQ
 		/// <param name="Password">Password</param>
 		public Task ConnectAsync(string UserName, string Password)
 		{
-			ConnectionTask Item = new ConnectionTask(UserName, Password);
-			this.ExecuteTask(Item);
+			ConnectionTask Item = new ConnectionTask(this, UserName, Password);
+			MqTasks.ExecuteTask(Item);
 			return Item.Completed;
-		}
-
-		private void ExecuteTask(MqTask Item)
-		{
-			Thread T = new Thread(this.TaskExecutor)
-			{
-				Name = "MQ Async Thread",
-				Priority = ThreadPriority.BelowNormal
-			};
-
-			T.Start(Item);
-		}
-
-		private void TaskExecutor(object State)
-		{
-			MqTask Item = (MqTask)State;
-
-			try
-			{
-				while (!this.terminated && Item.DoWork(this))
-					;
-			}
-			catch (Exception ex)
-			{
-				Log.Critical(ex);
-			}
 		}
 
 		/// <summary>
@@ -188,8 +159,8 @@ namespace TAG.Simulator.MQ
 		/// <param name="Message">Message</param>
 		public Task PutAsync(string QueueName, string Message)
 		{
-			PutTask Item = new PutTask(QueueName, Message);
-			this.ExecuteTask(Item);
+			PutTask Item = new PutTask(this, QueueName, Message);
+			MqTasks.ExecuteTask(Item);
 			return Item.Completed;
 		}
 
@@ -313,8 +284,8 @@ namespace TAG.Simulator.MQ
 		/// <returns>Message read, if received within the given time, null otherwise.</returns>
 		public Task<string> GetOneAsync(string QueueName, int TimeoutMilliseconds)
 		{
-			GetTask Item = new GetTask(QueueName, TimeoutMilliseconds);
-			this.ExecuteTask(Item);
+			GetTask Item = new GetTask(this, QueueName, TimeoutMilliseconds);
+			MqTasks.ExecuteTask(Item);
 			return Item.Completed;
 		}
 
@@ -353,8 +324,8 @@ namespace TAG.Simulator.MQ
 			MqMessageEventHandler Callback, object State)
 		{
 			this.Information("Subscribing to messages from " + QueueName);
-			SubscriptionTask Item = new SubscriptionTask(QueueName, Cancel, Stopped, Callback, State);
-			this.ExecuteTask(Item);
+			SubscriptionTask Item = new SubscriptionTask(this, QueueName, Cancel, Stopped, Callback, State);
+			MqTasks.ExecuteTask(Item);
 		}
 
 	}

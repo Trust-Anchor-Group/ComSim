@@ -579,14 +579,17 @@ namespace TAG.Simulator
 		{
 			this.executing = true;
 
+			Raise(OnInitializing, this);
 			Console.Out.WriteLine("Initializing...");
 			await this.ForEach(async (Node) => await Node.Initialize(), true);
 
 			try
 			{
+				Raise(OnStarting, this);
 				Console.Out.WriteLine("Starting...");
 				await this.ForEach(async (Node) => await Node.Start(), true);
 
+				Raise(OnStarting, this);
 				Console.Out.WriteLine("Running...");
 
 				Stopwatch Watch = new Stopwatch();
@@ -661,10 +664,43 @@ namespace TAG.Simulator
 				if (EmitDots)
 					Console.Out.WriteLine('.');
 
+				Raise(OnFinalizing, this);
 				Console.Out.WriteLine("Finalizing...");
 				await this.ForEach(async (Node) => await Node.Finalize(), true);
 			}
 		}
+
+		internal static void Raise(System.EventHandler Event, object Sender)
+		{
+			try
+			{
+				Event?.Invoke(Sender, new EventArgs());
+			}
+			catch (Exception ex)
+			{
+				Log.Critical(ex);
+			}
+		}
+
+		/// <summary>
+		/// Event raised when model is being initialized.
+		/// </summary>
+		public static event System.EventHandler OnInitializing;
+
+		/// <summary>
+		/// Event raised when model is being started.
+		/// </summary>
+		public static event System.EventHandler OnStarting;
+
+		/// <summary>
+		/// Event raised when model is about to run.
+		/// </summary>
+		public static event System.EventHandler OnRunning;
+
+		/// <summary>
+		/// Event raised when model is being finalized.
+		/// </summary>
+		public static event System.EventHandler OnFinalizing;
 
 		/// <summary>
 		/// Converts a <see cref="DateTime"/> to uncycled (linear) time coordinates.

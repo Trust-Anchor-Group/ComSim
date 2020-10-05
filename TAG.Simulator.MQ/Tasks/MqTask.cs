@@ -8,12 +8,20 @@ namespace TAG.Simulator.MQ.Tasks
 	/// </summary>
 	internal abstract class MqTask : IDisposable
 	{
+		private readonly MqClient client;
+
 		/// <summary>
 		/// Abstract base class for MQ tasks.
 		/// </summary>
-		public MqTask()
-		{ 
+		public MqTask(MqClient Client)
+		{
+			this.client = Client;
 		}
+
+		/// <summary>
+		/// MQ Client
+		/// </summary>
+		public MqClient Client => this.client;
 
 		/// <summary>
 		/// <see cref="IDisposable.Dispose"/>
@@ -25,8 +33,7 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Performs work defined by the task.
 		/// </summary>
-		/// <param name="Client">MQ Client</param>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public abstract bool DoWork(MqClient Client);
+		public abstract bool DoWork();
 	}
 }

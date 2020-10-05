@@ -20,9 +20,15 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Subscribes to messages frmo a queue.
 		/// </summary>
-		public SubscriptionTask(string Queue, ManualResetEvent Cancel, TaskCompletionSource<bool> Stopped,
+		/// <param name="Client">MQ Client</param>
+		/// <param name="Queue">Quene Name</param>
+		/// <param name="Callback">Event object that can be used to cancel subscription.</param>
+		/// <param name="Cancel">Event object that can be used to wait for the subscription to be stopped.</param>
+		/// <param name="State">Method to call when messages are received.</param>
+		/// <param name="Stopped">State object to pass on to callback method.</param>
+		public SubscriptionTask(MqClient Client, string Queue, ManualResetEvent Cancel, TaskCompletionSource<bool> Stopped,
 			MqMessageEventHandler Callback, object State)
-			: base()
+			: base(Client)
 		{
 			this.queue = Queue;
 			this.cancel = Cancel;
@@ -43,25 +49,24 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Performs work defined by the task.
 		/// </summary>
-		/// <param name="Client">MQ Client</param>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public override bool DoWork(MqClient Client)
+		public override bool DoWork()
 		{
 			if (this.cancel?.WaitOne(0) ?? false)
 			{
-				Client.Information("Cancelling subscription to messages from " + this.queue);
+				this.Client.Information("Cancelling subscription to messages from " + this.queue);
 				this.stopped?.TrySetResult(true);
 				return false;
 			}
 			else
 			{
-				string Message = Client.GetOne(this.queue, 1000);
+				string Message = this.Client.GetOne(this.queue, 1000);
 
 				if (!(Message is null))
 				{
 					try
 					{
-						this.callback(Client, new MqMessageEventArgs(Client, Message, this.state));
+						this.callback(this.Client, new MqMessageEventArgs(this.Client, Message, this.state));
 					}
 					catch (Exception ex)
 					{

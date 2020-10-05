@@ -15,8 +15,11 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Task of connecting to an MQ Broker.
 		/// </summary>
-		public ConnectionTask(string UserName, string Password)
-			: base()
+		/// <param name="Client">MQ Client</param>
+		/// <param name="UserName">User Name</param>
+		/// <param name="Password">Password</param>
+		public ConnectionTask(MqClient Client, string UserName, string Password)
+			: base(Client)
 		{
 			this.userName = UserName;
 			this.password = Password;
@@ -31,13 +34,12 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Performs work defined by the task.
 		/// </summary>
-		/// <param name="Client">MQ Client</param>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public override bool DoWork(MqClient Client)
+		public override bool DoWork()
 		{
 			try
 			{
-				Client.Connect(this.userName, this.password);
+				this.Client.Connect(this.userName, this.password);
 				this.result.TrySetResult(true);
 			}
 			catch (Exception ex)

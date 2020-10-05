@@ -15,8 +15,11 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Gets a message on a queue.
 		/// </summary>
-		public GetTask(string Queue, int TimeoutMilliseconds)
-			: base()
+		/// <param name="Client">MQ Client</param>
+		/// <param name="Queue">Queue Name</param>
+		/// <param name="TimeoutMilliseconds">Timeout, in milliseconds.</param>
+		public GetTask(MqClient Client, string Queue, int TimeoutMilliseconds)
+			: base(Client)
 		{
 			this.queue = Queue;
 			this.timeoutMilliseconds = TimeoutMilliseconds;
@@ -31,13 +34,12 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Performs work defined by the task.
 		/// </summary>
-		/// <param name="Client">MQ Client</param>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public override bool DoWork(MqClient Client)
+		public override bool DoWork()
 		{
 			try
 			{
-				string Message = Client.GetOne(this.queue, this.timeoutMilliseconds);
+				string Message = this.Client.GetOne(this.queue, this.timeoutMilliseconds);
 				this.result.TrySetResult(Message);
 			}
 			catch (Exception ex)

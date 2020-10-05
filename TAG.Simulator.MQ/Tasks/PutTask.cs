@@ -15,8 +15,11 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Puts a message on a queue.
 		/// </summary>
-		public PutTask(string Queue, string Message)
-			: base()
+		/// <param name="Client">MQ Client</param>
+		/// <param name="Queue">Queue Name</param>
+		/// <param name="Message">Message to put.</param>
+		public PutTask(MqClient Client, string Queue, string Message)
+			: base(Client)
 		{
 			this.queue = Queue;
 			this.message = Message;
@@ -31,13 +34,12 @@ namespace TAG.Simulator.MQ.Tasks
 		/// <summary>
 		/// Performs work defined by the task.
 		/// </summary>
-		/// <param name="Client">MQ Client</param>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public override bool DoWork(MqClient Client)
+		public override bool DoWork()
 		{
 			try
 			{
-				Client.Put(this.queue, this.message);
+				this.Client.Put(this.queue, this.message);
 				this.result.TrySetResult(true);
 			}
 			catch (Exception ex)
