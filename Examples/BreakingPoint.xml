@@ -153,9 +153,9 @@
     </mq:MqActorTcp>
   </Actors>
   <Distributions>
-    <Normal id="FirstBatch" μ="150" σ="40" N="50000"/>
-    <Normal id="SecondBatch" μ="300" σ="40" N="50000"/>
-    <Normal id="ThirdBatch" μ="450" σ="40" N="50000"/>
+    <Normal id="FirstBatch" μ="150" σ="40" N="100000"/>
+    <Normal id="SecondBatch" μ="300" σ="40" N="100000"/>
+    <Normal id="ThirdBatch" μ="450" σ="40" N="100000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="FirstBatch" activity="SendXmppMessage">
