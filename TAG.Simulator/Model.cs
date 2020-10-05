@@ -22,6 +22,7 @@ using Waher.Script;
 using Waher.Script.Objects;
 using Waher.Script.Units;
 using TAG.Simulator.ObjectModel.Graphs;
+using System.Diagnostics;
 
 namespace TAG.Simulator
 {
@@ -67,6 +68,7 @@ namespace TAG.Simulator
 		private Buckets activityTimeStatistics;
 		private Buckets counters;
 		private Buckets samples;
+		private IBucket epsilon;
 		private TimeBase timeBase;
 		private Duration bucketTime;
 		private Duration timeUnit;
@@ -84,6 +86,7 @@ namespace TAG.Simulator
 		private double timeCycleMs;
 		private double timeCycleUnits;
 		private bool executing;
+		private bool sampleEpsilon;
 
 		/// <summary>
 		/// Root node of a simulation model
@@ -224,6 +227,7 @@ namespace TAG.Simulator
 			this.timeCycle = XML.Attribute(Definition, "timeCycle", Duration.FromDays(1));
 			this.duration = XML.Attribute(Definition, "duration", Duration.FromDays(1));
 			this.bucketTime = XML.Attribute(Definition, "bucketTime", Duration.FromMinutes(1));
+			this.sampleEpsilon = XML.Attribute(Definition, "sampleEpsilon", false);
 
 			StringBuilder sb = new StringBuilder();
 			ObjectModel.Values.Duration.ExportText(this.timeUnit, sb);
@@ -263,6 +267,13 @@ namespace TAG.Simulator
 			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time", this);
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime, this);
 			Log.Register(this.eventStatistics);
+
+			if (this.sampleEpsilon)
+			{
+				this.samples.Sample("ε", new PhysicalQuantity(0, new Unit(Prefix.Milli, "s")));
+				if (!this.samples.TryGetBucket("ε", out this.epsilon))
+					throw new Exception("Unexpected error.");
+			}
 
 			await base.Initialize();
 		}
@@ -578,6 +589,7 @@ namespace TAG.Simulator
 
 				Console.Out.WriteLine("Running...");
 
+				Stopwatch Watch = new Stopwatch();
 				DateTime Prev = DateTime.Now;
 				DateTime TP;
 				double t1;
@@ -586,6 +598,10 @@ namespace TAG.Simulator
 				int NrCycles = 0;
 				bool Result = true;
 				bool Emitted = false;
+				long Ticks, Ticks2;
+
+				Watch.Start();
+				Ticks = Watch.ElapsedMilliseconds;
 
 				while ((TP = DateTime.Now) < this.end)
 				{
@@ -619,6 +635,14 @@ namespace TAG.Simulator
 						}
 
 						Emitted = true;
+					}
+
+					if (this.sampleEpsilon)
+					{
+						Ticks2 = Ticks;
+						Ticks = Watch.ElapsedTicks;
+
+						this.epsilon.Sample((Ticks - Ticks2) * 1000.0 / Stopwatch.Frequency);
 					}
 
 					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
@@ -1091,5 +1115,25 @@ namespace TAG.Simulator
 
 			return sb.ToString();
 		}
+
+		/// <summary>
+		/// Gets the number of threads running in the current process.
+		/// </summary>
+		/// <returns>Thread count.</returns>
+		public int GetThreadCount()
+		{
+			ThreadCountEventArgs e = new ThreadCountEventArgs();
+			
+			this.OnGetThreadCount?.Invoke(this, e);
+			if (!e.Count.HasValue)
+				throw new Exception("Thread Count not available.");
+
+			return e.Count.Value;
+		}
+
+		/// <summary>
+		/// Event raised when the model needs to now the number of threads used by the simulator.
+		/// </summary>
+		public event ThreadCountEventHandler OnGetThreadCount;
 	}
 }

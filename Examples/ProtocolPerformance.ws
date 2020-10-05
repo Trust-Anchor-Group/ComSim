@@ -10,5 +10,8 @@
 	"mqMemory":PerformanceCounters.GetCounter("Process","amqrmppa","Working Set - Private").NextValue(),
 	"xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Other Bytes/sec").NextValue(),
 	"mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Other Bytes/sec").NextValue(),
-	"mqIo":PerformanceCounters.GetCounter("Process","amqrmppa","IO Other Bytes/sec").NextValue()
+	"mqIo":PerformanceCounters.GetCounter("Process","amqrmppa","IO Other Bytes/sec").NextValue(),
+	"xmppThreads":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Thread Count").NextValue(),
+	"mqttThreads":PerformanceCounters.GetCounter("Process","mosquitto","Thread Count").NextValue(),
+	"mqThreads":PerformanceCounters.GetCounter("Process","amqrmppa","Thread Count").NextValue()
 }

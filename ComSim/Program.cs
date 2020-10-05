@@ -97,7 +97,7 @@ namespace ComSim
 					CommandLine.Append(' ');
 					CommandLine.Append(args[i]);
 				}
-
+				
 				i = 0;
 				while (i < c)
 				{
@@ -533,6 +533,7 @@ namespace ComSim
 				Model.SnifferFolder = SnifferFolder;
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;
+				Model.OnGetThreadCount += Model_OnGetThreadCount;
 
 				bool Result = await Model.Run(Done, EmitDots);
 
@@ -600,6 +601,11 @@ namespace ComSim
 				await DB.Flush();
 				Log.Terminate();
 			}
+		}
+
+		private static void Model_OnGetThreadCount(object Sender, ThreadCountEventArgs e)
+		{
+			e.Count = System.Diagnostics.Process.GetCurrentProcess().Threads.Count;
 		}
 
 		private static void Model_OnGetKey(object Sender, KeyEventArgs e)

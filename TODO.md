@@ -88,6 +88,7 @@ Features
 [x] MQTT
 	[x] PUBLISH
 	[x] SUBSCRIBE
+[ ] Decoupling ComSim.exe from plugin assembly dlls.
 
 Examples
 --------------
@@ -103,6 +104,8 @@ Examples
 [ ] State machines & External events to determine activity node transitions
 [ ] Req/Resp pattern
 [ ] Pub/Sub pattern
+[ ] Legal identities
+[ ] Payments
 
 Documentation
 --------------------

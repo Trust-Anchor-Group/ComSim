@@ -38,6 +38,28 @@
             Key value
             </summary>
         </member>
+        <member name="T:TAG.Simulator.Events.ThreadCountEventHandler">
+            <summary>
+            Delegate for thread count event handlers.
+            </summary>
+            <param name="Sender">Sender of event.</param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="T:TAG.Simulator.Events.ThreadCountEventArgs">
+            <summary>
+            Event arguments for thread count events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Events.ThreadCountEventArgs.#ctor">
+            <summary>
+            Event arguments for thread count events.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.Events.ThreadCountEventArgs.Count">
+            <summary>
+            Number of threads of the current process.
+            </summary>
+        </member>
         <member name="T:TAG.Simulator.Factory">
             <summary>
             Factory of simulation objects.
@@ -602,6 +624,17 @@
             </summary>
             <param name="Color">Color</param>
             <returns>String representation</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetThreadCount">
+            <summary>
+            Gets the number of threads running in the current process.
+            </summary>
+            <returns>Thread count.</returns>
+        </member>
+        <member name="E:TAG.Simulator.Model.OnGetThreadCount">
+            <summary>
+            Event raised when the model needs to now the number of threads used by the simulator.
+            </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Action">
             <summary>
