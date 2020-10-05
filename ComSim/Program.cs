@@ -71,6 +71,7 @@ namespace ComSim
 		{
 			try
 			{
+				StringBuilder CommandLine = new StringBuilder("ComSim.exe");
 				LinkedList<string> Master = new LinkedList<string>();
 				LinkedList<string> Css = new LinkedList<string>();
 				Encoding Encoding = Encoding.UTF8;
@@ -82,7 +83,7 @@ namespace ComSim
 				string SnifferTransformFileName = null;
 				string XmlOutputFileName = null;
 				string MarkdownOutputFileName = null;
-				int i = 0;
+				int i;
 				int c = args.Length;
 				int BlockSize = 8192;
 				int BlobBlockSize = 8192;
@@ -91,9 +92,17 @@ namespace ComSim
 				bool Help = args.Length == 0;
 				bool LogConsole = false;
 
+				for (i = 0; i < c; i++)
+				{
+					CommandLine.Append(' ');
+					CommandLine.Append(args[i]);
+				}
+
+				i = 0;
 				while (i < c)
 				{
 					s = args[i++].ToLower();
+					s = s.ToLower();
 
 					if (s.StartsWith("/"))
 						s = "-" + s.Substring(1);
@@ -243,7 +252,7 @@ namespace ComSim
 							Dictionary<string, string> Lookup;
 
 							if (!importedKeys.TryGetValue(KeyName, out Lookup))
-							{ 
+							{
 								Lookup = new Dictionary<string, string>();
 								importedKeys[KeyName] = Lookup;
 							}
@@ -473,7 +482,7 @@ namespace ComSim
 				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 				{
 					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
-						XmlOutputFileName, Master, Css, !LogConsole).Result;
+						XmlOutputFileName, CommandLine.ToString(), Master, Css, !LogConsole).Result;
 				}
 
 				if (Result)
@@ -503,7 +512,7 @@ namespace ComSim
 
 		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
 			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName,
-			IEnumerable<string> Master, IEnumerable<string> Css, bool EmitDots)
+			string CommandLine, IEnumerable<string> Master, IEnumerable<string> Css, bool EmitDots)
 		{
 			try
 			{
@@ -520,6 +529,7 @@ namespace ComSim
 				Console.Out.WriteLine("Running simulation...");
 				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null, null);
 
+				Model.CommandLine = CommandLine;
 				Model.SnifferFolder = SnifferFolder;
 				Model.SnifferTransformFileName = SnifferTransformFileName;
 				Model.OnGetKey += Model_OnGetKey;

@@ -272,6 +272,11 @@
             Sniffer XSLT file to use to transform sniffer output.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Model.CommandLine">
+            <summary>
+            Command-line string used to execute simulation.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.Model.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
             Creates a new instance of the node.

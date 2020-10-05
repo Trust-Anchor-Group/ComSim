@@ -77,6 +77,7 @@ namespace TAG.Simulator
 		private string timeUnitStr;
 		private string bucketTimeStr;
 		private string snifferFolder;
+		private string commandLine;
 		private string snifferTransformFileName;
 		private double bucketTimeMs;
 		private double timeUnitMs;
@@ -190,6 +191,15 @@ namespace TAG.Simulator
 		{
 			get => this.snifferTransformFileName;
 			set => this.snifferTransformFileName = value;
+		}
+
+		/// <summary>
+		/// Command-line string used to execute simulation.
+		/// </summary>
+		public string CommandLine
+		{
+			get => this.commandLine;
+			set => this.commandLine = value;
 		}
 
 		/// <summary>
