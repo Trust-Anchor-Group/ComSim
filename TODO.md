@@ -56,6 +56,8 @@ Features
 		[x] Statistics
 		[x] Custom graphs
 		[x] Event log statistics
+	[ ] Commandline in report
+	[ ] epsilon measurement
 [ ] Distributions
 	[ ] Script-based PDF and CDF
 	[ ] Arcsine distribution
@@ -96,6 +98,7 @@ Examples
 [x] Timing of communication roundtrip
 [x] Parallel threads in activity
 [ ] Protocols comparison
+[ ] Breakpoint example
 [ ] Federation
 [ ] State machines & External events to determine activity node transitions
 [ ] Req/Resp pattern
@@ -107,4 +110,3 @@ Documentation
 [ ] Structure of a simulation file
 [ ] TimeBase, TimeUnit, TimeCycle, Duration (cyclic time)
 [ ] Explain keys
-
