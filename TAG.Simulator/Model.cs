@@ -602,6 +602,7 @@ namespace TAG.Simulator
 				bool Result = true;
 				bool Emitted = false;
 				long Ticks, Ticks2;
+				double Epsilon;
 
 				Watch.Start();
 				Ticks = Watch.ElapsedMilliseconds;
@@ -640,15 +641,14 @@ namespace TAG.Simulator
 						Emitted = true;
 					}
 
+					Ticks2 = Ticks;
+					Ticks = Watch.ElapsedTicks;
+					Epsilon = (Ticks - Ticks2) * 1000.0 / Stopwatch.Frequency;
+
 					if (this.sampleEpsilon)
-					{
-						Ticks2 = Ticks;
-						Ticks = Watch.ElapsedTicks;
+						this.epsilon.Sample(Epsilon);
 
-						this.epsilon.Sample((Ticks - Ticks2) * 1000.0 / Stopwatch.Frequency);
-					}
-
-					if (Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
+					if ((Epsilon > 1 && Done.Task.IsCompleted) || Task.WaitAny(Done.Task, Task.Delay(1)) == 0)
 					{
 						Result = false;
 						break;
@@ -1159,7 +1159,7 @@ namespace TAG.Simulator
 		public int GetThreadCount()
 		{
 			ThreadCountEventArgs e = new ThreadCountEventArgs();
-			
+
 			this.OnGetThreadCount?.Invoke(this, e);
 			if (!e.Count.HasValue)
 				throw new Exception("Thread Count not available.");

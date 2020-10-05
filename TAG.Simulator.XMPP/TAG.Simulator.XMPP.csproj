@@ -14,10 +14,6 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
-  </Target>
-
   <ItemGroup>
     <None Remove="Schema\ComSimXmpp.xsd" />
   </ItemGroup>

@@ -34,8 +34,4 @@
     <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
-  </Target>
-
 </Project>

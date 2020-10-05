@@ -422,12 +422,14 @@ namespace TAG.Simulator.Statistics
 						MeanScript.Append(',');
 						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
 					}
-					else
+					else if (Rec.Count > 0 || !this.sampleGraph)
 					{
 						MeanScript.Append(Rec.Count.ToString());
 						MeanScript.Append(',');
 						MeanScript.Append(Rec.Count.ToString());
 					}
+					else
+						MeanScript.Append("null,null");
 
 					if (this.sampleGraph)
 					{

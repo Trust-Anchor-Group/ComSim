@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
@@ -97,7 +99,7 @@ namespace ComSim
 					CommandLine.Append(' ');
 					CommandLine.Append(args[i]);
 				}
-				
+
 				i = 0;
 				while (i < c)
 				{
@@ -360,23 +362,30 @@ namespace ComSim
 									Console.Out.WriteLine("Loading " + FileName);
 
 									byte[] Bin = File.ReadAllBytes(FileName);
-									Assembly A = AppDomain.CurrentDomain.Load(Bin);
-									Loaded[A.GetName().Name] = A;
-
-									AssemblyName[] Referenced = A.GetReferencedAssemblies();
-
-									foreach (AssemblyName AN in Referenced)
+									try
 									{
-										if (Loaded.ContainsKey(AN.Name))
-											continue;
+										Assembly A = AppDomain.CurrentDomain.Load(Bin);
+										Loaded[A.GetName().Name] = A;
 
-										string RefFileName = Path.Combine(Path.GetDirectoryName(FileName), AN.Name + ".dll");
+										AssemblyName[] Referenced = A.GetReferencedAssemblies();
 
-										if (!File.Exists(RefFileName))
-											continue;
+										foreach (AssemblyName AN in Referenced)
+										{
+											if (Loaded.ContainsKey(AN.Name))
+												continue;
 
-										if (!ToLoad.Contains(RefFileName))
-											ToLoad.AddLast(RefFileName);
+											string RefFileName = Path.Combine(Path.GetDirectoryName(FileName), AN.Name + ".dll");
+
+											if (!File.Exists(RefFileName))
+												continue;
+
+											if (!ToLoad.Contains(RefFileName))
+												ToLoad.AddLast(RefFileName);
+										}
+									}
+									catch (BadImageFormatException)
+									{
+										// Ignore
 									}
 								}
 							}

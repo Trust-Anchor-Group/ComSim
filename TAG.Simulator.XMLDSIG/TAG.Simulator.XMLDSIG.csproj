@@ -14,10 +14,6 @@ https://www.w3.org/TR/xmldsig-core/</Description>
     <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.XMLDSIG\TAG.Simulator.XMLDSIG.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)ComSim\bin\$(ConfigurationName)\netcoreapp2.2&quot; /Y" />
-  </Target>
-
   <ItemGroup>
     <None Remove="Schema\ComSimXmlDSig.xsd" />
   </ItemGroup>

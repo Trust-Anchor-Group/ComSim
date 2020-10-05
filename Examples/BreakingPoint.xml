@@ -15,7 +15,7 @@
     <Introduction>Simulation that gradually increases load on services using different protocols, to investiate possible breakpoints and limits in underlying technologies.</Introduction>
     <Description>
       <![CDATA[ 
-      Simulates 40 XMPP clients, 40 (unencrypted, unauthorized) MQTT clients and 40 MQ clients (20 MQ queues, 2 clients for each queue,
+      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 100 MQ clients (50 MQ queues, 2 clients for each queue,
       one putting, one getting) exchanging XML messages randomly between each other (users of the same protocol) during 10 minutes.
       Frequency is gradually increased over time to test technical limits. Messages are distributed using the Normal Distribution, with
       three different means, one for each protocol. During the simulation, performance metrics are sampled for 
@@ -135,17 +135,17 @@
     <Timer id="PerformanceTimer" N="1" period="PT1S">
       <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
     </Timer>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="40" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
-    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcp" id="MqttTcp" N="40" encrypted="false" port="1883" trustServer="true">
+    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcp" id="MqttTcp" N="100" encrypted="false" port="1883" trustServer="true">
       <mqtt:Subscribe topic="Msg/{InstanceId}" qos="AtMostOnce"/>
       <ExternalEvent name="OnContentReceived" event="MqttMessageReceived" actorName="To">
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
     </mqtt:MqttActorTcp>
-    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpPut" N="20" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword"/>
-    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpGet" N="20" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
+    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpPut" N="50" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword"/>
+    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpGet" N="50" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
       <mq:Subscribe queue="SIM.QUEUE.{InstanceIndex}" extEvent="OnMessageReceived"/>
       <ExternalEvent name="OnMessageReceived" event="MqMessageReceived" actorName="To">
         <Parameter name="Message" variable="Message"/>
@@ -153,9 +153,9 @@
     </mq:MqActorTcp>
   </Actors>
   <Distributions>
-    <Normal id="FirstBatch" μ="150" σ="40" N="15000"/>
-    <Normal id="SecondBatch" μ="300" σ="40" N="15000"/>
-    <Normal id="ThirdBatch" μ="450" σ="40" N="15000"/>
+    <Normal id="FirstBatch" μ="150" σ="40" N="50000"/>
+    <Normal id="SecondBatch" μ="300" σ="40" N="50000"/>
+    <Normal id="ThirdBatch" μ="450" σ="40" N="50000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="FirstBatch" activity="SendXmppMessage">
