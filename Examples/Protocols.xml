@@ -14,9 +14,9 @@
     <Introduction>Simulates M2M messages being sent between clients using different protocols. Machine and Service performance is measured and compared.</Introduction>
     <Description>
       <![CDATA[ 
-      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 200 MQ clients (100 MQ queues, 2 clients for each queue,
+      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 20 MQ clients (10 MQ queues, 2 clients for each queue,
       one putting, one getting) exchanging XML messages randomly between each other (users of the same protocol) during 10 minutes, at a 
-      total frequency of 10'000 messages per minute per protocol. During the simulation, performance metrics are sampled for local simulator 
+      total frequency of 2'000 messages per minute per protocol. During the simulation, performance metrics are sampled for local simulator 
       performance, broker performance, and for the individiual protocol service performances.
       ]]>
     </Description>
