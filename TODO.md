@@ -56,7 +56,7 @@ Features
 		[x] Statistics
 		[x] Custom graphs
 		[x] Event log statistics
-	[ ] Commandline in report
+	[x] Commandline in report
 	[ ] epsilon measurement
 [ ] Distributions
 	[ ] Script-based PDF and CDF
