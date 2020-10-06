@@ -182,6 +182,8 @@
       <xs:element ref="Variable"/>
       <xs:element ref="String"/>
       <xs:element ref="Xml"/>
+      <xs:element ref="Json"/>
+      <xs:element ref="Binary"/>
       <xs:element ref="Number"/>
       <xs:element ref="Duration"/>
       <xs:element ref="DateTime"/>
@@ -205,6 +207,31 @@
       <xs:sequence minOccurs="0" maxOccurs="unbounded">
         <xs:any namespace="##any" processContents="lax"/>
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Json" type="xs:string"/>
+
+  <xs:element name="Binary">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="Byte" type="xs:string"/>
+        <xs:element name="UInt16" type="xs:string"/>
+        <xs:element name="UInt24" type="xs:string"/>
+        <xs:element name="UInt32" type="xs:string"/>
+        <xs:element name="UInt48" type="xs:string"/>
+        <xs:element name="UInt64" type="xs:string"/>
+        <xs:element name="SByte" type="xs:string"/>
+        <xs:element name="Int16" type="xs:string"/>
+        <xs:element name="Int24" type="xs:string"/>
+        <xs:element name="Int32" type="xs:string"/>
+        <xs:element name="Int48" type="xs:string"/>
+        <xs:element name="Int64" type="xs:string"/>
+        <xs:element name="Char" type="xs:string"/>
+        <xs:element name="Utf8String" type="xs:string"/>
+        <xs:element name="Single" type="xs:string"/>
+        <xs:element name="Double" type="xs:string"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
 
@@ -511,6 +538,7 @@
         </xs:sequence>
         <xs:attribute name="title" type="xs:string" use="required"/>
         <xs:attribute name="legend" type="xs:boolean" use="optional" default="true"/>
+        <xs:attribute name="span" type="xs:boolean" use="optional" default="true"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

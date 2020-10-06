@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
+using TAG.Simulator.ObjectModel.Distributions;
+using TAG.Simulator.ObjectModel.MetaData;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.Script;
@@ -79,6 +81,8 @@ namespace TAG.Simulator.ObjectModel.Events
 			if (!this.Model.TryGetActivity(this.activityId, out this.activity))
 				throw new Exception("Activity not found: " + this.activityId);
 
+			this.activity.Register(this);
+
 			return base.Start();
 		}
 
@@ -112,7 +116,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Guard">Optional guard expression.</param>
 		/// <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
-		public async void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
+		public async Task Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
 		{
 			if (this.activity is null)
 				return; // Not initialized yet.
@@ -208,47 +212,45 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
-		/// Exports PlantUML
+		/// Name of use case association.
 		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override async Task ExportMarkdown(StreamWriter Output)
+		public virtual string UseCaseLinkName => string.Empty;
+
+		/// <summary>
+		/// Associated distribution, null if none.
+		/// </summary>
+		public virtual IDistribution Distribution => null;
+
+		/// <summary>
+		/// Event description
+		/// </summary>
+		public string Description
 		{
-			this.Model.ExportActivitiesIntroduction(Output);
+			get
+			{
+				foreach (ISimulationNode Node in this.Children)
+				{
+					if (Node is Description Description)
+						return Description.DescriptionString;
+				}
 
-			string Header = string.IsNullOrEmpty(this.Id) ? this.ActivityId : this.Id;
-			Output.WriteLine(Header);
-			Output.WriteLine(new string('-', Header.Length + 3));
-			Output.WriteLine();
-
-			await base.ExportMarkdown(Output);
-
-			Output.WriteLine("```uml: Use Case chart for " + Header);
-			Output.WriteLine("@startuml");
-
-			this.ExportUseCaseData(Output);
-
-			Output.WriteLine("@enduml");
-			Output.WriteLine("```");
-			Output.WriteLine();
-
-			if (!(this.activity is null))
-				await this.activity.ExportMarkdown(Output, false, this);
+				return null;
+			}
 		}
 
 		/// <summary>
 		/// Exports use case diagram data.
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
-		public virtual void ExportUseCaseData(StreamWriter Output)
+		/// <param name="Index">Chart Index</param>
+		public virtual void ExportUseCaseData(StreamWriter Output, int Index)
 		{
-			Output.Write("usecase \"");
-			Output.Write(this.activityId);
-			Output.WriteLine("\" as UC1");
+			string IndexStr = Index.ToString();
 
 			if (!(this.preparationNodes is null))
 			{
 				foreach (IEventPreparation Node in this.preparationNodes)
-					Node.ExportPlantUml(Output);
+					Node.ExportPlantUml(Output, this.UseCaseLinkName, Index);
 			}
 
 			if (!(this.externalEvents is null))
@@ -265,7 +267,7 @@ namespace TAG.Simulator.ObjectModel.Events
 
 					if (string.IsNullOrEmpty(ExternalEvent.ActorName))
 					{
-						s = ExternalEvent.Actor.Id + "_B" + i.ToString();
+						s = ExternalEvent.Actor.Id + "_" + IndexStr + "_B" + i.ToString();
 
 						Output.Write(ExternalEvent.Actor.Id);
 						Output.Write("\" as ");
@@ -273,7 +275,7 @@ namespace TAG.Simulator.ObjectModel.Events
 					}
 					else
 					{
-						s = ExternalEvent.ActorName + "_B" + i.ToString();
+						s = ExternalEvent.ActorName + "_" + IndexStr + "_B" + i.ToString();
 
 						Output.Write(ExternalEvent.ActorName);
 						Output.Write("\" as ");
@@ -286,7 +288,9 @@ namespace TAG.Simulator.ObjectModel.Events
 					ExternalEvent.Actor.AnnotateActorUseCaseUml(Output, s);
 
 					Output.Write(s);
-					Output.Write(" --> UC1 : ");
+					Output.Write(" --> UC");
+					Output.Write(IndexStr);
+					Output.Write(" : ");
 					Output.Write(ExternalEvent.Name);
 					Output.Write("(");
 
@@ -317,16 +321,6 @@ namespace TAG.Simulator.ObjectModel.Events
 					i++;
 				}
 			}
-		}
-
-		/// <summary>
-		/// Exports Probability Script graph.
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <returns>If a PDF graph was added.</returns>
-		public virtual bool ExportPdfScript(StringBuilder Output)
-		{
-			return false;
 		}
 
 		/// <summary>

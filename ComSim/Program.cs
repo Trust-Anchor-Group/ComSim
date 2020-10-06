@@ -46,6 +46,8 @@ namespace ComSim
 	///                       simulation. (Storage can include generated user credentials
 	///                       so that the same user identities can be used across
 	///                       simulations.)
+	/// -af FOLDER            Adds an assembly folder. Assemblies can be loaded from this
+	///                       folder.
 	/// -e                    If encryption is used by the database. Default=no encryption.
 	/// -bs BLOCK_SIZE        Block size, in bytes. Default=8192.
 	/// -bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.
@@ -76,6 +78,7 @@ namespace ComSim
 				StringBuilder CommandLine = new StringBuilder("ComSim.exe");
 				LinkedList<string> Master = new LinkedList<string>();
 				LinkedList<string> Css = new LinkedList<string>();
+				LinkedList<string> AssemblyFolders = new LinkedList<string>();
 				Encoding Encoding = Encoding.UTF8;
 				XmlDocument Model = null;
 				string ProgramDataFolder = null;
@@ -271,6 +274,13 @@ namespace ComSim
 
 							break;
 
+						case "-af":
+							if (i >= c)
+								throw new Exception("Missing Assembly folder.");
+
+							AssemblyFolders.AddLast(args[i++]);
+							break;
+
 						case "-?":
 							Help = true;
 							break;
@@ -302,6 +312,8 @@ namespace ComSim
 					Console.Out.WriteLine("                      simulation. (Storage can include generated user credentials");
 					Console.Out.WriteLine("                      so that the same user identities can be used across");
 					Console.Out.WriteLine("                      simulations.)");
+					Console.Out.WriteLine("-af FOLDER            Adds an assembly folder. Assemblies can be loaded from this");
+					Console.Out.WriteLine("                      folder.");
 					Console.Out.WriteLine("-e                    If encryption is used by the database. Default=no encryption.");
 					Console.Out.WriteLine("-bs BLOCK_SIZE        Block size, in bytes. Default=8192.");
 					Console.Out.WriteLine("-bbs BLOB_BLOCK_SIZE  BLOB block size, in bytes. Default=8192.");
@@ -350,7 +362,23 @@ namespace ComSim
 								string FileName = XML.Attribute(E2, "fileName");
 
 								if (!File.Exists(FileName))
-									throw new Exception("File not found: " + FileName);
+								{
+									string FileName2 = null;
+
+									foreach (string Folder in AssemblyFolders)
+									{
+										FileName2 = Path.Combine(Folder, FileName);
+										if (File.Exists(FileName2))
+											break;
+										else
+											FileName2 = null;
+									}
+
+									if (FileName2 is null)
+										throw new Exception("File not found: " + FileName);
+									else
+										FileName = FileName2;
+								}
 
 								LinkedList<string> ToLoad = new LinkedList<string>();
 								ToLoad.AddLast(FileName);
@@ -548,7 +576,7 @@ namespace ComSim
 
 				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
 				{
-					Console.Out.WriteLine("Generating Markdown report...");
+					Console.Out.WriteLine("Generating Markdown report: " + MarkdownOutputFileName);
 
 					string Folder = Path.GetDirectoryName(MarkdownOutputFileName);
 					if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
@@ -574,7 +602,7 @@ namespace ComSim
 
 				if (!string.IsNullOrEmpty(XmlOutputFileName))
 				{
-					Console.Out.WriteLine("Generating XML report...");
+					Console.Out.WriteLine("Generating XML report: " + XmlOutputFileName);
 
 					XmlWriterSettings Settings = new XmlWriterSettings()
 					{

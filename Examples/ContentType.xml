@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:mqtt="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
+       xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT10M">
+  <Meta>
+    <Title>Content Types</Title>
+    <Introduction>Tests publishing information using either XML, JSON or binary over MQTT, to see if there are any noticeable differences on the choice of content type on performance.</Introduction>
+    <Description>
+      <![CDATA[ 
+      Simulates 300 MQTT clients, publishing and subscribing to content of different types (100 XML, 100 JSON, 100 binary) during 10 minutes, 
+      at a total frequency of 10'000 messages per minute per content type. During the simulation, performance metrics are sampled for local 
+      simulator performance and broker performance.
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      MQTT
+      ------
+      
+      The MQTT protocol is tested by installing the [mosquitto](https://mosquitto.org/download/) MQTT 
+      broker on the same machine as the XMPP broker. It is important the brokers reside on the same
+      machine, so network performance metrics can be compared.
+      
+      Performance Counters
+      ------------------------
+      
+      For this simulation to work, the `Performance.ws` Web Service script available in the
+      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
+      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
+      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
+      script contais the following script, executed when the resource is accessed:
+
+          {
+              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
+              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
+              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue()
+          }
+      ]]>
+    </Preparation>
+    <ModelScript>
+      <![CDATA[
+      GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
+      ]]>
+    </ModelScript>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.MQTT.dll"/>
+    <Assembly fileName="TAG.Simulator.Performance.dll"/>
+  </Assemblies>
+  <Actors>
+    <Timer id="PerformanceTimer" N="1" period="PT1S">
+      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+    </Timer>
+    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcpXml" id="MqttTcpXml" N="100" encrypted="false" port="1883" trustServer="true">
+      <mqtt:Subscribe topic="Xml/{InstanceId}" qos="AtMostOnce"/>
+      <ExternalEvent name="OnContentReceived" event="MqttXmlMessageReceived" actorName="To">
+        <Parameter name="Content" variable="Content"/>
+      </ExternalEvent>
+    </mqtt:MqttActorTcp>
+    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcpJson" id="MqttTcpJson" N="100" encrypted="false" port="1883" trustServer="true">
+      <mqtt:Subscribe topic="Json/{InstanceId}" qos="AtMostOnce"/>
+      <ExternalEvent name="OnContentReceived" event="MqttJsonMessageReceived" actorName="To">
+        <Parameter name="Content" variable="Content"/>
+      </ExternalEvent>
+    </mqtt:MqttActorTcp>
+    <mqtt:MqttActorTcp domain="lab.tagroot.io" userName="MqttTcpBin" id="MqttTcpBin" N="100" encrypted="false" port="1883" trustServer="true">
+      <mqtt:Subscribe topic="Bin/{InstanceId}" qos="AtMostOnce"/>
+      <ExternalEvent name="OnContentReceived" event="MqttBinMessageReceived" actorName="To">
+        <Parameter name="Content" variable="Content"/>
+      </ExternalEvent>
+    </mqtt:MqttActorTcp>
+  </Actors>
+  <Distributions>
+    <Uniform id="TenThousandPerMinute" from="0" to="60" N="10000"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttXmlMessage">
+      <Description>Sends an XML message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="MqttTcpXml"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="MqttTcpXml"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttJsonMessage">
+      <Description>Sends a JSON message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="MqttTcpJson"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="MqttTcpJson"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttBinMessage">
+      <Description>Sends a binary message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="MqttTcpBin"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="MqttTcpBin"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <EventHandler id="MqttXmlMessageReceived" activity="ProcessMqttXmlMessage">
+      <Description>Event triggered when an MQTT XML message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="MqttJsonMessageReceived" activity="ProcessMqttJsonMessage">
+      <Description>Event triggered when an MQTT JSON message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="MqttBinMessageReceived" activity="ProcessMqttBinMessage">
+      <Description>Event triggered when an MQTT Binary message has been received.</Description>
+    </EventHandler>
+    <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
+      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="ReadPerformanceCounters">
+      <Description>This activity measures server performance, by calling a web service and reporting the measured values in the returning JSON object back to the simulator.</Description>
+      <Start/>
+      <Parallel>
+        <Thread>
+          <Group title="Broker Performance">
+            <Eval>M:=GetBrokerPerformance()</Eval>
+            <Sample name="Broker CPU (%)">
+              <Script>M.cpuPercent</Script>
+            </Sample>
+            <Sample name="Broker Network (kB/s)">
+              <Script>M.networkBytesPerSec/1024</Script>
+            </Sample>
+            <Sample name="Broker Free Memory (GB)">
+              <Script>M.memoryMBytesFree/1024</Script>
+            </Sample>
+          </Group>
+        </Thread>
+        <Thread>
+          <Group title="Simulator Performance">
+            <!-- NOTE: Performance counter names, instance names and category names depends on configuration and locale of operating system of the machine running the simulator. Might have to be changed. -->
+            <Sample name="Simulator CPU (%)">
+              <!-- Swedish: -->
+              <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/>
+              <!-- English:
+                 <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/> -->
+            </Sample>
+            <Sample name="Simulator Network (kB/s)">
+              <!-- Swedish: -->
+              <perf:Performance category="Nätverksgränssnitt" instance="Intel[R] Wireless-AC 9560 160MHz" counter="Totalt antal byte/s" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Network Interface" instance="Microsoft Hyper-V Network Adapter" counter="Bytes Total/sec" divider="1024"/> -->
+            </Sample>
+            <Sample name="Simulator Free Memory (GB)">
+              <!-- Swedish: -->
+              <perf:Performance category="Minne" counter="Tillgängliga megabyte" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Memory" counter="Available MBytes" divider="1024"/>-->
+            </Sample>
+          </Group>
+        </Thread>
+      </Parallel>
+      <Stop/>
+    </Activity>
+    <Activity id="SendMqttXmlMessage" logStart="false" logEnd="false">
+      <Description>This activity sends an XML message to a random MQTT recipient.</Description>
+      <Start/>
+      <mqtt:Publish actor="From" topic="Xml/{To.InstanceId}" qos="AtMostOnce">
+        <Xml>
+          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+          </Msg>
+        </Xml>
+      </mqtt:Publish>
+      <Count counter="MqttXmlSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="SendMqttJsonMessage" logStart="false" logEnd="false">
+      <Description>This activity sends a JSON message to a random MQTT recipient.</Description>
+      <Start/>
+      <mqtt:Publish actor="From" topic="Json/{To.InstanceId}" qos="AtMostOnce">
+        <Json>{"startTime":StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</Json>
+      </mqtt:Publish>
+      <Count counter="MqttJsonSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="SendMqttBinMessage" logStart="false" logEnd="false">
+      <Description>This activity sends a binary message to a random MQTT recipient.</Description>
+      <Start/>
+      <mqtt:Publish actor="From" topic="Bin/{To.InstanceId}" qos="AtMostOnce">
+        <Binary>
+          <UInt64>StartTime.Ticks</UInt64>
+        </Binary>
+      </mqtt:Publish>
+      <Count counter="MqttBinSent"/>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessMqttXmlMessage" logStart="false" logEnd="false">
+      <Description>Processes a received MQTT XML message.</Description>
+      <Start/>
+      <Count counter="MqttXmlReceived"/>
+      <Conditional>
+        <Try condition="Msg:=Decode(Content.Data,'text/xml').DocumentElement">
+          <Eval>
+            <![CDATA[
+              StartTime:=DateTime(Msg["StartTime"].InnerText);
+              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+            ]]>
+          </Eval>
+          <Sample name="MQTT XML Roundtrip">
+            <Script>Elapsed ms</Script>
+          </Sample>
+        </Try>
+        <Otherwise>
+          <Eval>
+            <![CDATA[
+            LogError("Non-XML message received: "+Base64Encode(Content.Data),
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqttContentError"/>
+        </Otherwise>
+      </Conditional>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessMqttJsonMessage" logStart="false" logEnd="false">
+      <Description>Processes a received MQTT JSON message.</Description>
+      <Start/>
+      <Count counter="MqttJsonReceived"/>
+      <Conditional>
+        <Try condition="Msg:=Decode(Content.Data,'application/json')">
+          <Eval>
+            <![CDATA[
+              StartTime:=DateTime(Msg.startTime);
+              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+            ]]>
+          </Eval>
+          <Sample name="MQTT JSON Roundtrip">
+            <Script>Elapsed ms</Script>
+          </Sample>
+        </Try>
+        <Otherwise>
+          <Eval>
+            <![CDATA[
+            LogError("Non-JSON message received: "+Base64Encode(Content.Data),
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqttContentError"/>
+        </Otherwise>
+      </Conditional>
+      <Stop/>
+    </Activity>
+  </Activities>
+  <Graphs>
+    <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
+      <Source ref="SendXmppMessage"/>
+      <Source ref="SendMqttMessage"/>
+      <Source ref="SendMqMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time sending Messages" legend="true">
+      <Source ref="SendXmppMessage"/>
+      <Source ref="SendMqttMessage"/>
+      <Source ref="SendMqMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
+      <Source ref="ProcessXmppMessage"/>
+      <Source ref="ProcessMqttMessage"/>
+      <Source ref="ProcessMqMessage"/>
+    </CombinedExecutionsGraph>
+    <CombinedExecutionTimeGraph title="Time processing Messages" legend="true">
+      <Source ref="ProcessXmppMessage"/>
+      <Source ref="ProcessMqttMessage"/>
+      <Source ref="ProcessMqMessage"/>
+    </CombinedExecutionTimeGraph>
+    <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
+      <Source ref="XMPP Roundtrip"/>
+      <Source ref="MQTT Roundtrip"/>
+      <Source ref="MQ Roundtrip"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
+      <Source ref="Broker CPU (%)"/>
+      <Source ref="Simulator CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Service CPU %" legend="true">
+      <Source ref="XMPP CPU (%)"/>
+      <Source ref="MQTT CPU (%)"/>
+      <Source ref="MQ CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Used Memory (MB)" legend="true" header="Memory Performance">
+      <Source ref="XMPP Memory Usage (MB)"/>
+      <Source ref="MQTT Memory Usage (MB)"/>
+      <Source ref="MQ Memory Usage (MB)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
+      <Source ref="Broker Network (kB/s)"/>
+      <Source ref="Simulator Network (kB/s)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Service Input/Output (kB/s)" legend="true">
+      <Source ref="XMPP I/O (kB/s)"/>
+      <Source ref="MQTT I/O (kB/s)"/>
+      <Source ref="MQ I/O (kB/s)"/>
+    </CombinedSampleGraph>
+  </Graphs>
+</Model>

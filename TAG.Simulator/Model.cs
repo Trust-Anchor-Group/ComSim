@@ -589,7 +589,7 @@ namespace TAG.Simulator
 				Console.Out.WriteLine("Starting...");
 				await this.ForEach(async (Node) => await Node.Start(), true);
 
-				Raise(OnStarting, this);
+				Raise(OnRunning, this);
 				Console.Out.WriteLine("Running...");
 
 				Stopwatch Watch = new Stopwatch();
@@ -952,11 +952,9 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
-			this.activitiesIntroduction = false;
-
 			await base.ExportMarkdown(Output);
 
 			if (this.counters.Count > 0)
@@ -1021,17 +1019,8 @@ namespace TAG.Simulator
 			this.eventStatistics.ExportMarkdown(Output, this);
 		}
 
-		internal void ExportActivitiesIntroduction(StreamWriter Output)
+		internal void ExportActivityStartStatistics(StreamWriter Output)
 		{
-			if (this.activitiesIntroduction)
-				return;
-
-			this.activitiesIntroduction = true;
-
-			Output.WriteLine("Activities");
-			Output.WriteLine("=============");
-			Output.WriteLine();
-
 			if (this.activityStartStatistics.Count > 0)
 			{
 				string[] Order = this.ActivityOrder();
@@ -1043,7 +1032,7 @@ namespace TAG.Simulator
 			}
 		}
 
-		internal void ExportActivityCharts(string ActivityId, StreamWriter Output, IEvent Event)
+		internal void ExportActivityCharts(string ActivityId, StreamWriter Output, IEnumerable<IEvent> Events)
 		{
 			if (this.activityStartStatistics.TryGetBucket(ActivityId, out IBucket _))
 			{
@@ -1067,7 +1056,7 @@ namespace TAG.Simulator
 					SKColor[] Palette = CreatePalette(Index);
 
 					this.activityStartStatistics.ExportCountHistoryGraph("Executions of " + ActivityId,
-						new string[] { ActivityId }, Output, this, Event, new SKColor[] { Palette[i] });
+						new string[] { ActivityId }, Output, this, Events, new SKColor[] { Palette[i] });
 				}
 			}
 
@@ -1086,12 +1075,10 @@ namespace TAG.Simulator
 			return new string[0];
 		}
 
-		private bool activitiesIntroduction;
-
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportXml(XmlWriter Output)
 		{
 			await base.ExportXml(Output);

@@ -2,7 +2,6 @@
 <Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        xmlns:mqtt="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
-       xmlns:mq="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
        xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
@@ -11,15 +10,15 @@
        duration="PT10M"
        sampleEpsilon="true">
   <Meta>
-    <Title>Breaking Point</Title>
-    <Introduction>Simulation that gradually increases load on services using different protocols, to investiate possible breakpoints and limits in underlying technologies.</Introduction>
+    <Title>High Load</Title>
+    <Introduction>Simulation that gradually increases load on services using different protocols, to analyze the effects of a relative high load on the underlying technologies.</Introduction>
     <Description>
       <![CDATA[ 
-      Simulates 100 XMPP clients, 100 (unencrypted, unauthorized) MQTT clients and 100 MQ clients (50 MQ queues, 2 clients for each queue,
-      one putting, one getting) exchanging XML messages randomly between each other (users of the same protocol) during 10 minutes.
-      Frequency is gradually increased over time to test technical limits. Messages are distributed using the Normal Distribution, with
-      three different means, one for each protocol. During the simulation, performance metrics are sampled for 
-      local simulator performance, broker performance, and for the individiual protocol service performances.
+      Simulates 100 XMPP clients and 100 (unencrypted, unauthorized) MQTT clients exchanging XML messages randomly between each other 
+      (users of the same protocol) during 10 minutes. Frequency is gradually increased over time to test technical limits. Messages are 
+      distributed using the Normal Distribution, with two different means, one for each protocol. During the simulation, performance 
+      metrics are sampled for local simulator performance, broker performance, and for the individiual protocol service performances.
+      A small broker (`B2ms` in Microsoft Azure, 2 vcpus, 8 GB RAM, slow HD) is used for this simulation.
       ]]>
     </Description>
     <Preparation>
@@ -39,57 +38,6 @@
       broker on the same machine as the XMPP broker. It is important the brokers reside on the same
       machine, so network performance metrics can be compared.
       
-      MQ
-      ------
-      
-      The [IBM MQ Server](https://developer.ibm.com/components/ibm-mq/articles/mq-downloads) also needs
-      to be installed on the same machine as the XMPP broker, to make metrics comparable. There are
-      [tutorials](https://developer.ibm.com/components/ibm-mq/tutorials/mq-connect-app-queue-manager-windows/)
-      on how to setup an IBM MQ server properly on Windows.
-      
-      **Note**: The script setting up the IBM MQ Server described in the tutorial mentioned above, has been
-      modified, and is available in the Examples folder under then name `mq-dev-config.mqsc`. It does the same
-      things as the script in the tutorial, except it adds an additional 100 queues to be used for the simulation.
-      To make sure the users have access to these queues, you also need to execute the following IBM MQ command
-      at the command prompt:
-      
-          setmqaut -m QM1 -n SIM.** -t queue -g mqclient +put +get +browse +inq
-      
-      MQ authentication of clients is done against local machine users (or AD users). You will therefore need
-      to create user accounts on the local machine (or the Active Directory). To generate a `CSV` file with
-      user names and random passwords, you can use the following script:
-      
-          N:=100;
-          i:=1..N;
-          UserName:="SimUser"+i;
-          Password:=[foreach n in i do Base64Encode(RandomBytes(24))];
-          M:=[join("UserName",UserName),join("Password",Password)]T;
-          SaveFile(M,"Users.csv")
-
-      Once the `CSV` file has been generated, you can create user accounts matching user
-      accounts on the server hosting the IBM MQ service using the following Power Shell script:
-      
-          $Users = Import-csv Users.csv
-          
-          foreach ($User in $Users)
-          {
-          	$UserName = $User.UserName
-          	$Password = $User.Password
-          	
-          	if (!(Get-LocalUser -Name $UserName))
-          	{
-          		New-LocalUser -AccountNeverExpires -Name $UserName -Password (convertto-securestring $Password -AsPlainText -Force) -PasswordNeverExpires
-          	}
-          	
-          	Add-LocalGroupMember -Group mqclient -Member $UserName
-          }
-      
-      **Note**: The `CSV` file should also be imported to the simulator using the `-ik MqPassword Users.csv` option.
-      
-      **Note 2**: The above script assume you have setup the MQ broker using the tutorial mentioned
-      above. This tutorial provides authorization to queues based on membership in the local `mqclient`
-      group. More detailed authorization schemes are possible. You need to adapt the script accordingly.
-      
       Performance Counters
       ------------------------
       
@@ -106,16 +54,12 @@
               "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue(),
               "xmppCpu":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","% Processor Time").NextValue(),
               "mqttCpu":PerformanceCounters.GetCounter("Process","mosquitto","% Processor Time").NextValue(),
-              "mqCpu":PerformanceCounters.GetCounter("Process","amqrmppa","% Processor Time").NextValue(),
               "xmppMemory":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Working Set - Private").NextValue(),
               "mqttMemory":PerformanceCounters.GetCounter("Process","mosquitto","Working Set - Private").NextValue(),
-              "mqMemory":PerformanceCounters.GetCounter("Process","amqrmppa","Working Set - Private").NextValue(),
               "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Other Bytes/sec").NextValue(),
               "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Other Bytes/sec").NextValue(),
-              "mqIo":PerformanceCounters.GetCounter("Process","amqrmppa","IO Other Bytes/sec").NextValue(),
               "xmppThreads":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Thread Count").NextValue(),
-              "mqttThreads":PerformanceCounters.GetCounter("Process","mosquitto","Thread Count").NextValue(),
-              "mqThreads":PerformanceCounters.GetCounter("Process","amqrmppa","Thread Count").NextValue()
+              "mqttThreads":PerformanceCounters.GetCounter("Process","mosquitto","Thread Count").NextValue()
           }
       ]]>
     </Preparation>
@@ -126,7 +70,6 @@
     </ModelScript>
   </Meta>
   <Assemblies>
-    <Assembly fileName="TAG.Simulator.MQ.dll"/>
     <Assembly fileName="TAG.Simulator.MQTT.dll"/>
     <Assembly fileName="TAG.Simulator.Performance.dll"/>
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
@@ -144,22 +87,14 @@
         <Parameter name="Content" variable="Content"/>
       </ExternalEvent>
     </mqtt:MqttActorTcp>
-    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpPut" N="50" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword"/>
-    <mq:MqActorTcp host="lab.tagroot.io" port="1414" id="MqTcpGet" N="50" channel="DEV.APP.SVRCONN" queueManager="QM1" userName="SimUser" password="MqPassword">
-      <mq:Subscribe queue="SIM.QUEUE.{InstanceIndex}" extEvent="OnMessageReceived"/>
-      <ExternalEvent name="OnMessageReceived" event="MqMessageReceived" actorName="To">
-        <Parameter name="Message" variable="Message"/>
-      </ExternalEvent>
-    </mq:MqActorTcp>
   </Actors>
   <Distributions>
-    <Normal id="FirstBatch" μ="150" σ="40" N="100000"/>
-    <Normal id="SecondBatch" μ="300" σ="40" N="100000"/>
-    <Normal id="ThirdBatch" μ="450" σ="40" N="100000"/>
+    <Normal id="XmppDistribution" μ="400" σ="75" N="2000000"/>
+    <Normal id="MqttDistribution" μ="200" σ="75" N="2000000"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="FirstBatch" activity="SendXmppMessage">
-      <Description>Sends an XML message from one random XMPP client to another, at an intensity of 100000 distributed in the interval using a normal distribution.</Description>
+    <StochasticEvent distribution="XmppDistribution" activity="SendXmppMessage">
+      <Description>Sends an XML message from one random XMPP client to another, at an intensity of 500000 distributed in the interval using a normal distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
       </ActorReference>
@@ -170,25 +105,13 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="SecondBatch" activity="SendMqttMessage">
-      <Description>Sends an XML message from one random MQTT client to another, at an intensity of 100000 distributed in the interval using a normal distribution.</Description>
-      <ActorReference name="From" exclusive="true">
+    <StochasticEvent distribution="MqttDistribution" activity="SendMqttMessage">
+      <Description>Sends an XML message from one random MQTT client to another, at an intensity of 500000 distributed in the interval using a normal distribution.</Description>
+      <ActorReference name="From" exclusive="false">
         <FromPopulation actor="MqttTcp"/>
       </ActorReference>
       <ActorReference name="To" exclusive="false">
         <FromPopulation actor="MqttTcp"/>
-      </ActorReference>
-      <SetVariable name="StartTime">
-        <Script>Now</Script>
-      </SetVariable>
-    </StochasticEvent>
-    <StochasticEvent distribution="ThirdBatch" activity="SendMqMessage">
-      <Description>Sends an XML message from one random MQ client to another, at an intensity of 100000 distributed in the interval using a normal distribution.</Description>
-      <ActorReference name="From" exclusive="true">
-        <FromPopulation actor="MqTcpPut"/>
-      </ActorReference>
-      <ActorReference name="To" exclusive="false">
-        <FromPopulation actor="MqTcpGet"/>
       </ActorReference>
       <SetVariable name="StartTime">
         <Script>Now</Script>
@@ -199,9 +122,6 @@
     </EventHandler>
     <EventHandler id="MqttMessageReceived" activity="ProcessMqttMessage">
       <Description>Event triggered when an MQTT message has been received.</Description>
-    </EventHandler>
-    <EventHandler id="MqMessageReceived" activity="ProcessMqMessage">
-      <Description>Event triggered when an MQ message has been received.</Description>
     </EventHandler>
     <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
       <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
@@ -251,20 +171,6 @@
             </Sample>
             <Sample name="MQTT Threads">
               <Script>M.mqttThreads</Script>
-            </Sample>
-          </Group>
-          <Group title="MQ Performance">
-            <Sample name="MQ CPU (%)">
-              <Script>M.mqCpu</Script>
-            </Sample>
-            <Sample name="MQ I/O (kB/s)">
-              <Script>M.mqIo/1024</Script>
-            </Sample>
-            <Sample name="MQ Memory Usage (MB)">
-              <Script>M.mqMemory/1048576</Script>
-            </Sample>
-            <Sample name="MQ Threads">
-              <Script>M.mqThreads</Script>
             </Sample>
           </Group>
         </Thread>
@@ -323,19 +229,6 @@
       <Count counter="MqttSent"/>
       <Stop/>
     </Activity>
-    <Activity id="SendMqMessage" logStart="false" logEnd="false">
-      <Description>This activity sends an XML message to a random MQ recipient.</Description>
-      <Start/>
-      <mq:Put actor="From" queue="SIM.QUEUE.{To.InstanceIndex}">
-        <Xml>
-          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
-            <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
-          </Msg>
-        </Xml>
-      </mq:Put>
-      <Count counter="MqSent"/>
-      <Stop/>
-    </Activity>
     <Activity id="ProcessXmppMessage" logStart="false" logEnd="false">
       <Description>Processes a received XMPP message.</Description>
       <Start/>
@@ -379,60 +272,27 @@
       </Conditional>
       <Stop/>
     </Activity>
-    <Activity id="ProcessMqMessage" logStart="false" logEnd="false">
-      <Description>Processes a received MQ message.</Description>
-      <Start/>
-      <Count counter="MqReceived"/>
-      <Conditional>
-        <Try condition="Msg:=Xml(Message).DocumentElement">
-          <Eval>
-            <![CDATA[
-              StartTime:=DateTime(Msg["StartTime"].InnerText);
-              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
-            ]]>
-          </Eval>
-          <Sample name="MQ Roundtrip">
-            <Script>Elapsed ms</Script>
-          </Sample>
-        </Try>
-        <Otherwise>
-          <Eval>
-            <![CDATA[
-            LogError("Non-XML message received: "+Base64Encode(Content.Data),
-              {"Object":To.UserName});
-            ]]>
-          </Eval>
-          <Count counter="MqContentError"/>
-        </Otherwise>
-      </Conditional>
-      <Stop/>
-    </Activity>
   </Activities>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
       <Source ref="SendXmppMessage"/>
       <Source ref="SendMqttMessage"/>
-      <Source ref="SendMqMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time sending Messages" legend="true">
       <Source ref="SendXmppMessage"/>
       <Source ref="SendMqttMessage"/>
-      <Source ref="SendMqMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
       <Source ref="ProcessXmppMessage"/>
       <Source ref="ProcessMqttMessage"/>
-      <Source ref="ProcessMqMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time processing Messages" legend="true">
       <Source ref="ProcessXmppMessage"/>
       <Source ref="ProcessMqttMessage"/>
-      <Source ref="ProcessMqMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
       <Source ref="XMPP Roundtrip"/>
       <Source ref="MQTT Roundtrip"/>
-      <Source ref="MQ Roundtrip"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>
@@ -441,12 +301,10 @@
     <CombinedSampleGraph title="Service CPU %" legend="true">
       <Source ref="XMPP CPU (%)"/>
       <Source ref="MQTT CPU (%)"/>
-      <Source ref="MQ CPU (%)"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Used Memory (MB)" legend="true" header="Memory Performance">
       <Source ref="XMPP Memory Usage (MB)"/>
       <Source ref="MQTT Memory Usage (MB)"/>
-      <Source ref="MQ Memory Usage (MB)"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
       <Source ref="Broker Network (kB/s)"/>
@@ -455,12 +313,10 @@
     <CombinedSampleGraph title="Service Input/Output (kB/s)" legend="true">
       <Source ref="XMPP I/O (kB/s)"/>
       <Source ref="MQTT I/O (kB/s)"/>
-      <Source ref="MQ I/O (kB/s)"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Thread Count" legend="true" header="Threads">
       <Source ref="XMPP Threads"/>
       <Source ref="MQTT Threads"/>
-      <Source ref="MQ Threads"/>
       <Source ref="Simulator Threads"/>
     </CombinedSampleGraph>
   </Graphs>

@@ -367,7 +367,7 @@ namespace TAG.Simulator.Statistics
 			Output.WriteLine("GraphWidth:=1000;");
 			Output.WriteLine("GraphHeight:=400;");
 
-			this.ExportGraphScript(Output, null);
+			this.ExportGraphScript(Output, null, true);
 
 			Output.WriteLine("}");
 			Output.WriteLine();
@@ -378,8 +378,9 @@ namespace TAG.Simulator.Statistics
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
+		/// <param name="Span">If the entire span can be included.</param>
 		/// <returns>If script was exported.</returns>
-		public bool ExportGraphScript(StreamWriter Output, string CustomColor)
+		public bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span)
 		{
 			this.Flush();
 
@@ -405,7 +406,7 @@ namespace TAG.Simulator.Statistics
 						TimeScript.Append(',');
 						MeanScript.Append(',');
 
-						if (this.sampleGraph)
+						if (this.sampleGraph && Span)
 						{
 							MinScript.Append(',');
 							MaxScript.Append(',');
@@ -431,7 +432,7 @@ namespace TAG.Simulator.Statistics
 					else
 						MeanScript.Append("null,null");
 
-					if (this.sampleGraph)
+					if (this.sampleGraph && Span)
 					{
 						if (Rec.Min.HasValue)
 						{
@@ -464,7 +465,7 @@ namespace TAG.Simulator.Statistics
 				Output.WriteLine(TimeScript.ToString());
 				Output.WriteLine(MeanScript.ToString());
 
-				if (this.sampleGraph)
+				if (this.sampleGraph && Span)
 				{
 					Output.WriteLine(MinScript.ToString());
 					Output.WriteLine(MaxScript.ToString());
@@ -474,18 +475,18 @@ namespace TAG.Simulator.Statistics
 
 				if (string.IsNullOrEmpty(CustomColor))
 				{
-					if (this.sampleGraph)
-						Output.WriteLine("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",32))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
+					if (this.sampleGraph && Span)
+						Output.WriteLine("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",16))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
 					else
-						Output.WriteLine("plot2dline(Time,Mean,\"Red\",5)+plot2dlinearea(Time,Mean,alpha(\"Red\",32));");
+						Output.WriteLine("plot2dline(Time,Mean,\"Red\",5)+plot2dlinearea(Time,Mean,alpha(\"Red\",16));");
 				}
 				else
 				{
-					if (this.sampleGraph)
+					if (this.sampleGraph && Span)
 					{
 						Output.Write("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"");
 						Output.Write(CustomColor);
-						Output.Write("\",32))+plot2dline(Time,Min,alpha(\"");
+						Output.Write("\",16))+plot2dline(Time,Min,alpha(\"");
 						Output.Write(CustomColor);
 						Output.Write("\",128))+plot2dline(Time,Max,alpha(\"");
 						Output.Write(CustomColor);
@@ -499,7 +500,7 @@ namespace TAG.Simulator.Statistics
 						Output.Write(CustomColor);
 						Output.Write("\",5)+plot2dlinearea(Time,Mean,alpha(\"");
 						Output.Write(CustomColor);
-						Output.WriteLine("\",32));");
+						Output.WriteLine("\",16));");
 					}
 				}
 

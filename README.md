@@ -68,6 +68,7 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 | `-s SNIFFER_FOLDER`     | Optional folder for storing network sniff files. |
 | `-st SNIFFER_TRANSFORM` | File name of optional XSLT transform for use with sniffers. |
 | `-d APP_DATA_FOLDER`    | Points to the application data folder. Required if storage of data in a local database is necessary for the simulation. (Storage can include generated user credentials so that the same user identities can be used across simulations.) |
+| `-af FOLDER`            | Adds an assembly folder. Assemblies can be loaded from this folder. |
 | `-e`                    | If encryption is used by the database. Default=no encryption. |
 | `-bs BLOCK_SIZE`        | Block size, in bytes. Default=8192. |
 | `-bbs BLOB_BLOCK_SIZE`  | BLOB block size, in bytes. Default=8192. |
@@ -92,6 +93,9 @@ new simulation models:
 | [XmlMessages.xml](Examples/XmlMessages.xml)               | Demonstrates how to send, receive and validate custom XML messages between XMPP Clients. Introduces custom messages, message handlers, public key cryptography, [XMLDSIG](https://www.w3.org/TR/xmldsig-core/), local performance counters, parallel actions and comparative graphs.    | [Report](https://lab.tagroot.io/Reports/XmlMessages.md)        |
 | [Protocols.xml](Examples/Protocols.xml)                   | Demonstrates how to send, receive messages using different communication protocols. Apart from [XMPP](https://xmpp.org/), it also uses HTTP, [MQTT](https://mqtt.org/) and [IBM MQ](https://www.ibm.com/products/mq). Also measures and compares protocol-specific performance metrics. | [Report](https://lab.tagroot.io/Reports/Protocols.md)          |
 | [BreakingPoint.xml](Examples/BreakingPoint.xml)           | Simulation that gradually increases load on services using different protocols, to investiate possible breaking points and (rate) limits in underlying technologies. Demonstrates the use of the normal distribution. Builds on the `Protocols` example.                                | [Report](https://lab.tagroot.io/Reports/BreakingPoint.md)      |
+| [HighLoad.xml](Examples/HighLoad.xml)                     | Simulation that gradually increases load on services using different protocols, to analyze the effects of a relative high load on the underlying technologies. Builds on the `BreakingPoint` example.                                                                                   | [Report](https://lab.tagroot.io/Reports/HighLoad.md)           |
+| [Federation.xml](Examples/Federation.xml)                 | Demonstrates how to send and receive messages between clients connected to different federated brokers. Builds on the `XmlMessages` example.                                                                                                                                            | [Report](https://lab.tagroot.io/Reports/Federation.md)         |
+| [ContentType.xml](Examples/ContentType.xml)               | Tests publishing information using either XML, JSON or binary over MQTT, to see if there are any noticeable differences on the choice of content type on performance. Builds on the `Protocols` example.                                                                                | [Report](https://lab.tagroot.io/Reports/ContentType.md)           |
 
 ## Extending the Simulator
 

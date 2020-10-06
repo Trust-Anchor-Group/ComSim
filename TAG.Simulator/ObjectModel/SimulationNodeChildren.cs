@@ -98,7 +98,7 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
 			if (!(this.children is null))
@@ -111,7 +111,7 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportXml(XmlWriter Output)
 		{
 			if (!(this.children is null))

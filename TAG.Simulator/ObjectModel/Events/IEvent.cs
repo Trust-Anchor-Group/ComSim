@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
+using TAG.Simulator.ObjectModel.Distributions;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.Script;
@@ -24,12 +25,28 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// Associated distribution, null if none.
+		/// </summary>
+		IDistribution Distribution
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Event description
+		/// </summary>
+		string Description
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Guard">Optional guard expression.</param>
 		/// <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
-		void Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue);
+		Task Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue);
 
 		/// <summary>
 		/// Registers an event preparation node.
@@ -44,11 +61,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		void Register(IExternalEvent ExternalEvent);
 
 		/// <summary>
-		/// Exports Probability Script graph.
+		/// Exports use case information
 		/// </summary>
 		/// <param name="Output">Output</param>
-		/// <returns>If a PDF graph was added.</returns>
-		bool ExportPdfScript(StringBuilder Output);
+		/// <param name="Index">Chart Index</param>
+		void ExportUseCaseData(StreamWriter Output, int Index);
 
 		/// <summary>
 		/// Gets a <see cref="Task"/> object, that will be completed when the event is triggered.

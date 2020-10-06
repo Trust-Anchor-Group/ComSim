@@ -152,7 +152,7 @@
   </Distributions>
   <Events>
     <StochasticEvent distribution="TwoThousandPerMinute" activity="SendXmppMessage">
-      <Description>Sends an XML message from one random XMPP client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
+      <Description>Sends an XML message from one random XMPP client to another, at a frequency of two thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcp"/>
       </ActorReference>
@@ -164,7 +164,7 @@
       </SetVariable>
     </StochasticEvent>
     <StochasticEvent distribution="TwoThousandPerMinute" activity="SendMqttMessage">
-      <Description>Sends an XML message from one random MQTT client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
+      <Description>Sends an XML message from one random MQTT client to another, at a frequency of two thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcp"/>
       </ActorReference>
@@ -176,7 +176,7 @@
       </SetVariable>
     </StochasticEvent>
     <StochasticEvent distribution="TwoThousandPerMinute" activity="SendMqMessage">
-      <Description>Sends an XML message from one random MQ client to another, at a frequency of a thousand times per minute using a uniform distribution.</Description>
+      <Description>Sends an XML message from one random MQ client to another, at a frequency of two thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqTcpPut"/>
       </ActorReference>

@@ -89,13 +89,13 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		Task ExportMarkdown(StreamWriter Output);
 
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		Task ExportXml(XmlWriter Output);
 	}
 }

@@ -106,7 +106,7 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public virtual Task ExportMarkdown(StreamWriter Output)
 		{
 			return Task.CompletedTask;
@@ -115,7 +115,7 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public virtual Task ExportXml(XmlWriter Output)
 		{
 			return Task.CompletedTask;

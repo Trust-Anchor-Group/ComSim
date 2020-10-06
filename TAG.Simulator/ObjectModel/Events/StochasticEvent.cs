@@ -43,7 +43,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Distribution
 		/// </summary>
-		public IDistribution Distribution => this.distribution;
+		public override IDistribution Distribution => this.distribution;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -95,94 +95,33 @@ namespace TAG.Simulator.ObjectModel.Events
 			int n = this.distribution.CheckTrigger(t1, t2, NrCycles);
 			while (n > 0)
 			{
-				this.Trigger(this.Model.GetEventVariables(null), this.guard, this.guardLimit);
+				Task.Run(() => this.Trigger(this.Model.GetEventVariables(null), this.guard, this.guardLimit));
 				n--;
 			}
 		}
 
 		/// <summary>
+		/// Name of use case association.
+		/// </summary>
+		public override string UseCaseLinkName => this.distributionId;
+
+		/// <summary>
 		/// Exports use case diagram data.
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
-		public override void ExportUseCaseData(StreamWriter Output)
+		/// <param name="Index">Chart Index</param>
+		public override void ExportUseCaseData(StreamWriter Output, int Index)
 		{
-			base.ExportUseCaseData(Output);
-
-			Output.WriteLine("note right of UC1");
-			Output.Write("Triggered in accordance with distribution ");
-			Output.WriteLine(this.distributionId);
-			Output.WriteLine("end note");
+			base.ExportUseCaseData(Output, Index);
 
 			if (!(this.guard is null))
 			{
-				Output.WriteLine("note left of UC1");
-				Output.WriteLine("Additional conditions, guarded by script");
+				Output.Write("note left of UC");
+				Output.WriteLine(Index.ToString());
+				Output.Write(this.distributionId);
+				Output.WriteLine(" is subject to conditions defined by script");
 				Output.WriteLine("end note");
 			}
-		}
-
-		/// <summary>
-		/// Exports Probability Script graph.
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <returns>If a PDF graph was added.</returns>
-		public override bool ExportPdfScript(StringBuilder Output)
-		{
-			if (!(this.distribution is null))
-			{
-				double t2 = Model.GetTimeCoordinates(this.Model.EndTime);
-				double dt = t2 / 1000;
-				string s;
-
-				Output.Append("+(");
-				this.distribution.ExportPdfOnceOnly(Output);
-
-				Output.Append("t:=0..");
-				Output.Append(CommonTypes.Encode(t2));
-				Output.Append("|");
-				Output.Append(CommonTypes.Encode(dt));
-				Output.AppendLine(";");
-
-				if (this.Model.TimeCycleUnits != 1)
-				{
-					Output.Append("ct:=t/");
-					Output.Append(s = CommonTypes.Encode(this.Model.TimeCycleUnits));
-					Output.AppendLine(";");
-					Output.Append("ct:=(ct-floor(ct))*");
-					Output.Append(s);
-					Output.AppendLine(";");
-				}
-				else
-					Output.AppendLine("ct:=t-floor(t);");
-
-				Output.Append("y:=");
-				Output.Append(this.distributionId);
-				Output.Append("PDF(ct)");
-
-				if (this.Model.BucketTimeMs != this.Model.TimeUnitMs)
-				{
-					Output.Append(".*");
-					Output.Append(CommonTypes.Encode(this.Model.BucketTimeMs / this.Model.TimeUnitMs));
-				}
-
-				Output.AppendLine(";");
-				Output.AppendLine("G:=plot2dline(t,y,\"Blue\",3);");
-				Output.Append("G.LabelX:=\"Time × ");
-				Output.Append(this.Model.TimeUnitStr);
-				Output.AppendLine("\";");
-				Output.Append("G.LabelY:=\"Intensity (/ ");
-				Output.Append(this.Model.TimeUnitStr);
-				Output.AppendLine(")\";");
-				Output.Append("G.Title:=\"Probability Density Function of ");
-				Output.Append(this.distributionId);
-				Output.AppendLine("\";");
-				Output.AppendLine("G");
-				Output.Append(")");
-
-				return true;
-			}
-			else
-				return false;
 		}
 
 	}

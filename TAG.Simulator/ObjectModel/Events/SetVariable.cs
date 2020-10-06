@@ -94,17 +94,25 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Exports the node to PlantUML script in a markdown document.
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
-		public override void ExportPlantUml(StreamWriter Output)
+		/// <param name="Name">Optional name for the association.</param>
+		/// <param name="Index">Chart Index</param>
+		public override void ExportPlantUml(StreamWriter Output, string Name, int Index)
 		{
+			string s = Index.ToString();
+
 			Output.Write("note \"");
 			Output.Write(this.name);
 			Output.Write('=');
 			this.value?.ExportPlantUml(Output, 0, '\'');
 			Output.Write("\" as N");
-			Output.WriteLine(this.name);
+			Output.Write(this.name);
+			Output.WriteLine(s);
 
-			Output.Write("UC1 .. N");
-			Output.WriteLine(this.name);
+			Output.Write("UC");
+			Output.Write(s);
+			Output.Write(" .. N");
+			Output.Write(this.name);
+			Output.WriteLine(s);
 		}
 	}
 }

@@ -50,17 +50,15 @@ namespace TAG.Simulator.ObjectModel.Activities
 		void Register(IActivityNode Node);
 
 		/// <summary>
+		/// Registers an event that calls the activity.
+		/// </summary>
+		/// <param name="Event">Event.</param>
+		void Register(IEvent Event);
+
+		/// <summary>
 		/// Executes the activity.
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		Task ExecuteTask(Variables Variables);
-
-		/// <summary>
-		/// Exports Markdown
-		/// </summary>
-		/// <param name="Output">Output node</param>
-		/// <param name="Title">It title should be exported.</param>
-		/// <param name="Event">Connected event object.</param>
-		Task ExportMarkdown(StreamWriter Output, bool Title, IEvent Event);
 	}
 }

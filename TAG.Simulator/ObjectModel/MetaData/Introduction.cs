@@ -57,7 +57,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override Task ExportMarkdown(StreamWriter Output)
 		{
 			Output.WriteLine(this.introduction);
@@ -79,7 +79,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override Task ExportXml(XmlWriter Output)
 		{
 			Output.WriteElementString("Introduction", this.introduction);

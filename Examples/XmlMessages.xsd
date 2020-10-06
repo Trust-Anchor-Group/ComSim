@@ -14,4 +14,20 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="Loc">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StartTime" type="xs:positiveInteger"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Fed">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StartTime" type="xs:positiveInteger"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
 </xs:schema>

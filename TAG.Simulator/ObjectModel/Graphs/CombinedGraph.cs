@@ -19,6 +19,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		private int count = 0;
 		private string title;
 		private bool legend;
+		private bool span;
 
 		/// <summary>
 		/// Abstract base class for combined graphs
@@ -43,6 +44,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		{
 			this.title = XML.Attribute(Definition, "title");
 			this.legend = XML.Attribute(Definition, "legend", true);
+			this.span = XML.Attribute(Definition, "span", true);
 
 			return base.FromXml(Definition);
 		}
@@ -66,7 +68,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			Output.WriteLine("{");
 			Output.WriteLine("GraphWidth:=1000;");
 			Output.WriteLine("GraphHeight:=400;");
-			this.ExportGraphScript(Output, null);
+			this.ExportGraphScript(Output, null, true);
 			Output.WriteLine("}");
 			Output.WriteLine();
 
@@ -146,7 +148,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
 		/// <returns>If script was exported.</returns>
-		public override bool ExportGraphScript(StreamWriter Output, string CustomColor)
+		public override bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span)
 		{
 			SKColor[] Palette = Model.CreatePalette(this.count);
 			IGraph Graph;
@@ -165,7 +167,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 					if (!First)
 						Output.WriteLine("), (");
 
-					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i])))
+					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i]), this.span))
 						First = false;
 				}
 

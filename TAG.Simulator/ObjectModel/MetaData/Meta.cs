@@ -41,7 +41,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Exports Markdown
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportMarkdown(StreamWriter Output)
 		{
 			await base.ExportMarkdown(Output);
@@ -100,7 +100,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Exports XML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		public override async Task ExportXml(XmlWriter Output)
 		{
 			await base.ExportXml(Output);

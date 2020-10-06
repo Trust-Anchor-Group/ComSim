@@ -98,9 +98,11 @@ Examples
 [x] Web Server Load (HTTP GET)
 [x] Timing of communication roundtrip
 [x] Parallel threads in activity
-[ ] Protocols comparison
-[ ] Breakpoint example
-[ ] Federation
+[x] Protocols comparison
+[x] Breakpoint example
+[x] Federation
+[x] High load
+[ ] Performance comparison XML vs. JSON over MQTT
 [ ] State machines & External events to determine activity node transitions
 [ ] Req/Resp pattern
 [ ] Pub/Sub pattern
@@ -113,3 +115,5 @@ Documentation
 [ ] Structure of a simulation file
 [ ] TimeBase, TimeUnit, TimeCycle, Duration (cyclic time)
 [ ] Explain keys
+
+Dispelling networking myths using simulation

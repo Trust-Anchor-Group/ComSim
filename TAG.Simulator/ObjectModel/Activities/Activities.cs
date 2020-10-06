@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
@@ -49,6 +51,21 @@ namespace TAG.Simulator.ObjectModel.Activities
 			}
 
 			return Order.ToArray();
+		}
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output</param>
+		public override Task ExportMarkdown(StreamWriter Output)
+		{
+			Output.WriteLine("Activities");
+			Output.WriteLine("=============");
+			Output.WriteLine();
+
+			this.Model.ExportActivityStartStatistics(Output);
+
+			return base.ExportMarkdown(Output);
 		}
 
 	}

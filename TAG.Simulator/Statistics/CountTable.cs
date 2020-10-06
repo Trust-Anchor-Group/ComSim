@@ -63,7 +63,7 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Exports data as a Markdown Table
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		/// <param name="Header">Header string</param>
 		/// <param name="Title">Title string</param>
 		/// <param name="Id">Table ID</param>

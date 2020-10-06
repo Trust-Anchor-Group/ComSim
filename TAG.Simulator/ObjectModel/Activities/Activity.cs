@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Events;
@@ -15,6 +16,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	public class Activity : SimulationNodeChildren, IActivity
 	{
 		private LinkedList<IActivityNode> activityNodes = null;
+		private LinkedList<IEvent> events = null;
 		private string id;
 		private int executionCount = 0;
 		private bool logStart;
@@ -101,6 +103,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
+		/// Registers an event that calls the activity.
+		/// </summary>
+		/// <param name="Event">Event.</param>
+		public void Register(IEvent Event)
+		{
+			if (this.events is null)
+				this.events = new LinkedList<IEvent>();
+
+			this.events.AddLast(Event);
+		}
+
+		/// <summary>
 		/// Executes the activity.
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
@@ -143,35 +157,55 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Exports PlantUML
 		/// </summary>
-		/// <param name="Output">Output node</param>
-		public override Task ExportMarkdown(StreamWriter Output)
+		/// <param name="Output">Output</param>
+		public override async Task ExportMarkdown(StreamWriter Output)
 		{
-			if (!this.markdownExported)
-				return this.ExportMarkdown(Output, true, null);
-			else
-				return Task.CompletedTask;
-		}
-
-		/// <summary>
-		/// Exports PlantUML
-		/// </summary>
-		/// <param name="Output">Output node</param>
-		/// <param name="Title">It title should be exported.</param>
-		/// <param name="Event">Connected event object.</param>
-		public async Task ExportMarkdown(StreamWriter Output, bool Title, IEvent Event)
-		{
-			this.markdownExported = true;
-
-			if (Title)
-			{
-				this.Model.ExportActivitiesIntroduction(Output);
-			
-				Output.WriteLine(this.id);
-				Output.WriteLine(new string('-', this.id.Length + 3));
-				Output.WriteLine();
-			}
+			Output.WriteLine(this.id);
+			Output.WriteLine(new string('-', this.id.Length + 3));
+			Output.WriteLine();
 
 			await base.ExportMarkdown(Output);
+
+			Output.WriteLine("```uml: Use Case chart for " + this.id);
+			Output.WriteLine("@startuml");
+
+			int Index = 0;
+
+			if (!(this.events is null))
+			{
+				foreach (IEvent Event in this.events)
+				{
+					string Desc = Event.Description;
+
+					Output.Write("usecase UC");
+					Output.Write((++Index).ToString());
+					Output.Write(" as \"");
+					Output.Write(this.id);
+
+					if (!string.IsNullOrEmpty(Desc))
+					{
+						Output.WriteLine();
+						Output.WriteLine("==");
+						Output.Write(BreakWords(Desc, 25));
+					}
+
+					Output.WriteLine("\"");
+
+					Event.ExportUseCaseData(Output, Index);
+				}
+			}
+
+			if (Index == 0)
+			{
+				Output.Write("usecase \"");
+				Output.Write(this.id);
+				Output.WriteLine("\" as UC1");
+			}
+
+			Output.WriteLine("@enduml");
+			Output.WriteLine("```");
+			Output.WriteLine();
+
 
 			Output.WriteLine("```uml: Activity chart for " + this.id);
 			Output.WriteLine("@startuml");
@@ -183,10 +217,38 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.WriteLine("```");
 			Output.WriteLine();
 
-			this.Model.ExportActivityCharts(this.id, Output, Event);
+			this.Model.ExportActivityCharts(this.id, Output, this.events);
 		}
 
-		private bool markdownExported = false;
+		private static string BreakWords(string s, int Width)
+		{
+			StringBuilder sb = new StringBuilder();
+			int c, l = 0;
+
+			foreach (string Word in s.Split(new char[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				c = Word.Length;
+
+				if (l > 0)
+				{
+					if (l + c < Width)
+					{
+						sb.Append(' ');
+						l++;
+					}
+					else
+					{
+						sb.AppendLine();
+						l = 0;
+					}
+				}
+
+				sb.Append(Word);
+				l += c;
+			}
+
+			return sb.ToString();
+		}
 
 	}
 }

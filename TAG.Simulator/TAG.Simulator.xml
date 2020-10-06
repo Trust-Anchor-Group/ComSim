@@ -159,13 +159,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ISimulationNode.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ISimulationNodeChildren">
             <summary>
@@ -616,13 +616,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.Model.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.Model.CreatePalette(System.Int32)">
             <summary>
@@ -713,7 +713,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -747,6 +747,12 @@
             Gets the declared order of activities in the model.
             </summary>
             <returns>Order</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activities.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports Markdown
+            </summary>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.Activity">
             <summary>
@@ -810,6 +816,12 @@
             </summary>
             <param name="Node">Activity node.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.Register(TAG.Simulator.ObjectModel.Events.IEvent)">
+            <summary>
+            Registers an event that calls the activity.
+            </summary>
+            <param name="Event">Event.</param>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExecuteTask(Waher.Script.Variables)">
             <summary>
             Executes the activity.
@@ -827,15 +839,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Activity.ExportMarkdown(System.IO.StreamWriter,System.Boolean,TAG.Simulator.ObjectModel.Events.IEvent)">
-            <summary>
-            Exports PlantUML
-            </summary>
-            <param name="Output">Output node</param>
-            <param name="Title">It title should be exported.</param>
-            <param name="Event">Connected event object.</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.ActivityNode">
             <summary>
@@ -892,7 +896,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1061,7 +1065,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -1108,7 +1112,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1148,7 +1152,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1211,7 +1215,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1262,7 +1266,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1323,7 +1327,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1332,7 +1336,7 @@
             Exports PlantUML
             </summary>
             <param name="Script">Script expression.</param>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
             <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
@@ -1373,7 +1377,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1444,7 +1448,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1490,7 +1494,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1525,19 +1529,17 @@
             </summary>
             <param name="Node">Activity node.</param>
         </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.Register(TAG.Simulator.ObjectModel.Events.IEvent)">
+            <summary>
+            Registers an event that calls the activity.
+            </summary>
+            <param name="Event">Event.</param>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.ExecuteTask(Waher.Script.Variables)">
             <summary>
             Executes the activity.
             </summary>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.IActivity.ExportMarkdown(System.IO.StreamWriter,System.Boolean,TAG.Simulator.ObjectModel.Events.IEvent)">
-            <summary>
-            Exports Markdown
-            </summary>
-            <param name="Output">Output node</param>
-            <param name="Title">It title should be exported.</param>
-            <param name="Event">Connected event object.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IActivityNode">
             <summary>
@@ -1566,7 +1568,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1586,7 +1588,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -1627,7 +1629,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1646,7 +1648,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -1699,7 +1701,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -1740,7 +1742,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1797,7 +1799,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1837,7 +1839,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1877,7 +1879,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -1966,7 +1968,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -2029,7 +2031,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -2098,7 +2100,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="First">If the condition is the first condition.</param>
             <param name="QuoteChar">Quote character.</param>
@@ -2145,7 +2147,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -2776,11 +2778,13 @@
             </summary>
             <param name="Variables">Event variables</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.ExportPlantUml(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.ActorReference.ExportPlantUml(System.IO.StreamWriter,System.String,System.Int32)">
             <summary>
             Exports the node to PlantUML script in a markdown document.
             </summary>
             <param name="Output">Output stream.</param>
+            <param name="Name">Optional name for the association.</param>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Event">
             <summary>
@@ -2845,24 +2849,27 @@
             <param name="Guard">Optional guard expression.</param>
             <param name="GuardLimit">Maximum number of times to apply guard expression in search of suitable candidates.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportMarkdown(System.IO.StreamWriter)">
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.UseCaseLinkName">
             <summary>
-            Exports PlantUML
+            Name of use case association.
             </summary>
-            <param name="Output">Output node</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportUseCaseData(System.IO.StreamWriter)">
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.Distribution">
+            <summary>
+            Associated distribution, null if none.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.Event.Description">
+            <summary>
+            Event description
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportUseCaseData(System.IO.StreamWriter,System.Int32)">
             <summary>
             Exports use case diagram data.
             </summary>
             <param name="Output">Output stream.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Event.ExportPdfScript(System.Text.StringBuilder)">
-            <summary>
-            Exports Probability Script graph.
-            </summary>
-            <param name="Output">Output</param>
-            <returns>If a PDF graph was added.</returns>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.Event.GetTrigger">
             <summary>
@@ -2925,11 +2932,13 @@
             </summary>
             <param name="Variables">Event variables</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.ExportPlantUml(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventPreparation.ExportPlantUml(System.IO.StreamWriter,System.String,System.Int32)">
             <summary>
             Exports the node to PlantUML script in a markdown document.
             </summary>
             <param name="Output">Output stream.</param>
+            <param name="Name">Optional name for the association.</param>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.Events">
             <summary>
@@ -2955,6 +2964,12 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.Events.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports Markdown
+            </summary>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.EventVariables">
             <summary>
@@ -3137,6 +3152,16 @@
             ID of event.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IEvent.Distribution">
+            <summary>
+            Associated distribution, null if none.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IEvent.Description">
+            <summary>
+            Event description
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.Trigger(Waher.Script.Variables,Waher.Script.Expression,System.Int32)">
             <summary>
             Triggers the event.
@@ -3157,12 +3182,12 @@
             </summary>
             <param name="ExternalEvent">External event.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.ExportPdfScript(System.Text.StringBuilder)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.ExportUseCaseData(System.IO.StreamWriter,System.Int32)">
             <summary>
-            Exports Probability Script graph.
+            Exports use case information
             </summary>
             <param name="Output">Output</param>
-            <returns>If a PDF graph was added.</returns>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Events.IEvent.GetTrigger">
             <summary>
@@ -3188,11 +3213,13 @@
             </summary>
             <param name="Variables">Event variables</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.ExportPlantUml(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.IEventPreparation.ExportPlantUml(System.IO.StreamWriter,System.String,System.Int32)">
             <summary>
             Exports the node to PlantUML script in a markdown document.
             </summary>
             <param name="Output">Output stream.</param>
+            <param name="Name">Optional name for the association.</param>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.IExternalEvent">
             <summary>
@@ -3350,11 +3377,13 @@
             </summary>
             <param name="Variables">Event variables</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.ExportPlantUml(System.IO.StreamWriter)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.SetVariable.ExportPlantUml(System.IO.StreamWriter,System.String,System.Int32)">
             <summary>
             Exports the node to PlantUML script in a markdown document.
             </summary>
             <param name="Output">Output stream.</param>
+            <param name="Name">Optional name for the association.</param>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.StochasticEvent">
             <summary>
@@ -3410,18 +3439,17 @@
             <param name="t2">Ending time of period.</param>
             <param name="NrCycles">Number of time cycles completed.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.ExportUseCaseData(System.IO.StreamWriter)">
+        <member name="P:TAG.Simulator.ObjectModel.Events.StochasticEvent.UseCaseLinkName">
+            <summary>
+            Name of use case association.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.ExportUseCaseData(System.IO.StreamWriter,System.Int32)">
             <summary>
             Exports use case diagram data.
             </summary>
             <param name="Output">Output stream.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.StochasticEvent.ExportPdfScript(System.Text.StringBuilder)">
-            <summary>
-            Exports Probability Script graph.
-            </summary>
-            <param name="Output">Output</param>
-            <returns>If a PDF graph was added.</returns>
+            <param name="Index">Chart Index</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.CombinedCounterGraph">
             <summary>
@@ -3580,7 +3608,7 @@
             <param name="Labels">Labels to add to legend.</param>
             <param name="Palette">Palette to use</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.ExportGraphScript(System.IO.StreamWriter,System.String,System.Boolean)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
@@ -3739,12 +3767,13 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.ExportGraphScript(System.IO.StreamWriter,System.String,System.Boolean)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graph">
@@ -3781,12 +3810,13 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.ExportGraphScript(System.IO.StreamWriter,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Graph.ExportGraphScript(System.IO.StreamWriter,System.String,System.Boolean)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graphs">
@@ -3840,12 +3870,13 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportGraphScript(System.IO.StreamWriter,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.IGraph.ExportGraphScript(System.IO.StreamWriter,System.String,System.Boolean)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.ISource">
@@ -3950,13 +3981,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.Description.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Introduction">
             <summary>
@@ -3998,13 +4029,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.Introduction.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Meta">
             <summary>
@@ -4035,13 +4066,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.Meta.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.ModelScript">
             <summary>
@@ -4129,13 +4160,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.Preparation.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Title">
             <summary>
@@ -4177,13 +4208,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.Title.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
             <summary>
@@ -4262,13 +4293,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNode.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Indent(System.IO.StreamWriter,System.Int32)">
             <summary>
@@ -4322,13 +4353,13 @@
             <summary>
             Exports Markdown
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.ExportXml(System.Xml.XmlWriter)">
             <summary>
             Exports XML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Structure.Assemblies">
             <summary>
@@ -4446,7 +4477,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4505,7 +4536,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4514,14 +4545,14 @@
             Exports PlantUML
             </summary>
             <param name="Duration">Duration value.</param>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ExportText(Waher.Content.Duration,System.Text.StringBuilder)">
             <summary>
             Exports PlantUML
             </summary>
             <param name="Duration">Duration value.</param>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Values.Duration.ToString(Waher.Content.Duration)">
             <summary>
@@ -4546,7 +4577,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4616,7 +4647,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4687,7 +4718,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4746,7 +4777,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4805,7 +4836,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4837,7 +4868,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4888,7 +4919,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -4944,7 +4975,7 @@
             <summary>
             Exports PlantUML
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
@@ -5070,12 +5101,13 @@
             </summary>
             <param name="Output">Markdown output</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.ExportGraphScript(System.IO.StreamWriter,System.String)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.ExportGraphScript(System.IO.StreamWriter,System.String,System.Boolean)">
             <summary>
             Exports the graph to a markdown output.
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
         </member>
         <member name="M:TAG.Simulator.Statistics.Bucket.ExportXml(System.Xml.XmlWriter,System.String)">
@@ -5189,7 +5221,7 @@
             </summary>
             <param name="Bucket">Bucket</param>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Buckets.ExportCountHistoryGraph(System.String,System.Collections.Generic.IEnumerable{System.String},System.IO.StreamWriter,TAG.Simulator.Model,TAG.Simulator.ObjectModel.Events.IEvent,SkiaSharp.SKColor[])">
+        <member name="M:TAG.Simulator.Statistics.Buckets.ExportCountHistoryGraph(System.String,System.Collections.Generic.IEnumerable{System.String},System.IO.StreamWriter,TAG.Simulator.Model,System.Collections.Generic.IEnumerable{TAG.Simulator.ObjectModel.Events.IEvent},SkiaSharp.SKColor[])">
             <summary>
             Exports historical counts as a graph.
             </summary>
@@ -5197,7 +5229,7 @@
             <param name="Order">Preferred order, can be null.</param>
             <param name="Output">Export destination</param>
             <param name="Model">Simulation model</param>
-            <param name="Event">Associated event object.</param>
+            <param name="Events">Associated event objects.</param>
             <param name="Palette">Optional predefined palette</param>
         </member>
         <member name="P:TAG.Simulator.Statistics.Buckets.IDs">
@@ -5240,7 +5272,7 @@
             <summary>
             Exports data as a Markdown Table
             </summary>
-            <param name="Output">Output node</param>
+            <param name="Output">Output</param>
             <param name="Header">Header string</param>
             <param name="Title">Title string</param>
             <param name="Id">Table ID</param>

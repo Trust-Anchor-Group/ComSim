@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TAG.Simulator.ObjectModel.Events
 {
@@ -33,6 +35,15 @@ namespace TAG.Simulator.ObjectModel.Events
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
 			return new Events(Parent, Model);
+		}
+
+		/// <summary>
+		/// Exports Markdown
+		/// </summary>
+		/// <param name="Output">Output</param>
+		public override Task ExportMarkdown(StreamWriter Output)
+		{
+			return Task.CompletedTask;
 		}
 	}
 }

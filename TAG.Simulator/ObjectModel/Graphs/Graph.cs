@@ -59,7 +59,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
+		/// <param name="Span">If the entire span can be included.</param>
 		/// <returns>If script was exported.</returns>
-		public abstract bool ExportGraphScript(StreamWriter Output, string CustomColor);
+		public abstract bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span);
 	}
 }

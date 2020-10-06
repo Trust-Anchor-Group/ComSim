@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using SkiaSharp;
+using TAG.Simulator.ObjectModel.Distributions;
 using TAG.Simulator.ObjectModel.Events;
 using TAG.Simulator.ObjectModel.Graphs;
 using Waher.Content;
@@ -295,10 +296,10 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Order">Preferred order, can be null.</param>
 		/// <param name="Output">Export destination</param>
 		/// <param name="Model">Simulation model</param>
-		/// <param name="Event">Associated event object.</param>
+		/// <param name="Events">Associated event objects.</param>
 		/// <param name="Palette">Optional predefined palette</param>
 		public void ExportCountHistoryGraph(string Title, IEnumerable<string> Order, StreamWriter Output, Model Model,
-			IEvent Event, SKColor[] Palette = null)
+			IEnumerable<IEvent> Events, SKColor[] Palette = null)
 		{
 			lock (this.buckets)
 			{
@@ -461,7 +462,75 @@ namespace TAG.Simulator.Statistics
 					PlotScript.Append(PlotScript2.ToString());
 				}
 
-				bool PdfShown = Event?.ExportPdfScript(PlotScript) ?? false;
+				bool PdfShown = false;
+
+				if (!(Events is null))
+				{
+					LinkedList<IDistribution> Distributions = null;
+
+					foreach (IEvent Event in Events)
+					{
+						IDistribution Distribution = Event.Distribution;
+						if (Distribution is null)
+							continue;
+
+						if (Distributions is null)
+							Distributions = new LinkedList<IDistribution>();
+
+						Distributions.AddLast(Distribution);
+						Distribution.ExportPdfOnceOnly(Script);
+					}
+
+					if (!(Distributions is null))
+					{
+						double t2 = Model.GetTimeCoordinates(Model.EndTime);
+						double dt = t2 / 1000;
+						bool First2 = true;
+						string s;
+
+						Script.Append("t:=0..");
+						Script.Append(CommonTypes.Encode(t2));
+						Script.Append("|");
+						Script.Append(CommonTypes.Encode(dt));
+						Script.AppendLine(";");
+
+						if (Model.TimeCycleUnits != 1)
+						{
+							Script.Append("ct:=t/");
+							Script.Append(s = CommonTypes.Encode(Model.TimeCycleUnits));
+							Script.AppendLine(";");
+							Script.Append("ct:=(ct-floor(ct))*");
+							Script.Append(s);
+							Script.AppendLine(";");
+						}
+						else
+							Script.AppendLine("ct:=t-floor(t);");
+
+						PlotScript.Append("+plot2dline(t,(");
+
+						foreach (IDistribution Distribution in Distributions)
+						{
+							if (First2)
+								First2 = false;
+							else
+								PlotScript.Append('+');
+
+							PlotScript.Append(Distribution.Id);
+							PlotScript.Append("PDF(ct)");
+						}
+
+						PlotScript.Append(')');
+
+						if (Model.BucketTimeMs != Model.TimeUnitMs)
+						{
+							PlotScript.Append(".*");
+							PlotScript.Append(CommonTypes.Encode(Model.BucketTimeMs / Model.TimeUnitMs));
+						}
+
+						PlotScript.AppendLine(",\"Blue\",3)");
+						PdfShown = true;
+					}
+				}
 
 				Script.AppendLine("GraphWidth:=1000;");
 				Script.AppendLine("GraphHeight:=400;");

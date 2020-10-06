@@ -49,6 +49,8 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Exports the node to PlantUML script in a markdown document.
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
-		public abstract void ExportPlantUml(StreamWriter Output);
+		/// <param name="Name">Optional name for the association.</param>
+		/// <param name="Index">Chart Index</param>
+		public abstract void ExportPlantUml(StreamWriter Output, string Name, int Index);
 	}
 }

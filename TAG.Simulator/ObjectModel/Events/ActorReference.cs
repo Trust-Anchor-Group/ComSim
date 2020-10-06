@@ -154,13 +154,15 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Exports the node to PlantUML script in a markdown document.
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
-		public override void ExportPlantUml(StreamWriter Output)
+		/// <param name="Name">Optional name for the association.</param>
+		/// <param name="Index">Chart Index</param>
+		public override void ExportPlantUml(StreamWriter Output, string Name, int Index)
 		{
 			int i = 0;
 
 			foreach (IActor Actor in this.actors)
 			{
-				string s = this.name + "_A" + i.ToString();
+				string s = this.name + "_" + Index.ToString() + "_A" + i.ToString();
 
 				Output.Write("actor \"");
 				Output.Write(this.name);
@@ -173,7 +175,16 @@ namespace TAG.Simulator.ObjectModel.Events
 				Actor.AnnotateActorUseCaseUml(Output, s);
 
 				Output.Write(s);
-				Output.WriteLine(" --> UC1");
+				Output.Write(" --> UC");
+				Output.Write(Index.ToString());
+
+				if (!string.IsNullOrEmpty(Name))
+				{
+					Output.Write(" : ");
+					Output.Write(Name);
+				}
+
+				Output.WriteLine();
 
 				i++;
 			}

@@ -89,7 +89,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Exports PlantUML
 		/// </summary>
-		/// <param name="Output">Output node</param>
+		/// <param name="Output">Output</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
 		/// <param name="QuoteChar">Quote character.</param>
 		public virtual void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
