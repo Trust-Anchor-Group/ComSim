@@ -132,14 +132,14 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 				this.graph.Append(i.ToString());
 				this.graph.Append(",alpha(\"");
 				this.graph.Append(this.spanColor);
-				this.graph.Append("\",128))");
+				this.graph.Append("\",32))");
 				this.graph.Append("+plot2dline(x");
 				this.graph.Append(i.ToString());
 				this.graph.Append(",Max");
 				this.graph.Append(i.ToString());
 				this.graph.Append(",alpha(\"");
 				this.graph.Append(this.spanColor);
-				this.graph.Append("\",128))");
+				this.graph.Append("\",32))");
 			}
 
 			if (this.Index > 1)

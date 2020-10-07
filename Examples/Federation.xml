@@ -245,6 +245,31 @@
       <Stop/>
     </Activity>
   </Activities>
+  <Measurements>
+    <BucketTime for="ReadPerformanceCounters" duration="PT10S"/>
+    <BucketTime for="NL Broker CPU (%)" duration="PT10S"/>
+    <BucketTime for="SE Broker CPU (%)" duration="PT10S"/>
+    <BucketTime for="Simulator CPU (%)" duration="PT10S"/>
+    <BucketTime for="NL Broker Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="SE Broker Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="Simulator Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="NL Broker Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="SE Broker Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="Simulator Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="Local XMPP Roundtrip" duration="PT10S"/>
+    <BucketTime for="Federated XMPP Roundtrip" duration="PT10S"/>
+    <OutlierRemoval for="NL Broker CPU (%)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="SE Broker CPU (%)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="Simulator CPU (%)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="NL Broker Free Memory (GB)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="SE Broker Free Memory (GB)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="Simulator Free Memory (GB)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="NL Broker Network (kB/s)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="SE Broker Network (kB/s)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="Simulator Network (kB/s)" windowSize="7" threshold="1"/>
+    <OutlierRemoval for="Local XMPP Roundtrip" windowSize="7" threshold="1" smooth="true"/>
+    <OutlierRemoval for="Federated XMPP Roundtrip" windowSize="7" threshold="1" smooth="true"/>
+  </Measurements>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
       <Source ref="SendLocalXmppMessage"/>

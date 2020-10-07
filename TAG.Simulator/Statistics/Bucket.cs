@@ -23,8 +23,9 @@ namespace TAG.Simulator.Statistics
 		private readonly string id;
 		private readonly string title;
 		private readonly string labelY;
-		private readonly Duration bucketTime;
 		private readonly bool calcStdDev;
+		private IFilter filter = null;
+		private Duration bucketTime;
 		private DateTime start;
 		private DateTime stop;
 		private Unit unit = null;
@@ -69,6 +70,15 @@ namespace TAG.Simulator.Statistics
 		/// Optional header
 		/// </summary>
 		public string Header => string.Empty;
+
+		/// <summary>
+		/// Time to accumulate values.
+		/// </summary>
+		public Duration BucketTime
+		{
+			get => this.bucketTime;
+			set => this.bucketTime = value;
+		}
 
 		/// <summary>
 		/// Counter
@@ -160,9 +170,11 @@ namespace TAG.Simulator.Statistics
 		/// <returns>Start time of bucket that was incremented.</returns>
 		public DateTime Inc()
 		{
+			DateTime Timestamp = DateTime.Now;
+
 			lock (this)
 			{
-				return this.Sample(++this.relativeCounter);
+				return this.Sample(Timestamp, ++this.relativeCounter);
 			}
 		}
 
@@ -172,9 +184,11 @@ namespace TAG.Simulator.Statistics
 		/// <returns>Start time of bucket that was incremented.</returns>
 		public DateTime Dec()
 		{
+			DateTime Timestamp = DateTime.Now;
+
 			lock (this)
 			{
-				return this.Sample(--this.relativeCounter);
+				return this.Sample(Timestamp, --this.relativeCounter);
 			}
 		}
 
@@ -213,9 +227,10 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Adds a sample
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of value.</param>
 		/// <param name="Value">Sample value reported</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		public DateTime Sample(PhysicalQuantity Value)
+		public DateTime Sample(DateTime Timestamp, PhysicalQuantity Value)
 		{
 			double v;
 
@@ -227,20 +242,23 @@ namespace TAG.Simulator.Statistics
 			else if (!Unit.TryConvert(Value.Magnitude, Value.Unit, this.unit, out v))
 				throw new Exception("Incompatible units: " + Value.Unit.ToString() + " and " + this.unit.ToString());
 
-			return this.Sample(v);
+			return this.Sample(Timestamp, v);
 		}
 
 		/// <summary>
 		/// Adds a sample
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of value.</param>
 		/// <param name="Value">Sample value reported</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		public DateTime Sample(double Value)
+		public DateTime Sample(DateTime Timestamp, double Value)
 		{
+			if (this.filter?.Filter(ref Timestamp, ref Value) ?? false)
+				return this.start;
+
 			lock (this)
 			{
-				DateTime Now = DateTime.Now;
-				while (Now >= this.stop)
+				while (Timestamp >= this.stop)
 					this.NextBucketLocked();
 
 				this.sum += Value;
@@ -274,13 +292,13 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Counts one occurrence
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of occurrence.</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		public DateTime CountOccurrence()
+		public DateTime CountOccurrence(DateTime Timestamp)
 		{
 			lock (this)
 			{
-				DateTime Now = DateTime.Now;
-				while (Now >= this.stop)
+				while (Timestamp >= this.stop)
 					this.NextBucketLocked();
 
 				this.count++;
@@ -452,6 +470,18 @@ namespace TAG.Simulator.Statistics
 
 				Output.WriteEndElement();
 			}
+		}
+
+		/// <summary>
+		/// Adds a filter to the bucket.
+		/// </summary>
+		/// <param name="Filter">Filter</param>
+		public void Add(IFilter Filter)
+		{
+			if (this.filter is null)
+				this.filter = Filter;
+			else
+				this.filter.Append(Filter);
 		}
 
 	}

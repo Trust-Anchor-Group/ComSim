@@ -31,8 +31,8 @@ Features
 	[x] Global variables
 	[x] Timing of, and between events/activities. (communication roundtrip)
 	[x] Actor variables
-	[ ]	Sensor data (local/remote)
 	[ ] Filter sampled values, removing outliers
+	[ ]	Sensor data (local/remote)
 [x] Simulation output
 	[x] Statistics
 		[x] Activities

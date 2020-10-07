@@ -467,6 +467,35 @@
             <param name="Id">ID of graph</param>
             <param name="Graph">Graph</param>
         </member>
+        <member name="M:TAG.Simulator.Model.TryGetSampleBucket(System.String,TAG.Simulator.Statistics.IBucket@)">
+            <summary>
+            Tries to get a sample bucket, given its ID.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <param name="Bucket">Bucket, if found.</param>
+            <returns>If a bucket with the given ID was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetSampleBucket(System.String)">
+            <summary>
+            Gets a sample bucket, given its ID.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <returns>Sample bucket.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetActivityStartBucket(System.String)">
+            <summary>
+            Gets a activity start bucket, given its ID.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <returns>Activity Start bucket.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Model.GetActivityTimeBucket(System.String)">
+            <summary>
+            Gets a activity time bucket, given its ID.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <returns>Activity Time bucket.</returns>
+        </member>
         <member name="M:TAG.Simulator.Model.Run(System.Threading.Tasks.TaskCompletionSource{System.Boolean},System.Boolean)">
             <summary>
             Runs the simulation.
@@ -3694,6 +3723,11 @@
             Total Counter
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.CustomGraph.BucketTime">
+            <summary>
+            Time to accumulate values.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
             Creates a new instance of the node.
@@ -3730,24 +3764,27 @@
             </summary>
             <returns>Start time of bucket that was incremented.</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(Waher.Script.Objects.PhysicalQuantity)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(System.DateTime,Waher.Script.Objects.PhysicalQuantity)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(System.Double)">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Sample(System.DateTime,System.Double)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.CountOccurrence">
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.CountOccurrence(System.DateTime)">
             <summary>
             Counts one occurrence
             </summary>
+            <param name="Timestamp">Timestamp of occurrence.</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Flush">
@@ -3776,6 +3813,12 @@
             <param name="CustomColor">Optional custom color</param>
             <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.CustomGraph.Add(TAG.Simulator.Statistics.IFilter)">
+            <summary>
+            Adds a filter to the bucket.
+            </summary>
+            <param name="Filter">Filter</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Graph">
             <summary>
@@ -4152,6 +4195,170 @@
         <member name="M:TAG.Simulator.ObjectModel.Graphs.Source.Initialize">
             <summary>
             Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Measurements.BucketTime">
+            <summary>
+            Defines the bucket time of a series.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.BucketTime.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Defines the bucket time of a series.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.BucketTime.Duration">
+            <summary>
+            ID of series
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.BucketTime.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.BucketTime.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.BucketTime.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.BucketTime.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Measurements.Measurements">
+            <summary>
+            Container for measurement configuration.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.Measurements.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Container for measurement configuration.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.Measurements.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.Measurements.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval">
+            <summary>
+            Removes outliers by comparing incoming samples with the average of the last samples.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Removes outliers by comparing incoming samples with the average of the last samples.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.WindowSize">
+            <summary>
+            Number of samples to include in the average calculation.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Threshold">
+            <summary>
+            Threshold for outlier detection.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Smooth">
+            <summary>
+            If the average value should be used to also smooth the output.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Append(TAG.Simulator.Statistics.IFilter)">
+            <summary>
+            Appends a filter to the current filter.
+            </summary>
+            <param name="Filter">Filter to append.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.OutlierRemoval.Filter(System.DateTime@,System.Double@)">
+            <summary>
+            Filters a value
+            </summary>
+            <param name="Timestamp">Timestamp of value</param>
+            <param name="Value">Value</param>
+            <returns>If value should be discarded</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Measurements.SeriesReference">
+            <summary>
+            Abstract base class for series references nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.SeriesReference.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for series references nodes.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.SeriesReference.For">
+            <summary>
+            ID of series
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Measurements.SeriesReference.Bucket">
+            <summary>
+            Referenced bucket.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.SeriesReference.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Measurements.SeriesReference.Start">
+            <summary>
+            Starts the node.
             </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Description">
@@ -5219,6 +5426,11 @@
             Optional header
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Statistics.Bucket.BucketTime">
+            <summary>
+            Time to accumulate values.
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.Statistics.Bucket.Count">
             <summary>
             Counter
@@ -5261,24 +5473,27 @@
             </summary>
             <returns>Start time of bucket that was incremented.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(Waher.Script.Objects.PhysicalQuantity)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(System.DateTime,Waher.Script.Objects.PhysicalQuantity)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(System.Double)">
+        <member name="M:TAG.Simulator.Statistics.Bucket.Sample(System.DateTime,System.Double)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.Bucket.CountOccurrence">
+        <member name="M:TAG.Simulator.Statistics.Bucket.CountOccurrence(System.DateTime)">
             <summary>
             Counts one occurrence
             </summary>
+            <param name="Timestamp">Timestamp of occurrence.</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
         <member name="P:TAG.Simulator.Statistics.Bucket.Variance">
@@ -5329,6 +5544,12 @@
             </summary>
             <param name="Output">XML Output</param>
             <param name="RowElement">XML Row element name.</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Bucket.Add(TAG.Simulator.Statistics.IFilter)">
+            <summary>
+            Adds a filter to the bucket.
+            </summary>
+            <param name="Filter">Filter</param>
         </member>
         <member name="T:TAG.Simulator.Statistics.Buckets">
             <summary>
@@ -5427,6 +5648,20 @@
             <param name="Id">Bucket ID</param>
             <param name="Bucket">Bucket, if found.</param>
             <returns>If a bucket was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.GetSampleBucket(System.String)">
+            <summary>
+            Gets a sample bucket.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <returns>Bucket.</returns>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.Buckets.GetCountBucket(System.String)">
+            <summary>
+            Gets a count bucket.
+            </summary>
+            <param name="Id">Bucket ID</param>
+            <returns>Bucket.</returns>
         </member>
         <member name="M:TAG.Simulator.Statistics.Buckets.Register(TAG.Simulator.Statistics.IBucket)">
             <summary>
@@ -5544,6 +5779,11 @@
             Total Counter
             </summary>
         </member>
+        <member name="P:TAG.Simulator.Statistics.IBucket.BucketTime">
+            <summary>
+            Time to accumulate values.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.Statistics.IBucket.Inc">
             <summary>
             Increments counter.
@@ -5556,24 +5796,27 @@
             </summary>
             <returns>Start time of bucket that was incremented.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(Waher.Script.Objects.PhysicalQuantity)">
+        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(System.DateTime,Waher.Script.Objects.PhysicalQuantity)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(System.Double)">
+        <member name="M:TAG.Simulator.Statistics.IBucket.Sample(System.DateTime,System.Double)">
             <summary>
             Adds a sample
             </summary>
+            <param name="Timestamp">Timestamp of value.</param>
             <param name="Value">Sample value reported</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
-        <member name="M:TAG.Simulator.Statistics.IBucket.CountOccurrence">
+        <member name="M:TAG.Simulator.Statistics.IBucket.CountOccurrence(System.DateTime)">
             <summary>
             Counts one occurrence
             </summary>
+            <param name="Timestamp">Timestamp of occurrence.</param>
             <returns>Start time of bucket to which the value was reported.</returns>
         </member>
         <member name="M:TAG.Simulator.Statistics.IBucket.Flush">
@@ -5587,6 +5830,31 @@
             </summary>
             <param name="Output">XML Output</param>
             <param name="RowElement">XML Row element name.</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IBucket.Add(TAG.Simulator.Statistics.IFilter)">
+            <summary>
+            Adds a filter to the bucket.
+            </summary>
+            <param name="Filter">Filter</param>
+        </member>
+        <member name="T:TAG.Simulator.Statistics.IFilter">
+            <summary>
+            Interface for sample filters
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IFilter.Append(TAG.Simulator.Statistics.IFilter)">
+            <summary>
+            Appends a filter to the current filter.
+            </summary>
+            <param name="Filter">Filter to append.</param>
+        </member>
+        <member name="M:TAG.Simulator.Statistics.IFilter.Filter(System.DateTime@,System.Double@)">
+            <summary>
+            Filters a value
+            </summary>
+            <param name="Timestamp">Timestamp of value</param>
+            <param name="Value">Value</param>
+            <returns>If value should be discarded</returns>
         </member>
         <member name="T:TAG.Simulator.Statistics.IPeriodBucket">
             <summary>

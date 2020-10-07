@@ -108,7 +108,7 @@ namespace TAG.Simulator.Statistics
 				}
 			}
 
-			this.start = Bucket.CountOccurrence();
+			this.start = Bucket.CountOccurrence(DateTime.Now);
 		}
 
 		/// <summary>
@@ -169,7 +169,7 @@ namespace TAG.Simulator.Statistics
 				}
 			}
 
-			this.start = Bucket.Sample(Value);
+			this.start = Bucket.Sample(DateTime.Now, Value);
 		}
 
 		/// <summary>
@@ -190,7 +190,7 @@ namespace TAG.Simulator.Statistics
 				}
 			}
 
-			this.start = Bucket.Sample(Value);
+			this.start = Bucket.Sample(DateTime.Now, Value);
 		}
 
 		/// <summary>
@@ -272,6 +272,48 @@ namespace TAG.Simulator.Statistics
 			{
 				return this.buckets.TryGetValue(Id, out Bucket);
 			}
+		}
+
+		/// <summary>
+		/// Gets a sample bucket.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <returns>Bucket.</returns>
+		public IBucket GetSampleBucket(string Id)
+		{
+			IBucket Bucket;
+
+			lock (this.buckets)
+			{
+				if (!this.buckets.TryGetValue(Id, out Bucket))
+				{
+					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, true, this.start, this.bucketTime);
+					this.buckets[Id] = Bucket;
+				}
+			}
+
+			return Bucket;
+		}
+
+		/// <summary>
+		/// Gets a count bucket.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <returns>Bucket.</returns>
+		public IBucket GetCountBucket(string Id)
+		{
+			IBucket Bucket;
+
+			lock (this.buckets)
+			{
+				if (!this.buckets.TryGetValue(Id, out Bucket))
+				{
+					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, false, this.start, this.bucketTime);
+					this.buckets[Id] = Bucket;
+				}
+			}
+
+			return Bucket;
 		}
 
 		/// <summary>

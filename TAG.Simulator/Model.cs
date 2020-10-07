@@ -570,6 +570,47 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Tries to get a sample bucket, given its ID.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <param name="Bucket">Bucket, if found.</param>
+		/// <returns>If a bucket with the given ID was found.</returns>
+		public bool TryGetSampleBucket(string Id, out IBucket Bucket)
+		{
+			return this.samples.TryGetBucket(Id, out Bucket);
+		}
+
+		/// <summary>
+		/// Gets a sample bucket, given its ID.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <returns>Sample bucket.</returns>
+		public IBucket GetSampleBucket(string Id)
+		{
+			return this.samples.GetSampleBucket(Id);
+		}
+
+		/// <summary>
+		/// Gets a activity start bucket, given its ID.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <returns>Activity Start bucket.</returns>
+		public IBucket GetActivityStartBucket(string Id)
+		{
+			return this.activityStartStatistics.GetCountBucket(Id);
+		}
+
+		/// <summary>
+		/// Gets a activity time bucket, given its ID.
+		/// </summary>
+		/// <param name="Id">Bucket ID</param>
+		/// <returns>Activity Time bucket.</returns>
+		public IBucket GetActivityTimeBucket(string Id)
+		{
+			return this.activityTimeStatistics.GetSampleBucket(Id);
+		}
+
+		/// <summary>
 		/// Runs the simulation.
 		/// </summary>
 		/// <param name="Done">Task completion source, that can be set by external events.</param>
@@ -646,7 +687,7 @@ namespace TAG.Simulator
 					Epsilon = (Ticks - Ticks2) * 1000.0 / Stopwatch.Frequency;
 
 					if (this.sampleEpsilon)
-						this.epsilon.Sample(Epsilon);
+						this.epsilon.Sample(TP, Epsilon);
 
 					if (Epsilon >= 1000)
 						Log.Warning("Simulation step diverges. Either a performance barrier is reached, or something is blocking the simulation core.");

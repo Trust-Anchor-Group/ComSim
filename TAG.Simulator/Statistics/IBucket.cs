@@ -33,6 +33,15 @@ namespace TAG.Simulator.Statistics
 		}
 
 		/// <summary>
+		/// Time to accumulate values.
+		/// </summary>
+		Duration BucketTime
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// Increments counter.
 		/// </summary>
 		/// <returns>Start time of bucket that was incremented.</returns>
@@ -47,22 +56,25 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Adds a sample
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of value.</param>
 		/// <param name="Value">Sample value reported</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		DateTime Sample(PhysicalQuantity Value);
+		DateTime Sample(DateTime Timestamp, PhysicalQuantity Value);
 
 		/// <summary>
 		/// Adds a sample
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of value.</param>
 		/// <param name="Value">Sample value reported</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		DateTime Sample(double Value);
+		DateTime Sample(DateTime Timestamp, double Value);
 
 		/// <summary>
 		/// Counts one occurrence
 		/// </summary>
+		/// <param name="Timestamp">Timestamp of occurrence.</param>
 		/// <returns>Start time of bucket to which the value was reported.</returns>
-		DateTime CountOccurrence();
+		DateTime CountOccurrence(DateTime Timestamp);
 
 		/// <summary>
 		/// Terminates the ongoing collection of data.
@@ -75,5 +87,11 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Output">XML Output</param>
 		/// <param name="RowElement">XML Row element name.</param>
 		void ExportXml(XmlWriter Output, string RowElement);
+
+		/// <summary>
+		/// Adds a filter to the bucket.
+		/// </summary>
+		/// <param name="Filter">Filter</param>
+		void Add(IFilter Filter);
 	}
 }

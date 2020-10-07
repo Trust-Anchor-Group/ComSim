@@ -65,6 +65,13 @@
             </xs:choice>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Measurements" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:group ref="Measurement"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="Graphs" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -496,6 +503,36 @@
           <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="title" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:group name="Measurement">
+    <xs:choice>
+      <xs:element name="OutlierRemoval" type="OutlierRemoval"/>
+      <xs:element name="BucketTime" type="BucketTime"/>
+      <xs:any namespace="##other"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="SeriesReference">
+    <xs:attribute name="for" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="OutlierRemoval">
+    <xs:complexContent>
+      <xs:extension base="SeriesReference">
+        <xs:attribute name="windowSize" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="threshold" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="smooth" type="xs:boolean" use="optional" default="false"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="BucketTime">
+    <xs:complexContent>
+      <xs:extension base="SeriesReference">
+        <xs:attribute name="duration" type="xs:duration" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
