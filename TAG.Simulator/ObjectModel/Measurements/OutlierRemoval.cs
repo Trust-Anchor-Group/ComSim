@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.Statistics;
+using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Events;
 
 namespace TAG.Simulator.ObjectModel.Measurements
 {
@@ -11,10 +14,12 @@ namespace TAG.Simulator.ObjectModel.Measurements
 	/// </summary>
 	public class OutlierRemoval : SeriesReference, IFilter
 	{
-		private object synchObj = new object();
+		private readonly object synchObj = new object();
 		private IFilter filter;
 		private DateTime[] timespans;
 		private double?[] values;
+		private double? min;
+		private double? max;
 		private double sum;
 		private int count;
 		private int pos;
@@ -22,6 +27,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		private int windowSize;
 		private int threshold;
 		private bool smooth;
+		private bool logNotice;
 
 		/// <summary>
 		/// Removes outliers by comparing incoming samples with the average of the last samples.
@@ -73,6 +79,9 @@ namespace TAG.Simulator.ObjectModel.Measurements
 			this.windowSize = XML.Attribute(Definition, "windowSize", 0);
 			this.threshold = XML.Attribute(Definition, "threshold", 0);
 			this.smooth = XML.Attribute(Definition, "smooth", false);
+			this.logNotice = XML.Attribute(Definition, "logNotice", true);
+			this.max = Definition.HasAttribute("max") ? XML.Attribute(Definition, "max", 0.0) : (double?)null;
+			this.min = Definition.HasAttribute("min") ? XML.Attribute(Definition, "min", 0.0) : (double?)null;
 
 			if (this.windowSize < 1)
 				throw new Exception("Windows size must be positive.");
@@ -119,9 +128,41 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		/// <returns>If value should be discarded</returns>
 		public bool Filter(ref DateTime Timestamp, ref double Value)
 		{
+			if (this.min.HasValue && Value < this.min.Value)
+			{
+				if (this.logNotice)
+				{
+					Log.Notice("Outlier removed. Smaller than minimum value.", this.For, string.Empty, "Outlier",
+						new KeyValuePair<string, object>("Value", Value));
+				}
+
+				this.Model.CountEvent(this.For + " Outlier");
+
+				return true;
+			}
+
+			if (this.max.HasValue && Value > this.max.Value)
+			{
+				if (this.logNotice)
+				{
+					Log.Notice("Outlier removed. Larger than maximum value.", this.For, string.Empty, "Outlier",
+						new KeyValuePair<string, object>("Value", Value));
+				}
+
+				this.Model.CountEvent(this.For + " Outlier");
+
+				return true;
+			}
+
+			double? Old;
+			double Average;
+			int NrAbove = 0;
+			int NrBelow = 0;
+			int i;
+
 			lock (this.synchObj)
 			{
-				double? Old = this.values[this.pos];
+				Old = this.values[this.pos];
 
 				this.timespans[this.pos] = Timestamp;
 				this.values[this.pos] = Value;
@@ -138,10 +179,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 				this.sum += Value;
 				this.count++;
 
-				double Average = this.sum / this.count;
-				int NrAbove = 0;
-				int NrBelow = 0;
-				int i;
+				Average = this.sum / this.count;
 
 				for (i = 0; i < this.windowSize; i++)
 				{
@@ -179,17 +217,27 @@ namespace TAG.Simulator.ObjectModel.Measurements
 
 				if (++this.avgPos == this.windowSize)
 					this.avgPos = 0;
-
-				if (!Old.HasValue)
-					return true;
-
-				if (this.smooth)
-					Value = Average;
-				else
-					Value = Old.Value;
-
-				return false;
 			}
+
+			if (!Old.HasValue)
+			{
+				if (this.logNotice)
+				{
+					Log.Notice("Outlier removed. Threshold reached.", this.For, string.Empty, "Outlier",
+						new KeyValuePair<string, object>("Value", Value));
+				}
+
+				this.Model.CountEvent(this.For + " Outlier");
+
+				return true;
+			}
+
+			if (this.smooth)
+				Value = Average;
+			else
+				Value = Old.Value;
+
+			return false;
 		}
 	}
 }

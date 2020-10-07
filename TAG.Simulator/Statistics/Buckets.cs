@@ -417,9 +417,14 @@ namespace TAG.Simulator.Statistics
 				Script.AppendLine("];");
 
 				StringBuilder PlotScript2 = null;
+				int Index = 0;
+				string Alias;
 
 				foreach (string ActivityId in Order)
 				{
+					Index++;
+					Alias = "C" + Index.ToString();
+
 					if (this.TryGetBucket(ActivityId, out IBucket Bucket))
 					{
 						if (Bucket is IPeriodBucket PeriodBucket)
@@ -436,8 +441,8 @@ namespace TAG.Simulator.Statistics
 							First = true;
 							Color = Palette[i++];
 
-							Script.Append(ActivityId);
-							Script.Append("Count:=[");
+							Script.Append(Alias);
+							Script.Append(":=[");
 
 							bool Skip = true;
 
@@ -473,8 +478,8 @@ namespace TAG.Simulator.Statistics
 							}
 
 							PlotScript.Append("plot2dlinearea(Time,");
-							PlotScript.Append(ActivityId);
-							PlotScript.Append("Count,rgba(");
+							PlotScript.Append(Alias);
+							PlotScript.Append(",rgba(");
 							PlotScript.Append(Color.Red.ToString());
 							PlotScript.Append(',');
 							PlotScript.Append(Color.Green.ToString());
@@ -483,8 +488,8 @@ namespace TAG.Simulator.Statistics
 							PlotScript.Append(",64))");
 
 							PlotScript2.Append("plot2dline(Time,");
-							PlotScript2.Append(ActivityId);
-							PlotScript2.Append("Count,rgb(");
+							PlotScript2.Append(Alias);
+							PlotScript2.Append(",rgb(");
 							PlotScript2.Append(Color.Red.ToString());
 							PlotScript2.Append(',');
 							PlotScript2.Append(Color.Green.ToString());

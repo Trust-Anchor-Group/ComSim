@@ -5,7 +5,7 @@
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
+       timeCycle="PT10M"
        duration="PT10M">
   <Meta>
     <Title>Federation</Title>
@@ -13,8 +13,13 @@
     <Description>
       <![CDATA[ 
       Simulates 200 XMPP clients, 100 connected to one broker in the Netherlands, 100 connected to a second broker in Sweden. Clients
-      exchange XML messages randomly between each other during 10 minutes, at a total frequency of 100'000 messages per minute. 
-      During the simulation, performance metrics are sampled for local simulator performance, as well as both broker performances.
+      exchange XML messages randomly between each other during 10 minutes, normally distributed, with a total of about two million,
+      half local, half federated.
+      
+      During the simulation, performance metrics are sampled for local simulator performance, as well as both broker performances. 
+      Automatic outlier removal has been used on the message roundtrip measurements to make results easier to read and less
+      dependent on external network and operating system events. A window averaging of the last 15 samples in the message roundtrip 
+      series have also been used to smoothen curves, to make the average easier to follow over time.
       ]]>
     </Description>
     <Preparation>
@@ -68,10 +73,13 @@
     </xmpp:XmppActorTcp>
   </Actors>
   <Distributions>
-    <Uniform id="QuarterIntensity" from="0" to="60" N="25000"/>
+    <Normal id="FirstHalfLocal" μ="200" σ="75" N="500000"/>
+    <Normal id="SecondHalfLocal" μ="200" σ="75" N="500000"/>
+    <Normal id="FirstHalfFederated" μ="400" σ="75" N="500000"/>
+    <Normal id="SecondHalfFederated" μ="400" σ="75" N="500000"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="QuarterIntensity" activity="SendLocalXmppMessage">
+    <StochasticEvent distribution="FirstHalfLocal" activity="SendLocalXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, both connected to the broker in the Netherlands.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcpNl"/>
@@ -83,7 +91,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="QuarterIntensity" activity="SendLocalXmppMessage">
+    <StochasticEvent distribution="SecondHalfLocal" activity="SendLocalXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, both connected to the Swedish broker.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcpSe"/>
@@ -95,7 +103,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="QuarterIntensity" activity="SendFederatedXmppMessage">
+    <StochasticEvent distribution="FirstHalfFederated" activity="SendFederatedXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, the first connected to the broker in the Netherlands, the second to the Swedish broker.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcpNl"/>
@@ -107,7 +115,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="QuarterIntensity" activity="SendFederatedXmppMessage">
+    <StochasticEvent distribution="SecondHalfFederated" activity="SendFederatedXmppMessage">
       <Description>Sends an XML message from one random XMPP client to another, the first connected to the Swedish broker, the second to the broker in the Netherlands.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="XmppTcpSe"/>
@@ -258,17 +266,8 @@
     <BucketTime for="Simulator Network (kB/s)" duration="PT10S"/>
     <BucketTime for="Local XMPP Roundtrip" duration="PT10S"/>
     <BucketTime for="Federated XMPP Roundtrip" duration="PT10S"/>
-    <OutlierRemoval for="NL Broker CPU (%)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="SE Broker CPU (%)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="Simulator CPU (%)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="NL Broker Free Memory (GB)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="SE Broker Free Memory (GB)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="Simulator Free Memory (GB)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="NL Broker Network (kB/s)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="SE Broker Network (kB/s)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="Simulator Network (kB/s)" windowSize="7" threshold="1"/>
-    <OutlierRemoval for="Local XMPP Roundtrip" windowSize="7" threshold="1" smooth="true"/>
-    <OutlierRemoval for="Federated XMPP Roundtrip" windowSize="7" threshold="1" smooth="true"/>
+    <OutlierRemoval for="Local XMPP Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
+    <OutlierRemoval for="Federated XMPP Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
   </Measurements>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
@@ -287,7 +286,7 @@
       <Source ref="ProcessLocalXmppMessage"/>
       <Source ref="ProcessFederatedXmppMessage"/>
     </CombinedExecutionTimeGraph>
-    <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance" span="false">
+    <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
       <Source ref="Local XMPP Roundtrip"/>
       <Source ref="Federated XMPP Roundtrip"/>
     </CombinedSampleGraph>
