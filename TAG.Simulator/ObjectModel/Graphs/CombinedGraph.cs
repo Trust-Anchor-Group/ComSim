@@ -147,6 +147,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// </summary>
 		/// <param name="Output">Markdown output</param>
 		/// <param name="CustomColor">Optional custom color</param>
+		/// <param name="Span">If the entire span can be included.</param>
 		/// <returns>If script was exported.</returns>
 		public override bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span)
 		{
@@ -167,7 +168,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 					if (!First)
 						Output.WriteLine("), (");
 
-					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i]), this.span))
+					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i]), Span && this.span))
 						First = false;
 				}
 

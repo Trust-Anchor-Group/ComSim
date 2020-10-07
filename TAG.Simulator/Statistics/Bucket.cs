@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Graphs;
+using TAG.Simulator.ObjectModel.Graphs.Plots;
 using Waher.Content;
 using Waher.Script.Objects;
 using Waher.Script.Units;
@@ -391,119 +392,28 @@ namespace TAG.Simulator.Statistics
 
 			lock (this)
 			{
-				StringBuilder TimeScript = new StringBuilder("Time:=[");
-				StringBuilder MinScript = new StringBuilder("Min:=[");
-				StringBuilder MaxScript = new StringBuilder("Max:=[");
-				StringBuilder MeanScript = new StringBuilder("Mean:=[");
-				bool First = true;
+				Plot Graph;
 
-				foreach (Statistic Rec in this.statistics)
+				if (Span)
 				{
-					if (First)
-						First = false;
+					if (this.sampleGraph)
+						Graph = new PlotLineSpan(this.model, string.IsNullOrEmpty(CustomColor) ? "Red" : CustomColor, string.IsNullOrEmpty(CustomColor) ? "Blue" : CustomColor);
 					else
-					{
-						TimeScript.Append(',');
-						MeanScript.Append(',');
-
-						if (this.sampleGraph && Span)
-						{
-							MinScript.Append(',');
-							MaxScript.Append(',');
-						}
-					}
-
-					TimeScript.Append(CommonTypes.Encode(this.model.GetTimeCoordinates(Rec.Start)));
-					TimeScript.Append(',');
-					TimeScript.Append(CommonTypes.Encode(this.model.GetTimeCoordinates(Rec.Stop)));
-
-					if (Rec.Mean.HasValue)
-					{
-						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
-						MeanScript.Append(',');
-						MeanScript.Append(CommonTypes.Encode(Rec.Mean.Value));
-					}
-					else if (Rec.Count > 0 || !this.sampleGraph)
-					{
-						MeanScript.Append(Rec.Count.ToString());
-						MeanScript.Append(',');
-						MeanScript.Append(Rec.Count.ToString());
-					}
-					else
-						MeanScript.Append("null,null");
-
-					if (this.sampleGraph && Span)
-					{
-						if (Rec.Min.HasValue)
-						{
-							MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
-							MinScript.Append(',');
-							MinScript.Append(CommonTypes.Encode(Rec.Min.Value));
-						}
-						else
-							MinScript.Append("null,null");
-
-						if (Rec.Max.HasValue)
-						{
-							MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
-							MaxScript.Append(',');
-							MaxScript.Append(CommonTypes.Encode(Rec.Max.Value));
-						}
-						else
-							MaxScript.Append("null,null");
-					}
-				}
-
-				if (First)
-					return false;
-
-				TimeScript.Append("];");
-				MeanScript.Append("];");
-				MinScript.Append("];");
-				MaxScript.Append("];");
-
-				Output.WriteLine(TimeScript.ToString());
-				Output.WriteLine(MeanScript.ToString());
-
-				if (this.sampleGraph && Span)
-				{
-					Output.WriteLine(MinScript.ToString());
-					Output.WriteLine(MaxScript.ToString());
-				}
-
-				Output.Write("G:=");
-
-				if (string.IsNullOrEmpty(CustomColor))
-				{
-					if (this.sampleGraph && Span)
-						Output.WriteLine("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"Blue\",16))+plot2dline(Time,Min,alpha(\"Blue\",128))+plot2dline(Time,Max,alpha(\"Blue\",128))+plot2dline(Time,Mean,\"Red\",5);");
-					else
-						Output.WriteLine("plot2dline(Time,Mean,\"Red\",5)+plot2dlinearea(Time,Mean,alpha(\"Red\",16));");
+						Graph = new PlotLineArea(this.model, string.IsNullOrEmpty(CustomColor) ? "Red" : CustomColor);
 				}
 				else
-				{
-					if (this.sampleGraph && Span)
-					{
-						Output.Write("polygon2d(join(Time,Reverse(Time)),join(Min,Reverse(Max)),alpha(\"");
-						Output.Write(CustomColor);
-						Output.Write("\",16))+plot2dline(Time,Min,alpha(\"");
-						Output.Write(CustomColor);
-						Output.Write("\",128))+plot2dline(Time,Max,alpha(\"");
-						Output.Write(CustomColor);
-						Output.Write("\",128))+plot2dline(Time,Mean,\"");
-						Output.Write(CustomColor);
-						Output.WriteLine("\",5);");
-					}
-					else
-					{
-						Output.Write("plot2dline(Time,Mean,\"");
-						Output.Write(CustomColor);
-						Output.Write("\",5)+plot2dlinearea(Time,Mean,alpha(\"");
-						Output.Write(CustomColor);
-						Output.WriteLine("\",16));");
-					}
-				}
+					Graph = new PlotLine(this.model, string.IsNullOrEmpty(CustomColor) ? "Red" : CustomColor);
 
+				foreach (Statistic Rec in this.statistics)
+					Graph.Add(Rec);
+
+				if (!Graph.HasGraph)
+					return false;
+
+				Output.Write("G:=(");
+				Output.Write(Graph.GetPlotScript());
+				Output.WriteLine(");");
+				
 				Output.Write("G.LabelX:=\"Time × ");
 				Output.Write(this.model.TimeUnitStr);
 				Output.WriteLine("\";");

@@ -25,13 +25,14 @@ Features
 		[ ] Call activity
 	[x] Counters
 	[x] Stat activity node: Increments counters
-	[ ]	Sensor data (local/remote)
 	[x] Measurements
 	[x] Performance counters
 	[x] CPU/Memory
 	[x] Global variables
 	[x] Timing of, and between events/activities. (communication roundtrip)
 	[x] Actor variables
+	[ ]	Sensor data (local/remote)
+	[ ] Filter sampled values, removing outliers
 [x] Simulation output
 	[x] Statistics
 		[x] Activities
@@ -57,7 +58,7 @@ Features
 		[x] Custom graphs
 		[x] Event log statistics
 	[x] Commandline in report
-	[ ] epsilon measurement
+	[x] epsilon measurement
 [ ] Distributions
 	[ ] Script-based PDF and CDF
 	[ ] Arcsine distribution

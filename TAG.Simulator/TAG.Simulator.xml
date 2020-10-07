@@ -3614,6 +3614,7 @@
             </summary>
             <param name="Output">Markdown output</param>
             <param name="CustomColor">Optional custom color</param>
+            <param name="Span">If the entire span can be included.</param>
             <returns>If script was exported.</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Graphs.CombinedGraph.GetGraph(System.String)">
@@ -3899,6 +3900,218 @@
             Registers a source.
             </summary>
             <param name="Source">Source node</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Plots.Plot">
+            <summary>
+            Abstract base class for plots
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.#ctor(TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for plots
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.GetStartTime(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Gets the start time of a statistic.
+            </summary>
+            <param name="Record">Statistic.</param>
+            <returns>Start time</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.GetStopTime(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Gets the stop time of a statistic.
+            </summary>
+            <param name="Record">Statistic.</param>
+            <returns>Stop time</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.GetMeanTime(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Gets the mean time of a statistic.
+            </summary>
+            <param name="Record">Statistic.</param>
+            <returns>Mean time</returns>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.HasGraph">
+            <summary>
+            If there is a plot to display.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.Add(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Adds a statistic to the plot.
+            </summary>
+            <param name="Record">Statistic</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.Break">
+            <summary>
+            Breaks the graph.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Plot.GetPlotScript">
+            <summary>
+            Gets the plot script
+            </summary>
+            <returns>Graph script.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine">
+            <summary>
+            Plots a line graph
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.graph">
+            <summary>
+            Graph being built.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.#ctor(TAG.Simulator.Model)">
+            <summary>
+            Plots a line graph
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.#ctor(TAG.Simulator.Model,System.String)">
+            <summary>
+            Plots a line graph
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+            <param name="Color">Color of graph.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.Index">
+            <summary>
+            Current section index.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.Color">
+            <summary>
+            Graph color.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.HasGraph">
+            <summary>
+            If there is a plot to display.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.Add(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Adds a statistic to the plot.
+            </summary>
+            <param name="Record">Statistic</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.AddPoint(System.Double,System.Double)">
+            <summary>
+            Adds a point to the graph.
+            </summary>
+            <param name="X">X-coordinate</param>
+            <param name="Y">Y-coordinate</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.Break">
+            <summary>
+            Breaks the graph.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLine.GetPlotScript">
+            <summary>
+            Gets the plot script
+            </summary>
+            <returns>Graph script.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineArea">
+            <summary>
+            Plots a line area graph
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineArea.#ctor(TAG.Simulator.Model)">
+            <summary>
+            Plots a line area graph
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineArea.#ctor(TAG.Simulator.Model,System.String)">
+            <summary>
+            Plots a line area graph
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+            <param name="Color">Color of graph.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineArea.Add(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Adds a statistic to the plot.
+            </summary>
+            <param name="Record">Statistic</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineArea.GetPlotScript">
+            <summary>
+            Gets the plot script
+            </summary>
+            <returns>Graph script.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan">
+            <summary>
+            Plots a line graph with min-max span
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.#ctor(TAG.Simulator.Model)">
+            <summary>
+            Plots a line graph with min-max span
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.#ctor(TAG.Simulator.Model,System.String)">
+            <summary>
+            Plots a line graph with min-max span
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+            <param name="Color">Color of graph.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.#ctor(TAG.Simulator.Model,System.String,System.String)">
+            <summary>
+            Plots a line graph with min-max span
+            </summary>
+            <param name="Model">Underlying simulation model.</param>
+            <param name="Color">Color of graph.</param>
+            <param name="SpanColor">Color of spanned area.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.Add(TAG.Simulator.Statistics.Statistic)">
+            <summary>
+            Adds a statistic to the plot.
+            </summary>
+            <param name="Record">Statistic</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.Break">
+            <summary>
+            Breaks the graph.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.PlotLineSpan.GetPlotScript">
+            <summary>
+            Gets the plot script
+            </summary>
+            <returns>Graph script.</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Graphs.Plots.Series">
+            <summary>
+            Represents a data series.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Series.#ctor(System.String)">
+            <summary>
+            Represents a data series.
+            </summary>
+            <param name="Name">Name of series</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Series.Add(System.Double)">
+            <summary>
+            Adds a value to the series.
+            </summary>
+            <param name="Value">Value</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Graphs.Plots.Series.EndSeries">
+            <summary>
+            Ends the series.
+            </summary>
+            <returns>Script representation of series.</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Graphs.Source">
             <summary>
