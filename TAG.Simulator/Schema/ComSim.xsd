@@ -44,6 +44,7 @@
             <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:element name="Uniform" type="UniformDistribution"/>
               <xs:element name="Normal" type="NormalDistribution"/>
+              <xs:element name="Exponential" type="ExponentialDistribution"/>
               <xs:any namespace="##other"/>
             </xs:choice>
           </xs:complexType>
@@ -127,6 +128,14 @@
       <xs:extension base="Distribution">
         <xs:attribute name="μ" type="xs:double" use="required"/>
         <xs:attribute name="σ" type="PositiveDouble" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExponentialDistribution">
+    <xs:complexContent>
+      <xs:extension base="Distribution">
+        <xs:attribute name="λ" type="PositiveDouble" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

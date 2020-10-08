@@ -65,7 +65,7 @@ Features
 	[ ] Beta distribution
 	[ ] Chi distribution
 	[ ] Chi-squared distribution
-	[ ] Exponential distribution
+	[x] Exponential distribution
 	[ ] Gamma distribution
 	[ ] Student-t distribution
 [x] Generate action documentation (xml, xslt) automatically

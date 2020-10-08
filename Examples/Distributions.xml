@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+  <Meta>
+    <Title>Distributions</Title>
+    <Introduction>Demonstrates the use of different distributions in the simulator.</Introduction>
+    <Description>
+      <![CDATA[
+      Generates stochastic events using different distributions, to illustrate how these can be used to model activities
+      and use cases in the simulator.
+      ]]>
+    </Description>
+  </Meta>
+  <Actors>
+  </Actors>
+  <Distributions>
+    <Uniform id="Uniform" from="0" to="60" N="1000"/>
+    <Normal id="Normal" μ="30" σ="10" N="1000"/>
+    <Exponential id="Exponential" λ="0.1" N="1000"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="Uniform" activity="IncUniform">
+      <Description>Counts number of occurrences of the stochastic event Uniform.</Description>
+    </StochasticEvent>
+    <StochasticEvent distribution="Normal" activity="IncNormal">
+      <Description>Counts number of occurrences of the stochastic event Normal.</Description>
+    </StochasticEvent>
+    <StochasticEvent distribution="Exponential" activity="IncExponential">
+      <Description>Counts number of occurrences of the stochastic event Exponential.</Description>
+    </StochasticEvent>
+  </Events>
+  <Activities>
+    <Activity id="IncUniform" logStart="false" logEnd="false">
+      <Description>Counts the number of events raised by the Uniform distribution.</Description>
+      <Start/>
+      <Count counter="CountUniform"/>
+      <Stop/>
+    </Activity>
+    <Activity id="IncNormal" logStart="false" logEnd="false">
+      <Description>Counts the number of events raised by the Normal distribution.</Description>
+      <Start/>
+      <Count counter="CountNormal"/>
+      <Stop/>
+    </Activity>
+    <Activity id="IncExponential" logStart="false" logEnd="false">
+      <Description>Counts the number of events raised by the Exponential distribution.</Description>
+      <Start/>
+      <Count counter="CountExponential"/>
+      <Stop/>
+    </Activity>
+  </Activities>
+</Model>
