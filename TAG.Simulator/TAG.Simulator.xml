@@ -4842,6 +4842,696 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Binary">
+            <summary>
+            Binary value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Binary value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Binary.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Binary.Children">
+            <summary>
+            Child nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.ForEach(TAG.Simulator.ForEachCallbackMethod,System.Boolean)">
+            <summary>
+            Evaluates <paramref name="Method"/> on each node in the subtree defined by the current node.
+            </summary>
+            <param name="Method">Method to call.</param>
+            <param name="DepthFirst">If children are iterated before parents.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.ExportMarkdown(System.IO.StreamWriter)">
+            <summary>
+            Exports Markdown
+            </summary>
+            <param name="Output">Output</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.ExportXml(System.Xml.XmlWriter)">
+            <summary>
+            Exports XML
+            </summary>
+            <param name="Output">Output</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte">
+            <summary>
+            Byte value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Byte value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Char">
+            <summary>
+            Char value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Char value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Double">
+            <summary>
+            Double value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Double value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.IBinaryElement">
+            <summary>
+            Interface for binary elements
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.IBinaryElement.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16">
+            <summary>
+            Int16 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int16 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24">
+            <summary>
+            Int24 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int24 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32">
+            <summary>
+            Int32 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int32 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48">
+            <summary>
+            Int48 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int48 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64">
+            <summary>
+            Int64 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int64 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte">
+            <summary>
+            SByte value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            SByte value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Single">
+            <summary>
+            Single value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Single value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16">
+            <summary>
+            UInt16 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            UInt16 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24">
+            <summary>
+            UInt24 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            UInt24 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32">
+            <summary>
+            UInt32 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            UInt32 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48">
+            <summary>
+            UInt48 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            UInt48 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64">
+            <summary>
+            UInt64 value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            UInt64 value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String">
+            <summary>
+            Utf8String value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Utf8String value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.LocalName">
+            <summary>
+            Local name of Binary element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with Binary definition.
+            </summary>
+            <param name="Definition">Binary definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.Append(System.IO.MemoryStream,Waher.Script.Variables)">
+            <summary>
+            Appends the binary element to the output stream.
+            </summary>
+            <param name="Output">Output stream.</param>
+            <param name="Variables">Set of variables for the activity.</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.DateTime">
             <summary>
             DateTime value.
@@ -5011,6 +5701,52 @@
             Registers a value for the argument.
             </summary>
             <param name="Value">Value node</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Values.Json">
+            <summary>
+            JSON value.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            JSON value.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Values.Json.LocalName">
+            <summary>
+            Local name of JSON element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with JSON definition.
+            </summary>
+            <param name="Definition">JSON definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.Evaluate(Waher.Script.Variables)">
+            <summary>
+            Evaluates the value.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Evaluated value.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Number">
             <summary>

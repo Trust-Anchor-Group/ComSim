@@ -5,8 +5,9 @@
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT10M">
+       timeCycle="PT10M"
+       duration="PT10M" 
+       sampleEpsilon="true">
   <Meta>
     <Title>Content Types</Title>
     <Introduction>Tests publishing information using either XML, JSON or binary over MQTT, to see if there are any noticeable differences on the choice of content type on performance.</Introduction>
@@ -46,6 +47,8 @@
     <ModelScript>
       <![CDATA[
       GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
+      
+      DecodeBinary(Bin):={"startTime":BitConverter.ToUInt64(Bin,0)};
       ]]>
     </ModelScript>
   </Meta>
@@ -77,10 +80,12 @@
     </mqtt:MqttActorTcp>
   </Actors>
   <Distributions>
-    <Uniform id="TenThousandPerMinute" from="0" to="60" N="10000"/>
+    <Normal id="FirstMillion" μ="150" σ="40" N="1000000"/>
+    <Normal id="SecondMillion" μ="300" σ="40" N="1000000"/>
+    <Normal id="ThirdMillion" μ="450" σ="40" N="1000000"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttXmlMessage">
+    <StochasticEvent distribution="FirstMillion" activity="SendMqttXmlMessage">
       <Description>Sends an XML message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcpXml"/>
@@ -92,7 +97,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttJsonMessage">
+    <StochasticEvent distribution="SecondMillion" activity="SendMqttJsonMessage">
       <Description>Sends a JSON message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcpJson"/>
@@ -104,7 +109,7 @@
         <Script>Now</Script>
       </SetVariable>
     </StochasticEvent>
-    <StochasticEvent distribution="TenThousandPerMinute" activity="SendMqttBinMessage">
+    <StochasticEvent distribution="ThirdMillion" activity="SendMqttBinMessage">
       <Description>Sends a binary message from one random MQTT client to another, at a frequency of ten thousand times per minute using a uniform distribution.</Description>
       <ActorReference name="From" exclusive="true">
         <FromPopulation actor="MqttTcpBin"/>
@@ -263,55 +268,68 @@
       </Conditional>
       <Stop/>
     </Activity>
+    <Activity id="ProcessMqttBinMessage" logStart="false" logEnd="false">
+      <Description>Processes a received MQTT Binary message.</Description>
+      <Start/>
+      <Count counter="MqttBinReceived"/>
+      <Conditional>
+        <Try condition="Msg:=DecodeBinary(Content.Data)">
+          <Eval>
+            <![CDATA[
+              StartTime:=DateTime(Msg.startTime);
+              Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+            ]]>
+          </Eval>
+          <Sample name="MQTT Binary Roundtrip">
+            <Script>Elapsed ms</Script>
+          </Sample>
+        </Try>
+        <Otherwise>
+          <Eval>
+            <![CDATA[
+            LogError("Unable to decode binary message received: "+Base64Encode(Content.Data),
+              {"Object":To.UserName});
+            ]]>
+          </Eval>
+          <Count counter="MqttContentError"/>
+        </Otherwise>
+      </Conditional>
+      <Stop/>
+    </Activity>
   </Activities>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
-      <Source ref="SendXmppMessage"/>
-      <Source ref="SendMqttMessage"/>
-      <Source ref="SendMqMessage"/>
+      <Source ref="SendMqttXmlMessage"/>
+      <Source ref="SendMqttJsonMessage"/>
+      <Source ref="SendMqttBinMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time sending Messages" legend="true">
-      <Source ref="SendXmppMessage"/>
-      <Source ref="SendMqttMessage"/>
-      <Source ref="SendMqMessage"/>
+      <Source ref="SendMqttXmlMessage"/>
+      <Source ref="SendMqttJsonMessage"/>
+      <Source ref="SendMqttBinMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedExecutionsGraph title="Nr Messages processed" legend="true" header="Received messages">
-      <Source ref="ProcessXmppMessage"/>
-      <Source ref="ProcessMqttMessage"/>
-      <Source ref="ProcessMqMessage"/>
+      <Source ref="ProcessMqttXmlMessage"/>
+      <Source ref="ProcessMqttJsonMessage"/>
+      <Source ref="ProcessMqttBinMessage"/>
     </CombinedExecutionsGraph>
     <CombinedExecutionTimeGraph title="Time processing Messages" legend="true">
-      <Source ref="ProcessXmppMessage"/>
-      <Source ref="ProcessMqttMessage"/>
-      <Source ref="ProcessMqMessage"/>
+      <Source ref="ProcessMqttXmlMessage"/>
+      <Source ref="ProcessMqttJsonMessage"/>
+      <Source ref="ProcessMqttBinMessage"/>
     </CombinedExecutionTimeGraph>
     <CombinedSampleGraph title="Message roundtrip" legend="true" header="Performance">
-      <Source ref="XMPP Roundtrip"/>
-      <Source ref="MQTT Roundtrip"/>
-      <Source ref="MQ Roundtrip"/>
+      <Source ref="MQTT XML Roundtrip"/>
+      <Source ref="MQTT JSON Roundtrip"/>
+      <Source ref="MQTT Binary Roundtrip"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
     </CombinedSampleGraph>
-    <CombinedSampleGraph title="Service CPU %" legend="true">
-      <Source ref="XMPP CPU (%)"/>
-      <Source ref="MQTT CPU (%)"/>
-      <Source ref="MQ CPU (%)"/>
-    </CombinedSampleGraph>
-    <CombinedSampleGraph title="Used Memory (MB)" legend="true" header="Memory Performance">
-      <Source ref="XMPP Memory Usage (MB)"/>
-      <Source ref="MQTT Memory Usage (MB)"/>
-      <Source ref="MQ Memory Usage (MB)"/>
-    </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
       <Source ref="Broker Network (kB/s)"/>
       <Source ref="Simulator Network (kB/s)"/>
-    </CombinedSampleGraph>
-    <CombinedSampleGraph title="Service Input/Output (kB/s)" legend="true">
-      <Source ref="XMPP I/O (kB/s)"/>
-      <Source ref="MQTT I/O (kB/s)"/>
-      <Source ref="MQ I/O (kB/s)"/>
     </CombinedSampleGraph>
   </Graphs>
 </Model>

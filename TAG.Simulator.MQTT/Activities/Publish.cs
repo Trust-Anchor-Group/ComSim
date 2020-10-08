@@ -97,7 +97,9 @@ namespace TAG.Simulator.MQTT.Activities
 			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string Topic = Expression.Transform(this.topic, "{", "}", Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
-			byte[] Bin = InternetContent.Encode(Content, Encoding.UTF8, out string _);
+			
+			if (!(Content is byte[] Bin))
+				Bin = InternetContent.Encode(Content, Encoding.UTF8, out string _);
 
 			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
 				throw new Exception("Actor not found: " + this.actor);
