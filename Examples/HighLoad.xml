@@ -89,8 +89,8 @@
     </mqtt:MqttActorTcp>
   </Actors>
   <Distributions>
-    <Normal id="XmppDistribution" μ="400" σ="75" N="2000000"/>
-    <Normal id="MqttDistribution" μ="200" σ="75" N="2000000"/>
+    <Normal id="XmppDistribution" μ="200" σ="75" N="1500000"/>
+    <Normal id="MqttDistribution" μ="400" σ="75" N="1500000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="XmppDistribution" activity="SendXmppMessage">
