@@ -80,9 +80,9 @@
     </mqtt:MqttActorTcp>
   </Actors>
   <Distributions>
-    <Normal id="FirstMillion" μ="150" σ="40" N="1000000"/>
-    <Normal id="SecondMillion" μ="300" σ="40" N="1000000"/>
-    <Normal id="ThirdMillion" μ="450" σ="40" N="1000000"/>
+    <Normal id="FirstMillion" μ="150" σ="60" N="1000000"/>
+    <Normal id="SecondMillion" μ="300" σ="60" N="1000000"/>
+    <Normal id="ThirdMillion" μ="450" σ="60" N="1000000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="FirstMillion" activity="SendMqttXmlMessage">
@@ -184,7 +184,7 @@
       <Start/>
       <mqtt:Publish actor="From" topic="Xml/{To.InstanceId}" qos="AtMostOnce">
         <Xml>
-          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+          <Msg>
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
           </Msg>
         </Xml>
@@ -297,6 +297,21 @@
       <Stop/>
     </Activity>
   </Activities>
+  <Measurements>
+    <BucketTime for="ReadPerformanceCounters" duration="PT10S"/>
+    <BucketTime for="Broker CPU (%)" duration="PT10S"/>
+    <BucketTime for="Simulator CPU (%)" duration="PT10S"/>
+    <BucketTime for="Broker Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="Simulator Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="Broker Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="Simulator Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="MQTT XML Roundtrip" duration="PT10S"/>
+    <BucketTime for="MQTT JSON Roundtrip" duration="PT10S"/>
+    <BucketTime for="MQTT Binary Roundtrip" duration="PT10S"/>
+    <OutlierRemoval for="MQTT XML Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
+    <OutlierRemoval for="MQTT JSON Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
+    <OutlierRemoval for="MQTT Binary Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
+  </Measurements>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">
       <Source ref="SendMqttXmlMessage"/>
@@ -326,6 +341,10 @@
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Free Memory (MB)" legend="true" header="Memory Performance">
+      <Source ref="Broker Free Memory (GB)"/>
+      <Source ref="Simulator Free Memory (GB)"/>
     </CombinedSampleGraph>
     <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
       <Source ref="Broker Network (kB/s)"/>
