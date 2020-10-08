@@ -67,13 +67,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		{
 			await base.Start();
 
-			if (this.Model.TryGetActivity(this.For, out IActivity Activity))
-			{
-				this.Model.GetActivityStartBucket(this.For).BucketTime = this.duration;
-				this.Model.GetActivityTimeBucket(this.For).BucketTime = this.duration;
-			}
-			else
-				this.Bucket.BucketTime = this.duration;
+			this.Bucket.BucketTime = this.duration;
 		}
 
 	}

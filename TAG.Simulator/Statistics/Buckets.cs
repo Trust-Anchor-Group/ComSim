@@ -346,6 +346,7 @@ namespace TAG.Simulator.Statistics
 			lock (this.buckets)
 			{
 				SortedDictionary<DateTime, long> Counts = new SortedDictionary<DateTime, long>();
+				Duration BucketTime = null;
 				int Count = 0;
 
 				if (Order is null)
@@ -357,6 +358,11 @@ namespace TAG.Simulator.Statistics
 					{
 						if (Bucket is IPeriodBucket PeriodBucket)
 						{
+							if (BucketTime is null)
+								BucketTime = PeriodBucket.BucketTime;
+							else if (BucketTime != PeriodBucket.BucketTime)
+								throw new Exception("Graphs incompatible. Different bucket times: " + Title);
+
 							PeriodBucket.Flush();
 
 							Statistic Last = null;
@@ -588,7 +594,7 @@ namespace TAG.Simulator.Statistics
 				Script.Append(Model.TimeUnitStr);
 				Script.AppendLine("\";");
 				Script.Append("G.LabelY:=\"Count / ");
-				Script.Append(Model.BucketTimeStr);
+				Script.Append(Model.DurationToString(BucketTime));
 				Script.AppendLine("\";");
 				Script.Append("G.Title:=\"");
 				Script.Append(Title);

@@ -77,7 +77,6 @@ namespace TAG.Simulator
 		private DateTime start;
 		private DateTime end;
 		private string timeUnitStr;
-		private string bucketTimeStr;
 		private string snifferFolder;
 		private string commandLine;
 		private string snifferTransformFileName;
@@ -154,11 +153,6 @@ namespace TAG.Simulator
 		public Duration BucketTime => this.bucketTime;
 
 		/// <summary>
-		/// Time to collect events, for statistical purposes.
-		/// </summary>
-		public string BucketTimeStr => this.bucketTimeStr;
-
-		/// <summary>
 		/// Bucket time, in milliseconds
 		/// </summary>
 		public double BucketTimeMs => this.bucketTimeMs;
@@ -233,11 +227,19 @@ namespace TAG.Simulator
 			ObjectModel.Values.Duration.ExportText(this.timeUnit, sb);
 			this.timeUnitStr = sb.ToString();
 
-			sb.Clear();
-			ObjectModel.Values.Duration.ExportText(this.bucketTime, sb);
-			this.bucketTimeStr = sb.ToString();
-
 			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Converts a duration to a string.
+		/// </summary>
+		/// <param name="Duration"></param>
+		/// <returns>String representation of duration.</returns>
+		public static string DurationToString(Duration Duration)
+		{
+			StringBuilder sb = new StringBuilder();
+			ObjectModel.Values.Duration.ExportText(Duration, sb);
+			return sb.ToString();
 		}
 
 		/// <summary>
@@ -261,9 +263,9 @@ namespace TAG.Simulator
 			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
-			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
+			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ %BT%)", this);
 			this.samples = new Buckets(this.start, this.bucketTime, "%ID%", "Mean", this);
-			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ " + this.bucketTimeStr + ")", this);
+			this.activityStartStatistics = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ %BT%)", this);
 			this.activityTimeStatistics = new Buckets(this.start, this.bucketTime, "Execution time of %ID%", "Mean execution time", this);
 			this.eventStatistics = new EventStatistics(this.start, this.bucketTime, this);
 			Log.Register(this.eventStatistics);

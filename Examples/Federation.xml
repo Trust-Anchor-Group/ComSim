@@ -254,7 +254,6 @@
     </Activity>
   </Activities>
   <Measurements>
-    <BucketTime for="ReadPerformanceCounters" duration="PT10S"/>
     <BucketTime for="NL Broker CPU (%)" duration="PT10S"/>
     <BucketTime for="SE Broker CPU (%)" duration="PT10S"/>
     <BucketTime for="Simulator CPU (%)" duration="PT10S"/>

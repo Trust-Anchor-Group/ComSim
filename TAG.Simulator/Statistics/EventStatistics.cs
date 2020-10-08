@@ -30,7 +30,7 @@ namespace TAG.Simulator.Statistics
 			foreach (Enum T in Enum.GetValues(typeof(EventType)))
 				IDs.Add(T.ToString());
 
-			this.buckets = new Buckets(StartTime, BucketTime, "Total event counts", "Count (/ " + Model.BucketTimeStr + ")", Model, false, IDs.ToArray());
+			this.buckets = new Buckets(StartTime, BucketTime, "Total event counts", "Count (/ %BT%)", Model, false, IDs.ToArray());
 		}
 
 		/// <summary>

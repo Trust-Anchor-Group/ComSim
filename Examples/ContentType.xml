@@ -14,7 +14,7 @@
     <Description>
       <![CDATA[ 
       Simulates 300 MQTT clients, publishing and subscribing to content of different types (100 XML, 100 JSON, 100 binary) during 10 minutes, 
-      at a total frequency of 10'000 messages per minute per content type. During the simulation, performance metrics are sampled for local 
+      during which a million messages of each type is transmitted and received. During the simulation, performance metrics are sampled for local 
       simulator performance and broker performance.
       ]]>
     </Description>
@@ -298,7 +298,6 @@
     </Activity>
   </Activities>
   <Measurements>
-    <BucketTime for="ReadPerformanceCounters" duration="PT10S"/>
     <BucketTime for="Broker CPU (%)" duration="PT10S"/>
     <BucketTime for="Simulator CPU (%)" duration="PT10S"/>
     <BucketTime for="Broker Free Memory (GB)" duration="PT10S"/>
@@ -342,7 +341,7 @@
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
     </CombinedSampleGraph>
-    <CombinedSampleGraph title="Free Memory (MB)" legend="true" header="Memory Performance">
+    <CombinedSampleGraph title="Free Memory (GB)" legend="true" header="Memory Performance">
       <Source ref="Broker Free Memory (GB)"/>
       <Source ref="Simulator Free Memory (GB)"/>
     </CombinedSampleGraph>

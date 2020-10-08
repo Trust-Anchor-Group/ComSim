@@ -431,12 +431,12 @@ namespace TAG.Simulator.Statistics
 				Output.Write("G:=(");
 				Output.Write(Graph.GetPlotScript());
 				Output.WriteLine(");");
-				
+
 				Output.Write("G.LabelX:=\"Time × ");
 				Output.Write(this.model.TimeUnitStr);
 				Output.WriteLine("\";");
 				Output.Write("G.LabelY:=\"");
-				Output.Write(LabelY);
+				Output.Write(LabelY.Replace("%BT%", Model.DurationToString(this.bucketTime)));
 				Output.WriteLine("\";");
 				Output.Write("G.Title:=\"");
 				Output.Write(this.title.Replace("\"", "\\\""));

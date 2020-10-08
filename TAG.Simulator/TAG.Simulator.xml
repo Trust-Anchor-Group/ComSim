@@ -259,11 +259,6 @@
             Time to collect events, for statistical purposes.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.Model.BucketTimeStr">
-            <summary>
-            Time to collect events, for statistical purposes.
-            </summary>
-        </member>
         <member name="P:TAG.Simulator.Model.BucketTimeMs">
             <summary>
             Bucket time, in milliseconds
@@ -312,6 +307,13 @@
             Sets properties and attributes of class in accordance with XML definition.
             </summary>
             <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.Model.DurationToString(Waher.Content.Duration)">
+            <summary>
+            Converts a duration to a string.
+            </summary>
+            <param name="Duration"></param>
+            <returns>String representation of duration.</returns>
         </member>
         <member name="M:TAG.Simulator.Model.Initialize">
             <summary>
