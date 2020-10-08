@@ -308,9 +308,9 @@
     <BucketTime for="MQTT XML Roundtrip" duration="PT10S"/>
     <BucketTime for="MQTT JSON Roundtrip" duration="PT10S"/>
     <BucketTime for="MQTT Binary Roundtrip" duration="PT10S"/>
-    <OutlierRemoval for="MQTT XML Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
-    <OutlierRemoval for="MQTT JSON Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
-    <OutlierRemoval for="MQTT Binary Roundtrip" windowSize="15" threshold="1" smooth="true" max="1000" logNotice="false"/>
+    <OutlierRemoval for="MQTT XML Roundtrip" windowSize="15" threshold="1" smooth="true" max="300" logNotice="false"/>
+    <OutlierRemoval for="MQTT JSON Roundtrip" windowSize="15" threshold="1" smooth="true" max="300" logNotice="false"/>
+    <OutlierRemoval for="MQTT Binary Roundtrip" windowSize="15" threshold="1" smooth="true" max="300" logNotice="false"/>
   </Measurements>
   <Graphs>
     <CombinedExecutionsGraph title="Nr Messages sent" legend="true" header="Send messages">

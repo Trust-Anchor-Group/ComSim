@@ -103,7 +103,7 @@ Examples
 [x] Breakpoint example
 [x] Federation
 [x] High load
-[ ] Performance comparison XML vs. JSON over MQTT
+[x] Performance comparison XML vs. JSON over MQTT
 [ ] State machines & External events to determine activity node transitions
 [ ] Req/Resp pattern
 [ ] Pub/Sub pattern
