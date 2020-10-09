@@ -66,7 +66,8 @@ Features
 	[ ] Chi distribution
 	[ ] Chi-squared distribution
 	[x] Exponential distribution
-	[ ] Gamma distribution
+	[x] Gamma distribution
+	[ ] Poisson distribution
 	[ ] Student-t distribution
 [x] Generate action documentation (xml, xslt) automatically
 [ ] XMPP

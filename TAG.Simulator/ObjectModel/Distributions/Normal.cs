@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Script.Statistics;
 
 namespace TAG.Simulator.ObjectModel.Distributions
 {
@@ -66,40 +67,6 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		}
 
 		/// <summary>
-		/// Statistical error function erf(z), for real-valued arguments.
-		/// </summary>
-		/// <param name="x">Real-valued argument</param>
-		/// <returns>erf(x)</returns>
-		public static double Erf(double x)
-		{
-			// Converges poorly/slowly outside of [-5,5] using double-precision floating point series.
-
-			if (x < -5)
-				return -1;
-			else if (x > 5)
-				return 1;
-
-			double mx2 = -x * x;
-			double Sum = x;
-			double Product = 1;
-			double Term;
-			int n = 0;
-
-			do
-			{
-				n++;
-				Product *= mx2 / n;
-				Term = x * Product / (2 * n + 1);
-				Sum += Term;
-			}
-			while (Math.Abs(Term) > 1e-10);
-
-			return Sum * c;
-		}
-
-		private static readonly double c = 2 / Math.Sqrt(Math.PI);
-
-		/// <summary>
 		/// The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="Distribution.N"/>).
 		/// </summary>
 		/// <param name="t">Time</param>
@@ -113,7 +80,10 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				NrCycles--;
 			}
 
-			return ((1 + Erf((t - this.μ) / this.σSqrt2)) / 2) + NrCycles;
+			double x = (t - this.μ) / this.σSqrt2;
+			double erf = x < -5 ? -1 : x > 5 ? 1 : StatMath.Erf(x);
+
+			return ((1 + erf) / 2) + NrCycles;
 		}
 
 		/// <summary>

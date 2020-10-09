@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard1.5</TargetFramework>
     <Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
@@ -34,6 +34,7 @@
     <PackageReference Include="Waher.Networking" Version="1.0.17" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.13" />
     <PackageReference Include="Waher.Runtime.Settings" Version="1.0.3" />
+    <PackageReference Include="Waher.Script.Statistics" Version="1.0.6" />
   </ItemGroup>
 
 </Project>

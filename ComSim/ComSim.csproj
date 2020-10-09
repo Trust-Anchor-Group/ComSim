@@ -42,7 +42,7 @@
     <PackageReference Include="Waher.Script.Cryptography" Version="1.0.1" />
     <PackageReference Include="Waher.Script.Graphs" Version="1.0.16" />
     <PackageReference Include="Waher.Script.Persistence" Version="1.0.19" />
-    <PackageReference Include="Waher.Script.Statistics" Version="1.0.5" />
+    <PackageReference Include="Waher.Script.Statistics" Version="1.0.6" />
     <PackageReference Include="Waher.Script.Xml" Version="1.0.2" />
   </ItemGroup>
 
