@@ -3,9 +3,9 @@
        xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
-       timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT1M">
+       timeUnit="PT10S"
+       timeCycle="PT10M"
+       duration="PT10M">
   <Meta>
     <Title>Distributions</Title>
     <Introduction>Demonstrates the use of different distributions in the simulator.</Introduction>
@@ -19,12 +19,12 @@
   <Actors>
   </Actors>
   <Distributions>
-    <Uniform id="Uniform" from="0" to="60" N="1000"/>
-    <Normal id="Normal" μ="30" σ="5" N="1000"/>
-    <Exponential id="Exponential" λ="0.1" N="1000"/>
-    <Gamma id="Gamma" t0="10" k="7.5" θ="1" N="1000"/>
-    <Chi id="Chi" t0="20" k="50" N="1000"/>
-    <ChiSquare id="ChiSquare" t0="30" k="10" N="1000"/>
+    <Uniform id="Uniform" from="0" to="60" N="10000"/>
+    <Normal id="Normal" μ="30" σ="5" N="10000"/>
+    <Exponential id="Exponential" λ="0.1" N="10000"/>
+    <Gamma id="Gamma" t0="10" k="7.5" θ="1" N="10000"/>
+    <Chi id="Chi" t0="20" k="50" N="10000"/>
+    <ChiSquare id="ChiSquare" t0="30" k="10" N="10000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="Uniform" activity="IncUniform">
