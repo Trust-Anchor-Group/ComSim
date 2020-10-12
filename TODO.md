@@ -15,7 +15,7 @@ Features
 	[x] Description
 	[x] Script
 	[x] Section descriptions
-[ ] Activities
+[x] Activities
 	[x] Populations
 	[x] Execution
 	[x] Activity node with external event conditions, or stochastic conditions
@@ -32,7 +32,6 @@ Features
 	[x] Timing of, and between events/activities. (communication roundtrip)
 	[x] Actor variables
 	[x] Filter sampled values, removing outliers
-	[ ]	Sensor data (local/remote)
 [x] Simulation output
 	[x] Statistics
 		[x] Activities
@@ -110,6 +109,7 @@ Examples
 [x] Req/Resp pattern
 [ ] State machines & External events to determine activity node transitions
 [ ] Pub/Sub pattern
+[ ]	Sensor data (local/remote)
 [ ] Legal identities
 [ ] Payments
 
