@@ -112,12 +112,13 @@ interface, or derive from the [Actor](TAG.Simulator/ObjectModel/Actors/Actor.cs)
 
 Following is a list of extension modules provided in the repository:
 
-| Example                                                | Description                                                                                                |
-|:-------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------|
-| [TAG.Simulator.MQTT](TAG.Simulator.MQTT)               | Defines simulation extensions for actors communicating [MQTT](https://mqtt.org/).                          |
-| [TAG.Simulator.Performance](TAG.Simulator.Performance) | Defines simulation extensions for sampling of local performance counters.                                  |
-| [TAG.Simulator.XMLDSIG](TAG.Simulator.XMLDSIG)         | Defines simulation extensions for [XML Digital Signatures (XMLDSIG)](https://www.w3.org/TR/xmldsig-core/). |
-| [TAG.Simulator.XMPP](TAG.Simulator.XMPP)               | Defines simulation extensions for actors communicating [XMPP](https://xmpp.org/).                          |
+| Example                                                | Description                                                                                                          |
+|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
+| [TAG.Simulator.MQTT](TAG.Simulator.MQTT)               | Defines simulation extensions for actors communicating [MQTT](https://mqtt.org/).                                    |
+| [TAG.Simulator.Performance](TAG.Simulator.Performance) | Defines simulation extensions for sampling of local performance counters.                                            |
+| [TAG.Simulator.XMLDSIG](TAG.Simulator.XMLDSIG)         | Defines simulation extensions for [XML Digital Signatures (XMLDSIG)](https://www.w3.org/TR/xmldsig-core/).           |
+| [TAG.Simulator.XMPP](TAG.Simulator.XMPP)               | Defines simulation extensions for actors communicating [XMPP](https://xmpp.org/), as well as common XMPP Extensions. |
+| [TAG.Simulator.XMPP.IoT](TAG.Simulator.XMPP.IoT)       | Defines XMPP extensions for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT).                        |
 
 ## Script extensions
 
@@ -136,13 +137,14 @@ The simulator itself provides the following extensions:
 
 Syntax of simulation nodes are defined in XML Schema files. The following table lists XML Schema files defined by the project:
 
-| Schema                                                                          | Namespace                                                         | Description                                                                |
-|:--------------------------------------------------------------------------------|:------------------------------------------------------------------|:---------------------------------------------------------------------------|
-| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)                                   | `http://trustanchorgroup.com/Schema/ComSim.xsd`                   | Defines the main structure of a simulation model file.                     |
-| [ComSimMqtt.xsd](TAG.Simulator.MQTT/Schema/ComSimMqtt.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd`              | Defines simulation extensions for actors communicating MQTT.               |
-| [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd` | Defines simulation extensions for Performance Counters.                    |
-| [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd`     | Defines simulation extensions for Digital XML Signatures.                  |
-| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.               |
+| Schema                                                                          | Namespace                                                         | Description                                                                                                 |
+|:--------------------------------------------------------------------------------|:------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------|
+| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)                                   | `http://trustanchorgroup.com/Schema/ComSim.xsd`                   | Defines the main structure of a simulation model file.                                                      |
+| [ComSimMqtt.xsd](TAG.Simulator.MQTT/Schema/ComSimMqtt.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd`              | Defines simulation extensions for actors communicating MQTT.                                                |
+| [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd` | Defines simulation extensions for Performance Counters.                                                     |
+| [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd`     | Defines simulation extensions for Digital XML Signatures.                                                   |
+| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.                                                |
+| [ComSimXmppIoT.xsd](TAG.Simulator.XMPP.IoT/Schema/ComSimXmppIoT.xsd)            | `http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd`           | Defines simulator XMPP extensions for for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT). |
 
 ## Contact
 

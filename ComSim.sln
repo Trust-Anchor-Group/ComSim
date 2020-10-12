@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQ", "TAG.Sim
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQ.Test", "TAG.Simulator.MQ.Test\TAG.Simulator.MQ.Test.csproj", "{EA5F1169-5681-4E37-BBE2-94131939E206}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.XMPP.IoT", "TAG.Simulator.XMPP.IoT\TAG.Simulator.XMPP.IoT.csproj", "{83318439-E397-4465-B5D4-6C66B10B3699}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{EA5F1169-5681-4E37-BBE2-94131939E206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA5F1169-5681-4E37-BBE2-94131939E206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA5F1169-5681-4E37-BBE2-94131939E206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83318439-E397-4465-B5D4-6C66B10B3699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83318439-E397-4465-B5D4-6C66B10B3699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83318439-E397-4465-B5D4-6C66B10B3699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83318439-E397-4465-B5D4-6C66B10B3699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -196,4 +196,33 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:complexType name="XmppExtension">
+  </xs:complexType>
+
+  <xs:element name="AvatarExtension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="XmppExtension"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PepExtension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="XmppExtension"/>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PubSubExtension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="XmppExtension">
+          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
 </xs:schema>

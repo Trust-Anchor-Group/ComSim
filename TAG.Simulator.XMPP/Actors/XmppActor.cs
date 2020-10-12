@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.XMPP.Events;
+using TAG.Simulator.XMPP.Extensions;
 using Waher.Content.Xml;
 using Waher.Networking.DNS;
 using Waher.Networking.DNS.ResourceRecords;
@@ -242,6 +243,9 @@ namespace TAG.Simulator.XMPP.Actors
 				{
 					if (Node is HandlerNode HandlerNode)
 						HandlerNode.RegisterHandlers(this, this.client);
+
+					if (Node is Extensions.IXmppExtension Extension)
+						Extension.Add(this, Client);
 				}
 			}
 

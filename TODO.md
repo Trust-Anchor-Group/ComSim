@@ -73,7 +73,7 @@ Features
 	[x] Message handlers
 	[x] Iq handlers
 	[x] Presence handlers
-	[ ] Extension libraries
+	[x] Extension libraries
 	[ ] UDP
 	[x] Iq action node
 	[x] Message action node
