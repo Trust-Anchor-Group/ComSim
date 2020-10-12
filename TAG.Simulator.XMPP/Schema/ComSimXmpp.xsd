@@ -131,6 +131,31 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:element name="SetPresence">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="availability" type="Availability" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="Availability">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Online"/>
+      <xs:enumeration value="Offline"/>
+      <xs:enumeration value="Away"/>
+      <xs:enumeration value="Chat"/>
+      <xs:enumeration value="DoNotDisturb"/>
+      <xs:enumeration value="ExtendedAway"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="HandlerNode">
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="namespace" type="xs:string" use="required"/>

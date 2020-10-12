@@ -234,6 +234,7 @@ namespace TAG.Simulator.XMPP.Actors
 			this.client.OnRosterItemAdded += Client_OnRosterItemAdded;
 			this.client.OnRosterItemRemoved += Client_OnRosterItemRemoved;
 			this.client.OnRosterItemUpdated += Client_OnRosterItemUpdated;
+			this.client.CustomPresenceXml += Client_CustomPresenceXml;
 
 			if (this.Parent is IActor ParentActor)
 			{
@@ -253,6 +254,17 @@ namespace TAG.Simulator.XMPP.Actors
 				if (this.xmppCredentials.AllowRegistration && !(await this.connected.Task))
 					throw new Exception("Unable to create account for " + this.userName + "@" + this.domain);
 			}
+		}
+
+		private Task Client_CustomPresenceXml(object Sender, CustomPresenceEventArgs e)
+		{
+			if (this.client.TryGetTag("CutomPresenceXML", out object Obj) &&
+				Obj is string Xml)
+			{
+				e.Stanza.Append(Xml);
+			}
+
+			return Task.CompletedTask;
 		}
 
 		private Task Client_OnRosterItemUpdated(object Sender, RosterItem Item)
@@ -278,7 +290,7 @@ namespace TAG.Simulator.XMPP.Actors
 			this.Model.ExternalEvent(this, "RosterItemAdded",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
-			
+
 			return Task.CompletedTask;
 		}
 
