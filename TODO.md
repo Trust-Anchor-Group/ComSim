@@ -18,11 +18,11 @@ Features
 [ ] Activities
 	[x] Populations
 	[x] Execution
-	[ ] Activity node with external event conditions, or stochastic conditions
+	[x] Activity node with external event conditions, or stochastic conditions
 		[x] Wait element (cf. Conditional)
 		[x] Trigger event
 		[x] Timeout (cf. Otherwise)
-		[ ] Call activity
+		[x] Call activity
 	[x] Counters
 	[x] Stat activity node: Increments counters
 	[x] Measurements
