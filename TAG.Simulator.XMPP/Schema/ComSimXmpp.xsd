@@ -78,6 +78,59 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:element name="Request">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="to" type="xs:string" use="required"/>
+          <xs:attribute name="type" type="RequestType" use="required"/>
+          <xs:attribute name="responseVariable" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Respond">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="requestId" type="xs:string" use="required"/>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="to" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Error">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="cs:ActivityNode">
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:group ref="cs:Value"/>
+          </xs:choice>
+          <xs:attribute name="requestId" type="xs:string" use="required"/>
+          <xs:attribute name="actor" type="xs:string" use="required"/>
+          <xs:attribute name="to" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="RequestType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Get"/>
+      <xs:enumeration value="Set"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="HandlerNode">
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="namespace" type="xs:string" use="required"/>

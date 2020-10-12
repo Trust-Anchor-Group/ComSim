@@ -46,7 +46,7 @@ namespace TAG.Simulator.XMPP.Events
 		{
 			Client.RegisterMessageHandler(this.Name, this.HandlerNamespace, (sender, e) =>
 			{
-				this.Trigger(this.Parent as IActor, new KeyValuePair<string, object>(string.IsNullOrEmpty(this.EventArgs) ? "e" : this.EventArgs, e));
+				this.Trigger(Actor, new KeyValuePair<string, object>(string.IsNullOrEmpty(this.EventArgs) ? "e" : this.EventArgs, e));
 				return Task.CompletedTask;
 			}, true);
 		}

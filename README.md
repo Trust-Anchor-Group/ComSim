@@ -85,6 +85,8 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 Following is a list of simulation examples that introduces different concenpts in simple examples. They can also be used as the basis for 
 new simulation models:
 
+![Examples](Examples/Examples.svg)
+
 | Example                                                   | Description                                                                                                                                                                                                                                                                             | Simulation Report                                              |
 |:----------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------|
 | [SimpleChatMessages.xml](Examples/SimpleChatMessages.xml) | Simulates a few users using [XMPP](https://xmpp.org/) to send chat messages between each other. Illustrates stochastic and external events.                                                                                                                                             | [Report](https://lab.tagroot.io/Reports/SimpleChatMessages.md) |
@@ -97,6 +99,7 @@ new simulation models:
 | [Federation.xml](Examples/Federation.xml)                 | Demonstrates how to send and receive messages between clients connected to different federated brokers. Builds on the `XmlMessages` example. Also introduces measurement control, such as individual bucket times and outlier removal.                                                  | [Report](https://lab.tagroot.io/Reports/Federation.md)         |
 | [ContentType.xml](Examples/ContentType.xml)               | Tests publishing information using either XML, JSON or binary over MQTT, to see if there are any noticeable differences on the choice of content type on performance. Builds on the `Protocols` example.                                                                                | [Report](https://lab.tagroot.io/Reports/ContentType.md)        |
 | [Distributions.xml](Examples/Distributions.xml)           | Simple simulation that demonstrates the use of different distributions in the simulator.                                                                                                                                                                                                | [Report](https://lab.tagroot.io/Reports/Distributions.md)      |
+| [RequestResponse.xml](Examples/RequestResponse.xml)       | Illustrates the use of the Request/Response communication pattern in simulation. Builds on the `XmlMessages` example.                                                                                                                                                                   | [Report](https://lab.tagroot.io/Reports/RequestResponse.md)    |
 
 ## Extending the Simulator
 

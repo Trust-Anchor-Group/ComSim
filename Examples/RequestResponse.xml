@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       xmlns:xmldsig="http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd"
+       xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT10M">
+  <Meta>
+    <Title>Request/Response</Title>
+    <Introduction>Illustrates the use of the Request/Response communication pattern in simulation.</Introduction>
+    <Description>
+      <![CDATA[ 
+      Simulates 100 XMPP clients over TCP sending Machine-to-Machine (M2M) messages between each other using the Request/Response 
+      pattern. An unsigned message is sent from one participant to another, which responds with a signed copy of the same XML. The
+      party sending the request then validates the response. Requests are sent at a total frequency of 1000 requests per minute.
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      XMPP
+      ------
+
+      The XMPP Client accounts are created automatically, if the broker being used supports 
+      [XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+      account registration process can be protected using keys and secrets, if the broker supports
+      [XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+      ]]>
+    </Preparation>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.XMPP.dll"/>
+    <Assembly fileName="TAG.Simulator.XMLDSIG.dll"/>
+  </Assemblies>
+  <Actors>
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+      <xmpp:IqGetHandler name="Sign" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="SignatureRequestReceived" actorName="To" eventArgs="e"/>
+    </xmpp:XmppActorTcp>
+  </Actors>
+  <Distributions>
+    <Uniform id="ThousandPerMinute" from="0" to="60" N="1000"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="ThousandPerMinute" activity="SendSignatureRequest">
+      <Description>Sends an unsigned XML message in a signature request from one random XMPP client to another, at a frequency of a thousand times per minute using a uniform distribution. Waits for a response, and then validates the signature in the response.</Description>
+      <ActorReference name="From" exclusive="true">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="XmppTcp"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <EventHandler id="SignatureRequestReceived" activity="ProcessSignatureRequest">
+      <Description>Processes an incoming signature request, and returns the signed XML document back to the requestor.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="SendSignatureRequest" logStart="false" logEnd="false">
+      <Description>This activity sends an unsigned XML message to a random recipient for signature.</Description>
+      <Start/>
+      <Count counter="Requests"/>
+      <xmpp:Request actor="From" to="{To.FullJID}" type="Get" responseVariable="Response">
+        <Xml>
+          <Sign xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <Msg>
+              <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
+            </Msg>
+          </Sign>
+        </Xml>
+      </xmpp:Request>
+      <Count counter="ResponseReceived"/>
+      <xmldsig:Verify rsaKeyName="{To.BareJID}">
+        <Script>Response</Script>
+      </xmldsig:Verify>
+      <Eval>
+        <![CDATA[
+          StartTime:=DateTime(Response["StartTime"].InnerText);
+          Elapsed:=Now.Subtract(StartTime).TotalMilliseconds
+        ]]>
+      </Eval>
+      <Sample name="Request Roundtrip">
+        <Script>Elapsed ms</Script>
+      </Sample>
+      <Stop/>
+    </Activity>
+    <Activity id="ProcessSignatureRequest" logStart="false" logEnd="false">
+      <Description>Processes a received signature request.</Description>
+      <Start/>
+      <Count counter="RequestsReceived"/>
+      <xmpp:Respond actor="To" to="{e.From}" requestId="{e.Id}">
+        <xmldsig:Sign rsaKeyName="{To.BareJID}" rsaKeySize="4096">
+          <Script>e.Query.InnerXml</Script>
+        </xmldsig:Sign>
+      </xmpp:Respond>
+      <Count counter="Responses"/>
+      <Stop/>
+    </Activity>
+  </Activities>
+  <Graphs>
+  </Graphs>
+</Model>

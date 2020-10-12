@@ -13,25 +13,21 @@ using System.IO;
 namespace TAG.Simulator.XMPP.Activities
 {
 	/// <summary>
-	/// Sends a custom message to a recipient
+	/// Sends a custom IQ response to a recipient
 	/// </summary>
-	public class SendMessage : ActivityNode, IValueRecipient
+	public class Respond : ActivityNode, IValueRecipient
 	{
 		private IValue value;
-		private MessageType type;
 		private string actor;
 		private string to;
-		private string subject;
-		private string language;
-		private string threadId;
-		private string parentThreadId;
+		private string requestId;
 
 		/// <summary>
-		/// Sends a custom message to a recipient
+		/// Sends a custom IQ response to a recipient
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public SendMessage(ISimulationNode Parent, Model Model)
+		public Respond(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -39,7 +35,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "SendMessage";
+		public override string LocalName => "Respond";
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
@@ -59,7 +55,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new SendMessage(Parent, Model);
+			return new Respond(Parent, Model);
 		}
 
 		/// <summary>
@@ -70,11 +66,7 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			this.actor = XML.Attribute(Definition, "actor");
 			this.to = XML.Attribute(Definition, "to");
-			this.subject = XML.Attribute(Definition, "subject");
-			this.language = XML.Attribute(Definition, "language");
-			this.threadId = XML.Attribute(Definition, "threadId");
-			this.parentThreadId = XML.Attribute(Definition, "parentThreadId");
-			this.type = (MessageType)XML.Attribute(Definition, "type", MessageType.Normal);
+			this.requestId = XML.Attribute(Definition, "requestId");
 
 			return base.FromXml(Definition);
 		}
@@ -100,13 +92,7 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string To = Expression.Transform(this.to, "{", "}", Variables);
-			string Subject = Expression.Transform(this.subject, "{", "}", Variables);
-			string Language = Expression.Transform(this.language, "{", "}", Variables);
-			string ThreadId = Expression.Transform(this.threadId, "{", "}", Variables);
-			string ParentThreadId = Expression.Transform(this.parentThreadId, "{", "}", Variables);
-			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
-			string Xml;
-			string Body;
+			string RequestId = Expression.Transform(this.requestId, "{", "}", Variables);
 
 			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
 				throw new Exception("Actor not found: " + this.actor);
@@ -114,23 +100,19 @@ namespace TAG.Simulator.XMPP.Activities
 			if (!(v.ValueObject is XmppClient Client))
 				throw new Exception("Actor not an XMPP client. Type: " + v.ValueObject?.GetType()?.FullName);
 
-			if (Content is XmlDocument Doc)
-			{
-				Xml = Doc.OuterXml;
-				Body = string.Empty;
-			}
-			else if (Content is XmlElement E)
-			{
-				Xml = E.OuterXml;
-				Body = string.Empty;
-			}
-			else
-			{
-				Xml = string.Empty;
-				Body = Content.ToString();
-			}
+			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
+			string Xml;
 
-			Client.SendMessage(this.type, To, Xml, Body, Subject, Language, ThreadId, ParentThreadId);
+			if (Content is XmlDocument Doc)
+				Xml = Doc.OuterXml;
+			else if (Content is XmlElement E)
+				Xml = E.OuterXml;
+			else if (Content is null)
+				Xml = null;
+			else
+				throw new Exception("Responses must be XML, or empty.");
+
+			Client.SendIqResult(RequestId, To, Xml);
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}
@@ -148,60 +130,23 @@ namespace TAG.Simulator.XMPP.Activities
 			Indent(Output, Indentation);
 			Output.Write(':');
 			Output.Write(this.actor);
-			Output.Write(".SendMessage");
+			Output.Write(".Respond");
 			Output.Write("(");
 
 			Indentation++;
 
-			AppendArgument(Output, Indentation, "To", this.to, true, QuoteChar);
-			AppendArgument(Output, Indentation, "Type", this.type.ToString(), false, QuoteChar);
-
-			if (!string.IsNullOrEmpty(this.subject))
-				AppendArgument(Output, Indentation, "Subject", this.subject, true, QuoteChar);
-
-			if (!string.IsNullOrEmpty(this.language))
-				AppendArgument(Output, Indentation, "Language", this.language, true, QuoteChar);
-
-			if (!string.IsNullOrEmpty(this.threadId))
-				AppendArgument(Output, Indentation, "ThreadId", this.threadId, true, QuoteChar);
-
-			if (!string.IsNullOrEmpty(this.parentThreadId))
-				AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId, true, QuoteChar);
+			SendMessage.AppendArgument(Output, Indentation, "Id", this.requestId, true, QuoteChar);
+			SendMessage.AppendArgument(Output, Indentation, "To", this.to, true, QuoteChar);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
+					SendMessage.AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
-					AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
+					SendMessage.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
 			}
 
 			Output.WriteLine(");");
-		}
-
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
-		{
-			AppendArgument(Output, Indentation, Name);
-
-			if (Quotes)
-				Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
-			else
-				Eval.ExportPlantUml(Value, Output, Indentation, QuoteChar, false);
-		}
-
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
-		{
-			AppendArgument(Output, Indentation, Name);
-			Value.ExportPlantUml(Output, Indentation, QuoteChar);
-		}
-
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name)
-		{
-			Output.WriteLine();
-			Indent(Output, Indentation);
-
-			Output.Write(Name);
-			Output.Write(": ");
 		}
 
 	}

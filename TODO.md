@@ -68,6 +68,7 @@ Features
 	[x] Exponential distribution
 	[x] Gamma distribution
 	[ ] Student-t distribution
+	[ ] Cyclic distributions (specify modulus, example: weekly, monthly, etc.)
 [x] Generate action documentation (xml, xslt) automatically
 [ ] XMPP
 	[x] Message handlers
@@ -75,7 +76,7 @@ Features
 	[x] Presence handlers
 	[ ] Extension libraries
 	[ ] UDP
-	[ ] Iq action node
+	[x] Iq action node
 	[x] Message action node
 	[ ] Presence action node
 [ ] HTTP
@@ -104,11 +105,24 @@ Examples
 [x] Federation
 [x] High load
 [x] Performance comparison XML vs. JSON over MQTT
+[x] Req/Resp pattern
 [ ] State machines & External events to determine activity node transitions
-[ ] Req/Resp pattern
 [ ] Pub/Sub pattern
 [ ] Legal identities
 [ ] Payments
+
+```dot
+digraph G {
+SimpleChatMessages -> GuessANumber
+GuessANumber -> ServerPerformance
+XmlMessages -> Federation
+XmlMessages -> RequestResponse
+Protocols -> BreakingPoint
+BreakingPoint -> HighLoad
+Protocols -> ContentType
+Distributions
+}
+```
 
 Documentation
 --------------------
