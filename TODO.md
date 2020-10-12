@@ -80,14 +80,13 @@ Features
 	[ ] Presence action node
 	[ ] PubSub action node
 	[ ] PEP action node
-[ ] HTTP
+[x] HTTP
 	[x] GET
 	[x] POST
 		[x] String
 		[x] JSON
 		[x] Xml
 		[x] Signed XML
-	[ ] Web Service (SOAP)
 [x] MQTT
 	[x] PUBLISH
 	[x] SUBSCRIBE
