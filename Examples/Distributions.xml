@@ -23,7 +23,8 @@
     <Normal id="Normal" μ="30" σ="5" N="1000"/>
     <Exponential id="Exponential" λ="0.1" N="1000"/>
     <Gamma id="Gamma" t0="10" k="7.5" θ="1" N="1000"/>
-    <Chi id="Chi" t0="40" k="50" N="1000"/>
+    <Chi id="Chi" t0="20" k="50" N="1000"/>
+    <ChiSquare id="ChiSquare" t0="30" k="10" N="1000"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="Uniform" activity="IncUniform">
@@ -40,6 +41,9 @@
     </StochasticEvent>
     <StochasticEvent distribution="Chi" activity="IncChi">
       <Description>Counts number of occurrences of the stochastic event Chi.</Description>
+    </StochasticEvent>
+    <StochasticEvent distribution="ChiSquare" activity="IncChiSquare">
+      <Description>Counts number of occurrences of the stochastic event ChiSquare.</Description>
     </StochasticEvent>
   </Events>
   <Activities>
@@ -71,6 +75,12 @@
       <Description>Counts the number of events raised by the Chi distribution.</Description>
       <Start/>
       <Count counter="CountChi"/>
+      <Stop/>
+    </Activity>
+    <Activity id="IncChiSquare" logStart="false" logEnd="false">
+      <Description>Counts the number of events raised by the ChiSquare distribution.</Description>
+      <Start/>
+      <Count counter="CountChiSquare"/>
       <Stop/>
     </Activity>
   </Activities>

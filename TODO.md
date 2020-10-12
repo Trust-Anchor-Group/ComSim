@@ -64,7 +64,7 @@ Features
 	[ ] Arcsine distribution
 	[ ] Beta distribution
 	[x] Chi distribution
-	[ ] Chi-squared distribution
+	[x] Chi-squared distribution
 	[x] Exponential distribution
 	[x] Gamma distribution
 	[ ] Student-t distribution

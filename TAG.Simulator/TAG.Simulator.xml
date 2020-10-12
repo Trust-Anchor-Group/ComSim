@@ -2504,6 +2504,26 @@
             Chi distribution
             </summary>
         </member>
+        <member name="F:TAG.Simulator.ObjectModel.Distributions.Chi.t0">
+            <summary>
+            Time of start of distribution
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.ObjectModel.Distributions.Chi.k">
+            <summary>
+            k parameter
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.ObjectModel.Distributions.Chi.kHalf">
+            <summary>
+            k/2
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.ObjectModel.Distributions.Chi.c">
+            <summary>
+            1/gamma(k/2)
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
             Chi distribution
@@ -2539,6 +2559,45 @@
             <returns>CDU(t)</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.ExportPdfBody(System.Text.StringBuilder)">
+            <summary>
+            Exports the PDF function body.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.ChiSquare">
+            <summary>
+            Chi-square distribution
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.ChiSquare.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Chi-square distribution
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.ChiSquare.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.ChiSquare.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.ChiSquare.GetCumulativeProbability(System.Double,System.Int32)">
+            <summary>
+            The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N"/>).
+            </summary>
+            <param name="t">Time</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>CDU(t)</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.ChiSquare.ExportPdfBody(System.Text.StringBuilder)">
             <summary>
             Exports the PDF function body.
             </summary>

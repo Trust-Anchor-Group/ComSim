@@ -47,6 +47,7 @@
               <xs:element name="Exponential" type="ExponentialDistribution"/>
               <xs:element name="Gamma" type="GammaDistribution"/>
               <xs:element name="Chi" type="ChiDistribution"/>
+              <xs:element name="ChiSquare" type="ChiSquareDistribution"/>
               <xs:any namespace="##other"/>
             </xs:choice>
           </xs:complexType>
@@ -160,6 +161,13 @@
       <xs:extension base="Distribution">
         <xs:attribute name="t0" type="PositiveDouble" use="required"/>
         <xs:attribute name="k" type="PositiveDouble" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ChiSquareDistribution">
+    <xs:complexContent>
+      <xs:extension base="ChiDistribution">
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
