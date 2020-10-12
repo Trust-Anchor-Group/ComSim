@@ -376,6 +376,7 @@
       <xs:element name="Action" type="ActionActivityNode"/>
       <xs:element name="Conditional" type="ConditionalActivityNode"/>
       <xs:element name="Wait" type="WaitActivityNode"/>
+      <xs:element name="Call" type="ReferenceActivityNode"/>
       <xs:element name="GoTo" type="ReferenceActivityNode"/>
       <xs:element name="Finished" type="ActivityNode"/>
       <xs:element name="Parallel" type="ParallelActivityNode"/>

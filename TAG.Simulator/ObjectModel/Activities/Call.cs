@@ -7,31 +7,26 @@ using Waher.Script;
 namespace TAG.Simulator.ObjectModel.Activities
 {
 	/// <summary>
-	/// Jumps to another node in the activity.
+	/// Calls another activity.
 	/// </summary>
-	public class GoTo : ReferenceActivityNode 
+	public class Call : ReferenceActivityNode 
 	{
-		private LinkedListNode<IActivityNode> node;
+		private IActivity activity;
 
 		/// <summary>
-		/// Jumps to another node in the activity.
+		/// Calls another activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public GoTo(ISimulationNode Parent, Model Model)
+		public Call(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// Referenced node
-		/// </summary>
-		public LinkedListNode<IActivityNode> Node => this.node;
-
-		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "GoTo";
+		public override string LocalName => "Call";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -41,7 +36,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new GoTo(Parent, Model);
+			return new Call(Parent, Model);
 		}
 
 		/// <summary>
@@ -49,8 +44,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.Model.TryGetActivityNode(this.Reference, out this.node))
-				throw new Exception("Activity node not found: " + this.Reference);
+			if (!this.Model.TryGetActivity(this.Reference, out this.activity))
+				throw new Exception("Activity not found: " + this.Reference);
 
 			return base.Start();
 		}
@@ -60,9 +55,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			return Task.FromResult<LinkedListNode<IActivityNode>>(this.node);
+			await this.activity.ExecuteTask(Variables);
+			return null;
 		}
 
 		/// <summary>
@@ -77,9 +73,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.Write('(');
 			Output.Write(this.Reference);
 			Output.WriteLine(')');
-
-			Indent(Output, Indentation);
-			Output.WriteLine("detach");
 		}
 	}
 }
