@@ -13,6 +13,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 	/// </summary>
 	public class Gamma : Distribution
 	{
+		private double t0;
 		private double α;
 		private double β;
 		private double θ;
@@ -52,6 +53,8 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
+			this.t0 = XML.Attribute(Definition, "t0", 0.0);
+
 			if (Definition.HasAttribute("k") && Definition.HasAttribute("θ"))
 			{
 				this.k = XML.Attribute(Definition, "k", 0.0);
@@ -102,7 +105,11 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <returns>CDU(t)</returns>
 		protected override double GetCumulativeProbability(double t, int NrCycles)
 		{
-			return StatMath.γ(this.α, this.β * t) * this.invGammaAlpha;
+			t -= this.t0;
+			if (t < 0)
+				return 0;
+			else
+				return StatMath.γ(this.α, this.β * t) * this.invGammaAlpha;
 		}
 
 		/// <summary>
@@ -111,12 +118,19 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="Output">Export output</param>
 		public override void ExportPdfBody(StringBuilder Output)
 		{
+			Output.Append("t<");
+			Output.Append(CommonTypes.Encode(this.t0));
+			Output.Append("?0:");
 			Output.Append(CommonTypes.Encode(Math.Pow(this.β, this.α) * this.invGammaAlpha));
-			Output.Append("*t.^");
+			Output.Append("*(t-");
+			Output.Append(CommonTypes.Encode(this.t0));
+			Output.Append(").^");
 			Output.Append(CommonTypes.Encode(this.α - 1));
 			Output.Append(".*exp(-");
 			Output.Append(CommonTypes.Encode(this.β));
-			Output.Append("*t)");
+			Output.Append("*(t-");
+			Output.Append(CommonTypes.Encode(this.t0));
+			Output.Append("))");
 		}
 
 	}

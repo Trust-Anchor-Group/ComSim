@@ -46,6 +46,7 @@
               <xs:element name="Normal" type="NormalDistribution"/>
               <xs:element name="Exponential" type="ExponentialDistribution"/>
               <xs:element name="Gamma" type="GammaDistribution"/>
+              <xs:element name="Chi" type="ChiDistribution"/>
               <xs:any namespace="##other"/>
             </xs:choice>
           </xs:complexType>
@@ -144,6 +145,7 @@
   <xs:complexType name="GammaDistribution">
     <xs:complexContent>
       <xs:extension base="Distribution">
+        <xs:attribute name="t0" type="PositiveDouble" use="required"/>
         <xs:attribute name="α" type="PositiveDouble" use="optional"/>
         <xs:attribute name="β" type="PositiveDouble" use="optional"/>
         <xs:attribute name="θ" type="PositiveDouble" use="optional"/>
@@ -152,7 +154,16 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
+  <xs:complexType name="ChiDistribution">
+    <xs:complexContent>
+      <xs:extension base="Distribution">
+        <xs:attribute name="t0" type="PositiveDouble" use="required"/>
+        <xs:attribute name="k" type="PositiveDouble" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="Actor" abstract="true">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="ExternalEvent"/>

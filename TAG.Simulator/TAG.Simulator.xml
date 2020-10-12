@@ -2499,6 +2499,51 @@
             <param name="Output">Use Case diagram output.</param>
             <param name="Id">ID of actor in use case diagram.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Distributions.Chi">
+            <summary>
+            Chi distribution
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Chi distribution
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Distributions.Chi.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.GetCumulativeProbability(System.Double,System.Int32)">
+            <summary>
+            The Cumulative Distribution Function (CDF) of the distribution, excluding intensity (<see cref="P:TAG.Simulator.ObjectModel.Distributions.Distribution.N"/>).
+            </summary>
+            <param name="t">Time</param>
+            <param name="NrCycles">Number of time cycles completed.</param>
+            <returns>CDU(t)</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.ExportPdfBody(System.Text.StringBuilder)">
+            <summary>
+            Exports the PDF function body.
+            </summary>
+            <param name="Output">Export output</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distribution">
             <summary>
             Abstract base class for distributions

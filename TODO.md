@@ -63,11 +63,10 @@ Features
 	[ ] Script-based PDF and CDF
 	[ ] Arcsine distribution
 	[ ] Beta distribution
-	[ ] Chi distribution
+	[x] Chi distribution
 	[ ] Chi-squared distribution
 	[x] Exponential distribution
 	[x] Gamma distribution
-	[ ] Poisson distribution
 	[ ] Student-t distribution
 [x] Generate action documentation (xml, xslt) automatically
 [ ] XMPP
