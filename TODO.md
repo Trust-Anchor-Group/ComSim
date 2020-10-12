@@ -77,7 +77,7 @@ Features
 	[ ] UDP
 	[x] Iq action node
 	[x] Message action node
-	[ ] Presence action node
+	[x] Presence action node
 	[ ] PubSub action node
 	[ ] PEP action node
 [x] HTTP
