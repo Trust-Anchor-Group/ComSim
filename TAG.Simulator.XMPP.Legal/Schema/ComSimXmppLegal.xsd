@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSimXmppIoT"
+           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/XMPPLegal.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://trustanchorgroup.com/Schema/ComSim/XMPPLegal.xsd"
+           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/XMPPLegal.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd"
+           xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd">
+
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"/>
+
+  <xs:element name="LegalExtension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="xmpp:XmppExtension">
+          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

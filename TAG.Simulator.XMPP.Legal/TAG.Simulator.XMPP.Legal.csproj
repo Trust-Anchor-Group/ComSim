@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Description>Extension library to the ComSim simulator, providing support for extensions to XMPP supporting digital IDs and smart contracts.</Description>
+    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.XMPP.Legal\TAG.Simulator.XMPP.Legal.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Schema\ComSimXmppLegal.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\ComSimXmppLegal.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Waher.Networking.XMPP.Contracts" Version="1.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator.XMPP\TAG.Simulator.XMPP.csproj" />
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>

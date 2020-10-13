@@ -52,6 +52,7 @@
     <ProjectReference Include="..\TAG.Simulator.Performance\TAG.Simulator.Performance.csproj" />
     <ProjectReference Include="..\TAG.Simulator.XMLDSIG\TAG.Simulator.XMLDSIG.csproj" />
     <ProjectReference Include="..\TAG.Simulator.XMPP.IoT\TAG.Simulator.XMPP.IoT.csproj" />
+    <ProjectReference Include="..\TAG.Simulator.XMPP.Legal\TAG.Simulator.XMPP.Legal.csproj" />
     <ProjectReference Include="..\TAG.Simulator.XMPP\TAG.Simulator.XMPP.csproj" />
     <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
   </ItemGroup>
