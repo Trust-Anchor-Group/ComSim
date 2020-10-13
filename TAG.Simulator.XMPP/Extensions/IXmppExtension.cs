@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Networking.XMPP;
 
@@ -16,6 +16,6 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		void Add(IActor Instance, XmppClient Client);
+		Task Add(IActor Instance, XmppClient Client);
 	}
 }

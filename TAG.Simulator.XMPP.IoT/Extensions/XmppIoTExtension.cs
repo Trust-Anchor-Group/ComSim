@@ -33,14 +33,5 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// </summary>
 		public override string Namespace => "http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd";
 
-		/// <summary>
-		/// Sets properties and attributes of class in accordance with XML definition.
-		/// </summary>
-		/// <param name="Definition">XML definition</param>
-		public override Task FromXml(XmlElement Definition)
-		{
-			return Task.CompletedTask;
-		}
-
 	}
 }

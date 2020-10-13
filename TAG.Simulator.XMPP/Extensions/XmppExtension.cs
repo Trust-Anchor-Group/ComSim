@@ -46,6 +46,6 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public abstract void Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client);
+		public abstract Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client);
 	}
 }

@@ -57,7 +57,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public override void Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		public override Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			if (Client.ContainsTag("ConcentratorServer"))
 				throw new Exception("Define thing registry clients before any concentrator server extensions.");
@@ -91,6 +91,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 				return Task.CompletedTask;
 			};
+
+			return Task.CompletedTask;
 		}
 	}
 }

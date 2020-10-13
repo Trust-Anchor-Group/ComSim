@@ -245,7 +245,7 @@ namespace TAG.Simulator.XMPP.Actors
 						HandlerNode.RegisterHandlers(this, this.client);
 
 					if (Node is Extensions.IXmppExtension Extension)
-						Extension.Add(this, Client);
+						await Extension.Add(this, Client);
 				}
 			}
 
