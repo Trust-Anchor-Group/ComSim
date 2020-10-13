@@ -7,3 +7,5 @@ rem call RunSimulation BreakingPoint
 call RunSimulation HighLoad
 call RunSimulation Federation
 call RunSimulation ContentType
+call RunSimulation Distributions
+call RunSimulation RequestResponse
