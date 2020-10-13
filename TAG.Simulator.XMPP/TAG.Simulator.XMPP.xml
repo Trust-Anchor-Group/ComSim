@@ -364,6 +364,39 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActivityObject">
+            <summary>
+            Object used in simulation activities.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.Client">
+            <summary>
+            XMPP Client reference
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.UserName">
+            <summary>
+            User name used in connection
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.InstanceId">
+            <summary>
+            Instance ID
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.InstanceIndex">
+            <summary>
+            Instance Index
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActivityObject.Item(System.String)">
+            <summary>
+            Access to extension objects.
+            </summary>
+            <param name="Index">Extension name</param>
+            <returns>Extension object, if found.</returns>
+            <exception cref="T:System.Exception">If no extension with the given name was found.</exception>
+        </member>
         <member name="T:TAG.Simulator.XMPP.Actors.XmppActor">
             <summary>
             Abstract base class for XMPP actors.

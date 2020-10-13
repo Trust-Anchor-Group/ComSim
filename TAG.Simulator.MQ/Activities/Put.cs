@@ -87,7 +87,6 @@ namespace TAG.Simulator.MQ.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string Queue = Expression.Transform(this.queue, "{", "}", Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			string Message;
@@ -99,10 +98,7 @@ namespace TAG.Simulator.MQ.Activities
 			else
 				Message = Content?.ToString() ?? string.Empty;
 
-			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			if (!(v.ValueObject is MqActivityObject MqActor))
+			if (!(this.GetActorObject(this.actor, Variables) is MqActivityObject MqActor))
 				throw new Exception("Actor not an MQ actor.");
 
 			await MqActor.Client.PutAsync(Queue, Message);

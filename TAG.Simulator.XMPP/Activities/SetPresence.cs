@@ -88,15 +88,11 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			string Xml;
 
-			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			if (!(v.ValueObject is XmppClient Client))
-				throw new Exception("Actor not an XMPP client. Type: " + v.ValueObject?.GetType()?.FullName);
+			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
+				throw new Exception("Actor not an XMPP client.");
 
 			if (Content is XmlDocument Doc)
 				Xml = Doc.OuterXml;
@@ -105,8 +101,8 @@ namespace TAG.Simulator.XMPP.Activities
 			else
 				throw new Exception("Custom content in presence must be XML.");
 
-			Client.SetTag("CutomPresenceXML", Xml);
-			Client.SetPresence(this.availability);
+			XmppActor.Client.SetTag("CutomPresenceXML", Xml);
+			XmppActor.Client.SetPresence(this.availability);
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}

@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content;
 using Waher.Content.Xml;
@@ -30,16 +31,6 @@ namespace TAG.Simulator.ObjectModel.Activities
 			: base(Parent, Model)
 		{
 		}
-
-		/// <summary>
-		/// Actor ID
-		/// </summary>
-		public string ActorId => this.actor;
-
-		/// <summary>
-		/// Action
-		/// </summary>
-		public string ActionName => this.action;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -137,13 +128,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			if (!Variables.TryGetVariable(this.actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			object Actor = v.ValueObject;
-			if (Actor is null)
-				throw new Exception("Actor is null.");
-
+			object Actor = this.GetActorObject(this.actor, Variables);
 			Type T = Actor.GetType();
 			MethodInfo Method;
 			int[] Positions;

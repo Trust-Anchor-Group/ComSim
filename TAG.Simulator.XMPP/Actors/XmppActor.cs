@@ -500,7 +500,19 @@ namespace TAG.Simulator.XMPP.Actors
 		/// <summary>
 		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
-		public override object ActivityObject => this.client;
+		public override object ActivityObject
+		{
+			get
+			{
+				return new XmppActivityObject()
+				{
+					Client = this.client,
+					UserName = this.userName,
+					InstanceId = this.InstanceId,
+					InstanceIndex = this.InstanceIndex
+				};
+			}
+		}
 
 	}
 }

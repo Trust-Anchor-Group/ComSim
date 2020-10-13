@@ -94,17 +94,13 @@ namespace TAG.Simulator.MQTT.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string Topic = Expression.Transform(this.topic, "{", "}", Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			
 			if (!(Content is byte[] Bin))
 				Bin = InternetContent.Encode(Content, Encoding.UTF8, out string _);
 
-			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			if (!(v.ValueObject is MqttActivityObject MqttActor))
+			if (!(this.GetActorObject(this.actor, Variables) is MqttActivityObject MqttActor))
 				throw new Exception("Actor not an MQTT actor.");
 
 			MqttActor.Client.PUBLISH(Topic, this.qos, this.retain, Bin);

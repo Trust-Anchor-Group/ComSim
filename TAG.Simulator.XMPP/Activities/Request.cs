@@ -108,16 +108,12 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string To = Expression.Transform(this.to, "{", "}", Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			string Xml;
 
-			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			if (!(v.ValueObject is XmppClient Client))
-				throw new Exception("Actor not an XMPP client. Type: " + v.ValueObject?.GetType()?.FullName);
+			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
+				throw new Exception("Actor not an XMPP client.");
 
 			if (Content is XmlDocument Doc)
 				Xml = Doc.OuterXml;
@@ -128,7 +124,7 @@ namespace TAG.Simulator.XMPP.Activities
 
 			TaskCompletionSource<LinkedListNode<IActivityNode>> T = new TaskCompletionSource<LinkedListNode<IActivityNode>>();
 
-			Client.SendIq(string.Empty, To, Xml, this.type.ToString().ToLower(), (sender, e) =>
+			XmppActor.Client.SendIq(string.Empty, To, Xml, this.type.ToString().ToLower(), (sender, e) =>
 			{
 				if (e.Ok)
 				{
@@ -139,7 +135,7 @@ namespace TAG.Simulator.XMPP.Activities
 					T.TrySetException(new XmppException(string.IsNullOrEmpty(e.ErrorText) ? "Error response returned." : e.ErrorText));
 
 				return Task.CompletedTask;
-			}, null, Client.DefaultRetryTimeout, Client.DefaultNrRetries, Client.DefaultDropOff, Client.DefaultMaxRetryTimeout);
+			}, null, XmppActor.Client.DefaultRetryTimeout, XmppActor.Client.DefaultNrRetries, XmppActor.Client.DefaultDropOff, XmppActor.Client.DefaultMaxRetryTimeout);
 
 			return T.Task;
 		}

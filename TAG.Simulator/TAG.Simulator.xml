@@ -699,16 +699,6 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Action.ActorId">
-            <summary>
-            Actor ID
-            </summary>
-        </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Action.ActionName">
-            <summary>
-            Action
-            </summary>
-        </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Action.LocalName">
             <summary>
             Local name of XML element defining contents of class.
@@ -4978,6 +4968,24 @@
             </summary>
             <param name="Output">Output.</param>
             <param name="Indentation">Number of tabs to indent.</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorObject(System.String,Waher.Script.Variables)">
+            <summary>
+            Gets an actor object, given a string representation, possibly containing script, of the actor.
+            </summary>
+            <param name="Actor">Actor string representation.</param>
+            <param name="Variables">Current set of variables.</param>
+            <returns>Actor</returns>
+            <exception cref="T:System.Exception">If actor could not be found.</exception>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActor(System.String,Waher.Script.Variables)">
+            <summary>
+            Gets an actor, given a string representation, possibly containing script, of the actor.
+            </summary>
+            <param name="Actor">Actor string representation.</param>
+            <param name="Variables">Current set of variables.</param>
+            <returns>Actor</returns>
+            <exception cref="T:System.Exception">If actor could not be found.</exception>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNodeChildren">
             <summary>

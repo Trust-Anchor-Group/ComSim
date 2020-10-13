@@ -98,7 +98,6 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Actor = Expression.Transform(this.actor, "{", "}", Variables);
 			string To = Expression.Transform(this.to, "{", "}", Variables);
 			string Subject = Expression.Transform(this.subject, "{", "}", Variables);
 			string Language = Expression.Transform(this.language, "{", "}", Variables);
@@ -108,11 +107,8 @@ namespace TAG.Simulator.XMPP.Activities
 			string Xml;
 			string Body;
 
-			if (!Variables.TryGetVariable(Actor, out Waher.Script.Variable v))
-				throw new Exception("Actor not found: " + this.actor);
-
-			if (!(v.ValueObject is XmppClient Client))
-				throw new Exception("Actor not an XMPP client. Type: " + v.ValueObject?.GetType()?.FullName);
+			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
+				throw new Exception("Actor not an XMPP client.");
 
 			if (Content is XmlDocument Doc)
 			{
@@ -130,7 +126,7 @@ namespace TAG.Simulator.XMPP.Activities
 				Body = Content.ToString();
 			}
 
-			Client.SendMessage(this.type, To, Xml, Body, Subject, Language, ThreadId, ParentThreadId);
+			XmppActor.Client.SendMessage(this.type, To, Xml, Body, Subject, Language, ThreadId, ParentThreadId);
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}

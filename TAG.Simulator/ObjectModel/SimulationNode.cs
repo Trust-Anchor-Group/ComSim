@@ -2,6 +2,8 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Actors;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel
 {
@@ -131,6 +133,56 @@ namespace TAG.Simulator.ObjectModel
 			if (Indentation > 0)
 				Output.Write(new string('\t', Indentation));
 		}
+
+		/// <summary>
+		/// Gets an actor object, given a string representation, possibly containing script, of the actor.
+		/// </summary>
+		/// <param name="Actor">Actor string representation.</param>
+		/// <param name="Variables">Current set of variables.</param>
+		/// <returns>Actor</returns>
+		/// <exception cref="Exception">If actor could not be found.</exception>
+		public object GetActorObject(string Actor, Variables Variables)
+		{
+			Actor = Expression.Transform(Actor, "{", "}", Variables);
+			if (Variables.TryGetVariable(Actor, out Variable v))
+				return v.ValueObject;
+			else
+			{
+				Expression Exp;
+
+				lock (this.synchObj)
+				{
+					if (this.lastActorExpression is null || Actor != this.lastActor)
+					{
+						this.lastActorExpression = new Expression(Actor);
+						this.lastActor = Actor;
+					}
+
+					Exp = this.lastActorExpression;
+				}
+
+				return Exp.Evaluate(Variables);
+			}
+		}
+
+		/// <summary>
+		/// Gets an actor, given a string representation, possibly containing script, of the actor.
+		/// </summary>
+		/// <param name="Actor">Actor string representation.</param>
+		/// <param name="Variables">Current set of variables.</param>
+		/// <returns>Actor</returns>
+		/// <exception cref="Exception">If actor could not be found.</exception>
+		public IActor GetActor(string Actor, Variables Variables)
+		{
+			if (this.GetActorObject(Actor, Variables) is IActor ActorRef)
+				return ActorRef;
+			else
+				throw new Exception("Expected an actor: " + Actor);
+		}
+
+		private string lastActor = null;
+		private Expression lastActorExpression = null;
+		private readonly object synchObj = new object();
 
 	}
 }
