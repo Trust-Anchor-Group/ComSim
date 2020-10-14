@@ -37,6 +37,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E852FEDB-C91F-4124-A25F-9526AB4F668C}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		RunAllSimulations.bat = RunAllSimulations.bat
+		RunSimulation.bat = RunSimulation.bat
 		TODO.md = TODO.md
 	EndProjectSection
 EndProject
