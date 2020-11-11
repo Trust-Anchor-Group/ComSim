@@ -109,9 +109,9 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedContractReceived += (Sender, e) =>
+			Extension.PetitionForContractReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedContractReceived",
+				this.Model.ExternalEvent(Instance, "PetitionForContractReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
 
@@ -127,9 +127,9 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedIdentityReceived += (Sender, e) =>
+			Extension.PetitionForIdentityReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedIdentityReceived",
+				this.Model.ExternalEvent(Instance, "PetitionForIdentityReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
 
@@ -139,6 +139,42 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 			Extension.PetitionedIdentityResponseReceived += (Sender, e) =>
 			{
 				this.Model.ExternalEvent(Instance, "PetitionedIdentityResponseReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.PetitionForSignatureReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "PetitionForSignatureReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.PetitionedSignatureResponseReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "PetitionedSignatureResponseReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.PetitionForPeerReviewIDReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "PetitionForPeerReviewIDReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.PetitionedPeerReviewIDResponseReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "PetitionedPeerReviewIDResponseReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
 

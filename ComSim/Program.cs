@@ -514,13 +514,9 @@ namespace ComSim
 
 				Console.Out.WriteLine("Initializing database.");
 
-				bool Result;
-
-				using (FilesProvider FilesProvider = new FilesProvider(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
-				{
-					Result = Run(Model, FilesProvider, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
-						XmlOutputFileName, CommandLine.ToString(), Master, Css, !LogConsole).Result;
-				}
+				bool Result = Run(Model, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
+						XmlOutputFileName, CommandLine.ToString(), Master, Css, !LogConsole,
+						ProgramDataFolder, BlockSize, BlobBlockSize, Encoding, Encryption).Result;
 
 				if (Result)
 				{
@@ -547,96 +543,100 @@ namespace ComSim
 			}
 		}
 
-		private static async Task<bool> Run(XmlDocument ModelXml, FilesProvider DB, TaskCompletionSource<bool> Done,
+		private static async Task<bool> Run(XmlDocument ModelXml, TaskCompletionSource<bool> Done,
 			string SnifferFolder, string SnifferTransformFileName, string MarkdownOutputFileName, string XmlOutputFileName,
-			string CommandLine, IEnumerable<string> Master, IEnumerable<string> Css, bool EmitDots)
+			string CommandLine, IEnumerable<string> Master, IEnumerable<string> Css, bool EmitDots,
+			string ProgramDataFolder, int BlockSize, int BlobBlockSize, Encoding Encoding, bool Encryption)
 		{
-			try
+			using (FilesProvider DB = await FilesProvider.CreateAsync(ProgramDataFolder, "Default", BlockSize, 10000, BlobBlockSize, Encoding, 3600000, Encryption, false))
 			{
-				Console.Out.WriteLine("Starting database...");
-				Database.Register(DB);
-				await DB.RepairIfInproperShutdown(null);
-
-				await Database.Clear("EventLog");
-				Log.Register(new PersistedEventLog(int.MaxValue));
-
-				Console.Out.WriteLine("Starting modules...");
-				await Types.StartAllModules(60000);
-
-				Console.Out.WriteLine("Running simulation...");
-				Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null, null);
-
-				Model.CommandLine = CommandLine;
-				Model.SnifferFolder = SnifferFolder;
-				Model.SnifferTransformFileName = SnifferTransformFileName;
-				Model.OnGetKey += Model_OnGetKey;
-				Model.OnGetThreadCount += Model_OnGetThreadCount;
-
-				bool Result = await Model.Run(Done, EmitDots);
-
-				if (!string.IsNullOrEmpty(MarkdownOutputFileName))
+				try
 				{
-					Console.Out.WriteLine("Generating Markdown report: " + MarkdownOutputFileName);
+					Console.Out.WriteLine("Starting database...");
+					Database.Register(DB);
+					await DB.RepairIfInproperShutdown(null);
 
-					string Folder = Path.GetDirectoryName(MarkdownOutputFileName);
-					if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
-						Directory.CreateDirectory(Folder);
+					await Database.Clear("EventLog");
+					Log.Register(new PersistedEventLog(int.MaxValue));
 
-					using (StreamWriter Output = File.CreateText(MarkdownOutputFileName))
+					Console.Out.WriteLine("Starting modules...");
+					await Types.StartAllModules(60000);
+
+					Console.Out.WriteLine("Running simulation...");
+					Model Model = (Model)await Factory.Create(ModelXml.DocumentElement, null, null);
+
+					Model.CommandLine = CommandLine;
+					Model.SnifferFolder = SnifferFolder;
+					Model.SnifferTransformFileName = SnifferTransformFileName;
+					Model.OnGetKey += Model_OnGetKey;
+					Model.OnGetThreadCount += Model_OnGetThreadCount;
+
+					bool Result = await Model.Run(Done, EmitDots);
+
+					if (!string.IsNullOrEmpty(MarkdownOutputFileName))
 					{
-						foreach (string s in Master)
-						{
-							Output.Write("Master: ");
-							Output.WriteLine(s);
-						}
+						Console.Out.WriteLine("Generating Markdown report: " + MarkdownOutputFileName);
 
-						foreach (string s in Css)
-						{
-							Output.Write("CSS: ");
-							Output.WriteLine(s);
-						}
+						string Folder = Path.GetDirectoryName(MarkdownOutputFileName);
+						if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
+							Directory.CreateDirectory(Folder);
 
-						await Model.ExportMarkdown(Output);
+						using (StreamWriter Output = File.CreateText(MarkdownOutputFileName))
+						{
+							foreach (string s in Master)
+							{
+								Output.Write("Master: ");
+								Output.WriteLine(s);
+							}
+
+							foreach (string s in Css)
+							{
+								Output.Write("CSS: ");
+								Output.WriteLine(s);
+							}
+
+							await Model.ExportMarkdown(Output);
+						}
 					}
-				}
 
-				if (!string.IsNullOrEmpty(XmlOutputFileName))
+					if (!string.IsNullOrEmpty(XmlOutputFileName))
+					{
+						Console.Out.WriteLine("Generating XML report: " + XmlOutputFileName);
+
+						XmlWriterSettings Settings = new XmlWriterSettings()
+						{
+							Encoding = Encoding.UTF8,
+							Indent = true,
+							IndentChars = "\t",
+							NewLineChars = "\r\n",
+							NewLineOnAttributes = false,
+							WriteEndDocumentOnClose = true
+						};
+
+						string Folder = Path.GetDirectoryName(XmlOutputFileName);
+						if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
+							Directory.CreateDirectory(Folder);
+
+						using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
+						{
+							Output.WriteStartDocument();
+							Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
+
+							await Model.ExportXml(Output);
+
+							Output.WriteEndElement();
+						}
+					}
+
+					return Result;
+				}
+				finally
 				{
-					Console.Out.WriteLine("Generating XML report: " + XmlOutputFileName);
-
-					XmlWriterSettings Settings = new XmlWriterSettings()
-					{
-						Encoding = Encoding.UTF8,
-						Indent = true,
-						IndentChars = "\t",
-						NewLineChars = "\r\n",
-						NewLineOnAttributes = false,
-						WriteEndDocumentOnClose = true
-					};
-
-					string Folder = Path.GetDirectoryName(XmlOutputFileName);
-					if (!string.IsNullOrEmpty(Folder) && !Directory.Exists(Folder))
-						Directory.CreateDirectory(Folder);
-
-					using (XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings))
-					{
-						Output.WriteStartDocument();
-						Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
-
-						await Model.ExportXml(Output);
-
-						Output.WriteEndElement();
-					}
+					Console.Out.WriteLine("Stopping modules...");
+					await Types.StopAllModules();
+					await DB.Flush();
+					Log.Terminate();
 				}
-
-				return Result;
-			}
-			finally
-			{
-				Console.Out.WriteLine("Stopping modules...");
-				await Types.StopAllModules();
-				await DB.Flush();
-				Log.Terminate();
 			}
 		}
 
