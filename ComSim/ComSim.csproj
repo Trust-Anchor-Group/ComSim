@@ -37,7 +37,7 @@
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.14" />
     <PackageReference Include="Waher.Runtime.Inventory.Loader" Version="1.0.9" />
     <PackageReference Include="Waher.Runtime.Timing" Version="1.0.3" />
-    <PackageReference Include="Waher.Script" Version="1.0.44" />
+    <PackageReference Include="Waher.Script" Version="1.0.45" />
     <PackageReference Include="Waher.Script.Content" Version="1.0.8" />
     <PackageReference Include="Waher.Script.Cryptography" Version="1.0.1" />
     <PackageReference Include="Waher.Script.Graphs" Version="1.0.18" />
