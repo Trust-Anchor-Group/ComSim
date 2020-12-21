@@ -225,4 +225,14 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="MucExtension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="XmppExtension">
+          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
 </xs:schema>
