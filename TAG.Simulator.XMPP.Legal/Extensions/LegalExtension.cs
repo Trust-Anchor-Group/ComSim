@@ -70,7 +70,9 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 		/// <param name="Client">XMPP Client</param>
 		public override async Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
-			ContractsClient Extension = await ContractsClient.Create(Client, this.componentAddress);
+			ContractsClient Extension = new ContractsClient(Client, this.componentAddress);
+			await Extension.LoadKeys(true);
+
 			Client.SetTag("ContractsClient", Extension);
 
 			Extension.ContractDeleted += (Sender, e) =>
