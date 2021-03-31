@@ -18,8 +18,8 @@
 
   <ItemGroup>
     <PackageReference Include="IBMMQDotnetClient" Version="9.2.0" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.7.0" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="4.7.0" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
     <PackageReference Include="Waher.Content" Version="1.1.0" />
     <PackageReference Include="Waher.Content.Xml" Version="1.1.0" />
     <PackageReference Include="Waher.Content.Xsl" Version="1.1.0" />
