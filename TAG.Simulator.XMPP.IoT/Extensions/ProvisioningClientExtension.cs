@@ -98,6 +98,13 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 				return Task.CompletedTask;
 			};
 
+			Extension.CacheCleared += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "CacheCleared",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+			};
+
 			return Task.CompletedTask;
 		}
 	}
