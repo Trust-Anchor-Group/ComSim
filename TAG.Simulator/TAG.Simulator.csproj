@@ -31,7 +31,7 @@
     <PackageReference Include="Waher.Content" Version="1.1.0" />
     <PackageReference Include="Waher.Content.Xml" Version="1.1.0" />
     <PackageReference Include="Waher.Events" Version="1.0.14" />
-    <PackageReference Include="Waher.Networking" Version="1.0.21" />
+    <PackageReference Include="Waher.Networking" Version="1.0.22" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.0.23" />
     <PackageReference Include="Waher.Runtime.Settings" Version="1.0.9" />
     <PackageReference Include="Waher.Script.Statistics" Version="1.0.7" />
