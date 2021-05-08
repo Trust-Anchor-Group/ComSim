@@ -51,7 +51,6 @@ namespace TAG.Simulator.XMPP.Actors
 		private bool requestRosterOnStartup;
 		private bool trustServer;
 		private bool isOnline = false;
-		private TaskCompletionSource<bool> connected;
 
 		/// <summary>
 		/// Abstract base class for XMPP actors.
@@ -249,14 +248,23 @@ namespace TAG.Simulator.XMPP.Actors
 				}
 			}
 
-			this.connected = new TaskCompletionSource<bool>();
-
 			if (this.alwaysConnected)
 			{
 				this.client.Connect(this.domain);
 
-				if (this.xmppCredentials.AllowRegistration && !(await this.connected.Task))
-					throw new Exception("Unable to create account for " + this.userName + "@" + this.domain);
+				if (this.xmppCredentials.AllowRegistration)
+				{
+					switch (await this.client.WaitStateAsync(30000, XmppState.Connected, XmppState.Error, XmppState.Offline))
+					{
+						case 0: // Connected
+							break;
+
+						case 1: // Error
+						case 2: // Offline
+						default:
+							throw new Exception("Unable to create account for " + this.userName + "@" + this.domain);
+					}
+				}
 			}
 		}
 
@@ -401,14 +409,11 @@ namespace TAG.Simulator.XMPP.Actors
 
 						Database.Insert(this.credentials);
 					}
-
-					this.connected?.TrySetResult(true);
 					break;
 
 				case XmppState.Error:
 				case XmppState.Offline:
 					this.isOnline = false;
-					this.connected?.TrySetResult(false);
 					break;
 			}
 
@@ -424,10 +429,19 @@ namespace TAG.Simulator.XMPP.Actors
 		/// </summary>
 		public override async Task StartInstance()
 		{
-			if (this.alwaysConnected && !this.xmppCredentials.AllowRegistration && !(await this.connected.Task))
-				throw new Exception("Unable to connect " + this.userName + "@" + this.domain);
+			if (this.alwaysConnected && !this.xmppCredentials.AllowRegistration)
+			{
+				switch (await this.client.WaitStateAsync(30000, XmppState.Connected, XmppState.Error, XmppState.Offline))
+				{
+					case 0: // Connected
+						break;
 
-			this.connected = null;
+					case 1: // Error
+					case 2: // Offline
+					default:
+						throw new Exception("Unable to connect " + this.userName + "@" + this.domain);
+				}
+			}
 		}
 
 		/// <summary>
