@@ -10,7 +10,7 @@ namespace TAG.Simulator.XMPP.Extensions
 	/// <summary>
 	/// Abstract base class for XMPP extensions.
 	/// </summary>
-	public abstract class XmppExtension : SimulationNode, IXmppExtension
+	public abstract class XmppExtension : SimulationNodeChildren, IXmppExtension
 	{
 		/// <summary>
 		/// Abstract base class for XMPP extensions.

@@ -15,15 +15,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// Event variables
 		/// </summary>
 		/// <param name="ModelVariables">Model variables.</param>
-		/// <param name="Model">Simulation model.</param>
 		/// <param name="Actor">Optional Actor</param>
-		public EventVariables(Variables ModelVariables, Model Model, IActor Actor)
+		public EventVariables(Variables ModelVariables, IActor Actor)
 			: base()
 		{
 			this.modelVariables = ModelVariables;
-
-			this.Add("Global", ModelVariables);
-			this.Add("Model", Model);
 
 			if (!(Actor is null))
 				this.Add("Actor", Actor.Variables);

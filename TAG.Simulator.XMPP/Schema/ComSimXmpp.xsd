@@ -197,6 +197,9 @@
   </xs:element>
 
   <xs:complexType name="XmppExtension">
+	  <xs:complexContent>
+		  <xs:extension base="cs:ExtensibleElement"/>
+	  </xs:complexContent>
   </xs:complexType>
 
   <xs:element name="AvatarExtension">

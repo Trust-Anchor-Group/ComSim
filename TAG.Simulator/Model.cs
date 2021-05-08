@@ -95,6 +95,8 @@ namespace TAG.Simulator
 		public Model(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
+			this.variables["Global"] = this.variables;
+			this.variables["Model"] = this;
 		}
 
 		/// <summary>
@@ -1165,7 +1167,7 @@ namespace TAG.Simulator
 		/// <returns>Variables collection</returns>
 		public Variables GetEventVariables(IActor Actor)
 		{
-			return new EventVariables(this.variables, this, Actor);
+			return new EventVariables(this.variables, Actor);
 		}
 
 		/// <summary>

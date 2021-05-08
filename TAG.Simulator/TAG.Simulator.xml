@@ -1379,7 +1379,7 @@
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Activities.Eval.ParseChildren">
             <summary>
-            If children are 
+            If children are to be parsed by <see cref="M:TAG.Simulator.ObjectModel.Activities.Eval.FromXml(System.Xml.XmlElement)"/>
             </summary>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Eval.Execute(Waher.Script.Variables)">
@@ -3246,12 +3246,11 @@
             Event variables
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.#ctor(Waher.Script.Variables,TAG.Simulator.Model,TAG.Simulator.ObjectModel.Actors.IActor)">
+        <member name="M:TAG.Simulator.ObjectModel.Events.EventVariables.#ctor(Waher.Script.Variables,TAG.Simulator.ObjectModel.Actors.IActor)">
             <summary>
             Event variables
             </summary>
             <param name="ModelVariables">Model variables.</param>
-            <param name="Model">Simulation model.</param>
             <param name="Actor">Optional Actor</param>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Events.EventVariables.ModelVariables">

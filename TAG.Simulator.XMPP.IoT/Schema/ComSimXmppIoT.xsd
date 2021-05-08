@@ -8,83 +8,228 @@
            xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd"
            xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd">
 
-  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
-  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"/>
+	<xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+	<xs:import namespace="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"/>
 
-  <xs:element name="ProvisioningClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension">
-          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ProvisioningClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension">
+					<xs:attribute name="componentAddress" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="ThingRegistryClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension">
-          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ThingRegistryClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension">
+					<xs:attribute name="componentAddress" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="SensorClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="SensorClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="SensorServerExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="SensorServerExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="ControlClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ControlClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="ControlServerExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ControlServerExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="ConcentratorClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ConcentratorClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="ConcentratorServerExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ConcentratorServerExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="SynchronizationClientExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="xmpp:XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="SynchronizationClientExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xmpp:XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReportFields">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="BooleanField" type="BooleanField"/>
+						<xs:element name="DateField" type="DateField"/>
+						<xs:element name="DateTimeField" type="DateTimeField"/>
+						<xs:element name="DurationField" type="DurationField"/>
+						<xs:element name="EnumField" type="EnumField"/>
+						<xs:element name="Int32Field" type="Int32Field"/>
+						<xs:element name="Int64Field" type="Int64Field"/>
+						<xs:element name="QuantityField" type="QuantityField"/>
+						<xs:element name="StringField" type="StringField"/>
+						<xs:element name="TimeField" type="TimeField"/>
+					</xs:choice>
+					<xs:attribute name="eventArgs" type="xs:string" use="optional" default="e"/>
+					<xs:attribute name="more" type="xs:boolean" use="optional" default="false"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="Field" abstract="true">
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:group ref="cs:Value"/>
+		</xs:choice>
+		<xs:attribute name="source" type="xs:string" use="optional"/>
+		<xs:attribute name="partition" type="xs:string" use="optional"/>
+		<xs:attribute name="node" type="xs:string" use="optional"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="FieldType" use="optional" default="Momentary"/>
+		<xs:attribute name="qos" type="FieldQoS" use="optional" default="AutomaticReadout"/>
+		<xs:attribute name="writable" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+
+	<xs:simpleType name="FieldType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Momentary"/>
+			<xs:enumeration value="Identity"/>
+			<xs:enumeration value="Status"/>
+			<xs:enumeration value="Computed"/>
+			<xs:enumeration value="Peak"/>
+			<xs:enumeration value="Historical"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="FieldQoS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Missing"/>
+			<xs:enumeration value="InProgress"/>
+			<xs:enumeration value="AutomaticEstimate"/>
+			<xs:enumeration value="ManualEstimate"/>
+			<xs:enumeration value="ManualReadout"/>
+			<xs:enumeration value="AutomaticReadout"/>
+			<xs:enumeration value="TimeOffset"/>
+			<xs:enumeration value="Warning"/>
+			<xs:enumeration value="Error"/>
+			<xs:enumeration value="Signed"/>
+			<xs:enumeration value="Invoiced"/>
+			<xs:enumeration value="EndOfSeries"/>
+			<xs:enumeration value="PowerFailure"/>
+			<xs:enumeration value="InvoiceConfirmed"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="BooleanField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DateField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DateTimeField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DurationField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="EnumField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+				<xs:attribute name="enumType" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Int32Field">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Int64Field">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="QuantityField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+				<xs:attribute name="unit" type="xs:string" use="required"/>
+				<xs:attribute name="nrDecimals" type="NrDecimals" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="NrDecimals">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:maxInclusive value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="StringField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="TimeField">
+		<xs:complexContent>
+			<xs:extension base="Field">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
 </xs:schema>

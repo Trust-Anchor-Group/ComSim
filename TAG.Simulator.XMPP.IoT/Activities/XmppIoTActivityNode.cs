@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Xml;
-using TAG.Simulator.ObjectModel;
-using TAG.Simulator.ObjectModel.Actors;
-using TAG.Simulator.XMPP.Actors;
-using TAG.Simulator.XMPP.Extensions;
+using TAG.Simulator.ObjectModel.Activities;
 
-namespace TAG.Simulator.XMPP.IoT.Extensions
+namespace TAG.Simulator.XMPP.IoT.Activities
 {
 	/// <summary>
-	/// Abstract base class for IoT XMPP extensions.
+	/// Abstract base class for IoT XMPP activity nodes.
 	/// </summary>
-	public abstract class IoTXmppExtension : XmppExtension
+	public abstract class XmppIoTActivityNode : ActivityNode
 	{
 		/// <summary>
-		/// Abstract base class for IoT XMPP extensions.
+		/// Abstract base class for IoT XMPP activity nodes.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public IoTXmppExtension(ISimulationNode Parent, Model Model)
+		public XmppIoTActivityNode(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -32,6 +27,5 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// XML Namespace where the element is defined.
 		/// </summary>
 		public override string Namespace => XmppIoTNode.XmppIoTNamespace;
-
 	}
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Networking.XMPP.Provisioning;
 using Waher.Networking.XMPP.Sensor;
+using Waher.Things;
 
 namespace TAG.Simulator.XMPP.IoT.Extensions
 {
@@ -56,9 +57,12 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Extension.OnExecuteReadoutRequest += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
+				if (!this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client)))
+				{
+					e.ReportErrors(true, new ThingError(ThingReference.Empty, "No event handler registered on sensor."));
+				}
 
 				return Task.CompletedTask;
 			};

@@ -64,7 +64,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// If children are 
+		/// If children are to be parsed by <see cref="FromXml(XmlElement)"/>
 		/// </summary>
 		public override bool ParseChildren => false;
 
