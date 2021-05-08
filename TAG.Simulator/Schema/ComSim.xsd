@@ -6,623 +6,623 @@
            xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim.xsd"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="Model">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Meta">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Title" type="xs:string"/>
-              <xs:element name="Introduction" type="xs:string" minOccurs="0" maxOccurs="1"/>
-              <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
-              <xs:element name="Preparation" type="xs:string" minOccurs="0" maxOccurs="1"/>
-              <xs:element name="ModelScript" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Assemblies" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Assembly" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:attribute name="fileName" type="xs:string" use="required"/>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Actors">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="Timer" type="TimerActor"/>
-              <xs:any namespace="##other"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Distributions">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="Uniform" type="UniformDistribution"/>
-              <xs:element name="Normal" type="NormalDistribution"/>
-              <xs:element name="Exponential" type="ExponentialDistribution"/>
-              <xs:element name="Gamma" type="GammaDistribution"/>
-              <xs:element name="Chi" type="ChiDistribution"/>
-              <xs:element name="ChiSquare" type="ChiSquareDistribution"/>
-              <xs:any namespace="##other"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Events">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="StochasticEvent" type="StochasticEvent"/>
-              <xs:element name="EventHandler" type="EventHandler"/>
-              <xs:any namespace="##other"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Activities">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="Activity" type="Activity"/>
-              <xs:any namespace="##other"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Measurements" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:group ref="Measurement"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="Graphs" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:group ref="Graph"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-      <xs:attribute name="timeBase" use="optional" default="ComputerClock">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="StartOfSimulation"/>
-            <xs:enumeration value="ComputerClock"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="bucketTime" type="xs:duration" use="optional" default="PT1M"/>
-      <xs:attribute name="timeUnit" type="xs:duration" use="optional" default="PT1H"/>
-      <xs:attribute name="timeCycle" type="xs:duration" use="optional" default="P1D"/>
-      <xs:attribute name="duration" type="xs:duration" use="required"/>
-      <xs:attribute name="sampleEpsilon" type="xs:boolean" use="optional" default="false"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Model">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Meta">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Title" type="xs:string"/>
+							<xs:element name="Introduction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="Preparation" type="xs:string" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="ModelScript" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Assemblies" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Assembly" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="fileName" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Actors">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Timer" type="TimerActor"/>
+							<xs:any namespace="##other"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Distributions">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Uniform" type="UniformDistribution"/>
+							<xs:element name="Normal" type="NormalDistribution"/>
+							<xs:element name="Exponential" type="ExponentialDistribution"/>
+							<xs:element name="Gamma" type="GammaDistribution"/>
+							<xs:element name="Chi" type="ChiDistribution"/>
+							<xs:element name="ChiSquare" type="ChiSquareDistribution"/>
+							<xs:any namespace="##other"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Events">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="StochasticEvent" type="StochasticEvent"/>
+							<xs:element name="EventHandler" type="EventHandler"/>
+							<xs:any namespace="##other"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Activities">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Activity" type="Activity"/>
+							<xs:any namespace="##other"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Measurements" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:group ref="Measurement"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Graphs" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:group ref="Graph"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="timeBase" use="optional" default="ComputerClock">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="StartOfSimulation"/>
+						<xs:enumeration value="ComputerClock"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="bucketTime" type="xs:duration" use="optional" default="PT1M"/>
+			<xs:attribute name="timeUnit" type="xs:duration" use="optional" default="PT1H"/>
+			<xs:attribute name="timeCycle" type="xs:duration" use="optional" default="P1D"/>
+			<xs:attribute name="duration" type="xs:duration" use="required"/>
+			<xs:attribute name="sampleEpsilon" type="xs:boolean" use="optional" default="false"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:complexType name="Distribution" abstract="true">
-    <xs:attribute name="id" type="xs:ID" use="required"/>
-    <xs:attribute name="N" type="PositiveDouble" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="Distribution" abstract="true">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="N" type="PositiveDouble" use="required"/>
+	</xs:complexType>
 
-  <xs:simpleType name="PositiveDouble">
-    <xs:restriction base="xs:double">
-      <xs:minExclusive value="0"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="PositiveDouble">
+		<xs:restriction base="xs:double">
+			<xs:minExclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:simpleType name="NonNegativeDouble">
-    <xs:restriction base="xs:double">
-      <xs:minInclusive value="0"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="NonNegativeDouble">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:complexType name="UniformDistribution">
-    <xs:complexContent>
-      <xs:extension base="Distribution">
-        <xs:attribute name="from" type="xs:double" use="required"/>
-        <xs:attribute name="to" type="xs:double" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="UniformDistribution">
+		<xs:complexContent>
+			<xs:extension base="Distribution">
+				<xs:attribute name="from" type="xs:double" use="required"/>
+				<xs:attribute name="to" type="xs:double" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="NormalDistribution">
-    <xs:complexContent>
-      <xs:extension base="Distribution">
-        <xs:attribute name="μ" type="xs:double" use="required"/>
-        <xs:attribute name="σ" type="PositiveDouble" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="NormalDistribution">
+		<xs:complexContent>
+			<xs:extension base="Distribution">
+				<xs:attribute name="μ" type="xs:double" use="required"/>
+				<xs:attribute name="σ" type="PositiveDouble" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ExponentialDistribution">
-    <xs:complexContent>
-      <xs:extension base="Distribution">
-        <xs:attribute name="λ" type="PositiveDouble" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ExponentialDistribution">
+		<xs:complexContent>
+			<xs:extension base="Distribution">
+				<xs:attribute name="λ" type="PositiveDouble" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="GammaDistribution">
-    <xs:complexContent>
-      <xs:extension base="Distribution">
-        <xs:attribute name="t0" type="PositiveDouble" use="required"/>
-        <xs:attribute name="α" type="PositiveDouble" use="optional"/>
-        <xs:attribute name="β" type="PositiveDouble" use="optional"/>
-        <xs:attribute name="θ" type="PositiveDouble" use="optional"/>
-        <xs:attribute name="k" type="PositiveDouble" use="optional"/>
-        <xs:attribute name="μ" type="PositiveDouble" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="GammaDistribution">
+		<xs:complexContent>
+			<xs:extension base="Distribution">
+				<xs:attribute name="t0" type="PositiveDouble" use="required"/>
+				<xs:attribute name="α" type="PositiveDouble" use="optional"/>
+				<xs:attribute name="β" type="PositiveDouble" use="optional"/>
+				<xs:attribute name="θ" type="PositiveDouble" use="optional"/>
+				<xs:attribute name="k" type="PositiveDouble" use="optional"/>
+				<xs:attribute name="μ" type="PositiveDouble" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ChiDistribution">
-    <xs:complexContent>
-      <xs:extension base="Distribution">
-        <xs:attribute name="t0" type="PositiveDouble" use="required"/>
-        <xs:attribute name="k" type="PositiveDouble" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ChiDistribution">
+		<xs:complexContent>
+			<xs:extension base="Distribution">
+				<xs:attribute name="t0" type="PositiveDouble" use="required"/>
+				<xs:attribute name="k" type="PositiveDouble" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ChiSquareDistribution">
-    <xs:complexContent>
-      <xs:extension base="ChiDistribution">
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ChiSquareDistribution">
+		<xs:complexContent>
+			<xs:extension base="ChiDistribution">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="Actor" abstract="true">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element ref="ExternalEvent"/>
-      <xs:any namespace="##other"/>
-    </xs:choice>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
-    <xs:attribute name="N" type="xs:positiveInteger" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="Actor" abstract="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="ExternalEvent"/>
+			<xs:any namespace="##other"/>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="N" type="xs:positiveInteger" use="required"/>
+	</xs:complexType>
 
-  <xs:complexType name="TimerActor">
-    <xs:complexContent>
-      <xs:extension base="Actor">
-        <xs:attribute name="period" type="xs:duration" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="TimerActor">
+		<xs:complexContent>
+			<xs:extension base="Actor">
+				<xs:attribute name="period" type="xs:duration" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:simpleType name="PortNumber">
-    <xs:restriction base="xs:positiveInteger">
-      <xs:maxExclusive value="65536"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="PortNumber">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:maxExclusive value="65536"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:complexType name="Event" abstract="true">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="SetVariable">
-        <xs:complexType>
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="Value"/>
-          </xs:choice>
-          <xs:attribute name="name" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="ActorReference">
-        <xs:complexType>
-          <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="FromPopulation">
-              <xs:complexType>
-                <xs:attribute name="actor" type="xs:string" use="required"/>
-              </xs:complexType>
-            </xs:element>
-          </xs:sequence>
-          <xs:attribute name="name" type="xs:string" use="required"/>
-          <xs:attribute name="exclusive" type="xs:boolean" use="optional" default="true"/>
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
-    <xs:attribute name="activity" type="xs:string" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="Event" abstract="true">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SetVariable">
+				<xs:complexType>
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="Value"/>
+					</xs:choice>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ActorReference">
+				<xs:complexType>
+					<xs:sequence minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="FromPopulation">
+							<xs:complexType>
+								<xs:attribute name="actor" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="exclusive" type="xs:boolean" use="optional" default="true"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+		<xs:attribute name="activity" type="xs:string" use="required"/>
+	</xs:complexType>
 
-  <xs:group name="Value">
-    <xs:choice>
-      <xs:element ref="Script"/>
-      <xs:element ref="Variable"/>
-      <xs:element ref="String"/>
-      <xs:element ref="Xml"/>
-      <xs:element ref="Json"/>
-      <xs:element ref="Binary"/>
-      <xs:element ref="Number"/>
-      <xs:element ref="Duration"/>
-      <xs:element ref="DateTime"/>
-      <xs:element ref="Time"/>
-      <xs:any namespace="##other"/>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="Value">
+		<xs:choice>
+			<xs:element ref="Script"/>
+			<xs:element ref="Variable"/>
+			<xs:element ref="String"/>
+			<xs:element ref="Xml"/>
+			<xs:element ref="Json"/>
+			<xs:element ref="Binary"/>
+			<xs:element ref="Number"/>
+			<xs:element ref="Duration"/>
+			<xs:element ref="DateTime"/>
+			<xs:element ref="Time"/>
+			<xs:any namespace="##other"/>
+		</xs:choice>
+	</xs:group>
 
-  <xs:element name="Script" type="xs:string"/>
+	<xs:element name="Script" type="xs:string"/>
 
-  <xs:element name="Variable">
-    <xs:complexType>
-      <xs:attribute name="name" type="xs:string" use="required"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Variable">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="String" type="xs:string"/>
+	<xs:element name="String" type="xs:string"/>
 
-  <xs:element name="Xml">
-    <xs:complexType>
-      <xs:sequence minOccurs="0" maxOccurs="unbounded">
-        <xs:any namespace="##any" processContents="lax"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Xml">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:any namespace="##any" processContents="lax"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Json" type="xs:string"/>
+	<xs:element name="Json" type="xs:string"/>
 
-  <xs:element name="Binary">
-    <xs:complexType>
-      <xs:choice minOccurs="1" maxOccurs="unbounded">
-        <xs:element name="Byte" type="xs:string"/>
-        <xs:element name="UInt16" type="xs:string"/>
-        <xs:element name="UInt24" type="xs:string"/>
-        <xs:element name="UInt32" type="xs:string"/>
-        <xs:element name="UInt48" type="xs:string"/>
-        <xs:element name="UInt64" type="xs:string"/>
-        <xs:element name="SByte" type="xs:string"/>
-        <xs:element name="Int16" type="xs:string"/>
-        <xs:element name="Int24" type="xs:string"/>
-        <xs:element name="Int32" type="xs:string"/>
-        <xs:element name="Int48" type="xs:string"/>
-        <xs:element name="Int64" type="xs:string"/>
-        <xs:element name="Char" type="xs:string"/>
-        <xs:element name="Utf8String" type="xs:string"/>
-        <xs:element name="Single" type="xs:string"/>
-        <xs:element name="Double" type="xs:string"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Binary">
+		<xs:complexType>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="Byte" type="xs:string"/>
+				<xs:element name="UInt16" type="xs:string"/>
+				<xs:element name="UInt24" type="xs:string"/>
+				<xs:element name="UInt32" type="xs:string"/>
+				<xs:element name="UInt48" type="xs:string"/>
+				<xs:element name="UInt64" type="xs:string"/>
+				<xs:element name="SByte" type="xs:string"/>
+				<xs:element name="Int16" type="xs:string"/>
+				<xs:element name="Int24" type="xs:string"/>
+				<xs:element name="Int32" type="xs:string"/>
+				<xs:element name="Int48" type="xs:string"/>
+				<xs:element name="Int64" type="xs:string"/>
+				<xs:element name="Char" type="xs:string"/>
+				<xs:element name="Utf8String" type="xs:string"/>
+				<xs:element name="Single" type="xs:string"/>
+				<xs:element name="Double" type="xs:string"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Number">
-    <xs:complexType>
-      <xs:attribute name="value" type="xs:double" use="required"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Number">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:double" use="required"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Duration">
-    <xs:complexType>
-      <xs:attribute name="value" type="xs:duration" use="required"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Duration">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:duration" use="required"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="DateTime">
-    <xs:complexType>
-      <xs:attribute name="value" type="xs:dateTime" use="required"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="DateTime">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:dateTime" use="required"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Time">
-    <xs:complexType>
-      <xs:attribute name="value" type="xs:time" use="required"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Time">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:time" use="required"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:complexType name="StochasticEvent">
-    <xs:complexContent>
-      <xs:extension base="Event">
-        <xs:attribute name="distribution" type="xs:string" use="required"/>
-        <xs:attribute name="guard" type="xs:string" use="optional"/>
-        <xs:attribute name="guardLimit" type="xs:positiveInteger" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="StochasticEvent">
+		<xs:complexContent>
+			<xs:extension base="Event">
+				<xs:attribute name="distribution" type="xs:string" use="required"/>
+				<xs:attribute name="guard" type="xs:string" use="optional"/>
+				<xs:attribute name="guardLimit" type="xs:positiveInteger" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="EventHandler">
-    <xs:complexContent>
-      <xs:extension base="Event">
-        <xs:attribute name="id" type="xs:ID" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="EventHandler">
+		<xs:complexContent>
+			<xs:extension base="Event">
+				<xs:attribute name="id" type="xs:ID" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:element name="ExternalEvent">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
-          <xs:complexType>
-            <xs:attribute name="name" type="xs:string" use="required"/>
-            <xs:attribute name="variable" type="xs:string" use="optional"/>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-      <xs:attribute name="name" type="xs:string" use="required"/>
-      <xs:attribute name="event" type="xs:string" use="required"/>
-      <xs:attribute name="actorName" type="xs:string" use="optional"/>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="ExternalEvent">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="variable" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="event" type="xs:string" use="required"/>
+			<xs:attribute name="actorName" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:complexType name="Activity">
-    <xs:sequence>
-      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="Start" minOccurs="1" maxOccurs="1">
-        <xs:complexType>
-          <xs:complexContent>
-            <xs:extension base="ActivityNode"/>
-          </xs:complexContent>
-        </xs:complexType>
-      </xs:element>
-      <xs:group ref="ActivityNodes" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="Stop" minOccurs="1" maxOccurs="1">
-        <xs:complexType>
-          <xs:complexContent>
-            <xs:extension base="ActivityNode"/>
-          </xs:complexContent>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
-    <xs:attribute name="logStart" type="xs:boolean" use="optional" default="true"/>
-    <xs:attribute name="logEnd" type="xs:boolean" use="optional" default="true"/>
-  </xs:complexType>
+	<xs:complexType name="Activity">
+		<xs:sequence>
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Start" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ActivityNode"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="ActivityNodes" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Stop" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ActivityNode"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="logStart" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="logEnd" type="xs:boolean" use="optional" default="true"/>
+	</xs:complexType>
 
-  <xs:group name="ActivityNodes">
-    <xs:choice>
-      <xs:element name="Delay" type="DurationActivityNode"/>
-      <xs:element name="Count" type="CounterActivityNode"/>
-      <xs:element name="Inc" type="CounterActivityNode"/>
-      <xs:element name="Dec" type="CounterActivityNode"/>
-      <xs:element name="Trigger" type="TriggerActivityNode"/>
-      <xs:element name="Eval" type="ExpressionActivityNode"/>
-      <xs:element name="Action" type="ActionActivityNode"/>
-      <xs:element name="Conditional" type="ConditionalActivityNode"/>
-      <xs:element name="Wait" type="WaitActivityNode"/>
-      <xs:element name="Call" type="ReferenceActivityNode"/>
-      <xs:element name="GoTo" type="ReferenceActivityNode"/>
-      <xs:element name="Finished" type="ActivityNode"/>
-      <xs:element name="Parallel" type="ParallelActivityNode"/>
-      <xs:element name="Sample" type="SampleActivityNode"/>
-      <xs:element name="Group" type="GroupActivityNode"/>
-      <xs:any namespace="##other"/>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="ActivityNodes">
+		<xs:choice>
+			<xs:element name="Delay" type="DurationActivityNode"/>
+			<xs:element name="Count" type="CounterActivityNode"/>
+			<xs:element name="Inc" type="CounterActivityNode"/>
+			<xs:element name="Dec" type="CounterActivityNode"/>
+			<xs:element name="Trigger" type="TriggerActivityNode"/>
+			<xs:element name="Eval" type="ExpressionActivityNode"/>
+			<xs:element name="Action" type="ActionActivityNode"/>
+			<xs:element name="Conditional" type="ConditionalActivityNode"/>
+			<xs:element name="Wait" type="WaitActivityNode"/>
+			<xs:element name="Call" type="ReferenceActivityNode"/>
+			<xs:element name="GoTo" type="ReferenceActivityNode"/>
+			<xs:element name="Finished" type="ActivityNode"/>
+			<xs:element name="Parallel" type="ParallelActivityNode"/>
+			<xs:element name="Sample" type="SampleActivityNode"/>
+			<xs:element name="Group" type="GroupActivityNode"/>
+			<xs:any namespace="##other"/>
+		</xs:choice>
+	</xs:group>
 
-  <xs:complexType name="ActivityNode">
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
-  </xs:complexType>
+	<xs:complexType name="ActivityNode">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+	</xs:complexType>
 
-  <xs:complexType name="DurationActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:attribute name="duration" type="xs:duration" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="DurationActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:attribute name="duration" type="xs:duration" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="CounterActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:attribute name="counter" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="CounterActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:attribute name="counter" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="TriggerActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:attribute name="event" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="TriggerActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:attribute name="event" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ExpressionActivityNode" mixed="true">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode"/>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ExpressionActivityNode" mixed="true">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode"/>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ActionActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:sequence>
-          <xs:element name="Argument" minOccurs="0" maxOccurs="unbounded">
-            <xs:complexType>
-              <xs:choice minOccurs="1" maxOccurs="1">
-                <xs:group ref="Value"/>
-              </xs:choice>
-              <xs:attribute name="name" type="xs:string" use="optional"/>
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-        <xs:attribute name="actor" type="xs:string" use="required"/>
-        <xs:attribute name="action" type="xs:string" use="required"/>
-        <xs:anyAttribute processContents="lax"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ActionActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:element name="Argument" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:choice minOccurs="1" maxOccurs="1">
+								<xs:group ref="Value"/>
+							</xs:choice>
+							<xs:attribute name="name" type="xs:string" use="optional"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="actor" type="xs:string" use="required"/>
+				<xs:attribute name="action" type="xs:string" use="required"/>
+				<xs:anyAttribute processContents="lax"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ConditionalActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:sequence>
-          <xs:group ref="ConditionalOptions" minOccurs="0" maxOccurs="unbounded"/>
-          <xs:element name="Otherwise" minOccurs="0" maxOccurs="1">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ConditionalActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:group ref="ConditionalOptions" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="Otherwise" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:group name="ConditionalOptions">
-    <xs:choice>
-      <xs:element name="Condition">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-          </xs:sequence>
-          <xs:attribute name="condition" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="Try">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-          </xs:sequence>
-          <xs:attribute name="condition" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="ConditionalOptions">
+		<xs:choice>
+			<xs:element name="Condition">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="condition" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Try">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="condition" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
 
-  <xs:complexType name="WaitActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:sequence>
-          <xs:element name="Triggered" minOccurs="1" maxOccurs="unbounded">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-              <xs:attribute name="event" type="xs:string" use="required"/>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="Timeout" minOccurs="0" maxOccurs="1">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-              <xs:attribute name="limit" type="xs:duration" use="required"/>
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="WaitActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:element name="Triggered" minOccurs="1" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="event" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Timeout" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="limit" type="xs:duration" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ReferenceActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:attribute name="ref" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ReferenceActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:attribute name="ref" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ParallelActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:sequence>
-          <xs:element name="Thread" minOccurs="1" maxOccurs="unbounded">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-              </xs:sequence>
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ParallelActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:element name="Thread" minOccurs="1" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="SampleActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:choice minOccurs="1" maxOccurs="1">
-          <xs:group ref="Value"/>
-        </xs:choice>
-        <xs:attribute name="name" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="SampleActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:choice minOccurs="1" maxOccurs="1">
+					<xs:group ref="Value"/>
+				</xs:choice>
+				<xs:attribute name="name" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="GroupActivityNode">
-    <xs:complexContent>
-      <xs:extension base="ActivityNode">
-        <xs:sequence>
-          <xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="title" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="GroupActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:group ref="ActivityNodes" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="title" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:group name="Measurement">
-    <xs:choice>
-      <xs:element name="OutlierRemoval" type="OutlierRemoval"/>
-      <xs:element name="BucketTime" type="BucketTime"/>
-      <xs:any namespace="##other"/>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="Measurement">
+		<xs:choice>
+			<xs:element name="OutlierRemoval" type="OutlierRemoval"/>
+			<xs:element name="BucketTime" type="BucketTime"/>
+			<xs:any namespace="##other"/>
+		</xs:choice>
+	</xs:group>
 
-  <xs:complexType name="SeriesReference">
-    <xs:attribute name="for" type="xs:string" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="SeriesReference">
+		<xs:attribute name="for" type="xs:string" use="required"/>
+	</xs:complexType>
 
-  <xs:complexType name="OutlierRemoval">
-    <xs:complexContent>
-      <xs:extension base="SeriesReference">
-        <xs:attribute name="windowSize" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="threshold" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="smooth" type="xs:boolean" use="optional" default="false"/>
-        <xs:attribute name="max" type="xs:double" use="optional"/>
-        <xs:attribute name="min" type="xs:double" use="optional"/>
-        <xs:attribute name="logNotice" type="xs:boolean" use="optional" default="true"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="OutlierRemoval">
+		<xs:complexContent>
+			<xs:extension base="SeriesReference">
+				<xs:attribute name="windowSize" type="xs:positiveInteger" use="required"/>
+				<xs:attribute name="threshold" type="xs:positiveInteger" use="required"/>
+				<xs:attribute name="smooth" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="max" type="xs:double" use="optional"/>
+				<xs:attribute name="min" type="xs:double" use="optional"/>
+				<xs:attribute name="logNotice" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="BucketTime">
-    <xs:complexContent>
-      <xs:extension base="SeriesReference">
-        <xs:attribute name="duration" type="xs:duration" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="BucketTime">
+		<xs:complexContent>
+			<xs:extension base="SeriesReference">
+				<xs:attribute name="duration" type="xs:duration" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:group name="Graph">
-    <xs:choice>
-      <xs:element name="CustomGraph" type="CustomGraph"/>
-      <xs:element name="CombinedExecutionsGraph" type="CombinedGraph"/>
-      <xs:element name="CombinedExecutionTimeGraph" type="CombinedGraph"/>
-      <xs:element name="CombinedCounterGraph" type="CombinedGraph"/>
-      <xs:element name="CombinedSampleGraph" type="CombinedGraph"/>
-      <xs:any namespace="##other"/>
-    </xs:choice>
-  </xs:group>
+	<xs:group name="Graph">
+		<xs:choice>
+			<xs:element name="CustomGraph" type="CustomGraph"/>
+			<xs:element name="CombinedExecutionsGraph" type="CombinedGraph"/>
+			<xs:element name="CombinedExecutionTimeGraph" type="CombinedGraph"/>
+			<xs:element name="CombinedCounterGraph" type="CombinedGraph"/>
+			<xs:element name="CombinedSampleGraph" type="CombinedGraph"/>
+			<xs:any namespace="##other"/>
+		</xs:choice>
+	</xs:group>
 
-  <xs:complexType name="GraphNode">
-    <xs:attribute name="id" type="xs:ID" use="optional"/>
-    <xs:attribute name="header" type="xs:string" use="optional"/>
-  </xs:complexType>
+	<xs:complexType name="GraphNode">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+		<xs:attribute name="header" type="xs:string" use="optional"/>
+	</xs:complexType>
 
-  <xs:complexType name="CustomGraph" mixed="true">
-    <xs:complexContent>
-      <xs:extension base="GraphNode">
-        <xs:attribute name="for" type="xs:string" use="required"/>
-        <xs:attribute name="timeVariable" type="xs:string" use="optional"/>
-        <xs:attribute name="valueVariable" type="xs:string" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="CustomGraph" mixed="true">
+		<xs:complexContent>
+			<xs:extension base="GraphNode">
+				<xs:attribute name="for" type="xs:string" use="required"/>
+				<xs:attribute name="timeVariable" type="xs:string" use="optional"/>
+				<xs:attribute name="valueVariable" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="CombinedGraph" mixed="true">
-    <xs:complexContent>
-      <xs:extension base="GraphNode">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
-          <xs:element name="Source">
-            <xs:complexType>
-              <xs:attribute name="ref" type="xs:string" use="required"/>
-            </xs:complexType>
-          </xs:element>
-        </xs:sequence>
-        <xs:attribute name="title" type="xs:string" use="required"/>
-        <xs:attribute name="legend" type="xs:boolean" use="optional" default="true"/>
-        <xs:attribute name="span" type="xs:boolean" use="optional" default="true"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="CombinedGraph" mixed="true">
+		<xs:complexContent>
+			<xs:extension base="GraphNode">
+				<xs:sequence minOccurs="1" maxOccurs="unbounded">
+					<xs:element name="Source">
+						<xs:complexType>
+							<xs:attribute name="ref" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="title" type="xs:string" use="required"/>
+				<xs:attribute name="legend" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="span" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
 </xs:schema>

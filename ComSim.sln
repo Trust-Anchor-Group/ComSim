@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 		Examples\SnifferXmlToHtml.xslt = Examples\SnifferXmlToHtml.xslt
 		Examples\XmlMessages.xml = Examples\XmlMessages.xml
 		Examples\XmlMessages.xsd = Examples\XmlMessages.xsd
+		Examples\XmppDeviceControl.xml = Examples\XmppDeviceControl.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E852FEDB-C91F-4124-A25F-9526AB4F668C}"
@@ -56,9 +57,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQ", "TAG.Sim
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.MQ.Test", "TAG.Simulator.MQ.Test\TAG.Simulator.MQ.Test.csproj", "{EA5F1169-5681-4E37-BBE2-94131939E206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.XMPP.IoT", "TAG.Simulator.XMPP.IoT\TAG.Simulator.XMPP.IoT.csproj", "{83318439-E397-4465-B5D4-6C66B10B3699}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMPP.IoT", "TAG.Simulator.XMPP.IoT\TAG.Simulator.XMPP.IoT.csproj", "{83318439-E397-4465-B5D4-6C66B10B3699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.XMPP.Legal", "TAG.Simulator.XMPP.Legal\TAG.Simulator.XMPP.Legal.csproj", "{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMPP.Legal", "TAG.Simulator.XMPP.Legal\TAG.Simulator.XMPP.Legal.csproj", "{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

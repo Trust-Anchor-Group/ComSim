@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
+       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+       xmlns:iot="http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+	<Meta>
+		<Title>XMPP Devices (Sensors, Actuators &amp; Controllers)</Title>
+		<Introduction>Simulates a set of XMPP Sensors, Actuators and Controllers.</Introduction>
+		<Description>
+			<![CDATA[ 
+			Simulates 20 XMPP Sensors (10 Outdoor and 10 Indoor Temperature Sensors), 10 XMPP Actuators (Heaters) and 10 XMPP Controllers 
+			(Thermostats, clients of one sensor and actuator each), controlling Heater output, based on Sensor output. Outdoor Sensor 
+			Temperature Value varies randomly over time. Indoor Sensor Temperature Value varies depending on Outdoor Temperature and
+			Heater output. Controllers subscribe to events, and control Heater output based on current Indoor Temperature, and a goal 
+			Temperature that can be configured. Model is simplified, to illustrate communicative aspects, rather than physical properties.
+			]]>
+		</Description>
+		<Preparation>
+			<![CDATA[
+			XMPP
+			------
+
+			The XMPP Client accounts are created automatically, if the broker being used supports 
+			[XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+			account registration process can be protected using keys and secrets, if the broker supports
+			[XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
+			]]>
+		</Preparation>
+		<ModelScript>
+			<![CDATA[
+			]]>
+		</ModelScript>
+	</Meta>
+	<Assemblies>
+		<Assembly fileName="TAG.Simulator.Performance.dll"/>
+		<Assembly fileName="TAG.Simulator.XMPP.dll"/>
+		<Assembly fileName="TAG.Simulator.XMPP.IoT.dll"/>
+	</Assemblies>
+	<Actors>
+		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimOutdoorTemp" id="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+			<iot:SensorServerExtension/>
+		</xmpp:XmppActorTcp>
+		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimIndoorTemp" id="SimIndoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+			<iot:SensorServerExtension/>
+		</xmpp:XmppActorTcp>
+		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimHeater" id="SimHeater" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+			<iot:ControlServerExtension/>
+			<iot:SensorServerExtension/>
+		</xmpp:XmppActorTcp>
+		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimThermostat" id="SimThermostat" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+			<iot:SensorClientExtension/>
+			<iot:ControlClientExtension/>
+		</xmpp:XmppActorTcp>
+	</Actors>
+	<Distributions>
+	</Distributions>
+	<Events>
+	</Events>
+	<Activities>
+	</Activities>
+	<Graphs>
+	</Graphs>
+</Model>
