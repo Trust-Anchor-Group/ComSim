@@ -110,6 +110,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 				Instance.externalEvents = this.externalEvents;
 
 				this.instances[i - 1] = Instance;
+				this.Model.Variables[Instance.instanceId] = Instance;
 
 				await Instance.InitializeInstance();
 			}

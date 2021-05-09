@@ -6,7 +6,7 @@
        bucketTime="PT5S"
        timeUnit="PT1S"
        timeCycle="PT1M"
-       duration="PT15S">
+       duration="PT1M">
 	<Meta>
 		<Title>XMPP Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of XMPP Sensors, Actuators and Controllers.</Introduction>
@@ -55,7 +55,7 @@
 				
 				Global["DataThermostat"+IntToStr2(i)]:=
 				{
-					"Enabled":false,
+					"Enabled":true,
 					"Goal":22
 				};
 			);
@@ -69,13 +69,13 @@
 	</Assemblies>
 	<Actors>
 		<Timer id="ModelTimer" N="10" period="PT1S">
-			<ExternalEvent name="Elapsed" event="ModelTimerElapsed" actorName="ModelTimerName"/>
+			<ExternalEvent name="Elapsed" event="ModelTimerElapsed" actorName="ModelTimer"/>
 		</Timer>
 		<Timer id="PublishTimer" N="10" period="PT5S">
-			<ExternalEvent name="Elapsed" event="PublishTimerElapsed" actorName="PublishTimerName"/>
+			<ExternalEvent name="Elapsed" event="PublishTimerElapsed" actorName="PublishTimer"/>
 		</Timer>
 		<Timer id="ControlTimer" N="10" period="PT5S">
-			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimerName"/>
+			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimer"/>
 		</Timer>
 		<xmpp:XmppActorTcp id="OutdoorTemp" domain="1451.ieeehyd.org" userName="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<xmpp:PepExtension/>
@@ -141,7 +141,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=ModelTimerName.Substring(10);
+				Index:=ModelTimer.InstanceId.Substring(10);
 				i:=Num(Index);
 				]]>
 			</Eval>
@@ -188,7 +188,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=PublishTimerName.Substring(12);
+				Index:=PublishTimer.InstanceId.Substring(12);
 				i:=Num(Index);
 				]]>
 			</Eval>
@@ -232,23 +232,27 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=TimerName.Substring(12);
+				Index:=ControlTimer.InstanceId.Substring(12);
 				i:=Num(Index);
 				]]>
 			</Eval>
+			<Count counter="Thermostat{Index}"/>
 			<Eval>
 				<![CDATA[
-				Thermostat:=Global["Thermostat"+Index];
+				Thermostat:=Global["Thermostat"+Index].Client;
 				ThermostatData:=Global["DataThermostat"+Index];
 				]]>
 			</Eval>
+			<Count counter="{Str(Thermostat.GetType())???'Err'}"/>
 			<Conditional>
 				<Condition condition="!ThermostatData.Enabled">
+					<Count counter="Test0"/>
 					<Finished/>
 				</Condition>
 			</Conditional>
 			<Parallel>
 				<Thread>
+					<Count counter="Test1"/>
 					<Eval>
 						<![CDATA[
 						IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
@@ -259,19 +263,23 @@
 							IndoorSensorConnection.State=SubscriptionState.To);
 						]]>
 					</Eval>
+					<Count counter="Test2"/>
 					<Conditional>
 						<Condition condition="ConnectedToIndoorSensor">
+							<Count counter="Test3"/>
 							<iot:ReadSensor actor="Thermostat" to="{IndoorTempJid}" responseVariable="Indoor" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 							</iot:ReadSensor>
 						</Condition>
 						<Otherwise>
+							<Count counter="Test4"/>
 							<xmpp:SubscribeTo actor="Thermostat" to="IndoorTempJid"/>
 							<Finished/>
 						</Otherwise>
 					</Conditional>
 				</Thread>
 				<Thread>
+					<Count counter="Test5"/>
 					<Eval>
 						<![CDATA[
 						HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
@@ -282,14 +290,17 @@
 							HeaterConnection.State=SubscriptionState.To);
 						]]>
 					</Eval>
+					<Count counter="Test6"/>
 					<Conditional>
 						<Condition condition="ConnectedToHeater">
+							<Count counter="Test7"/>
 							<iot:ReadSensor actor="Thermostat" to="{HeaterJid}" responseVariable="Heater" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 								<iot:FieldType>Status</iot:FieldType>
 							</iot:ReadSensor>
 						</Condition>
 						<Otherwise>
+							<Count counter="Test8"/>
 							<xmpp:SubscribeTo actor="Thermostat" to="HeaterJid"/>
 							<Finished/>
 						</Otherwise>
