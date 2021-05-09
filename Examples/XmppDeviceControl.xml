@@ -68,14 +68,14 @@
 		<Assembly fileName="TAG.Simulator.XMPP.IoT.dll"/>
 	</Assemblies>
 	<Actors>
-		<Timer id="ModelTimer" N="1" period="PT1S">
-			<ExternalEvent name="Elapsed" event="ModelTimerElapsed"/>
+		<Timer id="ModelTimer" N="10" period="PT1S">
+			<ExternalEvent name="Elapsed" event="ModelTimerElapsed" actorName="ModelTimerName"/>
 		</Timer>
-		<Timer id="PublishTimer" N="1" period="PT5S">
-			<ExternalEvent name="Elapsed" event="PublishTimerElapsed"/>
+		<Timer id="PublishTimer" N="10" period="PT5S">
+			<ExternalEvent name="Elapsed" event="PublishTimerElapsed" actorName="PublishTimerName"/>
 		</Timer>
 		<Timer id="ControlTimer" N="10" period="PT5S">
-			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="TimerName"/>
+			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimerName"/>
 		</Timer>
 		<xmpp:XmppActorTcp id="OutdoorTemp" domain="1451.ieeehyd.org" userName="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<xmpp:PepExtension/>
@@ -137,92 +137,94 @@
 	</Events>
 	<Activities>
 		<Activity id="Step">
-			<Description>Calculates the next step for all simulated physical quantities.</Description>
+			<Description>Calculates the next step for simulated physical quantities in one system.</Description>
 			<Start/>
-			<Eval>i:=0</Eval>
-			<While>
-				<Condition condition="i++&lt;10">
-					<Eval>
-						<![CDATA[
-						OutdoorTempData:=Global["DataOutdoorTemp"+IntToStr2(i)];
-						IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
-						HeaterData:=Global["DataHeater"+IntToStr2(i)];
-						ThermostatData:=Global["DataThermostat"+IntToStr2(i)];
-						]]>
-					</Eval>
-					<Eval>
-						<![CDATA[
-						OutdoorTempData.Temperature+=Uniform(-0.25,0.25);
-						]]>
-					</Eval>
-					<Sample name="Outdoor Temperature {i}">
-						<Script>OutdoorTempData.Temperature C</Script>
-					</Sample>
-					<Eval>
-						<![CDATA[
-						IndoorTempData.Temperature+=0.01*(
-							(OutdoorTempData.Temperature-IndoorTempData.Temperature)+
-							(HeaterData.Temperature-IndoorTempData.Temperature));
-						]]>
-					</Eval>
-					<Sample name="Indoor Temperature {i}">
-						<Script>IndoorTempData.Temperature C</Script>
-					</Sample>
-					<Eval>
-						<![CDATA[
-						HeaterData.Temperature+=0.01*(
-							(IndoorTempData.Temperature-HeaterData.Temperature)+
-							(HeaterData.Enabled?100-HeaterData.Temperature:0));
-						]]>
-					</Eval>
-					<Sample name="Heater Temperature {i}">
-						<Script>HeaterData.Temperature C</Script>
-					</Sample>
-				</Condition>
-			</While>
+			<Eval>
+				<![CDATA[
+				Index:=ModelTimerName.Substring(10);
+				i:=Num(Index);
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				OutdoorTempData:=Global["DataOutdoorTemp"+Index];
+				IndoorTempData:=Global["DataIndoorTemp"+Index];
+				HeaterData:=Global["DataHeater"+Index];
+				ThermostatData:=Global["DataThermostat"+Index];
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				OutdoorTempData.Temperature+=Uniform(-0.25,0.25);
+				]]>
+			</Eval>
+			<Sample name="Outdoor Temperature {i}">
+				<Script>OutdoorTempData.Temperature C</Script>
+			</Sample>
+			<Eval>
+				<![CDATA[
+				IndoorTempData.Temperature+=0.01*(
+					(OutdoorTempData.Temperature-IndoorTempData.Temperature)+
+					(HeaterData.Temperature-IndoorTempData.Temperature));
+				]]>
+			</Eval>
+			<Sample name="Indoor Temperature {i}">
+				<Script>IndoorTempData.Temperature C</Script>
+			</Sample>
+			<Eval>
+				<![CDATA[
+				HeaterData.Temperature+=0.01*(
+					(IndoorTempData.Temperature-HeaterData.Temperature)+
+					(HeaterData.Enabled?100-HeaterData.Temperature:0));
+				]]>
+			</Eval>
+			<Sample name="Heater Temperature {i}">
+				<Script>HeaterData.Temperature C</Script>
+			</Sample>
 			<Stop/>
 		</Activity>
 		<Activity id="Publish">
-			<Description>Samples current simulated physical properties and reports them as momentary values for the corresponding sensors.</Description>
+			<Description>Samples current simulated physical properties and reports them as momentary values for the corresponding sensors in one simulated system.</Description>
 			<Start/>
-			<Eval>i:=0</Eval>
-			<While>
-				<Condition condition="i++&lt;10">
-					<Eval>
-						<![CDATA[
-						OutdoorTempData:=Global["DataOutdoorTemp"+IntToStr2(i)];
-						OutdoorTempSensor:=Global["OutdoorTempSensor"+IntToStr2(i)];
-						]]>
-					</Eval>
-					<iot:NewMomentaryValues sensor="OutdoorTempSensor">
-						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
-							<Script>OutdoorTempData.Temperature</Script>
-						</iot:QuantityField>
-					</iot:NewMomentaryValues>
-					<Eval>
-						<![CDATA[
-						IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
-						IndoorTempSensor:=Global["IndoorTempSensor"+IntToStr2(i)];
-						]]>
-					</Eval>
-					<iot:NewMomentaryValues sensor="IndoorTempSensor">
-						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
-							<Script>IndoorTempData.Temperature</Script>
-						</iot:QuantityField>
-					</iot:NewMomentaryValues>
-					<Eval>
-						<![CDATA[
-						HeaterData:=Global["DataHeater"+IntToStr2(i)];
-						HeaterSensor:=Global["HeaterSensor"+IntToStr2(i)];
-						]]>
-					</Eval>
-					<iot:NewMomentaryValues sensor="HeaterSensor">
-						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
-							<Script>HeaterData.Temperature</Script>
-						</iot:QuantityField>
-					</iot:NewMomentaryValues>
-				</Condition>
-			</While>
+			<Eval>
+				<![CDATA[
+				Index:=PublishTimerName.Substring(12);
+				i:=Num(Index);
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				OutdoorTempData:=Global["DataOutdoorTemp"+Index];
+				OutdoorTempSensor:=Global["OutdoorTempSensor"+Index];
+				]]>
+			</Eval>
+			<iot:NewMomentaryValues sensor="OutdoorTempSensor">
+				<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+					<Script>OutdoorTempData.Temperature</Script>
+				</iot:QuantityField>
+			</iot:NewMomentaryValues>
+			<Eval>
+				<![CDATA[
+				IndoorTempData:=Global["DataIndoorTemp"+Index];
+				IndoorTempSensor:=Global["IndoorTempSensor"+Index];
+				]]>
+			</Eval>
+			<iot:NewMomentaryValues sensor="IndoorTempSensor">
+				<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+					<Script>IndoorTempData.Temperature</Script>
+				</iot:QuantityField>
+			</iot:NewMomentaryValues>
+			<Eval>
+				<![CDATA[
+				HeaterData:=Global["DataHeater"+Index];
+				HeaterSensor:=Global["HeaterSensor"+Index];
+				]]>
+			</Eval>
+			<iot:NewMomentaryValues sensor="HeaterSensor">
+				<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+					<Script>HeaterData.Temperature</Script>
+				</iot:QuantityField>
+			</iot:NewMomentaryValues>
 			<Stop/>
 		</Activity>
 		<Activity id="Control">
@@ -230,38 +232,77 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=TimeerName.Substring(12);
+				Index:=TimerName.Substring(12);
 				i:=Num(Index);
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
 				Thermostat:=Global["Thermostat"+Index];
-				
-				IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
-				IndoorSensorConnection:=Thermostat[IndoorTempJid];
-				ConnectedToIndoorSensor:=
-					exists(IndoorSensorConnection) and
-					(IndoorSensorConnection.State=SubscriptionState.Both or
-					IndoorSensorConnection.State=SubscriptionState.To);
-					
-				HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
-				HeaterConnection:=Thermostat[HeaterJid];
-				ConnectedToHeater:=
-					exists(HeaterConnection) and
-					(HeaterConnection.State=SubscriptionState.Both or
-					HeaterConnection.State=SubscriptionState.To);
+				ThermostatData:=Global["DataThermostat"+Index];
 				]]>
 			</Eval>
 			<Conditional>
-				<Condition condition="ConnectedToIndoorSensor">
+				<Condition condition="!ThermostatData.Enabled">
+					<Finished/>
 				</Condition>
-				<Otherwise>
-					<xmpp:SubscribeTo actor="Thermostat" to="IndoorTempJid"/>
-				</Otherwise>
 			</Conditional>
+			<Parallel>
+				<Thread>
+					<Eval>
+						<![CDATA[
+						IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
+						IndoorSensorConnection:=Thermostat[IndoorTempJid];
+						ConnectedToIndoorSensor:=
+							exists(IndoorSensorConnection) and
+							(IndoorSensorConnection.State=SubscriptionState.Both or
+							IndoorSensorConnection.State=SubscriptionState.To);
+						]]>
+					</Eval>
+					<Conditional>
+						<Condition condition="ConnectedToIndoorSensor">
+							<iot:ReadSensor actor="Thermostat" to="{IndoorTempJid}" responseVariable="Indoor" responseType="Object">
+								<iot:FieldType>Momentary</iot:FieldType>
+							</iot:ReadSensor>
+						</Condition>
+						<Otherwise>
+							<xmpp:SubscribeTo actor="Thermostat" to="IndoorTempJid"/>
+							<Finished/>
+						</Otherwise>
+					</Conditional>
+				</Thread>
+				<Thread>
+					<Eval>
+						<![CDATA[
+						HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
+						HeaterConnection:=Thermostat[HeaterJid];
+						ConnectedToHeater:=
+							exists(HeaterConnection) and
+							(HeaterConnection.State=SubscriptionState.Both or
+							HeaterConnection.State=SubscriptionState.To);
+						]]>
+					</Eval>
+					<Conditional>
+						<Condition condition="ConnectedToHeater">
+							<iot:ReadSensor actor="Thermostat" to="{HeaterJid}" responseVariable="Heater" responseType="Object">
+								<iot:FieldType>Momentary</iot:FieldType>
+								<iot:FieldType>Status</iot:FieldType>
+							</iot:ReadSensor>
+						</Condition>
+						<Otherwise>
+							<xmpp:SubscribeTo actor="Thermostat" to="HeaterJid"/>
+							<Finished/>
+						</Otherwise>
+					</Conditional>
+				</Thread>
+			</Parallel>
 			<Conditional>
-				<Condition condition="ConnectedToHeater">
+				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal and !Heater.Enabled">
+					<Count counter="Enable"/>
 				</Condition>
-				<Otherwise>
-					<xmpp:SubscribeTo actor="Thermostat" to="HeaterJid"/>
-				</Otherwise>
+				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal and Heater.Enabled">
+					<Count counter="Disable"/>
+				</Condition>
 			</Conditional>
 			<Stop/>
 		</Activity>

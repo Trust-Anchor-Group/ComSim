@@ -117,7 +117,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 				while (Loop != null)
 				{
 					Next = Loop.Next;
-					if (Loop.Value.Type.HasFlag(FieldType.Momentary))
+					if (Loop.Value.Type.HasFlag(Waher.Things.SensorData.FieldType.Momentary))
 						Found = true;
 					else
 						Fields.Remove(Loop);

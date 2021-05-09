@@ -13,15 +13,11 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 	/// <summary>
 	/// Abstract base class for sensor data field nodes.
 	/// </summary>
-	public abstract class FieldNode : XmppIoTNode, IValueRecipient
+	public abstract class FieldNode : NodeReference, IValueRecipient
 	{
 		private IValue value = null;
-		private ThingReference thingRef;
-		private string source;
-		private string partition;
-		private string node;
 		private string name;
-		private FieldType type;
+		private Waher.Things.SensorData.FieldType type;
 		private FieldQoS qos;
 		private bool writable;
 
@@ -41,21 +37,6 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		public IValue Value => this.value;
 
 		/// <summary>
-		/// Data source
-		/// </summary>
-		public string Source => this.source;
-
-		/// <summary>
-		/// Partition
-		/// </summary>
-		public string Partition => this.partition;
-
-		/// <summary>
-		/// Node ID
-		/// </summary>
-		public string Node => this.node;
-
-		/// <summary>
 		/// Field Name
 		/// </summary>
 		public string Name => this.name;
@@ -63,7 +44,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// <summary>
 		/// Field Type
 		/// </summary>
-		public FieldType Type => this.type;
+		public Waher.Things.SensorData.FieldType Type => this.type;
 
 		/// <summary>
 		/// Field Quality of Service
@@ -76,25 +57,15 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		public bool Writable => this.writable;
 
 		/// <summary>
-		/// Thing reference.
-		/// </summary>
-		public ThingReference ThingReference => this.thingRef;
-
-		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.source = XML.Attribute(Definition, "source");
-			this.partition = XML.Attribute(Definition, "partition");
-			this.node = XML.Attribute(Definition, "node");
 			this.name = XML.Attribute(Definition, "name");
-			this.type = (FieldType)XML.Attribute(Definition, "type", FieldType.Momentary);
+			this.type = (Waher.Things.SensorData.FieldType)XML.Attribute(Definition, "type", Waher.Things.SensorData.FieldType.Momentary);
 			this.qos = (FieldQoS)XML.Attribute(Definition, "qos", FieldQoS.AutomaticReadout);
 			this.writable = XML.Attribute(Definition, "writable", false);
-
-			this.thingRef = new ThingReference(this.node, this.source, this.partition);
 
 			return base.FromXml(Definition);
 		}

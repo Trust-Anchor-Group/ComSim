@@ -176,7 +176,16 @@ namespace TAG.Simulator.XMPP.Activities
 			Output.WriteLine(");");
 		}
 
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
+		/// <summary>
+		/// Appends an argument
+		/// </summary>
+		/// <param name="Output">Output</param>
+		/// <param name="Indentation">Indentation</param>
+		/// <param name="Name">Name to append</param>
+		/// <param name="Value">Value</param>
+		/// <param name="Quotes">Quotes</param>
+		/// <param name="QuoteChar">Quote character</param>
+		public static void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
 		{
 			AppendArgument(Output, Indentation, Name);
 
@@ -186,13 +195,27 @@ namespace TAG.Simulator.XMPP.Activities
 				Eval.ExportPlantUml(Value, Output, Indentation, QuoteChar, false);
 		}
 
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
+		/// <summary>
+		/// Appends an argument
+		/// </summary>
+		/// <param name="Output">Output</param>
+		/// <param name="Indentation">Indentation</param>
+		/// <param name="Name">Name to append</param>
+		/// <param name="Value">Value</param>
+		/// <param name="QuoteChar">Quote character</param>
+		public static void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
 		{
 			AppendArgument(Output, Indentation, Name);
 			Value.ExportPlantUml(Output, Indentation, QuoteChar);
 		}
 
-		internal static void AppendArgument(StreamWriter Output, int Indentation, string Name)
+		/// <summary>
+		/// Appends an argument
+		/// </summary>
+		/// <param name="Output">Output</param>
+		/// <param name="Indentation">Indentation</param>
+		/// <param name="Name">Name to append</param>
+		public static void AppendArgument(StreamWriter Output, int Indentation, string Name)
 		{
 			Output.WriteLine();
 			Indent(Output, Indentation);

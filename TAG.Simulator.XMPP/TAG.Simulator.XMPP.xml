@@ -302,6 +302,35 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String,System.String,System.Boolean,System.Char)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+            <param name="Value">Value</param>
+            <param name="Quotes">Quotes</param>
+            <param name="QuoteChar">Quote character</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String,TAG.Simulator.ObjectModel.Values.IValue,System.Char)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+            <param name="Value">Value</param>
+            <param name="QuoteChar">Quote character</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+        </member>
         <member name="T:TAG.Simulator.XMPP.Activities.SetPresence">
             <summary>
             Sets the presence of the current actor.
