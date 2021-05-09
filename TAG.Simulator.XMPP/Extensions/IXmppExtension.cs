@@ -12,10 +12,19 @@ namespace TAG.Simulator.XMPP.Extensions
 	public interface IXmppExtension : ISimulationNode
 	{
 		/// <summary>
+		/// Optional Extension ID
+		/// </summary>
+		string Id
+		{
+			get;
+		}
+
+		/// <summary>
 		/// Adds the extension to the client.
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		Task Add(IActor Instance, XmppClient Client);
+		/// <returns>Extension object.</returns>
+		Task<object> Add(IActor Instance, XmppClient Client);
 	}
 }

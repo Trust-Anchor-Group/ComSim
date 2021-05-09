@@ -236,6 +236,13 @@ namespace TAG.Simulator.XMPP.Actors
 			this.client.OnRosterItemUpdated += Client_OnRosterItemUpdated;
 			this.client.CustomPresenceXml += Client_CustomPresenceXml;
 
+			string InstanceIndexSuffix = this.InstanceIndex.ToString();
+			int c = this.N.ToString().Length;
+			int Nr0 = c - InstanceIndexSuffix.Length;
+
+			if (Nr0 > 0)
+				InstanceIndexSuffix = new string('0', Nr0) + InstanceIndexSuffix;
+
 			if (this.Parent is IActor ParentActor)
 			{
 				foreach (ISimulationNode Node in ParentActor.Children)
@@ -244,7 +251,12 @@ namespace TAG.Simulator.XMPP.Actors
 						HandlerNode.RegisterHandlers(this, this.client);
 
 					if (Node is Extensions.IXmppExtension Extension)
-						await Extension.Add(this, Client);
+					{
+						object ExtensionObj = await Extension.Add(this, Client);
+
+						if (!string.IsNullOrEmpty(Extension.Id))
+							this.Model.Variables[Extension.Id + InstanceIndexSuffix] = ExtensionObj;
+					}
 				}
 			}
 

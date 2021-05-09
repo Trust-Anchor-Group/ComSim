@@ -381,6 +381,7 @@
 			<xs:element name="Trigger" type="TriggerActivityNode"/>
 			<xs:element name="Eval" type="ExpressionActivityNode"/>
 			<xs:element name="Action" type="ActionActivityNode"/>
+			<xs:element name="While" type="WhileActivityNode"/>
 			<xs:element name="Conditional" type="ConditionalActivityNode"/>
 			<xs:element name="Wait" type="WaitActivityNode"/>
 			<xs:element name="Call" type="ReferenceActivityNode"/>
@@ -484,6 +485,16 @@
 			</xs:element>
 		</xs:choice>
 	</xs:group>
+
+	<xs:complexType name="WhileActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:group ref="ConditionalOptions" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
 	<xs:complexType name="WaitActivityNode">
 		<xs:complexContent>

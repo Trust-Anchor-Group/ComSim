@@ -973,10 +973,16 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.Extensions.IXmppExtension">
             <summary>
             Interface for XMPP extensions
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.IXmppExtension.Id">
+            <summary>
+            Optional Extension ID
             </summary>
         </member>
         <member name="M:TAG.Simulator.XMPP.Extensions.IXmppExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
@@ -985,6 +991,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.Extensions.MucExtension">
             <summary>
@@ -1023,6 +1030,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.Extensions.PepExtension">
             <summary>
@@ -1055,6 +1063,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.Extensions.PubSubExtension">
             <summary>
@@ -1093,6 +1102,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.Extensions.XmppExtension">
             <summary>
@@ -1105,6 +1115,30 @@
             </summary>
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.XmppExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Abstract base class for XMPP extensions.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.Id">
+            <summary>
+            ID of actor.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.InstanceId">
+            <summary>
+            ID of actor instance.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.InstanceIndex">
+            <summary>
+            Actor instance index.
+            </summary>
         </member>
         <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.SchemaResource">
             <summary>
@@ -1128,6 +1162,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
     </members>
 </doc>

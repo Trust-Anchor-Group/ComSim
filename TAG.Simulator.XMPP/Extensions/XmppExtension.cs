@@ -4,6 +4,7 @@ using System.Xml;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.XMPP.Actors;
+using Waher.Content.Xml;
 
 namespace TAG.Simulator.XMPP.Extensions
 {
@@ -12,15 +13,48 @@ namespace TAG.Simulator.XMPP.Extensions
 	/// </summary>
 	public abstract class XmppExtension : SimulationNodeChildren, IXmppExtension
 	{
+		private string id;
+		private readonly string instanceId;
+		private readonly int instanceIndex;
+
 		/// <summary>
 		/// Abstract base class for XMPP extensions.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
 		public XmppExtension(ISimulationNode Parent, Model Model)
-			: base(Parent, Model)
+			: this(Parent, Model, 0, string.Empty)
 		{
 		}
+
+		/// <summary>
+		/// Abstract base class for XMPP extensions.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="InstanceIndex">Instance index.</param>
+		/// <param name="InstanceId">ID of instance</param>
+		public XmppExtension(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model)
+		{
+			this.instanceIndex = InstanceIndex;
+			this.instanceId = InstanceId;
+		}
+
+		/// <summary>
+		/// ID of actor.
+		/// </summary>
+		public string Id => this.id;
+
+		/// <summary>
+		/// ID of actor instance.
+		/// </summary>
+		public string InstanceId => this.instanceId;
+
+		/// <summary>
+		/// Actor instance index.
+		/// </summary>
+		public int InstanceIndex => this.instanceIndex;
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
@@ -38,6 +72,8 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
+			this.id = XML.Attribute(Definition, "id");
+
 			return Task.CompletedTask;
 		}
 
@@ -46,6 +82,7 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public abstract Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client);
+		/// <returns>Extension object.</returns>
+		public abstract Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client);
 	}
 }

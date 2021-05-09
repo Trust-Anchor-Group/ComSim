@@ -68,7 +68,8 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public override async Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		/// <returns>Extension object.</returns>
+		public override async Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			ContractsClient Extension = new ContractsClient(Client, this.componentAddress);
 			await Extension.LoadKeys(true);
@@ -182,6 +183,8 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 
 				return Task.CompletedTask;
 			};
+
+			return Extension;
 		}
 	}
 }

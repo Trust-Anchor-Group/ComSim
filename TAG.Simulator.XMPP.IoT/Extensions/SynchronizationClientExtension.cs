@@ -42,7 +42,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public override Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		/// <returns>Extension object.</returns>
+		public override Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			SynchronizationClient Extension = new SynchronizationClient(Client);
 			Client.SetTag("SynchronizationClient", Extension);
@@ -54,7 +55,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 					new KeyValuePair<string, object>("Client", Client));
 			};
 
-			return Task.CompletedTask;
+			return Task.FromResult<object>(Extension);
 		}
 
 	}

@@ -198,7 +198,9 @@
 
   <xs:complexType name="XmppExtension">
 	  <xs:complexContent>
-		  <xs:extension base="cs:ExtensibleElement"/>
+		  <xs:extension base="cs:ExtensibleElement">
+			  <xs:attribute name="id" type="xs:ID" use="optional"/>
+		  </xs:extension>
 	  </xs:complexContent>
   </xs:complexType>
 

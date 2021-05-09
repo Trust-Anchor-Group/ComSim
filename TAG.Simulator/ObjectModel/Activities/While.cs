@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {
 	/// <summary>
-	/// Conditional execution in an activity.
+	/// While Loop construct
 	/// </summary>
-	public class Conditional : ActivityNode, IConditional
+	public class While : ActivityNode, IConditional
 	{
-		private readonly LinkedList<IConditionNode> conditions = new LinkedList<IConditionNode>();
+		private IConditionNode condition;
 
 		/// <summary>
-		/// Conditional execution in an activity.
+		/// While Loop construct
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Conditional(ISimulationNode Parent, Model Model)
+		public While(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -26,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Conditional";
+		public override string LocalName => "While";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -36,7 +37,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Conditional(Parent, Model);
+			return new While(Parent, Model);
 		}
 
 		/// <summary>
@@ -45,7 +46,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Node">Conditional node</param>
 		public void Register(IConditionNode Node)
 		{
-			this.conditions.AddLast(Node);
+			if (this.condition is null)
+				this.condition = Node;
+			else
+				throw new Exception("While construct already has a condition node defined.");
 		}
 
 		/// <summary>
@@ -55,13 +59,15 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			foreach (IConditionNode Condition in this.conditions)
+			LinkedListNode<IActivityNode> Result = null;
+
+			if (!(this.condition is null))
 			{
-				if (Condition.IsTrue(Variables))
-					return await Condition.Execute(Variables);
+				while (this.condition.IsTrue(Variables))
+					Result = await this.condition.Execute(Variables);
 			}
 
-			return null;
+			return Result;
 		}
 
 		/// <summary>
@@ -72,19 +78,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			bool First = true;
-
-			foreach (IConditionNode Node in this.conditions)
-			{
-				Node.ExportPlantUml(Output, Indentation, First, QuoteChar);
-				First = false;
-			}
-
-			if (!First)
-			{
-				Indent(Output, Indentation);
-				Output.WriteLine("endif");
-			}
+			this.condition?.ExportPlantUml(Output, Indentation, true, QuoteChar);
 		}
 
 	}

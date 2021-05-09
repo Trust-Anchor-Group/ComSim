@@ -44,7 +44,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public override Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		/// <returns>Extension object.</returns>
+		public override Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			ControlServer Extension;
 
@@ -64,7 +65,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 				return Task.FromResult<ControlParameter[]>(new ControlParameter[0]);
 			};
 
-			return Task.CompletedTask;
+			return Task.FromResult<object>(Extension);
 		}
 
 	}

@@ -42,7 +42,8 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
-		public override Task Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		/// <returns>Extension object.</returns>
+		public override Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			AvatarClient Extension = new AvatarClient(Client);
 			Client.SetTag("Avatar", Extension);
@@ -83,7 +84,7 @@ namespace TAG.Simulator.XMPP.Extensions
 				return Task.CompletedTask;
 			};
 
-			return Task.CompletedTask;
+			return Task.FromResult<object>(Extension);
 		}
 
 	}

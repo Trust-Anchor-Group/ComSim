@@ -1627,6 +1627,17 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.IConditional">
+            <summary>
+            Interface for elements taking <see cref="T:TAG.Simulator.ObjectModel.Activities.Condition"/> nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.IConditional.Register(TAG.Simulator.ObjectModel.Activities.IConditionNode)">
+            <summary>
+            Register a conditional node.
+            </summary>
+            <param name="Node">Conditional node</param>
+        </member>
         <member name="T:TAG.Simulator.ObjectModel.Activities.IConditionNode">
             <summary>
             Interface for condition nodes
@@ -2222,6 +2233,52 @@
             <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
         </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.Wait.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Activities.While">
+            <summary>
+            While Loop construct
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.While.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            While Loop construct
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Activities.While.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.While.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.While.Register(TAG.Simulator.ObjectModel.Activities.IConditionNode)">
+            <summary>
+            Register a conditional node.
+            </summary>
+            <param name="Node">Conditional node</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.While.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Activities.While.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
             <summary>
             Exports PlantUML
             </summary>

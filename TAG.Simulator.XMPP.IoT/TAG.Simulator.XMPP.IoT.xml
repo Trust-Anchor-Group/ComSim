@@ -35,7 +35,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.BooleanField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.BooleanField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -73,7 +73,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DateField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DateField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -111,7 +111,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DateTimeField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DateTimeField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -149,7 +149,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DurationField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.DurationField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -187,7 +187,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.EnumField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.EnumField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -263,7 +263,7 @@
             </summary>
             <param name="Value">Value node</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.FieldNode.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.FieldNode.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -301,7 +301,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.Int32Field.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.Int32Field.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -339,7 +339,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.Int64Field.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.Int64Field.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -377,7 +377,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.QuantityField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.QuantityField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -415,7 +415,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.StringField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.StringField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
@@ -453,12 +453,79 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.TimeField.AddFields(System.Collections.Generic.List{Waher.Things.SensorData.Field},Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.Fields.TimeField.AddFields(System.Collections.Generic.LinkedList{Waher.Things.SensorData.Field},Waher.Script.Variables)">
             <summary>
             Adds sensor-data fields.
             </summary>
             <param name="Fields">Generated list of fields.</param>
             <param name="Variables">Set of variables for the activity.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues">
+            <summary>
+            Reports new momentary sensor data fields.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Reports new momentary sensor data fields.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.GetThingReferences(TAG.Simulator.XMPP.IoT.Activities.Fields.FieldNode[])">
+            <summary>
+            Gets referenced thing references
+            </summary>
+            <param name="FieldNodes">Field nodes</param>
+            <returns>Thing references</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.GetReference(Waher.Things.ThingReference)">
+            <summary>
+            Gets a string reference representing a <see cref="T:Waher.Things.ThingReference"/>.
+            </summary>
+            <param name="Ref">Thing reference.</param>
+            <returns>String representation of thing reference.</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.Join(System.String[])">
+            <summary>
+            Joins an array of references, and delimits them with ", ".
+            </summary>
+            <param name="References">References</param>
+            <returns>Joined set of references.</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.NewMomentaryValues.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Activities.ReportFields">
             <summary>
@@ -559,6 +626,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.ConcentratorServerExtension">
             <summary>
@@ -591,6 +659,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.ControlClientExtension">
             <summary>
@@ -623,6 +692,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.ControlServerExtension">
             <summary>
@@ -655,6 +725,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.ProvisioningClientExtension">
             <summary>
@@ -693,6 +764,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.SensorClientExtension">
             <summary>
@@ -725,6 +797,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.SensorServerExtension">
             <summary>
@@ -757,6 +830,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.SynchronizationClientExtension">
             <summary>
@@ -789,6 +863,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.ThingRegistryClientExtension">
             <summary>
@@ -827,6 +902,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Extensions.IoTXmppExtension">
             <summary>

@@ -91,24 +91,39 @@
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="cs:ActivityNode">
-					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="BooleanField" type="BooleanField"/>
-						<xs:element name="DateField" type="DateField"/>
-						<xs:element name="DateTimeField" type="DateTimeField"/>
-						<xs:element name="DurationField" type="DurationField"/>
-						<xs:element name="EnumField" type="EnumField"/>
-						<xs:element name="Int32Field" type="Int32Field"/>
-						<xs:element name="Int64Field" type="Int64Field"/>
-						<xs:element name="QuantityField" type="QuantityField"/>
-						<xs:element name="StringField" type="StringField"/>
-						<xs:element name="TimeField" type="TimeField"/>
-					</xs:choice>
+					<xs:group ref="FieldTypes" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:attribute name="eventArgs" type="xs:string" use="optional" default="e"/>
 					<xs:attribute name="more" type="xs:boolean" use="optional" default="false"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:element name="NewMomentaryValues">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:group ref="FieldTypes" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:attribute name="sensor" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="FieldTypes">
+		<xs:choice>
+			<xs:element name="BooleanField" type="BooleanField"/>
+			<xs:element name="DateField" type="DateField"/>
+			<xs:element name="DateTimeField" type="DateTimeField"/>
+			<xs:element name="DurationField" type="DurationField"/>
+			<xs:element name="EnumField" type="EnumField"/>
+			<xs:element name="Int32Field" type="Int32Field"/>
+			<xs:element name="Int64Field" type="Int64Field"/>
+			<xs:element name="QuantityField" type="QuantityField"/>
+			<xs:element name="StringField" type="StringField"/>
+			<xs:element name="TimeField" type="TimeField"/>
+		</xs:choice>
+	</xs:group>
 
 	<xs:complexType name="Field" abstract="true">
 		<xs:choice minOccurs="1" maxOccurs="1">

@@ -6,7 +6,7 @@
        bucketTime="PT1S"
        timeUnit="PT1S"
        timeCycle="PT1M"
-       duration="PT10M">
+       duration="PT15S">
 	<Meta>
 		<Title>XMPP Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of XMPP Sensors, Actuators and Controllers.</Introduction>
@@ -67,21 +67,27 @@
 		<Assembly fileName="TAG.Simulator.XMPP.IoT.dll"/>
 	</Assemblies>
 	<Actors>
+		<Timer id="ModelTimer" N="1" period="PT1S">
+			<ExternalEvent name="Elapsed" event="ModelTimerElapsed"/>
+		</Timer>
+		<Timer id="SampleTimer" N="1" period="PT5S">
+			<ExternalEvent name="Elapsed" event="SampleTimerElapsed"/>
+		</Timer>
 		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimOutdoorTemp" id="OutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
-			<iot:SensorServerExtension/>
+			<iot:SensorServerExtension id="OutdoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
 		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimIndoorTemp" id="IndoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
-			<iot:SensorServerExtension/>
+			<iot:SensorServerExtension id="IndoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
 		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimHeater" id="Heater" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<iot:ControlServerExtension/>
-			<iot:SensorServerExtension/>
+			<iot:SensorServerExtension id="HeaderSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
@@ -90,7 +96,7 @@
 			<iot:SensorClientExtension/>
 			<iot:ControlClientExtension/>
 			<iot:ControlServerExtension/>
-			<iot:SensorServerExtension/>
+			<iot:SensorServerExtension id="ThermostatSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
@@ -99,6 +105,12 @@
 	<Distributions>
 	</Distributions>
 	<Events>
+		<EventHandler id="ModelTimerElapsed" activity="Step">
+			<Description>Event raised every second, to increment the simulated temperature values.</Description>
+		</EventHandler>
+		<EventHandler id="SampleTimerElapsed" activity="Sample">
+			<Description>Event raised every five seconds, to sample and report current momentary values.</Description>
+		</EventHandler>
 		<EventHandler id="ReadOutdoorTemperatureEvent" activity="ReadOutdoorTemperature">
 			<Description>Event raised when a client wants to read an outdoor temperature sensor.</Description>
 		</EventHandler>
@@ -113,6 +125,62 @@
 		</EventHandler>
 	</Events>
 	<Activities>
+		<Activity id="Step">
+			<Description>Calculates the next step for all simulated physical quantities.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				foreach i in 1..10 do
+				(
+					OutdoorTempData:=Global["DataOutdoorTemp"+IntToStr2(i)];
+					IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
+					HeaterData:=Global["DataHeater"+IntToStr2(i)];
+					ThermostatData:=Global["DataThermostat"+IntToStr2(i)];
+
+					OutdoorTempData.Temperature+=Uniform(-0.001,0.001);
+				);
+				]]>
+			</Eval>
+			<Stop/>
+		</Activity>
+		<Activity id="Sample">
+			<Description>Samples current values and reports them as momentary.</Description>
+			<Start/>
+			<Eval>i:=0</Eval>
+			<While>
+				<Condition condition="i++&lt;10">
+					<Eval>
+						<![CDATA[
+						OutdoorTempData:=Global["DataOutdoorTemp"+IntToStr2(i)];
+						IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
+						HeaterData:=Global["DataHeater"+IntToStr2(i)];
+						ThermostatData:=Global["DataThermostat"+IntToStr2(i)];
+
+						OutdoorTempSensor:=Global["OutdoorTempSensor"+IntToStr2(i)];
+						IndoorTempSensor:=Global["IndoorTempSensor"+IntToStr2(i)];
+						HeaterSensor:=Global["HeaterSensor"+IntToStr2(i)];
+						ThermostatSensor:=Global["ThermostatSensor"+IntToStr2(i)];
+						]]>
+					</Eval>
+					<iot:NewMomentaryValues sensor="OutdoorTempSensor">
+						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+							<Script>OutdoorTempData.Temperature</Script>
+						</iot:QuantityField>
+					</iot:NewMomentaryValues>
+					<iot:NewMomentaryValues sensor="IndoorTempSensor">
+						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+							<Script>IndoorTempData.Temperature</Script>
+						</iot:QuantityField>
+					</iot:NewMomentaryValues>
+					<iot:NewMomentaryValues sensor="HeaterSensor">
+						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
+							<Script>HeaterData.Temperature</Script>
+						</iot:QuantityField>
+					</iot:NewMomentaryValues>
+				</Condition>
+			</While>
+			<Stop/>
+		</Activity>
 		<Activity id="ReadOutdoorTemperature">
 			<Description>Performs a readout of an outdoor temperature sensor.</Description>
 			<Start/>

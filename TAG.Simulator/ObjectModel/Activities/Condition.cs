@@ -70,7 +70,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		public override Task Initialize()
 		{
-			if (this.Parent is Conditional Conditional)
+			if (this.Parent is IConditional Conditional)
 				Conditional.Register(this);
 
 			return base.Initialize();
@@ -117,14 +117,29 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			Indent(Output, Indentation);
 
-			if (!First)
-				Output.Write("else");
+			if (this.Parent is While)
+			{
+				Output.Write("while (");
+				Output.Write(this.condition);
+				Output.WriteLine(")");
 
-			Output.Write("if (");
-			Output.Write(this.condition);
-			Output.WriteLine(") then (yes)");
+				base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 
-			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
+				Indent(Output, Indentation);
+
+				Output.WriteLine("endwhile");
+			}
+			else
+			{
+				if (!First)
+					Output.Write("else");
+
+				Output.Write("if (");
+				Output.Write(this.condition);
+				Output.WriteLine(") then (yes)");
+
+				base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
+			}
 		}
 
 	}

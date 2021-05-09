@@ -119,18 +119,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 					First = false;
 				}
 				else
-				{
-					Output.WriteLine();
-					Indent(Output, Indentation);
-				}
+					Output.Write("\\n");
 
 				if (!string.IsNullOrEmpty(Row))
-				{
-					if (";|<>/\\]}".IndexOf(Row[Row.Length - 1]) >= 0)
-						Output.Write(Row.Substring(0, Row.Length - 1));
-					else
-						Output.Write(Row);
-				}
+					Output.Write(Row.Replace("\t", "\\t"));
 			}
 
 			if (!First && Delimiters)

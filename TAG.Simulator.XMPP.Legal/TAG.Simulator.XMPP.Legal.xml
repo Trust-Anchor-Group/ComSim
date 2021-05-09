@@ -51,6 +51,7 @@
             </summary>
             <param name="Instance">Actor instance.</param>
             <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
         </member>
     </members>
 </doc>

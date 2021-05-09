@@ -84,7 +84,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 				throw new Exception("Sensor data event arguments not found.");
 			}
 
-			List<Field> Fields = new List<Field>();
+			LinkedList<Field> Fields = new LinkedList<Field>();
 
 			foreach (FieldNode Field in this.fields)
 			{
@@ -114,6 +114,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		{
 			Indent(Output, Indentation);
 			Output.Write(":ReportFields(");
+			Output.Write(NewMomentaryValues.Join(NewMomentaryValues.GetThingReferences(this.fields)));
 			Output.WriteLine(");");
 		}
 
