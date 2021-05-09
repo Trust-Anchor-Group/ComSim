@@ -77,11 +77,11 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			if (!Variables.TryGetVariable(this.sensor, out Variable v) ||
-				!(v.ValueObject is SensorServer Sensor))
-			{
-				throw new Exception("Sensor not found.");
-			}
+			if (!Variables.TryGetVariable(this.sensor, out Variable v))
+				throw new Exception("Sensor not found: " + this.sensor);
+
+			if (!(v.ValueObject is SensorServer Sensor))
+				throw new Exception("Not a sensor server object: " + this.sensor);
 
 			Dictionary<ThingReference, LinkedList<Field>> FieldsByThing = new Dictionary<ThingReference, LinkedList<Field>>();
 			ThingReference Ref;

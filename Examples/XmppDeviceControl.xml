@@ -73,26 +73,26 @@
 		<Timer id="SampleTimer" N="1" period="PT5S">
 			<ExternalEvent name="Elapsed" event="SampleTimerElapsed"/>
 		</Timer>
-		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimOutdoorTemp" id="OutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="OutdoorTemp" domain="1451.ieeehyd.org" userName="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<iot:SensorServerExtension id="OutdoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimIndoorTemp" id="IndoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="IndoorTemp" domain="1451.ieeehyd.org" userName="SimIndoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<iot:SensorServerExtension id="IndoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimHeater" id="Heater" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="Heater" domain="1451.ieeehyd.org" userName="SimHeater" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<iot:ControlServerExtension/>
-			<iot:SensorServerExtension id="HeaderSensor"/>
+			<iot:SensorServerExtension id="HeaterSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp domain="1451.ieeehyd.org" userName="SimThermostat" id="Thermostat" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="Thermostat" domain="1451.ieeehyd.org" userName="SimThermostat" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<iot:SensorClientExtension/>
 			<iot:ControlClientExtension/>
 			<iot:ControlServerExtension/>
