@@ -8,6 +8,8 @@ using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.IoT.Activities.Fields;
 using Waher.Content.Xml;
 using Waher.Events;
+using Waher.Networking.XMPP;
+using Waher.Networking.XMPP.PEP;
 using Waher.Networking.XMPP.Sensor;
 using Waher.Script;
 using Waher.Things;
@@ -124,7 +126,15 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 				}
 
 				if (Found)
+				{
 					Sensor.NewMomentaryValues(P.Key, Fields);
+
+					if (Sensor.Client.TryGetExtension(typeof(PepClient), out IXmppExtension Extension) &&
+						Extension is PepClient PepClient)
+					{
+						PepClient.Publish(new SensorData(Fields), null, null);
+					}
+				}
 			}
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);

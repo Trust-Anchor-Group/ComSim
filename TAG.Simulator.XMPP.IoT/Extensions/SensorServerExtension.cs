@@ -67,7 +67,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 				return Task.CompletedTask;
 			};
-			
+
 			return Task.FromResult<object>(Extension);
 		}
 

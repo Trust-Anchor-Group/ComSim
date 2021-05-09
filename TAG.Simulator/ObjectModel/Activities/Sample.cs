@@ -108,7 +108,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			Indent(Output, Indentation);
 			Output.Write(":Sample(");
-			Output.Write(this.name);
+			Output.Write(this.name.Value);
 			Output.WriteLine(',');
 
 			Indent(Output, Indentation + 1);

@@ -4,8 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Actors;
-using TAG.Simulator.ObjectModel.Values;
 using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
@@ -222,9 +220,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			Indent(Output, Indentation);
 			Output.Write(':');
-			Output.Write(this.actor);
+			Output.Write(this.actor.Value);
 			Output.Write('.');
-			Output.Write(this.action);
+			Output.Write(this.action.Value);
 			Output.Write("(");
 
 			Indentation++;
