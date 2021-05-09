@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Threading.Tasks;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.MQ.Actors;
@@ -17,8 +18,8 @@ namespace TAG.Simulator.MQ.Activities
 	public class Put : ActivityNode, IValueRecipient
 	{
 		private IValue value;
-		private string actor;
-		private string queue;
+		private StringAttribute actor;
+		private StringAttribute queue;
 
 		/// <summary>
 		/// Puts content to a topic.
@@ -62,8 +63,8 @@ namespace TAG.Simulator.MQ.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
-			this.queue = XML.Attribute(Definition, "queue");
+			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
+			this.queue = new StringAttribute(XML.Attribute(Definition, "queue"));
 
 			return base.FromXml(Definition);
 		}
@@ -87,7 +88,7 @@ namespace TAG.Simulator.MQ.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Queue = Expression.Transform(this.queue, "{", "}", Variables);
+			string Queue = this.queue.GetValue(Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			string Message;
 
@@ -124,7 +125,7 @@ namespace TAG.Simulator.MQ.Activities
 
 			Indentation++;
 
-			this.AppendArgument(Output, Indentation, "Queue", this.queue, true, QuoteChar);
+			this.AppendArgument(Output, Indentation, "Queue", this.queue.Value, true, QuoteChar);
 
 			if (!(this.value is null))
 			{

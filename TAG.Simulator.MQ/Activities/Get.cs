@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Threading.Tasks;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.MQ.Actors;
@@ -16,9 +17,9 @@ namespace TAG.Simulator.MQ.Activities
 	/// </summary>
 	public class Get : ActivityNode
 	{
-		private string actor;
-		private string queue;
-		private string variable;
+		private StringAttribute actor;
+		private StringAttribute queue;
+		private StringAttribute variable;
 		private Waher.Content.Duration timeout;
 
 		/// <summary>
@@ -63,9 +64,9 @@ namespace TAG.Simulator.MQ.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
-			this.queue = XML.Attribute(Definition, "queue");
-			this.variable = XML.Attribute(Definition, "variable");
+			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
+			this.queue = new StringAttribute(XML.Attribute(Definition, "queue"));
+			this.variable = new StringAttribute(XML.Attribute(Definition, "variable"));
 			this.timeout = XML.Attribute(Definition, "timeout", Waher.Content.Duration.Zero);
 
 			return base.FromXml(Definition);
@@ -78,8 +79,8 @@ namespace TAG.Simulator.MQ.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Queue = Expression.Transform(this.queue, "{", "}", Variables);
-			string Variable = Expression.Transform(this.variable, "{", "}", Variables);
+			string Queue = this.queue.GetValue(Variables);
+			string Variable = this.variable.GetValue(Variables);
 
 			if (!(this.GetActorObject(this.actor, Variables) is MqActivityObject MqActor))
 				throw new Exception("Actor not an MQ actor.");
@@ -108,8 +109,8 @@ namespace TAG.Simulator.MQ.Activities
 
 			Indentation++;
 
-			this.AppendArgument(Output, Indentation, "Queue", this.queue, true, QuoteChar);
-			this.AppendArgument(Output, Indentation, "Variable", this.variable, true, QuoteChar);
+			this.AppendArgument(Output, Indentation, "Queue", this.queue.Value, true, QuoteChar);
+			this.AppendArgument(Output, Indentation, "Variable", this.variable.Value, true, QuoteChar);
 			this.AppendArgument(Output, Indentation, "Timeout", Duration.ToString(this.timeout), true, QuoteChar);
 
 			Output.WriteLine(");");

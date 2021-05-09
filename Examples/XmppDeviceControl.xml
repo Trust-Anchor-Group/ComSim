@@ -16,7 +16,8 @@
 			(Thermostats, clients of one sensor and actuator each), controlling Heater output, based on Sensor output. Outdoor Sensor 
 			Temperature Value varies randomly over time. Indoor Sensor Temperature Value varies depending on Outdoor Temperature and
 			Heater output. Controllers subscribe to events, and control Heater output based on current Indoor Temperature, and a goal 
-			Temperature that can be configured. Model is simplified, to illustrate communicative aspects, rather than physical properties.
+			Temperature that can be configured. Model is simplified, heat transfer made quicker, to illustrate communicative aspects, 
+			rather than physical properties.
 			]]>
 		</Description>
 		<Preparation>
@@ -70,8 +71,11 @@
 		<Timer id="ModelTimer" N="1" period="PT1S">
 			<ExternalEvent name="Elapsed" event="ModelTimerElapsed"/>
 		</Timer>
-		<Timer id="SampleTimer" N="1" period="PT5S">
-			<ExternalEvent name="Elapsed" event="SampleTimerElapsed"/>
+		<Timer id="PublishTimer" N="1" period="PT5S">
+			<ExternalEvent name="Elapsed" event="PublishTimerElapsed"/>
+		</Timer>
+		<Timer id="ControlTimer" N="10" period="PT5S">
+			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="TimerName"/>
 		</Timer>
 		<xmpp:XmppActorTcp id="OutdoorTemp" domain="1451.ieeehyd.org" userName="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<xmpp:PepExtension/>
@@ -112,8 +116,11 @@
 		<EventHandler id="ModelTimerElapsed" activity="Step">
 			<Description>Event raised every second, to increment the simulated temperature values.</Description>
 		</EventHandler>
-		<EventHandler id="SampleTimerElapsed" activity="Sample">
+		<EventHandler id="PublishTimerElapsed" activity="Publish">
 			<Description>Event raised every five seconds, to sample and report current momentary values.</Description>
+		</EventHandler>
+		<EventHandler id="ControlTimerElapsed" activity="Control">
+			<Description>Event raised every five seconds, where the thermostat reads the corresponding sensor values, and performs any necessary control actions.</Description>
 		</EventHandler>
 		<EventHandler id="ReadOutdoorTemperatureEvent" activity="ReadOutdoorTemperature">
 			<Description>Event raised when a client wants to read an outdoor temperature sensor.</Description>
@@ -145,7 +152,7 @@
 					</Eval>
 					<Eval>
 						<![CDATA[
-						OutdoorTempData.Temperature+=Uniform(-0.1,0.1);
+						OutdoorTempData.Temperature+=Uniform(-0.25,0.25);
 						]]>
 					</Eval>
 					<Sample name="Outdoor Temperature {i}">
@@ -175,8 +182,8 @@
 			</While>
 			<Stop/>
 		</Activity>
-		<Activity id="Sample">
-			<Description>Samples current values and reports them as momentary.</Description>
+		<Activity id="Publish">
+			<Description>Samples current simulated physical properties and reports them as momentary values for the corresponding sensors.</Description>
 			<Start/>
 			<Eval>i:=0</Eval>
 			<While>
@@ -184,14 +191,7 @@
 					<Eval>
 						<![CDATA[
 						OutdoorTempData:=Global["DataOutdoorTemp"+IntToStr2(i)];
-						IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
-						HeaterData:=Global["DataHeater"+IntToStr2(i)];
-						ThermostatData:=Global["DataThermostat"+IntToStr2(i)];
-
 						OutdoorTempSensor:=Global["OutdoorTempSensor"+IntToStr2(i)];
-						IndoorTempSensor:=Global["IndoorTempSensor"+IntToStr2(i)];
-						HeaterSensor:=Global["HeaterSensor"+IntToStr2(i)];
-						ThermostatSensor:=Global["ThermostatSensor"+IntToStr2(i)];
 						]]>
 					</Eval>
 					<iot:NewMomentaryValues sensor="OutdoorTempSensor">
@@ -199,11 +199,23 @@
 							<Script>OutdoorTempData.Temperature</Script>
 						</iot:QuantityField>
 					</iot:NewMomentaryValues>
+					<Eval>
+						<![CDATA[
+						IndoorTempData:=Global["DataIndoorTemp"+IntToStr2(i)];
+						IndoorTempSensor:=Global["IndoorTempSensor"+IntToStr2(i)];
+						]]>
+					</Eval>
 					<iot:NewMomentaryValues sensor="IndoorTempSensor">
 						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
 							<Script>IndoorTempData.Temperature</Script>
 						</iot:QuantityField>
 					</iot:NewMomentaryValues>
+					<Eval>
+						<![CDATA[
+						HeaterData:=Global["DataHeater"+IntToStr2(i)];
+						HeaterSensor:=Global["HeaterSensor"+IntToStr2(i)];
+						]]>
+					</Eval>
 					<iot:NewMomentaryValues sensor="HeaterSensor">
 						<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
 							<Script>HeaterData.Temperature</Script>
@@ -211,6 +223,46 @@
 					</iot:NewMomentaryValues>
 				</Condition>
 			</While>
+			<Stop/>
+		</Activity>
+		<Activity id="Control">
+			<Description>Performs the actions of a thermostat, by reading the corresponding sensors and taking necessary actions to control the indoor temperature to match a preset and configurable goal temperature.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=TimeerName.Substring(12);
+				i:=Num(Index);
+				Thermostat:=Global["Thermostat"+Index];
+				
+				IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
+				IndoorSensorConnection:=Thermostat[IndoorTempJid];
+				ConnectedToIndoorSensor:=
+					exists(IndoorSensorConnection) and
+					(IndoorSensorConnection.State=SubscriptionState.Both or
+					IndoorSensorConnection.State=SubscriptionState.To);
+					
+				HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
+				HeaterConnection:=Thermostat[HeaterJid];
+				ConnectedToHeater:=
+					exists(HeaterConnection) and
+					(HeaterConnection.State=SubscriptionState.Both or
+					HeaterConnection.State=SubscriptionState.To);
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="ConnectedToIndoorSensor">
+				</Condition>
+				<Otherwise>
+					<xmpp:SubscribeTo actor="Thermostat" to="IndoorTempJid"/>
+				</Otherwise>
+			</Conditional>
+			<Conditional>
+				<Condition condition="ConnectedToHeater">
+				</Condition>
+				<Otherwise>
+					<xmpp:SubscribeTo actor="Thermostat" to="HeaterJid"/>
+				</Otherwise>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="ReadOutdoorTemperature">

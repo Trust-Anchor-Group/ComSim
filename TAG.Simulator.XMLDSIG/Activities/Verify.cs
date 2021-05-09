@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
@@ -18,7 +19,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 	public class Verify : ActivityNode, IValueRecipient
 	{
 		private IValue value;
-		private string rsaKeyName;
+		private StringAttribute rsaKeyName;
 		private string rootName;
 
 		/// <summary>
@@ -63,7 +64,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.rsaKeyName = XML.Attribute(Definition, "rsaKeyName");
+			this.rsaKeyName = new StringAttribute(XML.Attribute(Definition, "rsaKeyName"));
 
 			return base.FromXml(Definition);
 		}
@@ -125,7 +126,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 
 			CspParameters CspParams = new CspParameters()
 			{
-				KeyContainerName = Expression.Transform(this.rsaKeyName, "{", "}", Variables),
+				KeyContainerName = this.rsaKeyName.GetValue(Variables),
 				Flags = CspProviderFlags.UseExistingKey
 			};
 

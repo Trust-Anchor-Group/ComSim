@@ -12,8 +12,7 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 	/// </summary>
 	public class Utf8String : SimulationNode, IBinaryElement
 	{
-		private string value;
-		private bool hasCurlyBraces;
+		private StringAttribute value;
 
 		/// <summary>
 		/// Utf8String value.
@@ -47,11 +46,7 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 		/// <param name="Definition">Binary definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			int i;
-
-			this.value = Definition.InnerText;
-			this.hasCurlyBraces = (i = this.value.IndexOf('{')) >= 0 && this.value.IndexOf('}', i + 1) >= 0;
-
+			this.value = new StringAttribute(Definition.InnerText);
 			return Task.CompletedTask;
 		}
 
@@ -62,7 +57,7 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 		/// <param name="Variables">Set of variables for the activity.</param>
 		public void Append(MemoryStream Output, Variables Variables)
 		{
-			string s = this.hasCurlyBraces ? Expression.Transform(this.value, "{", "}", Variables) : this.value;
+			string s = this.value.GetValue(Variables);
 			byte[] Bin = Encoding.UTF8.GetBytes(s);
 			int c = Bin.Length;
 			int i = c;

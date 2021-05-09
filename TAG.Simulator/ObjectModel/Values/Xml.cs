@@ -11,7 +11,7 @@ namespace TAG.Simulator.ObjectModel.Values
 	/// </summary>
 	public class Xml : Value
 	{
-		private string value;
+		private StringAttribute value;
 		private string rootName;
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <summary>
 		/// Value
 		/// </summary>
-		public string Value => this.value;
+		public StringAttribute Value => this.value;
 
 		/// <summary>
 		/// Root name
@@ -56,7 +56,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.value = Definition.InnerXml;
+			this.value = new StringAttribute(Definition.InnerXml);
 
 			return Task.CompletedTask;
 		}
@@ -68,7 +68,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <returns>Evaluated value.</returns>
 		public override object Evaluate(Variables Variables)
 		{
-			string s = Expression.Transform(this.value, "{", "}", Variables);
+			string s = this.value.GetValue(Variables);
 
 			XmlDocument Doc = new XmlDocument()
 			{

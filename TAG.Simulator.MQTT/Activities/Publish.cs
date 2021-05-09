@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Threading.Tasks;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.MQTT.Actors;
@@ -21,8 +22,8 @@ namespace TAG.Simulator.MQTT.Activities
 	{
 		private IValue value;
 		private MqttQualityOfService qos;
-		private string actor;
-		private string topic;
+		private StringAttribute actor;
+		private StringAttribute topic;
 		private bool retain;
 
 		/// <summary>
@@ -67,8 +68,8 @@ namespace TAG.Simulator.MQTT.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
-			this.topic = XML.Attribute(Definition, "topic");
+			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
+			this.topic = new StringAttribute(XML.Attribute(Definition, "topic"));
 			this.qos = (MqttQualityOfService)XML.Attribute(Definition, "qos", MqttQualityOfService.AtMostOnce);
 			this.retain = XML.Attribute(Definition, "retain", false);
 
@@ -94,7 +95,7 @@ namespace TAG.Simulator.MQTT.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Topic = Expression.Transform(this.topic, "{", "}", Variables);
+			string Topic = this.topic.GetValue(Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			
 			if (!(Content is byte[] Bin))
@@ -126,7 +127,7 @@ namespace TAG.Simulator.MQTT.Activities
 
 			Indentation++;
 
-			this.AppendArgument(Output, Indentation, "Topic", this.topic, true, QuoteChar);
+			this.AppendArgument(Output, Indentation, "Topic", this.topic.Value, true, QuoteChar);
 			this.AppendArgument(Output, Indentation, "QoS", this.qos.ToString(), false, QuoteChar);
 
 			if (!this.retain)

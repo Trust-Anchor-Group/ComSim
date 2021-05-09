@@ -126,9 +126,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string ActorValue = this.actor.GetValue(Variables);
 			string ActionValue = this.action.GetValue(Variables);
-			object Actor = this.GetActorObject(ActorValue, Variables);
+			object Actor = this.GetActorObject(this.actor, Variables);
 			Type T = Actor.GetType();
 			MethodInfo Method;
 			int[] Positions;

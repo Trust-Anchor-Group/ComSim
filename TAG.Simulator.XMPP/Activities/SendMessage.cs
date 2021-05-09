@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Threading.Tasks;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.XMPP.Actors;
@@ -19,12 +20,12 @@ namespace TAG.Simulator.XMPP.Activities
 	{
 		private IValue value;
 		private MessageType type;
-		private string actor;
-		private string to;
-		private string subject;
-		private string language;
-		private string threadId;
-		private string parentThreadId;
+		private StringAttribute actor;
+		private StringAttribute to;
+		private StringAttribute subject;
+		private StringAttribute language;
+		private StringAttribute threadId;
+		private StringAttribute parentThreadId;
 
 		/// <summary>
 		/// Sends a custom message to a recipient
@@ -68,12 +69,12 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
-			this.to = XML.Attribute(Definition, "to");
-			this.subject = XML.Attribute(Definition, "subject");
-			this.language = XML.Attribute(Definition, "language");
-			this.threadId = XML.Attribute(Definition, "threadId");
-			this.parentThreadId = XML.Attribute(Definition, "parentThreadId");
+			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
+			this.to = new StringAttribute(XML.Attribute(Definition, "to"));
+			this.subject = new StringAttribute(XML.Attribute(Definition, "subject"));
+			this.language = new StringAttribute(XML.Attribute(Definition, "language"));
+			this.threadId = new StringAttribute(XML.Attribute(Definition, "threadId"));
+			this.parentThreadId = new StringAttribute(XML.Attribute(Definition, "parentThreadId"));
 			this.type = (MessageType)XML.Attribute(Definition, "type", MessageType.Normal);
 
 			return base.FromXml(Definition);
@@ -98,11 +99,11 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string To = Expression.Transform(this.to, "{", "}", Variables);
-			string Subject = Expression.Transform(this.subject, "{", "}", Variables);
-			string Language = Expression.Transform(this.language, "{", "}", Variables);
-			string ThreadId = Expression.Transform(this.threadId, "{", "}", Variables);
-			string ParentThreadId = Expression.Transform(this.parentThreadId, "{", "}", Variables);
+			string To = this.to.GetValue(Variables);
+			string Subject = this.subject.GetValue(Variables);
+			string Language = this.language.GetValue(Variables);
+			string ThreadId = this.threadId.GetValue(Variables);
+			string ParentThreadId = this.parentThreadId.GetValue(Variables);
 			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
 			string Xml;
 			string Body;
@@ -149,20 +150,20 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			AppendArgument(Output, Indentation, "To", this.to, true, QuoteChar);
+			AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
 			AppendArgument(Output, Indentation, "Type", this.type.ToString(), false, QuoteChar);
 
-			if (!string.IsNullOrEmpty(this.subject))
-				AppendArgument(Output, Indentation, "Subject", this.subject, true, QuoteChar);
+			if (!string.IsNullOrEmpty(this.subject.Value))
+				AppendArgument(Output, Indentation, "Subject", this.subject.Value, true, QuoteChar);
 
-			if (!string.IsNullOrEmpty(this.language))
-				AppendArgument(Output, Indentation, "Language", this.language, true, QuoteChar);
+			if (!string.IsNullOrEmpty(this.language.Value))
+				AppendArgument(Output, Indentation, "Language", this.language.Value, true, QuoteChar);
 
-			if (!string.IsNullOrEmpty(this.threadId))
-				AppendArgument(Output, Indentation, "ThreadId", this.threadId, true, QuoteChar);
+			if (!string.IsNullOrEmpty(this.threadId.Value))
+				AppendArgument(Output, Indentation, "ThreadId", this.threadId.Value, true, QuoteChar);
 
-			if (!string.IsNullOrEmpty(this.parentThreadId))
-				AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId, true, QuoteChar);
+			if (!string.IsNullOrEmpty(this.parentThreadId.Value))
+				AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId.Value, true, QuoteChar);
 
 			if (!(this.value is null))
 			{

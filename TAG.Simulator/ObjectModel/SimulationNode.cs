@@ -141,10 +141,10 @@ namespace TAG.Simulator.ObjectModel
 		/// <param name="Variables">Current set of variables.</param>
 		/// <returns>Actor</returns>
 		/// <exception cref="Exception">If actor could not be found.</exception>
-		public object GetActorObject(string Actor, Variables Variables)
+		public object GetActorObject(StringAttribute Actor, Variables Variables)
 		{
-			Actor = Expression.Transform(Actor, "{", "}", Variables);
-			if (Variables.TryGetVariable(Actor, out Variable v))
+			string ActorStr = Actor.GetValue(Variables);
+			if (Variables.TryGetVariable(ActorStr, out Variable v))
 				return v.ValueObject;
 			else
 			{
@@ -152,10 +152,10 @@ namespace TAG.Simulator.ObjectModel
 
 				lock (this.synchObj)
 				{
-					if (this.lastActorExpression is null || Actor != this.lastActor)
+					if (this.lastActorExpression is null || ActorStr != this.lastActor)
 					{
-						this.lastActorExpression = new Expression(Actor);
-						this.lastActor = Actor;
+						this.lastActorExpression = new Expression(ActorStr);
+						this.lastActor = ActorStr;
 					}
 
 					Exp = this.lastActorExpression;
@@ -172,7 +172,7 @@ namespace TAG.Simulator.ObjectModel
 		/// <param name="Variables">Current set of variables.</param>
 		/// <returns>Actor</returns>
 		/// <exception cref="Exception">If actor could not be found.</exception>
-		public IActor GetActor(string Actor, Variables Variables)
+		public IActor GetActor(StringAttribute Actor, Variables Variables)
 		{
 			if (this.GetActorObject(Actor, Variables) is IActor ActorRef)
 				return ActorRef;

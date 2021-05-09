@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Threading.Tasks;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.XMPP.Actors;
@@ -18,7 +19,7 @@ namespace TAG.Simulator.XMPP.Activities
 	public class SetPresence : ActivityNode, IValueRecipient
 	{
 		private IValue value;
-		private string actor;
+		private StringAttribute actor;
 		private Availability availability;
 
 		/// <summary>
@@ -63,7 +64,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = XML.Attribute(Definition, "actor");
+			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 			this.availability = (Availability)XML.Attribute(Definition, "availability", Availability.Online);
 
 			return base.FromXml(Definition);

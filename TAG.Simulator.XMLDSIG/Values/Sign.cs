@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
@@ -17,7 +18,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 	public class Sign : Value, ISimulationNodeChildren
 	{
 		private IValue value;
-		private string rsaKeyName;
+		private StringAttribute rsaKeyName;
 		private string rootName;
 		private int rsaKeySize;
 
@@ -77,7 +78,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 		/// <param name="Definition">XML definition</param>
 		public override async Task FromXml(XmlElement Definition)
 		{
-			this.rsaKeyName = XML.Attribute(Definition, "rsaKeyName");
+			this.rsaKeyName = new StringAttribute(XML.Attribute(Definition, "rsaKeyName"));
 			this.rsaKeySize = XML.Attribute(Definition, "rsaKeySize", 0);
 
 			foreach (XmlNode N in Definition.ChildNodes)
@@ -135,7 +136,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 
 			CspParameters CspParams = new CspParameters()
 			{
-				KeyContainerName = Expression.Transform(this.rsaKeyName, "{", "}", Variables)
+				KeyContainerName = this.rsaKeyName.GetValue(Variables)
 			};
 
 			RSACryptoServiceProvider RsaKey = new RSACryptoServiceProvider(this.rsaKeySize, CspParams);

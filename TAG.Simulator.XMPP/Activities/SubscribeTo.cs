@@ -4,48 +4,27 @@ using System.Xml;
 using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
 using Waher.Script;
-using Waher.Networking.XMPP;
 using System.IO;
 
 namespace TAG.Simulator.XMPP.Activities
 {
 	/// <summary>
-	/// Type of IQ request
+	/// Subscribes to the presence of another entity.
 	/// </summary>
-	public enum RequestType
+	public class SubscribeTo : ActivityNode
 	{
-		/// <summary>
-		/// IQ get request.
-		/// </summary>
-		Get,
-
-		/// <summary>
-		/// IQ set request.
-		/// </summary>
-		Set
-	}
-
-	/// <summary>
-	/// Sends a custom IQ request to a recipient
-	/// </summary>
-	public class Request : ActivityNode, IValueRecipient
-	{
-		private IValue value;
-		private RequestType type;
 		private StringAttribute actor;
 		private StringAttribute to;
-		private string responseVariable;
 
 		/// <summary>
-		/// Sends a custom IQ request to a recipient
+		/// Subscribes to the presence of another entity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Request(ISimulationNode Parent, Model Model)
+		public SubscribeTo(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -53,7 +32,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Request";
+		public override string LocalName => "SubscribeTo";
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
@@ -73,7 +52,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Request(Parent, Model);
+			return new SubscribeTo(Parent, Model);
 		}
 
 		/// <summary>
@@ -84,22 +63,8 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 			this.to = new StringAttribute(XML.Attribute(Definition, "to"));
-			this.type = (RequestType)XML.Attribute(Definition, "type", RequestType.Get);
-			this.responseVariable = XML.Attribute(Definition, "responseVariable");
 
 			return base.FromXml(Definition);
-		}
-
-		/// <summary>
-		/// Registers a value for the argument.
-		/// </summary>
-		/// <param name="Value">Value node</param>
-		public void Register(IValue Value)
-		{
-			if (this.value is null)
-				this.value = Value;
-			else
-				throw new Exception("Value already registered.");
 		}
 
 		/// <summary>
@@ -110,35 +75,13 @@ namespace TAG.Simulator.XMPP.Activities
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			string To = this.to.GetValue(Variables);
-			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
-			string Xml;
 
 			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
 
-			if (Content is XmlDocument Doc)
-				Xml = Doc.OuterXml;
-			else if (Content is XmlElement E)
-				Xml = E.OuterXml;
-			else
-				throw new Exception("Requests must be XML.");
+			XmppActor.Client.RequestPresenceSubscription(To);
 
-			TaskCompletionSource<LinkedListNode<IActivityNode>> T = new TaskCompletionSource<LinkedListNode<IActivityNode>>();
-
-			XmppActor.Client.SendIq(string.Empty, To, Xml, this.type.ToString().ToLower(), (sender, e) =>
-			{
-				if (e.Ok)
-				{
-					Variables[this.responseVariable] = e.FirstElement;
-					T.TrySetResult(null);
-				}
-				else
-					T.TrySetException(new XmppException(string.IsNullOrEmpty(e.ErrorText) ? "Error response returned." : e.ErrorText));
-
-				return Task.CompletedTask;
-			}, null, XmppActor.Client.DefaultRetryTimeout, XmppActor.Client.DefaultNrRetries, XmppActor.Client.DefaultDropOff, XmppActor.Client.DefaultMaxRetryTimeout);
-
-			return T.Task;
+			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}
 
 		/// <summary>
@@ -154,22 +97,13 @@ namespace TAG.Simulator.XMPP.Activities
 			Indent(Output, Indentation);
 			Output.Write(':');
 			Output.Write(this.actor);
-			Output.Write(".Request");
+			Output.Write(".SubscribeTo");
 			Output.Write("(");
 
 			Indentation++;
 
 			SendMessage.AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
-			SendMessage.AppendArgument(Output, Indentation, "Type", this.type.ToString(), false, QuoteChar);
-
-			if (!(this.value is null))
-			{
-				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					SendMessage.AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
-				else
-					SendMessage.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
-			}
-
+			
 			Output.WriteLine(");");
 		}
 

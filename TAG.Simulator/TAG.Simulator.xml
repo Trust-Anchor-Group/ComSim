@@ -5030,7 +5030,7 @@
             <param name="Output">Output.</param>
             <param name="Indentation">Number of tabs to indent.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorObject(System.String,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorObject(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
             <summary>
             Gets an actor object, given a string representation, possibly containing script, of the actor.
             </summary>
@@ -5039,7 +5039,7 @@
             <returns>Actor</returns>
             <exception cref="T:System.Exception">If actor could not be found.</exception>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActor(System.String,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActor(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
             <summary>
             Gets an actor, given a string representation, possibly containing script, of the actor.
             </summary>

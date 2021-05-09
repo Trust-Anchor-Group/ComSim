@@ -7,237 +7,259 @@
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
 
-  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+	<xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
 
-  <xs:complexType name="XmppActor">
-    <xs:complexContent>
-      <xs:extension base="cs:Actor">
-        <xs:attribute name="domain" type="xs:string" use="required"/>
-        <xs:attribute name="userName" type="xs:string" use="required"/>
-        <xs:attribute name="apiKey" type="xs:string" use="optional"/>
-        <xs:attribute name="secret" type="xs:string" use="optional"/>
-        <xs:attribute name="alwaysConnected" type="xs:boolean" use="optional" default="false"/>
-        <xs:attribute name="allowCramMD5" type="xs:boolean" use="optional" default="false"/>
-        <xs:attribute name="allowDigestMD5" type="xs:boolean" use="optional" default="false"/>
-        <xs:attribute name="allowEncryption" type="xs:boolean" use="optional" default="true"/>
-        <xs:attribute name="allowPlain" type="xs:boolean" use="optional" default="false"/>
-        <xs:attribute name="allowScramSHA1" type="xs:boolean" use="optional" default="true"/>
-        <xs:attribute name="allowScramSHA256" type="xs:boolean" use="optional" default="true"/>
-        <xs:attribute name="requestRosterOnStartup" type="xs:boolean" use="optional" default="true"/>
-        <xs:attribute name="trustServer" type="xs:boolean" use="optional" default="false"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="XmppActor">
+		<xs:complexContent>
+			<xs:extension base="cs:Actor">
+				<xs:attribute name="domain" type="xs:string" use="required"/>
+				<xs:attribute name="userName" type="xs:string" use="required"/>
+				<xs:attribute name="apiKey" type="xs:string" use="optional"/>
+				<xs:attribute name="secret" type="xs:string" use="optional"/>
+				<xs:attribute name="alwaysConnected" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="allowCramMD5" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="allowDigestMD5" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="allowEncryption" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowPlain" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="allowScramSHA1" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowScramSHA256" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="requestRosterOnStartup" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="trustServer" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="XmppActorPort">
-    <xs:complexContent>
-      <xs:extension base="XmppActor">
-        <xs:attribute name="port" type="cs:PortNumber" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="XmppActorPort">
+		<xs:complexContent>
+			<xs:extension base="XmppActor">
+				<xs:attribute name="port" type="cs:PortNumber" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="XmppActorEndpoint">
-    <xs:complexContent>
-      <xs:extension base="XmppActor">
-        <xs:attribute name="endpoint" type="xs:anyURI" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="XmppActorEndpoint">
+		<xs:complexContent>
+			<xs:extension base="XmppActor">
+				<xs:attribute name="endpoint" type="xs:anyURI" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:element name="XmppActorTcp" type="XmppActorPort"/>
-  <xs:element name="XmppActorBosh" type="XmppActorEndpoint"/>
-  <xs:element name="XmppActorWebSocket" type="XmppActorEndpoint"/>
+	<xs:element name="XmppActorTcp" type="XmppActorPort"/>
+	<xs:element name="XmppActorBosh" type="XmppActorEndpoint"/>
+	<xs:element name="XmppActorWebSocket" type="XmppActorEndpoint"/>
 
-  <xs:element name="SendMessage">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="cs:ActivityNode">
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="cs:Value"/>
-          </xs:choice>
-          <xs:attribute name="actor" type="xs:string" use="required"/>
-          <xs:attribute name="to" type="xs:string" use="required"/>
-          <xs:attribute name="subject" type="xs:string" use="optional"/>
-          <xs:attribute name="language" type="xs:string" use="optional"/>
-          <xs:attribute name="threadId" type="xs:string" use="optional"/>
-          <xs:attribute name="parentThreadId" type="xs:string" use="optional"/>
-          <xs:attribute name="type" type="MessageType" use="optional" default="Normal"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="SendMessage">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+					<xs:attribute name="subject" type="xs:string" use="optional"/>
+					<xs:attribute name="language" type="xs:string" use="optional"/>
+					<xs:attribute name="threadId" type="xs:string" use="optional"/>
+					<xs:attribute name="parentThreadId" type="xs:string" use="optional"/>
+					<xs:attribute name="type" type="MessageType" use="optional" default="Normal"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:simpleType name="MessageType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Chat"/>
-      <xs:enumeration value="Error"/>
-      <xs:enumeration value="GroupChat"/>
-      <xs:enumeration value="Headline"/>
-      <xs:enumeration value="Normal"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="MessageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Chat"/>
+			<xs:enumeration value="Error"/>
+			<xs:enumeration value="GroupChat"/>
+			<xs:enumeration value="Headline"/>
+			<xs:enumeration value="Normal"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:element name="Request">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="cs:ActivityNode">
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="cs:Value"/>
-          </xs:choice>
-          <xs:attribute name="actor" type="xs:string" use="required"/>
-          <xs:attribute name="to" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="RequestType" use="required"/>
-          <xs:attribute name="responseVariable" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Request">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+					<xs:attribute name="type" type="RequestType" use="required"/>
+					<xs:attribute name="responseVariable" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Respond">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="cs:ActivityNode">
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="cs:Value"/>
-          </xs:choice>
-          <xs:attribute name="requestId" type="xs:string" use="required"/>
-          <xs:attribute name="actor" type="xs:string" use="required"/>
-          <xs:attribute name="to" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Respond">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+					<xs:attribute name="requestId" type="xs:string" use="required"/>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="Error">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="cs:ActivityNode">
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="cs:Value"/>
-          </xs:choice>
-          <xs:attribute name="requestId" type="xs:string" use="required"/>
-          <xs:attribute name="actor" type="xs:string" use="required"/>
-          <xs:attribute name="to" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="Error">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+					<xs:attribute name="requestId" type="xs:string" use="required"/>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:simpleType name="RequestType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Get"/>
-      <xs:enumeration value="Set"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="RequestType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Get"/>
+			<xs:enumeration value="Set"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:element name="SetPresence">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="cs:ActivityNode">
-          <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:group ref="cs:Value"/>
-          </xs:choice>
-          <xs:attribute name="actor" type="xs:string" use="required"/>
-          <xs:attribute name="availability" type="Availability" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="SetPresence">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="availability" type="Availability" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:simpleType name="Availability">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Online"/>
-      <xs:enumeration value="Offline"/>
-      <xs:enumeration value="Away"/>
-      <xs:enumeration value="Chat"/>
-      <xs:enumeration value="DoNotDisturb"/>
-      <xs:enumeration value="ExtendedAway"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="Availability">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Online"/>
+			<xs:enumeration value="Offline"/>
+			<xs:enumeration value="Away"/>
+			<xs:enumeration value="Chat"/>
+			<xs:enumeration value="DoNotDisturb"/>
+			<xs:enumeration value="ExtendedAway"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:complexType name="HandlerNode">
-    <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="namespace" type="xs:string" use="required"/>
-    <xs:attribute name="event" type="xs:string" use="required"/>
-    <xs:attribute name="actorName" type="xs:string" use="optional"/>
-    <xs:attribute name="eventArgs" type="xs:string" use="optional"/>
-  </xs:complexType>
+	<xs:element name="SubscribeTo">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="MessageHandler">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="HandlerNode"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="UnsubscribeFrom">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="IqGetHandler">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="HandlerNode"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:complexType name="HandlerNode">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="namespace" type="xs:string" use="required"/>
+		<xs:attribute name="event" type="xs:string" use="required"/>
+		<xs:attribute name="actorName" type="xs:string" use="optional"/>
+		<xs:attribute name="eventArgs" type="xs:string" use="optional"/>
+	</xs:complexType>
 
-  <xs:element name="IqSetHandler">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="HandlerNode"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="MessageHandler">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="HandlerNode"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="PresenceHandler">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="HandlerNode"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="IqGetHandler">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="HandlerNode"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:complexType name="XmppExtension">
-	  <xs:complexContent>
-		  <xs:extension base="cs:ExtensibleElement">
-			  <xs:attribute name="id" type="xs:ID" use="optional"/>
-		  </xs:extension>
-	  </xs:complexContent>
-  </xs:complexType>
+	<xs:element name="IqSetHandler">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="HandlerNode"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="AvatarExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="PresenceHandler">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="HandlerNode"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="PepExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="XmppExtension"/>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:complexType name="XmppExtension">
+		<xs:complexContent>
+			<xs:extension base="cs:ExtensibleElement">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:element name="PubSubExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="XmppExtension">
-          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="AvatarExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
-  <xs:element name="MucExtension">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="XmppExtension">
-          <xs:attribute name="componentAddress" type="xs:string" use="required"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
+	<xs:element name="PepExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="XmppExtension"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="PubSubExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="XmppExtension">
+					<xs:attribute name="componentAddress" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="MucExtension">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="XmppExtension">
+					<xs:attribute name="componentAddress" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
 </xs:schema>
