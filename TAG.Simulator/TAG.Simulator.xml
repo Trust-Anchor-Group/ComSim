@@ -1227,6 +1227,11 @@
             Abstract base class for counter activity nodes.
             </summary>
         </member>
+        <member name="F:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.counter">
+            <summary>
+            Counter attribute
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
             <summary>
             Abstract base class for counter activity nodes.
@@ -1234,7 +1239,7 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.Counter">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.GetCounter(Waher.Script.Variables)">
             <summary>
             Counter name
             </summary>
@@ -1852,7 +1857,7 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Activities.Sample.Name">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.GetName(Waher.Script.Variables)">
             <summary>
             Name of variable within the scope of the event.
             </summary>
@@ -5095,6 +5100,29 @@
             Exports XML
             </summary>
             <param name="Output">Output</param>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.StringAttribute">
+            <summary>
+            Contains the value of a string attribute, possibly with embedded script.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.StringAttribute.#ctor(System.String)">
+            <summary>
+            Contains the value of a string attribute, possibly with embedded script.
+            </summary>
+            <param name="Value">String value, from definition</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.StringAttribute.Value">
+            <summary>
+            String value, from definition
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.StringAttribute.GetValue(Waher.Script.Variables)">
+            <summary>
+            Gets the value of the attribute.
+            </summary>
+            <param name="Variables">Current set of variables.</param>
+            <returns>Value</returns>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Structure.Assemblies">
             <summary>

@@ -19,8 +19,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 	{
 		private Argument[] arguments;
 		private string[] argumentNames;
-		private string actor;
-		private string action;
+		private StringAttribute actor;
+		private StringAttribute action;
 
 		/// <summary>
 		/// Represents an action on an actor.
@@ -59,11 +59,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 				switch (Attribute.Name)
 				{
 					case "actor":
-						this.actor = Attribute.Value;
+						this.actor = new StringAttribute(Attribute.Value);
 						break;
 
 					case "action":
-						this.action = Attribute.Value;
+						this.action = new StringAttribute(Attribute.Value);
 						break;
 
 					case "id":
@@ -128,7 +128,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			object Actor = this.GetActorObject(this.actor, Variables);
+			string ActorValue = this.actor.GetValue(Variables);
+			string ActionValue = this.action.GetValue(Variables);
+			object Actor = this.GetActorObject(ActorValue, Variables);
 			Type T = Actor.GetType();
 			MethodInfo Method;
 			int[] Positions;
@@ -154,7 +156,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 						if (MI.IsAbstract || !MI.IsPublic)
 							continue;
 
-						if (MI.Name != this.action)
+						if (MI.Name != ActionValue)
 							continue;
 
 						ParameterInfo[] Parameters = MI.GetParameters();

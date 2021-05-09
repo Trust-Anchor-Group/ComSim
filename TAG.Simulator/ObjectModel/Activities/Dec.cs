@@ -47,7 +47,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			this.Model.DecrementCounter(this.Counter);
+			this.Model.DecrementCounter(this.GetCounter(Variables));
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
 		}
 
@@ -61,7 +61,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			Indent(Output, Indentation);
 			Output.Write(":Dec(");
-			Output.Write(this.Counter);
+			Output.Write(this.counter.Value);
 			Output.WriteLine(");");
 		}
 	}

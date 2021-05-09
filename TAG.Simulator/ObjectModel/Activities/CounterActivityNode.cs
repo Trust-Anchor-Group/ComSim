@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -14,7 +11,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public abstract class CounterActivityNode : ActivityNode
 	{
-		private string counter;
+		/// <summary>
+		/// Counter attribute
+		/// </summary>
+		protected StringAttribute counter;
 
 		/// <summary>
 		/// Abstract base class for counter activity nodes.
@@ -29,7 +29,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Counter name
 		/// </summary>
-		public string Counter => this.counter;
+		public string GetCounter(Variables Variables)
+		{
+			return this.counter.GetValue(Variables);
+		}
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
@@ -37,7 +40,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.counter = XML.Attribute(Definition, "counter");
+			this.counter = new StringAttribute(XML.Attribute(Definition, "counter"));
 
 			return Task.CompletedTask;
 		}

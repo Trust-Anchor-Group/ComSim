@@ -16,7 +16,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	public class Sample : ActivityNode, IValueRecipient
 	{
 		private IValue value = null;
-		private string name;
+		private StringAttribute name;
 
 		/// <summary>
 		/// Sets a variable value when an event is triggered.
@@ -36,7 +36,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Name of variable within the scope of the event.
 		/// </summary>
-		public string Name => this.name;
+		public string GetName(Variables Variables)
+		{
+			return this.name.GetValue(Variables);
+		}
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -55,7 +58,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.name = XML.Attribute(Definition, "name");
+			this.name = new StringAttribute(XML.Attribute(Definition, "name"));
 
 			return base.FromXml(Definition);
 		}
@@ -80,15 +83,16 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			object Value = this.value.Evaluate(Variables);
+			string Name = this.name.GetValue(Variables);
 
 			if (Value is double d)
-				this.Model.Sample(this.name, d);
+				this.Model.Sample(Name, d);
 			else if (Value is PhysicalQuantity Q)
-				this.Model.Sample(this.name, Q);
+				this.Model.Sample(Name, Q);
 			else
 			{
 				d = Convert.ToDouble(Value);
-				this.Model.Sample(this.name, d);
+				this.Model.Sample(Name, d);
 			}
 
 			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
