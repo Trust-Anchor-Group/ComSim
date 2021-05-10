@@ -65,7 +65,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 
 			if (!(Value is double TypedValue))
 				TypedValue = Convert.ToDouble(Value);
-
+			
 			Fields.AddLast(new Waher.Things.SensorData.QuantityField(this.ThingReference, DateTime.Now, this.Name, TypedValue, this.nrDecimals, this.unit, this.Type, this.QualityOfService, this.Writable));
 		}
 

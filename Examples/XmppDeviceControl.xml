@@ -299,10 +299,10 @@
 				</Thread>
 			</Parallel>
 			<Conditional>
-				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal °C and !Heater.Enabled">
+				<Condition condition="Indoor.Temperature.Quantity&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
 					<Count counter="Enable"/>
 				</Condition>
-				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal °C and Heater.Enabled">
+				<Condition condition="Indoor.Temperature.Quantity&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
 					<Count counter="Disable"/>
 				</Condition>
 			</Conditional>
