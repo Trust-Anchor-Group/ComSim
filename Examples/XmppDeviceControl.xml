@@ -77,21 +77,21 @@
 		<Timer id="ControlTimer" N="10" period="PT5S">
 			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimer"/>
 		</Timer>
-		<xmpp:XmppActorTcp id="OutdoorTemp" domain="1451.ieeehyd.org" userName="SimOutdoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="OutdoorTemp" domain="lab.tagroot.io" userName="SimOutdoorTemp" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:SensorServerExtension id="OutdoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp id="IndoorTemp" domain="1451.ieeehyd.org" userName="SimIndoorTemp" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="IndoorTemp" domain="lab.tagroot.io" userName="SimIndoorTemp" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:SensorServerExtension id="IndoorTempSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp id="Heater" domain="1451.ieeehyd.org" userName="SimHeater" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="Heater" domain="lab.tagroot.io" userName="SimHeater" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:ControlServerExtension/>
 			<iot:SensorServerExtension id="HeaterSensor"/>
@@ -99,7 +99,7 @@
 				<Parameter name="e"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
-		<xmpp:XmppActorTcp id="Thermostat" domain="1451.ieeehyd.org" userName="SimThermostat" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
+		<xmpp:XmppActorTcp id="Thermostat" domain="lab.tagroot.io" userName="SimThermostat" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:SensorClientExtension id="ThermostatSensorClient"/>
 			<iot:ControlClientExtension/>
@@ -251,7 +251,7 @@
 				<Thread>
 					<Eval>
 						<![CDATA[
-						IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
+						IndoorTempJid:="SimIndoorTemp"+i+"@lab.tagroot.io";
 						IndoorSensorConnection:=Thermostat.Client[IndoorTempJid];
 						
 						ConnectedToIndoorSensor:=exists(IndoorSensorConnection) and
@@ -284,7 +284,7 @@
 				<Thread>
 					<Eval>
 						<![CDATA[
-						HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
+						HeaterJid:="SimHeater"+i+"@lab.tagroot.io";
 						HeaterConnection:=Thermostat.Client[HeaterJid];
 						
 						ConnectedToHeater:=exists(HeaterConnection) and
