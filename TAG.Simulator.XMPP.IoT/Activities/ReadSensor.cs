@@ -207,7 +207,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 
 			Indent(Output, Indentation);
 			Output.Write(':');
-			Output.Write(this.actor);
+			Output.Write(this.actor.Value);
 			Output.Write(".ReadSensorData");
 			Output.Write("(");
 

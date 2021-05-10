@@ -125,7 +125,7 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indent(Output, Indentation);
 			Output.Write(':');
-			Output.Write(this.actor);
+			Output.Write(this.actor.Value);
 			Output.Write(".Respond");
 			Output.Write("(");
 

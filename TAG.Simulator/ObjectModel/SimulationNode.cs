@@ -144,8 +144,10 @@ namespace TAG.Simulator.ObjectModel
 		public object GetActorObject(StringAttribute Actor, Variables Variables)
 		{
 			string ActorStr = Actor.GetValue(Variables);
+			object Result;
+
 			if (Variables.TryGetVariable(ActorStr, out Variable v))
-				return v.ValueObject;
+				Result = v.ValueObject;
 			else
 			{
 				Expression Exp;
@@ -161,8 +163,13 @@ namespace TAG.Simulator.ObjectModel
 					Exp = this.lastActorExpression;
 				}
 
-				return Exp.Evaluate(Variables);
+				Result = Exp.Evaluate(Variables);
 			}
+
+			if (Result is Actor Actor2)
+				return Actor2.ActivityObject;
+			else
+				return Result;
 		}
 
 		/// <summary>
