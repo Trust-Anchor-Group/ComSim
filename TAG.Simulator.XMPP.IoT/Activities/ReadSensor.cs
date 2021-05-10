@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Script;
+using Waher.Networking.XMPP;
 using Waher.Networking.XMPP.Sensor;
 using Waher.Things;
 using Waher.Things.SensorData;
@@ -123,6 +123,18 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			if (!(this.GetActorObject(this.actor, Variables) is SensorClient SensorClient))
 				throw new Exception("Actor not an XMPP Sensor Client.");
 
+			if (XmppClient.BareJidRegEx.IsMatch(To))
+			{
+				RosterItem Item = SensorClient.Client[To];
+				if (Item is null)
+					throw new Exception("No connection in roster with Bare JID: " + To);
+
+				if (!Item.HasLastPresence || !Item.LastPresence.IsOnline)
+					throw new Exception("Contact not online: " + To);
+
+				To = Item.LastPresenceFullJid;
+			}
+
 			TaskCompletionSource<bool> T = new TaskCompletionSource<bool>();
 			Dictionary<string, Field> FieldsAsObject = this.responseType == SensorDataResponseType.Object ? new Dictionary<string, Field>() : null;
 			List<Field> FieldsAsArray = this.responseType == SensorDataResponseType.Array ? new List<Field>() : null;
@@ -214,7 +226,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			Indentation++;
 
 			XMPP.Activities.SendMessage.AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
-			
+
 			Output.WriteLine(");");
 		}
 

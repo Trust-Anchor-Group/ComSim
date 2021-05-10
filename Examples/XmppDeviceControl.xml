@@ -101,10 +101,10 @@
 		</xmpp:XmppActorTcp>
 		<xmpp:XmppActorTcp id="Thermostat" domain="1451.ieeehyd.org" userName="SimThermostat" N="10" apiKey="IeeeHyderabadSimKey" secret="IeeeHyderabadSimSecret" alwaysConnected="true">
 			<xmpp:PepExtension/>
-			<iot:SensorClientExtension/>
+			<iot:SensorClientExtension id="ThermostatSensorClient"/>
 			<iot:ControlClientExtension/>
 			<iot:ControlServerExtension/>
-			<iot:SensorServerExtension id="ThermostatSensor"/>
+			<iot:SensorServerExtension/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
@@ -136,7 +136,7 @@
 		</EventHandler>
 	</Events>
 	<Activities>
-		<Activity id="Step">
+		<Activity id="Step" logStart="false" logEnd="false">
 			<Description>Calculates the next step for simulated physical quantities in one system.</Description>
 			<Start/>
 			<Eval>
@@ -183,7 +183,7 @@
 			</Sample>
 			<Stop/>
 		</Activity>
-		<Activity id="Publish">
+		<Activity id="Publish" logStart="false" logEnd="false">
 			<Description>Samples current simulated physical properties and reports them as momentary values for the corresponding sensors in one simulated system.</Description>
 			<Start/>
 			<Eval>
@@ -227,7 +227,7 @@
 			</iot:NewMomentaryValues>
 			<Stop/>
 		</Activity>
-		<Activity id="Control">
+		<Activity id="Control" logStart="false" logEnd="false">
 			<Description>Performs the actions of a thermostat, by reading the corresponding sensors and taking necessary actions to control the indoor temperature to match a preset and configurable goal temperature.</Description>
 			<Start/>
 			<Eval>
@@ -236,88 +236,79 @@
 				i:=Num(Index);
 				]]>
 			</Eval>
-			<Count counter="Thermostat{Index}"/>
 			<Eval>
 				<![CDATA[
-				Thermostat:=Global["Thermostat"+Index].Client;
+				Thermostat:=Global["Thermostat"+Index];
 				ThermostatData:=Global["DataThermostat"+Index];
 				]]>
 			</Eval>
-			<Count counter="{Str(Thermostat.GetType())???'Err'}"/>
 			<Conditional>
 				<Condition condition="!ThermostatData.Enabled">
-					<Count counter="Test0"/>
 					<Finished/>
 				</Condition>
 			</Conditional>
 			<Parallel>
 				<Thread>
-					<Count counter="Test1"/>
 					<Eval>
 						<![CDATA[
 						IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
-						IndoorSensorConnection:=Thermostat[IndoorTempJid];
+						IndoorSensorConnection:=Thermostat.Client[IndoorTempJid];
 						ConnectedToIndoorSensor:=
 							exists(IndoorSensorConnection) and
 							(IndoorSensorConnection.State=SubscriptionState.Both or
 							IndoorSensorConnection.State=SubscriptionState.To);
 						]]>
 					</Eval>
-					<Count counter="Test2"/>
 					<Conditional>
 						<Condition condition="ConnectedToIndoorSensor">
-							<Count counter="Test3"/>
-							<iot:ReadSensor actor="Thermostat" to="{IndoorTempJid}" responseVariable="Indoor" responseType="Object">
+							<iot:ReadSensor actor="ThermostatSensorClient{Index}" to="{IndoorTempJid}" responseVariable="Indoor" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 							</iot:ReadSensor>
 						</Condition>
 						<Otherwise>
-							<Count counter="Test4"/>
-							<xmpp:SubscribeTo actor="Thermostat" to="IndoorTempJid"/>
+							<Count counter="SubscribeTo{IndoorTempJid}"/>
+							<xmpp:SubscribeTo actor="Thermostat" to="{IndoorTempJid}"/>
 							<Finished/>
 						</Otherwise>
 					</Conditional>
 				</Thread>
 				<Thread>
-					<Count counter="Test5"/>
 					<Eval>
 						<![CDATA[
 						HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
-						HeaterConnection:=Thermostat[HeaterJid];
+						HeaterConnection:=Thermostat.Client[HeaterJid];
 						ConnectedToHeater:=
 							exists(HeaterConnection) and
 							(HeaterConnection.State=SubscriptionState.Both or
 							HeaterConnection.State=SubscriptionState.To);
 						]]>
 					</Eval>
-					<Count counter="Test6"/>
 					<Conditional>
 						<Condition condition="ConnectedToHeater">
-							<Count counter="Test7"/>
-							<iot:ReadSensor actor="Thermostat" to="{HeaterJid}" responseVariable="Heater" responseType="Object">
+							<iot:ReadSensor actor="ThermostatSensorClient{Index}" to="{HeaterJid}" responseVariable="Heater" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 								<iot:FieldType>Status</iot:FieldType>
 							</iot:ReadSensor>
 						</Condition>
 						<Otherwise>
-							<Count counter="Test8"/>
-							<xmpp:SubscribeTo actor="Thermostat" to="HeaterJid"/>
+							<Count counter="SubscribeTo"/>
+							<xmpp:SubscribeTo actor="Thermostat" to="{HeaterJid}"/>
 							<Finished/>
 						</Otherwise>
 					</Conditional>
 				</Thread>
 			</Parallel>
 			<Conditional>
-				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal and !Heater.Enabled">
+				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal °C and !Heater.Enabled">
 					<Count counter="Enable"/>
 				</Condition>
-				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal and Heater.Enabled">
+				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal °C and Heater.Enabled">
 					<Count counter="Disable"/>
 				</Condition>
 			</Conditional>
 			<Stop/>
 		</Activity>
-		<Activity id="ReadOutdoorTemperature">
+		<Activity id="ReadOutdoorTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of an outdoor temperature sensor.</Description>
 			<Start/>
 			<Count counter="ReadSensor"/>
@@ -330,7 +321,7 @@
 			</iot:ReportFields>
 			<Stop/>
 		</Activity>
-		<Activity id="ReadIndoorTemperature">
+		<Activity id="ReadIndoorTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of an indoor temperature sensor.</Description>
 			<Start/>
 			<Count counter="ReadSensor"/>
@@ -343,7 +334,7 @@
 			</iot:ReportFields>
 			<Stop/>
 		</Activity>
-		<Activity id="ReadHeater">
+		<Activity id="ReadHeater" logStart="false" logEnd="false">
 			<Description>Performs a readout of heater.</Description>
 			<Start/>
 			<Count counter="ReadSensor"/>
@@ -359,7 +350,7 @@
 			</iot:ReportFields>
 			<Stop/>
 		</Activity>
-		<Activity id="ReadThermostat">
+		<Activity id="ReadThermostat" logStart="false" logEnd="false">
 			<Description>Performs a readout of a thermostat.</Description>
 			<Start/>
 			<Count counter="ReadSensor"/>
