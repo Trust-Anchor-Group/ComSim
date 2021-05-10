@@ -39,7 +39,7 @@
 			(
 				Global["DataOutdoorTemp"+IntToStr2(i)]:=
 				{
-					"Temperature":Uniform(-10,40)
+					"Temperature":Uniform(-10,25)
 				};
 
 				Global["DataIndoorTemp"+IntToStr2(i)]:=
@@ -93,21 +93,21 @@
 		</xmpp:XmppActorTcp>
 		<xmpp:XmppActorTcp id="Heater" domain="lab.tagroot.io" userName="SimHeater" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
-			<iot:ControlServerExtension/>
 			<iot:SensorServerExtension id="HeaterSensor"/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
+			<iot:ControlServerExtension/>
 		</xmpp:XmppActorTcp>
 		<xmpp:XmppActorTcp id="Thermostat" domain="lab.tagroot.io" userName="SimThermostat" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:SensorClientExtension id="ThermostatSensorClient"/>
 			<iot:ControlClientExtension/>
-			<iot:ControlServerExtension/>
 			<iot:SensorServerExtension/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEvent" actorName="Sensor">
 				<Parameter name="e"/>
 			</ExternalEvent>
+			<iot:ControlServerExtension/>
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>

@@ -279,4 +279,150 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:group name="ControlParameterTypes">
+		<xs:choice>
+			<xs:element name="BooleanControlParameter" type="BooleanControlParameter"/>
+			<xs:element name="ColorControlParameter" type="ColorControlParameter"/>
+			<xs:element name="DateControlParameter" type="DateControlParameter"/>
+			<xs:element name="DateTimeControlParameter" type="DateTimeControlParameter"/>
+			<xs:element name="DoubleControlParameter" type="DoubleControlParameter"/>
+			<xs:element name="DurationControlParameter" type="DurationControlParameter"/>
+			<xs:element name="EnumControlParameter" type="EnumControlParameter"/>
+			<xs:element name="Int32ControlParameter" type="Int32ControlParameter"/>
+			<xs:element name="Int64ControlParameter" type="Int64ControlParameter"/>
+			<xs:element name="MultiLineTextControlParameter" type="MultiLineTextControlParameter"/>
+			<xs:element name="StringControlParameter" type="StringControlParameter"/>
+			<xs:element name="TimeControlParameter" type="TimeControlParameter"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="ControlParameter" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="NodeReference">
+				<xs:attribute name="name" type="xs:string" use="required"/>
+				<xs:attribute name="page" type="xs:string" use="optional"/>
+				<xs:attribute name="label" type="xs:string" use="required"/>
+				<xs:attribute name="description" type="xs:string" use="optional"/>
+				<xs:attribute name="getAction" type="xs:string" use="required"/>
+				<xs:attribute name="setAction" type="xs:string" use="required"/>
+				<xs:attribute name="variable" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="BooleanControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ColorControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DateControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:date" use="optional"/>
+				<xs:attribute name="max" type="xs:date" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DateTimeControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:dateTime" use="optional"/>
+				<xs:attribute name="max" type="xs:dateTime" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DoubleControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:double" use="optional"/>
+				<xs:attribute name="max" type="xs:double" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DurationControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:duration" use="optional"/>
+				<xs:attribute name="max" type="xs:duration" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="EnumControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:sequence>
+					<xs:element name="Label" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="enumType" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Int32ControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:int" use="optional"/>
+				<xs:attribute name="max" type="xs:int" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Int64ControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:long" use="optional"/>
+				<xs:attribute name="max" type="xs:long" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="MultiLineTextControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="regularExpression" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="StringControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:sequence>
+					<xs:element name="Option" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="label" type="xs:string" use="optional"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="regularExpression" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="TimeControlParameter">
+		<xs:complexContent>
+			<xs:extension base="ControlParameter">
+				<xs:attribute name="min" type="xs:time" use="optional"/>
+				<xs:attribute name="max" type="xs:time" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
 </xs:schema>
