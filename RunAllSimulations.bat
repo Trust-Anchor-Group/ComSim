@@ -9,3 +9,4 @@ call RunSimulation Federation
 call RunSimulation ContentType
 call RunSimulation Distributions
 call RunSimulation RequestResponse
+call RunSimulation XmppDeviceControl
