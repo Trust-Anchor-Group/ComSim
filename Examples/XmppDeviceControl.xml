@@ -253,20 +253,29 @@
 						<![CDATA[
 						IndoorTempJid:="SimIndoorTemp"+i+"@1451.ieeehyd.org";
 						IndoorSensorConnection:=Thermostat.Client[IndoorTempJid];
-						ConnectedToIndoorSensor:=
-							exists(IndoorSensorConnection) and
+						
+						ConnectedToIndoorSensor:=exists(IndoorSensorConnection) and
 							(IndoorSensorConnection.State=SubscriptionState.Both or
 							IndoorSensorConnection.State=SubscriptionState.To);
+							
+						IndoorSensorOnline:=ConnectedToIndoorSensor and
+							IndoorSensorConnection.HasLastPresence and
+							IndoorSensorConnection.LastPresence.IsOnline;
 						]]>
 					</Eval>
 					<Conditional>
-						<Condition condition="ConnectedToIndoorSensor">
+						<Condition condition="IndoorSensorOnline">
+							<Count counter="RequestSensorData"/>
 							<iot:ReadSensor actor="ThermostatSensorClient{Index}" to="{IndoorTempJid}" responseVariable="Indoor" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 							</iot:ReadSensor>
 						</Condition>
+						<Condition condition="ConnectedToIndoorSensor">
+							<Count counter="IndoorSensor{Index} Offline"/>
+							<Finished/>
+						</Condition>
 						<Otherwise>
-							<Count counter="SubscribeTo{IndoorTempJid}"/>
+							<Count counter="SubscribeTo"/>
 							<xmpp:SubscribeTo actor="Thermostat" to="{IndoorTempJid}"/>
 							<Finished/>
 						</Otherwise>
@@ -277,18 +286,27 @@
 						<![CDATA[
 						HeaterJid:="SimHeater"+i+"@1451.ieeehyd.org";
 						HeaterConnection:=Thermostat.Client[HeaterJid];
-						ConnectedToHeater:=
-							exists(HeaterConnection) and
+						
+						ConnectedToHeater:=exists(HeaterConnection) and
 							(HeaterConnection.State=SubscriptionState.Both or
 							HeaterConnection.State=SubscriptionState.To);
+							
+						HeaterOnline:=ConnectedToHeater and
+							HeaterConnection.HasLastPresence and
+							HeaterConnection.LastPresence.IsOnline;
 						]]>
 					</Eval>
 					<Conditional>
-						<Condition condition="ConnectedToHeater">
+						<Condition condition="HeaterOnline">
+							<Count counter="RequestSensorData"/>
 							<iot:ReadSensor actor="ThermostatSensorClient{Index}" to="{HeaterJid}" responseVariable="Heater" responseType="Object">
 								<iot:FieldType>Momentary</iot:FieldType>
 								<iot:FieldType>Status</iot:FieldType>
 							</iot:ReadSensor>
+						</Condition>
+						<Condition condition="ConnectedToHeater">
+							<Count counter="Heater{Index} Offline"/>
+							<Finished/>
 						</Condition>
 						<Otherwise>
 							<Count counter="SubscribeTo"/>
