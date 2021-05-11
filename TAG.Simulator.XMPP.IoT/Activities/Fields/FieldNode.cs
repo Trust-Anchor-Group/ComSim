@@ -5,7 +5,6 @@ using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Script;
-using Waher.Things;
 using Waher.Things.SensorData;
 
 namespace TAG.Simulator.XMPP.IoT.Activities.Fields

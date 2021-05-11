@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.XMPP.IoT.Activities.ControlParameters;
 using Waher.Networking.XMPP.Provisioning;
 using Waher.Networking.XMPP.Control;
+using Waher.Script;
 using Waher.Things.ControlParameters;
 
 namespace TAG.Simulator.XMPP.IoT.Extensions
@@ -13,6 +16,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 	/// </summary>
 	public class ControlServerExtension : IoTXmppExtension
 	{
+		private ControlParameterNode[] parameters;
+
 		/// <summary>
 		/// Control Server XMPP extension
 		/// </summary>
@@ -40,6 +45,25 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		}
 
 		/// <summary>
+		/// Sets properties and attributes of class in accordance with XML definition.
+		/// </summary>
+		/// <param name="Definition">XML definition</param>
+		public override async Task FromXml(XmlElement Definition)
+		{
+			await base.FromXml(Definition);
+
+			List<ControlParameterNode> Parameters = new List<ControlParameterNode>();
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is ControlParameterNode Parameter)
+					Parameters.Add(Parameter);
+			}
+
+			this.parameters = Parameters.ToArray();
+		}
+
+		/// <summary>
 		/// Adds the extension to the client.
 		/// </summary>
 		/// <param name="Instance">Actor instance.</param>
@@ -62,7 +86,12 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 					new KeyValuePair<string, object>("Node", Node),
 					new KeyValuePair<string, object>("Client", Client));
 
-				return Task.FromResult<ControlParameter[]>(new ControlParameter[0]);
+				List<ControlParameter> Parameters = new List<ControlParameter>();
+
+				foreach (ControlParameterNode Parameter in this.parameters)
+					Parameter.AddParameters(Parameters, Instance);
+
+				return Task.FromResult<ControlParameter[]>(Parameters.ToArray());
 			};
 
 			return Task.FromResult<object>(Extension);

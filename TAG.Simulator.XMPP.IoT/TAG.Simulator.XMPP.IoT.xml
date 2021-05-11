@@ -4,6 +4,615 @@
         <name>TAG.Simulator.XMPP.IoT</name>
     </assembly>
     <members>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter">
+            <summary>
+            Boolean sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Boolean sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.BooleanControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter">
+            <summary>
+            Color sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Color sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ColorControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode">
+            <summary>
+            Abstract base class for control parameter nodes.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for control parameter nodes.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Value">
+            <summary>
+            Value node
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Name">
+            <summary>
+            Field Name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Page">
+            <summary>
+            Field Name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Variable">
+            <summary>
+            Variable name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Actor">
+            <summary>
+            Actor variable name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.SetActivity">
+            <summary>
+            Set activity
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.ControlParameterNode.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter">
+            <summary>
+            Date sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Date sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter">
+            <summary>
+            DateTime sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            DateTime sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DateTimeControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter">
+            <summary>
+            Double sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Double sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DoubleControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter">
+            <summary>
+            Duration sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Duration sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.DurationControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter">
+            <summary>
+            Enum sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Enum sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.EnumControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter">
+            <summary>
+            Int32 sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int32 sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int32ControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter">
+            <summary>
+            Int64 sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Int64 sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Int64ControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label">
+            <summary>
+            Text label
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Text label
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label.Value">
+            <summary>
+            Label value.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Label.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter">
+            <summary>
+            Multi-line text sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Multi-line text sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.MultiLineTextControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option">
+            <summary>
+            String option, with label.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            String option, with label.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.Value">
+            <summary>
+            Option value.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.Label">
+            <summary>
+            Associated label
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.Option.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter">
+            <summary>
+            String sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            String sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.StringControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter">
+            <summary>
+            Time sensor data control parameter node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Time sensor data control parameter node.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Activities.ControlParameters.TimeControlParameter.AddParameters(System.Collections.Generic.List{Waher.Things.ControlParameters.ControlParameter},TAG.Simulator.ObjectModel.Actors.IActor)">
+            <summary>
+            Adds control parameters.
+            </summary>
+            <param name="Parameters">Generated list of control parameters.</param>
+            <param name="Actor">Actor instance</param>
+        </member>
         <member name="T:TAG.Simulator.XMPP.IoT.Activities.FieldReference">
             <summary>
             Field reference.
@@ -892,6 +1501,12 @@
             <param name="Parent">Parent node.</param>
             <param name="Model">Model in which the node is defined.</param>
             <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.IoT.Extensions.ControlServerExtension.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
         </member>
         <member name="M:TAG.Simulator.XMPP.IoT.Extensions.ControlServerExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
             <summary>

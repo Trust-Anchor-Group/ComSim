@@ -74,7 +74,7 @@ namespace TAG.Simulator.XMPP.Extensions
 		{
 			this.id = XML.Attribute(Definition, "id");
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
