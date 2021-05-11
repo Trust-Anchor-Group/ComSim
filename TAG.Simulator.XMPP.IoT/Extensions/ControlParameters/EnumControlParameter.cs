@@ -1,29 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
+using Waher.Runtime.Inventory;
 using Waher.Script;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
-	/// String sensor data control parameter node.
+	/// Enum sensor data control parameter node.
 	/// </summary>
-	public class StringControlParameter : ControlParameterNode
+	public class EnumControlParameter : ControlParameterNode
 	{
-		private string regularExpression;
-		private string[] options;
+		private string enumTypeName;
+		private Type enumType;
 		private string[] labels;
 
 		/// <summary>
-		/// String sensor data control parameter node.
+		/// Enum sensor data control parameter node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public StringControlParameter(ISimulationNode Parent, Model Model)
+		public EnumControlParameter(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -31,7 +33,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "StringControlParameter";
+		public override string LocalName => "EnumControlParameter";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -41,7 +43,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new StringControlParameter(Parent, Model);
+			return new EnumControlParameter(Parent, Model);
 		}
 
 		/// <summary>
@@ -50,23 +52,26 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Definition">XML definition</param>
 		public override async Task FromXml(XmlElement Definition)
 		{
-			this.regularExpression = XML.Attribute(Definition, "regularExpression");
+			this.enumTypeName = XML.Attribute(Definition, "enumType");
+			this.enumType = Types.GetType(this.enumTypeName);
+
+			if (this.enumType is null)
+				throw new Exception("Type not recognized: " + this.enumTypeName);
+
+			TypeInfo TI = this.enumType.GetTypeInfo();
+			if (!TI.IsEnum)
+				throw new Exception("Type not an enumeration type: " + this.enumTypeName);
 
 			await base.FromXml(Definition);
 
-			List<string> Options = new List<string>();
 			List<string> Labels = new List<string>();
 
 			foreach (ISimulationNode Node in this.Children)
 			{
-				if (Node is Option Option)
-				{
-					Options.Add(Option.Value);
-					Labels.Add(Option.Label);
-				}
+				if (Node is Label Label)
+					Labels.Add(Label.Value);
 			}
 
-			this.options = Options.ToArray();
 			this.labels = Labels.ToArray();
 		}
 
@@ -77,7 +82,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Task<string> Get(Waher.Things.IThingReference Node)
+			Task<Enum> Get(Waher.Things.IThingReference Node)
 			{
 				Variables Variables = this.Model.GetEventVariables(Actor);
 
@@ -86,13 +91,13 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 
 				object Value = this.Value.Evaluate(Variables);
 
-				if (!(Value is string TypedValue))
-					TypedValue = Value.ToString();
+				if (!(Value is Enum TypedValue))
+					TypedValue = (Enum)Enum.Parse(this.enumType, Value.ToString());
 
-				return Task.FromResult<string>(TypedValue);
+				return Task.FromResult<Enum>(TypedValue);
 			}
 
-			async Task Set(Waher.Things.IThingReference Node, string Value)
+			async Task Set(Waher.Things.IThingReference Node, Enum Value)
 			{
 				Variables Variables = this.Model.GetEventVariables(Actor);
 				Variables[this.Variable] = Value;
@@ -103,12 +108,10 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 				await this.SetActivity.ExecuteTask(Variables);
 			}
 
-			if (!string.IsNullOrEmpty(this.regularExpression))
-				Parameters.Add(new Waher.Things.ControlParameters.StringControlParameter(this.Name, this.Page, this.Label, this.Description, this.regularExpression, Get, Set));
-			else if (this.options.Length > 0)
-				Parameters.Add(new Waher.Things.ControlParameters.StringControlParameter(this.Name, this.Page, this.Label, this.Description, this.options, this.labels, Get, Set));
+			if (this.labels.Length == 0)
+				Parameters.Add(new Waher.Things.ControlParameters.EnumControlParameter(this.Name, this.Page, this.Label, this.Description, this.enumType, Get, Set));
 			else
-				Parameters.Add(new Waher.Things.ControlParameters.StringControlParameter(this.Name, this.Page, this.Label, this.Description, Get, Set));
+				Parameters.Add(new Waher.Things.ControlParameters.EnumControlParameter(this.Name, this.Page, this.Label, this.Description, this.enumType, Get, Set, this.labels));
 		}
 
 	}

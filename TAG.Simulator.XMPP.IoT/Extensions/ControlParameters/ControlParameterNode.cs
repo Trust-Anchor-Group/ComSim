@@ -8,7 +8,7 @@ using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
 	/// Abstract base class for control parameter nodes.

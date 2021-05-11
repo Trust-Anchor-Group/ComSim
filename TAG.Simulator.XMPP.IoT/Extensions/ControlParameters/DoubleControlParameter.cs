@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
-	/// Duration sensor data control parameter node.
+	/// Double sensor data control parameter node.
 	/// </summary>
-	public class DurationControlParameter : ControlParameterNode
+	public class DoubleControlParameter : ControlParameterNode
 	{
-		private Duration min;
-		private Duration max;
+		private double? min;
+		private double? max;
 
 		/// <summary>
-		/// Duration sensor data control parameter node.
+		/// Double sensor data control parameter node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public DurationControlParameter(ISimulationNode Parent, Model Model)
+		public DoubleControlParameter(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -31,7 +30,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "DurationControlParameter";
+		public override string LocalName => "DoubleControlParameter";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -41,7 +40,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new DurationControlParameter(Parent, Model);
+			return new DoubleControlParameter(Parent, Model);
 		}
 
 		/// <summary>
@@ -51,12 +50,12 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		public override Task FromXml(XmlElement Definition)
 		{
 			if (Definition.HasAttribute("min"))
-				this.min = XML.Attribute(Definition, "min", Duration.Zero);
+				this.min = XML.Attribute(Definition, "min", double.MinValue);
 			else
 				this.min = null;
 
 			if (Definition.HasAttribute("max"))
-				this.max = XML.Attribute(Definition, "max", Duration.Zero);
+				this.max = XML.Attribute(Definition, "max", double.MaxValue);
 			else
 				this.max = null;
 
@@ -70,7 +69,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Parameters.Add(new Waher.Things.ControlParameters.DurationControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
+			Parameters.Add(new Waher.Things.ControlParameters.DoubleControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
 				(Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
@@ -80,10 +79,10 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 
 					object Value = this.Value.Evaluate(Variables);
 
-					if (!(Value is Duration TypedValue))
-						TypedValue = Duration.Parse(Value.ToString());
+					if (!(Value is double TypedValue))
+						TypedValue = Convert.ToDouble(Value);
 
-					return Task.FromResult<Duration>(TypedValue);
+					return Task.FromResult<double?>(TypedValue);
 				},
 				async (Node, Value) =>
 				{

@@ -4,7 +4,7 @@ using System.Xml;
 using Waher.Content.Xml;
 using Waher.Things;
 
-namespace TAG.Simulator.XMPP.IoT.Activities
+namespace TAG.Simulator.XMPP.IoT
 {
 	/// <summary>
 	/// Node reference.

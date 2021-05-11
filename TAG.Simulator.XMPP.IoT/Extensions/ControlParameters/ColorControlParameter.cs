@@ -2,27 +2,25 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using SkiaSharp;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Content.Xml;
+using Waher.Content;
 using Waher.Script;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
-	/// Time sensor data control parameter node.
+	/// Color sensor data control parameter node.
 	/// </summary>
-	public class TimeControlParameter : ControlParameterNode
+	public class ColorControlParameter : ControlParameterNode
 	{
-		private TimeSpan? min;
-		private TimeSpan? max;
-
 		/// <summary>
-		/// Time sensor data control parameter node.
+		/// Color sensor data control parameter node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public TimeControlParameter(ISimulationNode Parent, Model Model)
+		public ColorControlParameter(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -30,7 +28,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "TimeControlParameter";
+		public override string LocalName => "ColorControlParameter";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -40,7 +38,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new TimeControlParameter(Parent, Model);
+			return new ColorControlParameter(Parent, Model);
 		}
 
 		/// <summary>
@@ -49,16 +47,6 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			if (Definition.HasAttribute("min"))
-				this.min = XML.Attribute(Definition, "min", TimeSpan.MinValue);
-			else
-				this.min = null;
-
-			if (Definition.HasAttribute("max"))
-				this.max = XML.Attribute(Definition, "max", TimeSpan.MaxValue);
-			else
-				this.max = null;
-
 			return base.FromXml(Definition);
 		}
 
@@ -69,7 +57,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Parameters.Add(new Waher.Things.ControlParameters.TimeControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
+			Parameters.Add(new Waher.Things.ControlParameters.ColorControlParameter(this.Name, this.Page, this.Label, this.Description,
 				(Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
@@ -79,10 +67,12 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 
 					object Value = this.Value.Evaluate(Variables);
 
-					if (!(Value is TimeSpan TypedValue))
-						TypedValue = TimeSpan.Parse(Value.ToString());
-
-					return Task.FromResult<TimeSpan?>(TypedValue);
+					if (Value is ColorReference Ref)
+						return Task.FromResult<ColorReference>(Ref);
+					else if (Value is SKColor Color)
+						return Task.FromResult<ColorReference>(new ColorReference(Color.Red, Color.Green, Color.Blue, Color.Alpha));
+					else
+						throw new Exception("Value is not a color.");
 				},
 				async (Node, Value) =>
 				{

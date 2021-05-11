@@ -4,7 +4,7 @@ using System.Xml;
 using TAG.Simulator.ObjectModel;
 using Waher.Content.Xml;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
 	/// String option, with label.

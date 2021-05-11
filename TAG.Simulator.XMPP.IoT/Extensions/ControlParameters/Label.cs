@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
 	/// Text label

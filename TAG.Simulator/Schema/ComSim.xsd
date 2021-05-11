@@ -239,6 +239,7 @@
 			<xs:element ref="Xml"/>
 			<xs:element ref="Json"/>
 			<xs:element ref="Binary"/>
+			<xs:element ref="Boolean"/>
 			<xs:element ref="Number"/>
 			<xs:element ref="Duration"/>
 			<xs:element ref="DateTime"/>
@@ -287,6 +288,12 @@
 				<xs:element name="Single" type="xs:string"/>
 				<xs:element name="Double" type="xs:string"/>
 			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Boolean">
+		<xs:complexType>
+			<xs:attribute name="value" type="xs:boolean" use="required"/>
 		</xs:complexType>
 	</xs:element>
 

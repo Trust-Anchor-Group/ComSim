@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using TAG.Simulator.XMPP.IoT.Activities.ControlParameters;
+using TAG.Simulator.XMPP.IoT.Extensions.ControlParameters;
 using Waher.Networking.XMPP.Provisioning;
 using Waher.Networking.XMPP.Control;
 using Waher.Script;

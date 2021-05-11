@@ -452,4 +452,20 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="ControlActuator">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:sequence>
+						<xs:group ref="cs:Value" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="NodeReference" type="NodeReference" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="to" type="xs:string" use="required"/>
+					<xs:attribute name="parameter" type="xs:string" use="required"/>
+					<xs:attribute name="controller" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

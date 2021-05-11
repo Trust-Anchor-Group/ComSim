@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Content.Xml;
 using Waher.Script;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
-	/// Date sensor data control parameter node.
+	/// Boolean sensor data control parameter node.
 	/// </summary>
-	public class DateControlParameter : ControlParameterNode
+	public class BooleanControlParameter : ControlParameterNode
 	{
-		private DateTime? min;
-		private DateTime? max;
-
 		/// <summary>
-		/// Date sensor data control parameter node.
+		/// Boolean sensor data control parameter node.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public DateControlParameter(ISimulationNode Parent, Model Model)
+		public BooleanControlParameter(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -30,7 +26,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "DateControlParameter";
+		public override string LocalName => "BooleanControlParameter";
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -40,7 +36,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new DateControlParameter(Parent, Model);
+			return new BooleanControlParameter(Parent, Model);
 		}
 
 		/// <summary>
@@ -49,16 +45,6 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			if (Definition.HasAttribute("min"))
-				this.min = XML.Attribute(Definition, "min", DateTime.MinValue);
-			else
-				this.min = null;
-
-			if (Definition.HasAttribute("max"))
-				this.max = XML.Attribute(Definition, "max", DateTime.MaxValue);
-			else
-				this.max = null;
-
 			return base.FromXml(Definition);
 		}
 
@@ -69,7 +55,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Parameters.Add(new Waher.Things.ControlParameters.DateControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
+			Parameters.Add(new Waher.Things.ControlParameters.BooleanControlParameter(this.Name, this.Page, this.Label, this.Description,
 				(Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
@@ -79,15 +65,15 @@ namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
 
 					object Value = this.Value.Evaluate(Variables);
 
-					if (!(Value is DateTime TypedValue))
-						TypedValue = Convert.ToDateTime(Value);
+					if (!(Value is bool TypedValue))
+						TypedValue = Convert.ToBoolean(Value);
 
-					return Task.FromResult<DateTime?>(TypedValue.Date);
+					return Task.FromResult<bool?>(TypedValue);
 				},
 				async (Node, Value) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
-					Variables[this.Variable] = Value.Date;
+					Variables[this.Variable] = Value;
 
 					if (!string.IsNullOrEmpty(this.Actor))
 						Variables[this.Actor] = Actor;

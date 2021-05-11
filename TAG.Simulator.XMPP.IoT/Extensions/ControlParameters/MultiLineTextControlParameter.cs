@@ -7,7 +7,7 @@ using Waher.Content.Xml;
 using Waher.Script;
 using Waher.Things.ControlParameters;
 
-namespace TAG.Simulator.XMPP.IoT.Activities.ControlParameters
+namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 {
 	/// <summary>
 	/// Multi-line text sensor data control parameter node.

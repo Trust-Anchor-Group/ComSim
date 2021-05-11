@@ -5,8 +5,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT1M">
+       timeCycle="PT10M"
+       duration="PT10M">
 	<Meta>
 		<Title>XMPP Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of XMPP Sensors, Actuators and Controllers.</Introduction>
@@ -112,7 +112,7 @@
 		<xmpp:XmppActorTcp id="Thermostat" domain="lab.tagroot.io" userName="SimThermostat" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<xmpp:PepExtension/>
 			<iot:SensorClientExtension id="ThermostatSensorClient"/>
-			<iot:ControlClientExtension/>
+			<iot:ControlClientExtension id="ThermostatControlClient"/>
 			<iot:SensorServerExtension/>
 			<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEvent" actorName="Sensor">
 				<Parameter name="e"/>
@@ -191,6 +191,9 @@
 			<Sample name="Heater Temperature {i}">
 				<Script>HeaterData.Temperature C</Script>
 			</Sample>
+			<Sample name="Heater Enabled {i}">
+				<Script>HeaterData.Enabled?40:0</Script>
+			</Sample>
 			<Stop/>
 		</Activity>
 		<Activity id="Publish" logStart="false" logEnd="false">
@@ -234,6 +237,9 @@
 				<iot:QuantityField name="Temperature" nrDecimals="1" unit="°C" type="Momentary" qos="AutomaticReadout">
 					<Script>HeaterData.Temperature</Script>
 				</iot:QuantityField>
+				<iot:QuantityField name="Enabled" nrDecimals="0" unit="%" type="Status" qos="AutomaticReadout">
+					<Script>HeaterData.Enabled</Script>
+				</iot:QuantityField>
 			</iot:NewMomentaryValues>
 			<Stop/>
 		</Activity>
@@ -250,6 +256,7 @@
 				<![CDATA[
 				Thermostat:=Global["Thermostat"+Index];
 				ThermostatData:=Global["DataThermostat"+Index];
+				ThermostatControlClient:=Global["ThermostatControlClient"+Index];
 				]]>
 			</Eval>
 			<Conditional>
@@ -329,9 +336,15 @@
 			<Conditional>
 				<Condition condition="Indoor.Temperature.Quantity&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
 					<Count counter="Enable"/>
+					<iot:ControlActuator to="{HeaterJid}" parameter="Enabled" controller="ThermostatControlClient">
+						<Boolean value="true"/>
+					</iot:ControlActuator>
 				</Condition>
 				<Condition condition="Indoor.Temperature.Quantity&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
 					<Count counter="Disable"/>
+					<iot:ControlActuator to="{HeaterJid}" parameter="Enabled" controller="ThermostatControlClient">
+						<Boolean value="false"/>
+					</iot:ControlActuator>
 				</Condition>
 			</Conditional>
 			<Stop/>
@@ -414,51 +427,61 @@
 			<Source ref="Outdoor Temperature 1"/>
 			<Source ref="Indoor Temperature 1"/>
 			<Source ref="Heater Temperature 1"/>
+			<Source ref="Heater Enabled 1"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 2" title="Temperatue System 2" legend="true">
 			<Source ref="Outdoor Temperature 2"/>
 			<Source ref="Indoor Temperature 2"/>
 			<Source ref="Heater Temperature 2"/>
+			<Source ref="Heater Enabled 2"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 3" title="Temperatue System 3" legend="true">
 			<Source ref="Outdoor Temperature 3"/>
 			<Source ref="Indoor Temperature 3"/>
 			<Source ref="Heater Temperature 3"/>
+			<Source ref="Heater Enabled 3"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 4" title="Temperatue System 4" legend="true">
 			<Source ref="Outdoor Temperature 4"/>
 			<Source ref="Indoor Temperature 4"/>
 			<Source ref="Heater Temperature 4"/>
+			<Source ref="Heater Enabled 4"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 5" title="Temperatue System 5" legend="true">
 			<Source ref="Outdoor Temperature 5"/>
 			<Source ref="Indoor Temperature 5"/>
 			<Source ref="Heater Temperature 5"/>
+			<Source ref="Heater Enabled 5"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 6" title="Temperatue System 6" legend="true">
 			<Source ref="Outdoor Temperature 6"/>
 			<Source ref="Indoor Temperature 6"/>
 			<Source ref="Heater Temperature 6"/>
+			<Source ref="Heater Enabled 6"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 7" title="Temperatue System 7" legend="true">
 			<Source ref="Outdoor Temperature 7"/>
 			<Source ref="Indoor Temperature 7"/>
 			<Source ref="Heater Temperature 7"/>
+			<Source ref="Heater Enabled 7"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 8" title="Temperatue System 8" legend="true">
 			<Source ref="Outdoor Temperature 8"/>
 			<Source ref="Indoor Temperature 8"/>
 			<Source ref="Heater Temperature 8"/>
+			<Source ref="Heater Enabled 8"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 9" title="Temperatue System 9" legend="true">
 			<Source ref="Outdoor Temperature 9"/>
 			<Source ref="Indoor Temperature 9"/>
 			<Source ref="Heater Temperature 9"/>
+			<Source ref="Heater Enabled 9"/>
 		</CombinedSampleGraph>
 		<CombinedSampleGraph header="System 10" title="Temperatue System 10" legend="true">
 			<Source ref="Outdoor Temperature 10"/>
 			<Source ref="Indoor Temperature 10"/>
 			<Source ref="Heater Temperature 10"/>
+			<Source ref="Heater Enabled 10"/>
 		</CombinedSampleGraph>
 	</Graphs>
 </Model>
