@@ -5,8 +5,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT1M">
+       timeCycle="PT10M"
+       duration="PT10M">
 	<Meta>
 		<Title>XMPP Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of XMPP Sensors, Actuators and Controllers.</Introduction>
