@@ -102,7 +102,7 @@
 					<Script>
 						<![CDATA[
 						Index:=Heater.InstanceId.Substring(6);
-						Data:=Global["DataHeater"+IntToStr2(i)];
+						Data:=Global["DataHeater"+Index];
 						Data.Enabled
 						]]>
 					</Script>
@@ -402,7 +402,7 @@
 			<Eval>
 				<![CDATA[
 				Index:=Heater.InstanceId.Substring(6);
-				Data:=Global["DataHeater"+IntToStr2(i)];
+				Data:=Global["DataHeater"+Index];
 				Data.Enabled:=Value
 				]]>
 			</Eval>
