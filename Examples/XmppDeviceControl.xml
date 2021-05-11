@@ -371,13 +371,13 @@
 				</Thread>
 			</Parallel>
 			<Conditional>
-				<Condition condition="Indoor.Temperature.Quantity&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
+				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
 					<Count counter="Enable"/>
 					<iot:ControlActuator to="{HeaterJid}" parameter="Enabled" controller="ThermostatControlClient">
 						<Boolean value="true"/>
 					</iot:ControlActuator>
 				</Condition>
-				<Condition condition="Indoor.Temperature.Quantity&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
+				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
 					<Count counter="Disable"/>
 					<iot:ControlActuator to="{HeaterJid}" parameter="Enabled" controller="ThermostatControlClient">
 						<Boolean value="false"/>
