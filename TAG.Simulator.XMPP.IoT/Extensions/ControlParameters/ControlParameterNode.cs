@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.ObjectModel.Events;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
+using Waher.Script;
 using Waher.Things.ControlParameters;
 
 namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
@@ -14,7 +15,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 	/// <summary>
 	/// Abstract base class for control parameter nodes.
 	/// </summary>
-	public abstract class ControlParameterNode : NodeReference, IValueRecipient
+	public abstract class ControlParameterNode : NodeReference, IValueRecipient, IEventPreparation
 	{
 		private IValue value = null;
 		private string name;
@@ -118,6 +119,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 			if (!this.Model.TryGetEvent(this.setEventId, out this.setEvent))
 				throw new Exception("Event not found: " + this.setEventId);
 
+			this.setEvent.Register(this);
+
 			return base.Start();
 		}
 
@@ -127,5 +130,43 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// <param name="Parameters">Generated list of control parameters.</param>
 		/// <param name="Actor">Actor instance</param>
 		public abstract void AddParameters(List<ControlParameter> Parameters, IActor Actor);
+
+		/// <summary>
+		/// Prepares <paramref name="Variables"/> for the execution of an event.
+		/// </summary>
+		/// <param name="Variables">Event variables</param>
+		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
+		public void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
+		{
+			// Do nothing.
+		}
+
+		/// <summary>
+		/// Releases resources at the end of an event.
+		/// </summary>
+		/// <param name="Variables">Event variables</param>
+		public void Release(Variables Variables)
+		{
+			// Do nothing.
+		}
+
+		/// <summary>
+		/// Exports the node to PlantUML script in a markdown document.
+		/// </summary>
+		/// <param name="Output">Output stream.</param>
+		/// <param name="Name">Optional name for the association.</param>
+		/// <param name="Index">Chart Index</param>
+		public void ExportPlantUml(StreamWriter Output, string Name, int Index)
+		{
+			Output.Write("actor \"");
+			Output.Write(this.actor);
+			Output.Write("\" as A");
+			Output.Write(" <<");
+			Output.Write(this.actor);
+			Output.WriteLine(">>");
+			Output.WriteLine("note right of A : Triggered when external\\ncontrol client sets parameter");
+			Output.Write("A --> UC1 : ");
+			Output.WriteLine(this.name);
+		}
 	}
 }
