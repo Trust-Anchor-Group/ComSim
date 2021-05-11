@@ -87,13 +87,14 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 				},
 				async (Node, Value) =>
 				{
+					DateTime Start = DateTime.Now;
 					Variables Variables = this.Model.GetEventVariables(Actor);
 					Variables[this.Variable] = Value;
 
 					if (!string.IsNullOrEmpty(this.Actor))
 						Variables[this.Actor] = Actor;
 
-					await this.SetActivity.ExecuteTask(Variables);
+					await this.SetEvent.Trigger(Variables);
 				}));
 		}
 

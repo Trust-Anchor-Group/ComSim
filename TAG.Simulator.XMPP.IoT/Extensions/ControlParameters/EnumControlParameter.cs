@@ -99,13 +99,14 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 
 			async Task Set(Waher.Things.IThingReference Node, Enum Value)
 			{
+				DateTime Start = DateTime.Now;
 				Variables Variables = this.Model.GetEventVariables(Actor);
 				Variables[this.Variable] = Value;
 
 				if (!string.IsNullOrEmpty(this.Actor))
 					Variables[this.Actor] = Actor;
 
-				await this.SetActivity.ExecuteTask(Variables);
+				await this.SetEvent.Trigger(Variables);
 			}
 
 			if (this.labels.Length == 0)

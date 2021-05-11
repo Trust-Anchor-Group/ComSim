@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Actors;
+using TAG.Simulator.ObjectModel.Events;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Things.ControlParameters;
@@ -22,8 +23,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		private string description;
 		private string variable;
 		private string actor;
-		private string setActivityId;
-		private IActivity setActivity;
+		private string setEventId;
+		private IEvent setEvent;
 
 		/// <summary>
 		/// Abstract base class for control parameter nodes.
@@ -71,9 +72,14 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		public string Actor => this.actor;
 
 		/// <summary>
-		/// Set activity
+		/// Set event
 		/// </summary>
-		public IActivity SetActivity => this.setActivity;
+		public IEvent SetEvent => this.setEvent;
+
+		/// <summary>
+		/// ID of Set event.
+		/// </summary>
+		public string SetEventId => this.setEventId;
 
 		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
@@ -87,7 +93,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 			this.description = XML.Attribute(Definition, "description");
 			this.variable = XML.Attribute(Definition, "variable");
 			this.actor = XML.Attribute(Definition, "actor");
-			this.setActivityId = XML.Attribute(Definition, "setActivity");
+			this.setEventId = XML.Attribute(Definition, "setEvent");
 
 			return base.FromXml(Definition);
 		}
@@ -109,8 +115,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.Model.TryGetActivity(this.setActivityId, out this.setActivity))
-				throw new Exception("Activity not found: " + this.setActivityId);
+			if (!this.Model.TryGetEvent(this.setEventId, out this.setEvent))
+				throw new Exception("Event not found: " + this.setEventId);
 
 			return base.Start();
 		}

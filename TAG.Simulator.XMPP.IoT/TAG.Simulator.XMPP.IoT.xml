@@ -1004,9 +1004,14 @@
             Actor variable name
             </summary>
         </member>
-        <member name="P:TAG.Simulator.XMPP.IoT.Extensions.ControlParameters.ControlParameterNode.SetActivity">
+        <member name="P:TAG.Simulator.XMPP.IoT.Extensions.ControlParameters.ControlParameterNode.SetEvent">
             <summary>
-            Set activity
+            Set event
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.IoT.Extensions.ControlParameters.ControlParameterNode.SetEventId">
+            <summary>
+            ID of Set event.
             </summary>
         </member>
         <member name="M:TAG.Simulator.XMPP.IoT.Extensions.ControlParameters.ControlParameterNode.FromXml(System.Xml.XmlElement)">

@@ -306,7 +306,7 @@
 				<xs:attribute name="page" type="xs:string" use="optional"/>
 				<xs:attribute name="label" type="xs:string" use="required"/>
 				<xs:attribute name="description" type="xs:string" use="optional"/>
-				<xs:attribute name="setActivity" type="xs:string" use="required"/>
+				<xs:attribute name="setEvent" type="xs:string" use="required"/>
 				<xs:attribute name="variable" type="xs:string" use="required"/>
 				<xs:attribute name="actor" type="xs:string" use="required"/>
 			</xs:extension>
