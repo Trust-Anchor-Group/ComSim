@@ -106,7 +106,7 @@ Examples
 [x] High load
 [x] Performance comparison XML vs. JSON over MQTT
 [x] Req/Resp pattern
-[ ]	Sensor data (local/remote)
+[x]	Sensor data (local/remote)
 [ ] State machines & External events to determine activity node transitions
 [ ] Pub/Sub pattern
 [ ] Legal identities

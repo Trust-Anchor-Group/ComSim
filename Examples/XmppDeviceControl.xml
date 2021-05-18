@@ -65,7 +65,6 @@
 		</ModelScript>
 	</Meta>
 	<Assemblies>
-		<Assembly fileName="TAG.Simulator.Performance.dll"/>
 		<Assembly fileName="TAG.Simulator.XMPP.dll"/>
 		<Assembly fileName="TAG.Simulator.XMPP.IoT.dll"/>
 	</Assemblies>
