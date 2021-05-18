@@ -28,17 +28,20 @@
     <Assembly fileName="TAG.Simulator.XMPP.dll"/>
   </Assemblies>
   <Actors>
-    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="20" 
+					   apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
         <Parameter name="e"/>
       </ExternalEvent>
     </xmpp:XmppActorTcp>
-    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorBosh domain="lab.tagroot.io" userName="XmppBosh" id="XmppBosh" N="10" 
+						apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
         <Parameter name="e"/>
       </ExternalEvent>
     </xmpp:XmppActorBosh>
-    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+    <xmpp:XmppActorWebSocket domain="lab.tagroot.io" userName="XmppWebSocket" id="XmppWebSocket" N="10" 
+							 apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
       <ExternalEvent name="ChatMessage" event="MessageReceived" actorName="To">
         <Parameter name="e"/>
       </ExternalEvent>
