@@ -122,7 +122,7 @@ Protocols -> BreakingPoint
 BreakingPoint -> HighLoad
 Protocols -> ContentType
 Distributions
-XmppDeviceControl
+GuessANumber -> XmppDeviceControl
 }
 ```
 
