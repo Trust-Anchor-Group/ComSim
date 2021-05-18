@@ -94,11 +94,21 @@ namespace ComSim
 				string s;
 				bool Help = args.Length == 0;
 				bool LogConsole = false;
+				bool Quote;
 
 				for (i = 0; i < c; i++)
 				{
 					CommandLine.Append(' ');
-					CommandLine.Append(args[i]);
+
+					s = args[i];
+					Quote = s.IndexOf(' ') >= 0;
+					if (Quote)
+						CommandLine.Append('"');
+
+					CommandLine.Append(s);
+
+					if (Quote)
+						CommandLine.Append('"');
 				}
 
 				i = 0;
