@@ -29,7 +29,7 @@
     <PackageReference Include="Waher.Networking.DNS" Version="1.0.16" />
     <PackageReference Include="Waher.Networking.XMPP" Version="1.1.14" />
     <PackageReference Include="Waher.Networking.XMPP.Avatar" Version="1.1.3" />
-    <PackageReference Include="Waher.Networking.XMPP.MUC" Version="1.0.3" />
+    <PackageReference Include="Waher.Networking.XMPP.MUC" Version="1.0.4" />
     <PackageReference Include="Waher.Networking.XMPP.PEP" Version="1.1.3" />
     <PackageReference Include="Waher.Networking.XMPP.PubSub" Version="1.1.2" />
   </ItemGroup>
