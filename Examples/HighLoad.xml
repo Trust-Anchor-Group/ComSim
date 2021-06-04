@@ -49,17 +49,17 @@
       script contais the following script, executed when the resource is accessed:
 
           {
-              "cpuPercent":PerformanceCounters.GetCounter("Processor","_Total","% Processor Time").NextValue(),
-              "networkBytesPerSec":PerformanceCounters.GetCounter("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec").NextValue(),
-              "memoryMBytesFree":PerformanceCounters.GetCounter("Memory","Available MBytes").NextValue(),
-              "xmppCpu":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","% Processor Time").NextValue(),
-              "mqttCpu":PerformanceCounters.GetCounter("Process","mosquitto","% Processor Time").NextValue(),
-              "xmppMemory":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Working Set - Private").NextValue(),
-              "mqttMemory":PerformanceCounters.GetCounter("Process","mosquitto","Working Set - Private").NextValue(),
-              "xmppIo":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","IO Other Bytes/sec").NextValue(),
-              "mqttIo":PerformanceCounters.GetCounter("Process","mosquitto","IO Other Bytes/sec").NextValue(),
-              "xmppThreads":PerformanceCounters.GetCounter("Process","Waher.IoTGateway.Svc","Thread Count").NextValue(),
-              "mqttThreads":PerformanceCounters.GetCounter("Process","mosquitto","Thread Count").NextValue()
+              "cpuPercent":PerformanceCounterValue("Processor","_Total","% Processor Time"),
+              "networkBytesPerSec":PerformanceCounterValue("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec"),
+              "memoryMBytesFree":PerformanceCounterValue("Memory","Available MBytes"),
+              "xmppCpu":PerformanceCounterValue("Process","Waher.IoTGateway.Svc","% Processor Time"),
+              "mqttCpu":PerformanceCounterValue("Process","mosquitto","% Processor Time"),
+              "xmppMemory":PerformanceCounterValue("Process","Waher.IoTGateway.Svc","Working Set - Private"),
+              "mqttMemory":PerformanceCounterValue("Process","mosquitto","Working Set - Private"),
+              "xmppIo":PerformanceCounterValue("Process","Waher.IoTGateway.Svc","IO Other Bytes/sec"),
+              "mqttIo":PerformanceCounterValue("Process","mosquitto","IO Other Bytes/sec"),
+              "xmppThreads":PerformanceCounterValue("Process","Waher.IoTGateway.Svc","Thread Count"),
+              "mqttThreads":PerformanceCounterValue("Process","mosquitto","Thread Count")
           }
       ]]>
     </Preparation>
