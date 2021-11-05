@@ -76,6 +76,15 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 
 			Client.SetTag("ContractsClient", Extension);
 
+			Extension.ContractCreated += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "ContractCreated",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
 			Extension.ContractDeleted += (Sender, e) =>
 			{
 				this.Model.ExternalEvent(Instance, "ContractDeleted",
