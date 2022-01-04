@@ -112,7 +112,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMLDSIG.Values.Sign.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.XMLDSIG.Values.Sign.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>

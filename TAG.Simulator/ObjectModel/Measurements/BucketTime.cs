@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.Statistics;
 using Waher.Content;
 using Waher.Content.Xml;
 

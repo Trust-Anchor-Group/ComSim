@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Runtime.Inventory;
 
 namespace TAG.Simulator.ObjectModel
 {

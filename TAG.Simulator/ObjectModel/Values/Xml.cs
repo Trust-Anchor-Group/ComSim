@@ -66,9 +66,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override async Task<object> EvaluateAsync(Variables Variables)
 		{
-			string s = this.value.GetValue(Variables);
+			string s = await this.value.GetValueAsync(Variables);
 
 			XmlDocument Doc = new XmlDocument()
 			{

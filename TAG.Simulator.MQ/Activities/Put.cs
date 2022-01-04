@@ -88,8 +88,8 @@ namespace TAG.Simulator.MQ.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Queue = this.queue.GetValue(Variables);
-			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
+			string Queue = await this.queue.GetValueAsync(Variables);
+			object Content = this.value is null ? string.Empty : await this.value.EvaluateAsync(Variables) ?? string.Empty;
 			string Message;
 
 			if (Content is XmlDocument Doc)
@@ -99,7 +99,7 @@ namespace TAG.Simulator.MQ.Activities
 			else
 				Message = Content?.ToString() ?? string.Empty;
 
-			if (!(this.GetActorObject(this.actor, Variables) is MqActivityObject MqActor))
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is MqActivityObject MqActor))
 				throw new Exception("Actor not an MQ actor.");
 
 			await MqActor.Client.PutAsync(Queue, Message);

@@ -95,7 +95,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public override void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
+		public override Task Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
 			IActor Actor;
 			int[] P = new int[this.count];
@@ -128,6 +128,8 @@ namespace TAG.Simulator.ObjectModel.Events
 			Variables[this.name] = Actor.ActivityObject;
 
 			Tags.Add(new KeyValuePair<string, object>(this.name, Actor.InstanceId));
+
+			return Task.CompletedTask;
 		}
 
 		/// <summary>

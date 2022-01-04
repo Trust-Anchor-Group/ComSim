@@ -64,9 +64,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
-		public bool IsTrue(Variables Variables)
+		public Task<bool> IsTrue(Variables Variables)
 		{
-			return true;
+			return Task.FromResult<bool>(true);
 		}
 
 		/// <summary>

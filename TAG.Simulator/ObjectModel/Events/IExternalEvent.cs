@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Content.Xml;
-using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
 {

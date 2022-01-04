@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Events;
 using Waher.Runtime.Inventory;
 
 namespace TAG.Simulator

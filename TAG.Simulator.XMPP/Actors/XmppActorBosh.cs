@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Xml;
-using Waher.Content.Xml;
 
 namespace TAG.Simulator.XMPP.Actors
 {

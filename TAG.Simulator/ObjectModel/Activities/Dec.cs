@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
-using Waher.Content;
-using Waher.Content.Xml;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -45,10 +42,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			this.Model.DecrementCounter(this.GetCounter(Variables));
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			this.Model.DecrementCounter(await this.GetCounterAsync(Variables));
+			return null;
 		}
 
 		/// <summary>

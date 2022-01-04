@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
 using Waher.Networking.Sniffers;
 using Waher.Persistence;
@@ -123,7 +122,7 @@ namespace TAG.Simulator.MQ.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public override Actor CreateInstance(int InstanceIndex, string InstanceId)
+		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
 			MqActorTcp Result = new MqActorTcp(this, this.Model, InstanceIndex, InstanceId)
 			{
@@ -138,7 +137,7 @@ namespace TAG.Simulator.MQ.Actors
 				certificateStore = this.certificateStore
 			};
 
-			return Result;
+			return Task.FromResult<Actor>(Result);
 		}
 
 		/// <summary>
@@ -192,8 +191,8 @@ namespace TAG.Simulator.MQ.Actors
 					{
 						SubscriptionState Subscription = new SubscriptionState()
 						{
-							ExtEventName = Expression.Transform(Subscribe.ExtEvent, "{", "}", Properties),
-							Queue = Expression.Transform(Subscribe.Queue, "{", "}", Properties),
+							ExtEventName = await Expression.TransformAsync(Subscribe.ExtEvent, "{", "}", Properties),
+							Queue = await Expression.TransformAsync(Subscribe.Queue, "{", "}", Properties),
 							Actor = this,
 							Model = this.Model,
 							Cancel = new ManualResetEvent(false),

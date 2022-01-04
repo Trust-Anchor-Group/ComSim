@@ -36,7 +36,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public abstract object Evaluate(Variables Variables);
+		public abstract Task<object> EvaluateAsync(Variables Variables);
 
 		/// <summary>
 		/// Exports PlantUML

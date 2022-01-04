@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
-using Waher.Content.Xml;
 using Waher.Script;
 
 namespace TAG.Simulator.Performance.Values
@@ -67,9 +62,9 @@ namespace TAG.Simulator.Performance.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override Task<object> EvaluateAsync(Variables Variables)
 		{
-			return (double)this.Model.GetThreadCount();
+			return Task.FromResult<object>((double)this.Model.GetThreadCount());
 		}
 
 		/// <summary>

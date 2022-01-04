@@ -129,14 +129,14 @@ namespace TAG.Simulator.ObjectModel.Events
 				if (!(this.preparationNodes is null))
 				{
 					foreach (IEventPreparation Node in this.preparationNodes)
-						Node.Prepare(Variables, Tags);
+						await Node.Prepare(Variables, Tags);
 				}
 
 				try
 				{
 					if (!(Guard is null))
 					{
-						object Obj = Guard.Evaluate(Variables);
+						object Obj = await Guard.EvaluateAsync(Variables);
 						if (!(Obj is bool b))
 							throw new Exception("Guard expression did not evaluate to a boolean value.");
 
@@ -153,10 +153,10 @@ namespace TAG.Simulator.ObjectModel.Events
 								Tags.Clear();
 
 								foreach (IEventPreparation Node in this.preparationNodes)
-									Node.Prepare(Variables, Tags);
+									await Node.Prepare(Variables, Tags);
 							}
 
-							Obj = Guard.Evaluate(Variables);
+							Obj = await Guard.EvaluateAsync(Variables);
 							if (!(Obj is bool b2))
 								throw new Exception("Guard expression did not evaluate to a boolean value.");
 

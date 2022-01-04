@@ -92,11 +92,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
-		public bool IsTrue(Variables Variables)
+		public async Task<bool> IsTrue(Variables Variables)
 		{
 			try
 			{
-				object Result = this.expression.Evaluate(Variables);
+				object Result = await this.expression.EvaluateAsync(Variables);
 				return Result is bool b && b;
 			}
 			catch (Exception ex)

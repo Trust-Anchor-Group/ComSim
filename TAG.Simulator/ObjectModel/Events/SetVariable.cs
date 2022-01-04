@@ -76,9 +76,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public override void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
+		public override async Task Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
-			Variables[this.name] = this.value?.Evaluate(Variables);
+			Variables[this.name] = this.value is null ? null : await this.value.EvaluateAsync(Variables);
 		}
 
 		/// <summary>

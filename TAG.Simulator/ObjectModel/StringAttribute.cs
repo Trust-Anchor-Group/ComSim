@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel
@@ -40,10 +39,10 @@ namespace TAG.Simulator.ObjectModel
 		/// </summary>
 		/// <param name="Variables">Current set of variables.</param>
 		/// <returns>Value</returns>
-		public string GetValue(Variables Variables)
+		public async Task<string> GetValueAsync(Variables Variables)
 		{
 			if (this.hasEmbeddedScript)
-				return Expression.Transform(this.value, "{", "}", Variables);
+				return await Expression.TransformAsync(this.value, "{", "}", Variables);
 			else
 				return this.value;
 		}

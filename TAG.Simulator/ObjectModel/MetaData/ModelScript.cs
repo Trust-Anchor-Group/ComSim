@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Script;
@@ -66,11 +64,10 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		public override Task Initialize()
+		public override async Task Initialize()
 		{
-			this.expression.Evaluate(this.Model.Variables);
-
-			return base.Initialize();
+			await this.expression.EvaluateAsync(this.Model.Variables);
+			await base.Initialize();
 		}
 	}
 }

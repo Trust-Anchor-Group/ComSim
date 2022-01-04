@@ -86,6 +86,6 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// </summary>
 		/// <param name="Fields">Generated list of fields.</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		public abstract void AddFields(LinkedList<Field> Fields, Variables Variables);
+		public abstract Task AddFields(LinkedList<Field> Fields, Variables Variables);
 	}
 }

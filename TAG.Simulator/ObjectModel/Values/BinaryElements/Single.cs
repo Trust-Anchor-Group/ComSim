@@ -65,12 +65,12 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		public void Append(MemoryStream Output, Variables Variables)
+		public async Task Append(MemoryStream Output, Variables Variables)
 		{
 			object Result;
 
 			Output.Write(BitConverter.GetBytes(this.value ?? 
-				((Result = this.script.Evaluate(Variables)) is System.Single Value ? Value :
+				((Result = await this.script.EvaluateAsync(Variables)) is System.Single Value ? Value :
 				Convert.ToSingle(Result))), 0, 4);
 		}
 

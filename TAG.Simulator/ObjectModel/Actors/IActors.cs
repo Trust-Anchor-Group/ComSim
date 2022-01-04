@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Schema;
-using TAG.Simulator.ObjectModel.Events;
 
 namespace TAG.Simulator.ObjectModel.Actors
 {

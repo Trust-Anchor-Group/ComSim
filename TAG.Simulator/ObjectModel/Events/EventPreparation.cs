@@ -37,7 +37,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public abstract void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags);
+		public abstract Task Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags);
 
 		/// <summary>
 		/// Releases resources at the end of an event.

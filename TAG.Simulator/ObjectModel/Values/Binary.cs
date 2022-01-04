@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Values.BinaryElements;
-using Waher.Content;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Values
@@ -121,14 +120,14 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override Task<object> EvaluateAsync(Variables Variables)
 		{
 			using (MemoryStream ms = new MemoryStream())
 			{
 				foreach (IBinaryElement Element in this.elements)
 					Element.Append(ms, Variables);
 
-				return ms.ToArray();
+				return Task.FromResult<object>(ms.ToArray());
 			}
 		}
 

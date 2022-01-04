@@ -87,12 +87,12 @@ namespace TAG.Simulator.XMPP.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
+			object Content = this.value is null ? string.Empty : await this.value.EvaluateAsync(Variables) ?? string.Empty;
 			string Xml;
 
-			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
 
 			if (Content is XmlDocument Doc)
@@ -105,7 +105,7 @@ namespace TAG.Simulator.XMPP.Activities
 			XmppActor.Client.SetTag("CutomPresenceXML", Xml);
 			XmppActor.Client.SetPresence(this.availability);
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

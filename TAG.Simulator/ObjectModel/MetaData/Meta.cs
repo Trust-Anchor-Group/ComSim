@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
-using Waher.Script.Functions.Vectors;
 
 namespace TAG.Simulator.ObjectModel.MetaData
 {

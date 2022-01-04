@@ -98,9 +98,9 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string ControllerName = this.controller.GetValue(Variables);
+			string ControllerName = await this.controller.GetValueAsync(Variables);
 
 			if (!Variables.TryGetVariable(ControllerName, out Waher.Script.Variable v))
 				throw new Exception("Controller not found: " + ControllerName);
@@ -109,9 +109,9 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			if (!(Obj is ControlClient Controller))
 				throw new Exception("Not a control client object: " + ControllerName);
 
-			string To = this.to.GetValue(Variables);
-			string Parameter = this.parameter.GetValue(Variables);
-			object Value = this.value.Evaluate(Variables);
+			string To = await this.to.GetValueAsync(Variables);
+			string Parameter = await this.parameter.GetValueAsync(Variables);
+			object Value = await this.value.EvaluateAsync(Variables);
 
 			if (XmppClient.BareJidRegEx.IsMatch(To))
 			{
@@ -150,7 +150,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			else
 				throw new Exception("Unsupported control type: " + Value.GetType().FullName);
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

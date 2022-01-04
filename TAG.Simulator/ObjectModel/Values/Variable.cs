@@ -61,10 +61,10 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override Task<object> EvaluateAsync(Variables Variables)
 		{
 			if (Variables.TryGetVariable(this.name, out Waher.Script.Variable v))
-				return v.ValueObject;
+				return Task.FromResult<object>(v.ValueObject);
 			else
 				throw new Exception("Variable " + this.name + " not defined.");
 		}

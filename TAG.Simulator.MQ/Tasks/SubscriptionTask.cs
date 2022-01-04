@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IBM.WMQ;
 using Waher.Events;
 
 namespace TAG.Simulator.MQ.Tasks

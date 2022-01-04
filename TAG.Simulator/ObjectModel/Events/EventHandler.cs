@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Xml;
-using Waher.Content.Xml;
 
 namespace TAG.Simulator.ObjectModel.Events
 {

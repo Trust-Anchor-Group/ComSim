@@ -155,9 +155,9 @@ namespace TAG.Simulator.XMPP.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public override Actor CreateInstance(int InstanceIndex, string InstanceId)
+		public override async Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			XmppActorEndpoint Result = (XmppActorEndpoint)base.CreateInstance(InstanceIndex, InstanceId);
+			XmppActorEndpoint Result = (XmppActorEndpoint)await base.CreateInstanceAsync(InstanceIndex, InstanceId);
 			Result.endpoint = this.endpoint;
 			return Result;
 		}

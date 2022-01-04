@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Values
@@ -14,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		object Evaluate(Variables Variables);
+		Task<object> EvaluateAsync(Variables Variables);
 
 		/// <summary>
 		/// Exports PlantUML

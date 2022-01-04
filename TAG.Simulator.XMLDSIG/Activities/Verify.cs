@@ -86,9 +86,9 @@ namespace TAG.Simulator.XMLDSIG.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			object Result = this.value.Evaluate(Variables);
+			object Result = await this.value.EvaluateAsync(Variables);
 
 			if (!(Result is XmlDocument Doc))
 			{
@@ -126,7 +126,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 
 			CspParameters CspParams = new CspParameters()
 			{
-				KeyContainerName = this.rsaKeyName.GetValue(Variables),
+				KeyContainerName = await this.rsaKeyName.GetValueAsync(Variables),
 				Flags = CspProviderFlags.UseExistingKey
 			};
 
@@ -135,7 +135,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 			if (!SignedXml.CheckSignature(RsaKey))
 				throw new Exception("XML signature invalid.");
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

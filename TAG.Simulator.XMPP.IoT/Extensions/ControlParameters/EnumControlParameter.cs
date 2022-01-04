@@ -82,19 +82,19 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Task<Enum> Get(Waher.Things.IThingReference Node)
+			async Task<Enum> Get(Waher.Things.IThingReference Node)
 			{
 				Variables Variables = this.Model.GetEventVariables(Actor);
 
 				if (!string.IsNullOrEmpty(this.Actor))
 					Variables[this.Actor] = Actor;
 
-				object Value = this.Value.Evaluate(Variables);
+				object Value = await this.Value.EvaluateAsync(Variables);
 
 				if (!(Value is Enum TypedValue))
 					TypedValue = (Enum)Enum.Parse(this.enumType, Value.ToString());
 
-				return Task.FromResult<Enum>(TypedValue);
+				return TypedValue;
 			}
 
 			async Task Set(Waher.Things.IThingReference Node, Enum Value)

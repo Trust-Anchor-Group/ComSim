@@ -57,7 +57,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		{
 			foreach (IConditionNode Condition in this.conditions)
 			{
-				if (Condition.IsTrue(Variables))
+				if (await Condition.IsTrue(Variables))
 					return await Condition.Execute(Variables);
 			}
 

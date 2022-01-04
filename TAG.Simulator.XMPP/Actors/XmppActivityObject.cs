@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using Waher.Networking.XMPP;
-using Waher.Runtime.Inventory;
 
 namespace TAG.Simulator.XMPP.Actors
 {

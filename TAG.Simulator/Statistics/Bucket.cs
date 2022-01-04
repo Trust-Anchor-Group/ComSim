@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Graphs;
 using TAG.Simulator.ObjectModel.Graphs.Plots;
 using Waher.Content;
 using Waher.Script.Objects;

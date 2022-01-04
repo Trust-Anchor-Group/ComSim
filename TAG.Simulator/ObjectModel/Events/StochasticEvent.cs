@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Distributions;
-using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
 

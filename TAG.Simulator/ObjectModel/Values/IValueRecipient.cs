@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Values
 {

@@ -103,9 +103,9 @@ namespace TAG.Simulator.XMLDSIG.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override async Task<object> EvaluateAsync(Variables Variables)
 		{
-			object Result = this.value.Evaluate(Variables);
+			object Result = await this.value.EvaluateAsync(Variables);
 
 			if (!(Result is XmlDocument Doc))
 			{
@@ -136,7 +136,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 
 			CspParameters CspParams = new CspParameters()
 			{
-				KeyContainerName = this.rsaKeyName.GetValue(Variables)
+				KeyContainerName = await this.rsaKeyName.GetValueAsync(Variables)
 			};
 
 			RSACryptoServiceProvider RsaKey = new RSACryptoServiceProvider(this.rsaKeySize, CspParams);

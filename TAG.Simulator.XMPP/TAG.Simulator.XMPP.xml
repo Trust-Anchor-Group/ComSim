@@ -615,7 +615,7 @@
             Initialized the node before simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.CreateInstance(System.Int32,System.String)">
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.CreateInstanceAsync(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
             
@@ -753,7 +753,7 @@
             </summary>
             <param name="Xrd">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.CreateInstance(System.Int32,System.String)">
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.CreateInstanceAsync(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
             

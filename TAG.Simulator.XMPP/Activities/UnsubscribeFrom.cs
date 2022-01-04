@@ -72,16 +72,16 @@ namespace TAG.Simulator.XMPP.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string To = this.to.GetValue(Variables);
+			string To = await this.to.GetValueAsync(Variables);
 
-			if (!(this.GetActorObject(this.actor, Variables) is XmppActivityObject XmppActor))
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
 
 			XmppActor.Client.RequestPresenceUnsubscription(To);
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

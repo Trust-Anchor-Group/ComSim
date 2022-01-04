@@ -29,9 +29,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Counter name
 		/// </summary>
-		public string GetCounter(Variables Variables)
+		public Task<string> GetCounterAsync(Variables Variables)
 		{
-			return this.counter.GetValue(Variables);
+			return this.counter.GetValueAsync(Variables);
 		}
 
 		/// <summary>

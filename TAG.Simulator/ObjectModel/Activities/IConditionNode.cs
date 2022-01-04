@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -14,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
-		bool IsTrue(Variables Variables);
+		Task<bool> IsTrue(Variables Variables);
 
 		/// <summary>
 		/// Exports PlantUML

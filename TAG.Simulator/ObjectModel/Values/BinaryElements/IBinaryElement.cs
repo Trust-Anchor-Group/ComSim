@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Threading.Tasks;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Values.BinaryElements
@@ -16,6 +15,6 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 		/// </summary>
 		/// <param name="Output">Output stream.</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		void Append(MemoryStream Output, Variables Variables);
+		Task Append(MemoryStream Output, Variables Variables);
 	}
 }

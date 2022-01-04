@@ -136,9 +136,9 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// </summary>
 		/// <param name="Variables">Event variables</param>
 		/// <param name="Tags">Extensible list of meta-data tags related to the event.</param>
-		public void Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
+		public Task Prepare(Variables Variables, List<KeyValuePair<string, object>> Tags)
 		{
-			// Do nothing.
+			return Task.CompletedTask;	// Do nothing.
 		}
 
 		/// <summary>

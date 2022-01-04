@@ -36,9 +36,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Name of variable within the scope of the event.
 		/// </summary>
-		public string GetName(Variables Variables)
+		public Task<string> GetNameAsync(Variables Variables)
 		{
-			return this.name.GetValue(Variables);
+			return this.name.GetValueAsync(Variables);
 		}
 
 		/// <summary>
@@ -80,10 +80,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			object Value = this.value.Evaluate(Variables);
-			string Name = this.name.GetValue(Variables);
+			object Value = await this.value.EvaluateAsync(Variables);
+			string Name = await this.name.GetValueAsync(Variables);
 
 			if (Value is double d)
 				this.Model.Sample(Name, d);
@@ -95,7 +95,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 				this.Model.Sample(Name, d);
 			}
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

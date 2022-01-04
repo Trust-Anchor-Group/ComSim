@@ -75,13 +75,13 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public override Actor CreateInstance(int InstanceIndex, string InstanceId)
+		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			return new TimerActor(this, this.Model, InstanceIndex, InstanceId)
+			return Task.FromResult<Actor>(new TimerActor(this, this.Model, InstanceIndex, InstanceId)
 			{
 				period = this.period,
 				isPeriodic = this.isPeriodic
-			};
+			});
 		}
 
 		/// <summary>

@@ -73,9 +73,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override Task<object> EvaluateAsync(Variables Variables)
 		{
-			return this.value;
+			return Task.FromResult<object>(this.value);
 		}
 
 		/// <summary>

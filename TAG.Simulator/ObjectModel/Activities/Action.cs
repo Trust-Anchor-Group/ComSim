@@ -126,8 +126,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string ActionValue = this.action.GetValue(Variables);
-			object Actor = this.GetActorObject(this.actor, Variables);
+			string ActionValue = await this.action.GetValueAsync(Variables);
+			object Actor = await this.GetActorObjectAsync(this.actor, Variables);
 			Type T = Actor.GetType();
 			MethodInfo Method;
 			int[] Positions;
@@ -194,7 +194,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			object[] Arguments = new object[c];
 
 			for (i = 0; i < c; i++)
-				Arguments[i] = this.arguments[Positions[i]].Value.Evaluate(Variables);
+				Arguments[i] = await this.arguments[Positions[i]].Value.EvaluateAsync(Variables);
 
 			object Result = Method.Invoke(Actor, Arguments);
 

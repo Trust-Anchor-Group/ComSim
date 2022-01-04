@@ -79,10 +79,10 @@ namespace TAG.Simulator.MQ.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Queue = this.queue.GetValue(Variables);
-			string Variable = this.variable.GetValue(Variables);
+			string Queue = await this.queue.GetValueAsync(Variables);
+			string Variable = await this.variable.GetValueAsync(Variables);
 
-			if (!(this.GetActorObject(this.actor, Variables) is MqActivityObject MqActor))
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is MqActivityObject MqActor))
 				throw new Exception("Actor not an MQ actor.");
 
 			string Message = await MqActor.Client.GetOneAsync(Queue);

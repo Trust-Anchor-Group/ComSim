@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.XMPP.Events;
-using TAG.Simulator.XMPP.Extensions;
 using Waher.Content.Xml;
 using Waher.Networking.DNS;
 using Waher.Networking.DNS.ResourceRecords;
@@ -174,7 +173,7 @@ namespace TAG.Simulator.XMPP.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public override Actor CreateInstance(int InstanceIndex, string InstanceId)
+		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
 			XmppActor Result = this.CreateInstanceObject(InstanceIndex, InstanceId);
 
@@ -194,7 +193,7 @@ namespace TAG.Simulator.XMPP.Actors
 			Result.requestRosterOnStartup = this.requestRosterOnStartup;
 			Result.trustServer = this.trustServer;
 
-			return Result;
+			return Task.FromResult<Actor>(Result);
 		}
 
 		/// <summary>

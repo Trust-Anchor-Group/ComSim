@@ -141,9 +141,9 @@ namespace TAG.Simulator.ObjectModel
 		/// <param name="Variables">Current set of variables.</param>
 		/// <returns>Actor</returns>
 		/// <exception cref="Exception">If actor could not be found.</exception>
-		public object GetActorObject(StringAttribute Actor, Variables Variables)
+		public async Task<object> GetActorObjectAsync(StringAttribute Actor, Variables Variables)
 		{
-			string ActorStr = Actor.GetValue(Variables);
+			string ActorStr = await Actor.GetValueAsync(Variables);
 			object Result;
 
 			if (Variables.TryGetVariable(ActorStr, out Variable v))
@@ -163,7 +163,7 @@ namespace TAG.Simulator.ObjectModel
 					Exp = this.lastActorExpression;
 				}
 
-				Result = Exp.Evaluate(Variables);
+				Result = await Exp.EvaluateAsync(Variables);
 			}
 
 			if (Result is Actor Actor2)
@@ -179,9 +179,9 @@ namespace TAG.Simulator.ObjectModel
 		/// <param name="Variables">Current set of variables.</param>
 		/// <returns>Actor</returns>
 		/// <exception cref="Exception">If actor could not be found.</exception>
-		public IActor GetActor(StringAttribute Actor, Variables Variables)
+		public async Task<IActor> GetActorAsync(StringAttribute Actor, Variables Variables)
 		{
-			if (this.GetActorObject(Actor, Variables) is IActor ActorRef)
+			if (await this.GetActorObjectAsync(Actor, Variables) is IActor ActorRef)
 				return ActorRef;
 			else
 				throw new Exception("Expected an actor: " + Actor);

@@ -118,9 +118,9 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string To = this.to.GetValue(Variables);
+			string To = await this.to.GetValueAsync(Variables);
 
-			if (!(this.GetActorObject(this.actor, Variables) is SensorClient SensorClient))
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is SensorClient SensorClient))
 				throw new Exception("Actor not an XMPP Sensor Client.");
 
 			if (XmppClient.BareJidRegEx.IsMatch(To))

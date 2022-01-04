@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Waher.Content;
 using Waher.Script.Statistics;
 

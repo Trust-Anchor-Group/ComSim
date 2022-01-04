@@ -6,7 +6,6 @@ using TAG.Simulator.ObjectModel.Actors;
 using TAG.Simulator.XMPP.IoT.Extensions.ControlParameters;
 using Waher.Networking.XMPP.Provisioning;
 using Waher.Networking.XMPP.Control;
-using Waher.Script;
 using Waher.Things.ControlParameters;
 
 namespace TAG.Simulator.XMPP.IoT.Extensions

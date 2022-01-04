@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
-using Waher.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -92,11 +91,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>If embedded nodes are to be executed.</returns>
-		public bool IsTrue(Variables Variables)
+		public async Task<bool> IsTrue(Variables Variables)
 		{
 			try
 			{
-				this.expression.Evaluate(Variables);
+				await this.expression.EvaluateAsync(Variables);
 				return true;
 			}
 			catch (Exception)

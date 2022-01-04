@@ -60,19 +60,19 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Task<string> Get(Waher.Things.IThingReference Node)
+			async Task<string> Get(Waher.Things.IThingReference Node)
 			{
 				Variables Variables = this.Model.GetEventVariables(Actor);
 
 				if (!string.IsNullOrEmpty(this.Actor))
 					Variables[this.Actor] = Actor;
 
-				object Value = this.Value.Evaluate(Variables);
+				object Value = await this.Value.EvaluateAsync(Variables);
 
 				if (!(Value is string TypedValue))
 					TypedValue = Value.ToString();
 
-				return Task.FromResult<string>(TypedValue);
+				return TypedValue;
 			}
 
 			async Task Set(Waher.Things.IThingReference Node, string Value)

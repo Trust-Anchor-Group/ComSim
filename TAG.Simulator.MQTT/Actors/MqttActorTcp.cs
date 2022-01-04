@@ -133,7 +133,7 @@ namespace TAG.Simulator.MQTT.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public override Actor CreateInstance(int InstanceIndex, string InstanceId)
+		public override async Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
 			MqttActorTcp Result = new MqttActorTcp(this, this.Model, InstanceIndex, InstanceId)
 			{
@@ -153,7 +153,7 @@ namespace TAG.Simulator.MQTT.Actors
 			{
 				if (Node is Subscribe Subscribe)
 				{
-					string Topic = Expression.Transform(Subscribe.Topic, "{", "}", Properties);
+					string Topic = await Expression.TransformAsync(Subscribe.Topic, "{", "}", Properties);
 					Topics.Add(new KeyValuePair<string, MqttQualityOfService>(Topic, Subscribe.QoS));
 				}
 			}

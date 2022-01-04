@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
-    <PackageReference Include="Waher.Content.Xml" Version="1.1.2" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
+    <PackageReference Include="Waher.Content.Xml" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

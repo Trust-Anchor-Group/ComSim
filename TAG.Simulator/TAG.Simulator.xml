@@ -1239,7 +1239,7 @@
             <param name="Parent">Parent node</param>
             <param name="Model">Model in which the node is defined.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.GetCounter(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.CounterActivityNode.GetCounterAsync(Waher.Script.Variables)">
             <summary>
             Counter name
             </summary>
@@ -1857,7 +1857,7 @@
             Local name of XML element defining contents of class.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.GetName(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Activities.Sample.GetNameAsync(Waher.Script.Variables)">
             <summary>
             Name of variable within the scope of the event.
             </summary>
@@ -2358,7 +2358,7 @@
             Finalizes the node after simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.CreateInstance(System.Int32,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.CreateInstanceAsync(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
             
@@ -2576,7 +2576,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.CreateInstance(System.Int32,System.String)">
+        <member name="M:TAG.Simulator.ObjectModel.Actors.TimerActor.CreateInstanceAsync(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
             
@@ -5030,7 +5030,7 @@
             <param name="Output">Output.</param>
             <param name="Indentation">Number of tabs to indent.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorObject(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorObjectAsync(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
             <summary>
             Gets an actor object, given a string representation, possibly containing script, of the actor.
             </summary>
@@ -5039,7 +5039,7 @@
             <returns>Actor</returns>
             <exception cref="T:System.Exception">If actor could not be found.</exception>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActor(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.GetActorAsync(TAG.Simulator.ObjectModel.StringAttribute,Waher.Script.Variables)">
             <summary>
             Gets an actor, given a string representation, possibly containing script, of the actor.
             </summary>
@@ -5117,7 +5117,7 @@
             String value, from definition
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.StringAttribute.GetValue(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.StringAttribute.GetValueAsync(Waher.Script.Variables)">
             <summary>
             Gets the value of the attribute.
             </summary>
@@ -5240,7 +5240,7 @@
             </summary>
             <param name="Output">Output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -5919,7 +5919,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Boolean.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Boolean.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -5978,7 +5978,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6037,7 +6037,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6078,7 +6078,7 @@
             Interface for values
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.IValue.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.IValue.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6135,7 +6135,7 @@
             </summary>
             <param name="Definition">JSON definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Json.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Json.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6194,7 +6194,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Number.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Number.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6265,7 +6265,7 @@
             <param name="Text">Text</param>
             <returns>Unindented text</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Script.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Script.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6324,7 +6324,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.String.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.String.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6383,7 +6383,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Time.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Time.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6415,7 +6415,7 @@
             Initialized the node before simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Value.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Value.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6466,7 +6466,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>
@@ -6522,7 +6522,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.Evaluate(Waher.Script.Variables)">
+        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.EvaluateAsync(Waher.Script.Variables)">
             <summary>
             Evaluates the value.
             </summary>

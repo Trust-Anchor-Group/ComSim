@@ -201,7 +201,7 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.CreateInstance(System.Int32,System.String)">
+        <member name="M:TAG.Simulator.MQTT.Actors.MqttActorTcp.CreateInstanceAsync(System.Int32,System.String)">
             <summary>
             Creates an instance of the actor.
             

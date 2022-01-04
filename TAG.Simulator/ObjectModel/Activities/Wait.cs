@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
-using Waher.Script.Operators.Comparisons;
 
 namespace TAG.Simulator.ObjectModel.Activities
 {

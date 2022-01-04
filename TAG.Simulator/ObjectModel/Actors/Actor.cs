@@ -104,7 +104,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 
 			for (i = 1; i <= this.n; i++)
 			{
-				Actor Instance = this.CreateInstance(i, this.id + i.ToString(Format));
+				Actor Instance = await this.CreateInstanceAsync(i, this.id + i.ToString(Format));
 				Instance.id = this.id;
 				Instance.n = this.n;
 				Instance.externalEvents = this.externalEvents;
@@ -163,7 +163,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <param name="InstanceIndex">Instance index.</param>
 		/// <param name="InstanceId">ID of instance</param>
 		/// <returns>Actor instance.</returns>
-		public abstract Actor CreateInstance(int InstanceIndex, string InstanceId);
+		public abstract Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId);
 
 		/// <summary>
 		/// Initializes an instance of an actor.

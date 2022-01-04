@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities
@@ -63,7 +62,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 
 			if (!(this.condition is null))
 			{
-				while (this.condition.IsTrue(Variables))
+				while (await this.condition.IsTrue(Variables))
 					Result = await this.condition.Execute(Variables);
 			}
 

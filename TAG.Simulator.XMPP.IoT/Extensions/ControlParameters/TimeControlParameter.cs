@@ -70,19 +70,19 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
 			Parameters.Add(new Waher.Things.ControlParameters.TimeControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
-				(Node) =>
+				async (Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
 
 					if (!string.IsNullOrEmpty(this.Actor))
 						Variables[this.Actor] = Actor;
 
-					object Value = this.Value.Evaluate(Variables);
+					object Value = await this.Value.EvaluateAsync(Variables);
 
 					if (!(Value is TimeSpan TypedValue))
 						TypedValue = TimeSpan.Parse(Value.ToString());
 
-					return Task.FromResult<TimeSpan?>(TypedValue);
+					return TypedValue;
 				},
 				async (Node, Value) =>
 				{

@@ -57,9 +57,9 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Evaluated value.</returns>
-		public override object Evaluate(Variables Variables)
+		public override async Task<object> EvaluateAsync(Variables Variables)
 		{
-			object Value = this.script.Evaluate(Variables);
+			object Value = await this.script.EvaluateAsync(Variables);
 			return JSON.Encode(Value, false);
 		}
 

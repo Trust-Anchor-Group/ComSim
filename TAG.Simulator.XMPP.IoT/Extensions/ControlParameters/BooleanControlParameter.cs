@@ -56,19 +56,19 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
 			Parameters.Add(new Waher.Things.ControlParameters.BooleanControlParameter(this.Name, this.Page, this.Label, this.Description,
-				(Node) =>
+				async (Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
 
 					if (!string.IsNullOrEmpty(this.Actor))
 						Variables[this.Actor] = Actor;
 
-					object Value = this.Value.Evaluate(Variables);
+					object Value = await this.Value.EvaluateAsync(Variables);
 
 					if (!(Value is bool TypedValue))
 						TypedValue = Convert.ToBoolean(Value);
 
-					return Task.FromResult<bool?>(TypedValue);
+					return TypedValue;
 				},
 				async (Node, Value) =>
 				{

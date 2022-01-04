@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using TAG.Simulator.Statistics;
 
 namespace TAG.Simulator.ObjectModel.Graphs
 {

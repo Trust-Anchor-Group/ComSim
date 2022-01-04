@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.Statistics;
-using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Events;
 

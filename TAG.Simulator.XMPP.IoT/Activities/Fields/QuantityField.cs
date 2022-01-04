@@ -59,9 +59,9 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// </summary>
 		/// <param name="Fields">Generated list of fields.</param>
 		/// <param name="Variables">Set of variables for the activity.</param>
-		public override void AddFields(LinkedList<Field> Fields, Variables Variables)
+		public override async Task AddFields(LinkedList<Field> Fields, Variables Variables)
 		{
-			object Value = this.Value.Evaluate(Variables);
+			object Value = await this.Value.EvaluateAsync(Variables);
 
 			if (!(Value is double TypedValue))
 				TypedValue = Convert.ToDouble(Value);

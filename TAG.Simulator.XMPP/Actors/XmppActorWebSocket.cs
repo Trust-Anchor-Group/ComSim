@@ -1,6 +1,4 @@
 ﻿using System;
-using TAG.Simulator.ObjectModel.Actors;
-using Waher.Networking.XMPP;
 
 namespace TAG.Simulator.XMPP.Actors
 {

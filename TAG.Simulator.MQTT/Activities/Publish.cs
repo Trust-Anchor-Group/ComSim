@@ -93,20 +93,23 @@ namespace TAG.Simulator.MQTT.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Topic = this.topic.GetValue(Variables);
-			object Content = this.value?.Evaluate(Variables) ?? string.Empty;
-			
-			if (!(Content is byte[] Bin))
-				Bin = InternetContent.Encode(Content, Encoding.UTF8, out string _);
+			string Topic = await this.topic.GetValueAsync(Variables);
+			object Content = this.value is null ? string.Empty : await this.value.EvaluateAsync(Variables) ?? string.Empty;
 
-			if (!(this.GetActorObject(this.actor, Variables) is MqttActivityObject MqttActor))
+			if (!(Content is byte[] Bin))
+			{
+				KeyValuePair<byte[], string> P = await InternetContent.EncodeAsync(Content, Encoding.UTF8);
+				Bin = P.Key;
+			}
+
+			if (!(await this.GetActorObjectAsync(this.actor, Variables) is MqttActivityObject MqttActor))
 				throw new Exception("Actor not an MQTT actor.");
 
-			MqttActor.Client.PUBLISH(Topic, this.qos, this.retain, Bin);
+			await MqttActor.Client.PUBLISH(Topic, this.qos, this.retain, Bin);
 
-			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+			return null;
 		}
 
 		/// <summary>

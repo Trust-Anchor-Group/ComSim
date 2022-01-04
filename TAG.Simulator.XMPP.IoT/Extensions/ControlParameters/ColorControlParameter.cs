@@ -58,19 +58,19 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
 			Parameters.Add(new Waher.Things.ControlParameters.ColorControlParameter(this.Name, this.Page, this.Label, this.Description,
-				(Node) =>
+				async (Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
 
 					if (!string.IsNullOrEmpty(this.Actor))
 						Variables[this.Actor] = Actor;
 
-					object Value = this.Value.Evaluate(Variables);
+					object Value = await this.Value.EvaluateAsync(Variables);
 
 					if (Value is ColorReference Ref)
-						return Task.FromResult<ColorReference>(Ref);
+						return Ref;
 					else if (Value is SKColor Color)
-						return Task.FromResult<ColorReference>(new ColorReference(Color.Red, Color.Green, Color.Blue, Color.Alpha));
+						return new ColorReference(Color.Red, Color.Green, Color.Blue, Color.Alpha);
 					else
 						throw new Exception("Value is not a color.");
 				},
