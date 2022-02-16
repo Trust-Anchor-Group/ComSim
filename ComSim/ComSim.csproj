@@ -23,7 +23,7 @@
     <PackageReference Include="Waher.Content" Version="2.0.0" />
     <PackageReference Include="Waher.Content.Xml" Version="2.0.1" />
     <PackageReference Include="Waher.Content.Xsl" Version="2.0.0" />
-    <PackageReference Include="Waher.Events" Version="1.1.0" />
+    <PackageReference Include="Waher.Events" Version="1.1.1" />
     <PackageReference Include="Waher.Events.Console" Version="1.1.0" />
     <PackageReference Include="Waher.Events.Files" Version="1.1.1" />
     <PackageReference Include="Waher.Events.Persistence" Version="1.1.0" />
