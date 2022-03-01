@@ -31,7 +31,7 @@
     <PackageReference Include="Waher.Networking.XMPP.Avatar" Version="2.0.1" />
     <PackageReference Include="Waher.Networking.XMPP.MUC" Version="2.0.1" />
     <PackageReference Include="Waher.Networking.XMPP.PEP" Version="2.0.1" />
-    <PackageReference Include="Waher.Networking.XMPP.PubSub" Version="2.0.1" />
+    <PackageReference Include="Waher.Networking.XMPP.PubSub" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
