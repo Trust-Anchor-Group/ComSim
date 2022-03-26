@@ -346,7 +346,7 @@ namespace TAG.Simulator.Statistics
 			lock (this.buckets)
 			{
 				SortedDictionary<DateTime, long> Counts = new SortedDictionary<DateTime, long>();
-				Duration BucketTime = null;
+				Duration? BucketTime = null;
 				int Count = 0;
 
 				if (Order is null)
@@ -594,7 +594,7 @@ namespace TAG.Simulator.Statistics
 				Script.Append(Model.TimeUnitStr);
 				Script.AppendLine("\";");
 				Script.Append("G.LabelY:=\"Count / ");
-				Script.Append(Model.DurationToString(BucketTime));
+				Script.Append(Model.DurationToString(BucketTime.Value));
 				Script.AppendLine("\";");
 				Script.Append("G.Title:=\"");
 				Script.Append(Title);

@@ -15,8 +15,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 	/// </summary>
 	public class DurationControlParameter : ControlParameterNode
 	{
-		private Duration min;
-		private Duration max;
+		private Duration? min;
+		private Duration? max;
 
 		/// <summary>
 		/// Duration sensor data control parameter node.
@@ -70,7 +70,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// <param name="Actor">Actor instance</param>
 		public override void AddParameters(List<ControlParameter> Parameters, IActor Actor)
 		{
-			Parameters.Add(new Waher.Things.ControlParameters.DurationControlParameter(this.Name, this.Page, this.Label, this.Description, this.min, this.max,
+			Parameters.Add(new Waher.Things.ControlParameters.DurationControlParameter(this.Name, this.Page, this.Label, this.Description, this.min ?? Duration.Zero, this.max ?? Duration.FromYears(9999),
 				async (Node) =>
 				{
 					Variables Variables = this.Model.GetEventVariables(Actor);
