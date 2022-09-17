@@ -47,7 +47,7 @@
     <PackageReference Include="Waher.Script.Persistence" Version="2.3.3" />
     <PackageReference Include="Waher.Script.Statistics" Version="2.0.1" />
     <PackageReference Include="Waher.Script.Xml" Version="2.1.4" />
-    <PackageReference Include="Waher.Things" Version="1.2.1" />
+    <PackageReference Include="Waher.Things" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>
