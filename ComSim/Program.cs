@@ -32,7 +32,7 @@ namespace ComSim
 	/// 
 	/// -i FILENAME           Specifies the filename of the model to use during simulation.
 	///                       The file must be an XML file that conforms to the
-	///                       http://trustanchorgroup.com/Schema/ComSim.xsd namespace.
+	///                       http://lab.tagroot.io/Schema/ComSim.xsd namespace.
 	///                       Schema is available at Schema/ComSim.xsd in repository.
 	/// -l LOG_FILENAME       Redirects logged events to a log file.
 	/// -lt LOG_TRANSFORM     File name of optional XSLT transform for use with log file.
@@ -308,7 +308,7 @@ namespace ComSim
 					Console.Out.WriteLine();
 					Console.Out.WriteLine("-i FILENAME           Specifies the filename of the model to use during simulation.");
 					Console.Out.WriteLine("                      The file must be an XML file that conforms to the");
-					Console.Out.WriteLine("                      http://trustanchorgroup.com/Schema/ComSim.xsd namespace.");
+					Console.Out.WriteLine("                      http://lab.tagroot.io/Schema/ComSim.xsd namespace.");
 					Console.Out.WriteLine("                      Schema is available at Schema/ComSim.xsd in the repository.");
 					Console.Out.WriteLine("-l LOG_FILENAME       Redirects logged events to a log file.");
 					Console.Out.WriteLine("-lt LOG_TRANSFORM     File name of optional XSLT transform for use with log file.");
@@ -627,7 +627,7 @@ namespace ComSim
 					using XmlWriter Output = XmlWriter.Create(XmlOutputFileName, Settings);
 					
 					Output.WriteStartDocument();
-					Output.WriteStartElement("Report", "http://trustanchorgroup.com/Schema/ComSimReport.xsd");
+					Output.WriteStartElement("Report", "http://lab.tagroot.io/Schema/ComSimReport.xsd");
 
 					await Model.ExportXml(Output);
 

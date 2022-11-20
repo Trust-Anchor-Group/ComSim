@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ComSimPerformance"
-           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
+           targetNamespace="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
            elementFormDefault="qualified"
-           xmlns="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
-           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
+           xmlns="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:element name="Performance">

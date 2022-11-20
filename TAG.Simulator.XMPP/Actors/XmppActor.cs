@@ -21,9 +21,9 @@ namespace TAG.Simulator.XMPP.Actors
 	public abstract class XmppActor : Actor
 	{
 		/// <summary>
-		/// http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd
+		/// http://lab.tagroot.io/Schema/ComSim/XMPP.xsd
 		/// </summary>
-		public const string XmppNamespace = "http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd";
+		public const string XmppNamespace = "http://lab.tagroot.io/Schema/ComSim/XMPP.xsd";
 
 		/// <summary>
 		/// TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd

@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ComSimMq"
-           targetNamespace="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
+           targetNamespace="http://lab.tagroot.io/Schema/ComSim/MQ.xsd"
            elementFormDefault="qualified"
-           xmlns="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
-           xmlns:mstns="http://trustanchorgroup.com/Schema/ComSim/MQ.xsd"
+           xmlns="http://lab.tagroot.io/Schema/ComSim/MQ.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/MQ.xsd"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:cs="http://trustanchorgroup.com/Schema/ComSim.xsd">
+           xmlns:cs="http://lab.tagroot.io/Schema/ComSim.xsd">
 
-  <xs:import namespace="http://trustanchorgroup.com/Schema/ComSim.xsd"/>
+  <xs:import namespace="http://lab.tagroot.io/Schema/ComSim.xsd"/>
 
   <xs:element name="MqActorTcp">
     <xs:complexType>

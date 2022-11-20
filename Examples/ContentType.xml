@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
-       xmlns:mqtt="http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd"
-       xmlns:perf="http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd"
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:mqtt="http://lab.tagroot.io/Schema/ComSim/MQTT.xsd"
+       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"

@@ -159,7 +159,7 @@
         </member>
         <member name="F:TAG.Simulator.MQ.Actors.MqActorTcp.MqNamespace">
             <summary>
-            http://trustanchorgroup.com/Schema/ComSim/MQ.xsd
+            http://lab.tagroot.io/Schema/ComSim/MQ.xsd
             </summary>
         </member>
         <member name="F:TAG.Simulator.MQ.Actors.MqActorTcp.MqSchema">

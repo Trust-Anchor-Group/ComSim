@@ -128,7 +128,7 @@
         </member>
         <member name="F:TAG.Simulator.MQTT.Actors.MqttActorTcp.MqttNamespace">
             <summary>
-            http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd
+            http://lab.tagroot.io/Schema/ComSim/MQTT.xsd
             </summary>
         </member>
         <member name="F:TAG.Simulator.MQTT.Actors.MqttActorTcp.MqttSchema">

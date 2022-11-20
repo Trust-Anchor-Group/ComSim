@@ -206,7 +206,7 @@
         </member>
         <member name="F:TAG.Simulator.Model.ComSimNamespace">
             <summary>
-            http://trustanchorgroup.com/Schema/ComSim.xsd
+            http://lab.tagroot.io/Schema/ComSim.xsd
             </summary>
         </member>
         <member name="P:TAG.Simulator.Model.LocalName">

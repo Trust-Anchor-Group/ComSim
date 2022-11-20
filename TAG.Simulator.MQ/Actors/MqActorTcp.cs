@@ -19,9 +19,9 @@ namespace TAG.Simulator.MQ.Actors
 	public class MqActorTcp : Actor
 	{
 		/// <summary>
-		/// http://trustanchorgroup.com/Schema/ComSim/MQ.xsd
+		/// http://lab.tagroot.io/Schema/ComSim/MQ.xsd
 		/// </summary>
-		public const string MqNamespace = "http://trustanchorgroup.com/Schema/ComSim/MQ.xsd";
+		public const string MqNamespace = "http://lab.tagroot.io/Schema/ComSim/MQ.xsd";
 
 		/// <summary>
 		/// TAG.Simulator.MQ.Schema.ComSimMq.xsd

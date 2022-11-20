@@ -100,9 +100,9 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
-		/// http://trustanchorgroup.com/Schema/ComSim.xsd
+		/// http://lab.tagroot.io/Schema/ComSim.xsd
 		/// </summary>
-		public const string ComSimNamespace = "http://trustanchorgroup.com/Schema/ComSim.xsd";
+		public const string ComSimNamespace = "http://lab.tagroot.io/Schema/ComSim.xsd";
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.

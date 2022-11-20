@@ -19,9 +19,9 @@ namespace TAG.Simulator.MQTT.Actors
 	public class MqttActorTcp : Actor
 	{
 		/// <summary>
-		/// http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd
+		/// http://lab.tagroot.io/Schema/ComSim/MQTT.xsd
 		/// </summary>
-		public const string MqttNamespace = "http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd";
+		public const string MqttNamespace = "http://lab.tagroot.io/Schema/ComSim/MQTT.xsd";
 
 		/// <summary>
 		/// TAG.Simulator.MQTT.Schema.ComSimMqtt.xsd

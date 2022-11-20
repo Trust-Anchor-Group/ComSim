@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
-       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
-       xmlns:iot="http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd"
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
+       xmlns:iot="http://lab.tagroot.io/Schema/ComSim/XMPPIoT.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Model xmlns="http://trustanchorgroup.com/Schema/ComSim.xsd"
-       xmlns:xmpp="http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd"
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT10S"
        timeUnit="PT1S"

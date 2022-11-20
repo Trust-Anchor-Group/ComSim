@@ -61,7 +61,7 @@ The *TAG ComSim* console application is run from a command-prompt. Command-line 
 
 | Argument                | Description |
 |:------------------------|:------------|
-| `-i FILENAME`           | Specifies the filename of the model to use during simulation. The file must be an XML file that conforms to the http://trustanchorgroup.com/Schema/ComSim.xsd namespace. Schema: [ComSim.xsd](ComSim/Schema/ComSim.xsd) in the repository. |
+| `-i FILENAME`           | Specifies the filename of the model to use during simulation. The file must be an XML file that conforms to the http://lab.tagroot.io/Schema/ComSim.xsd namespace. Schema: [ComSim.xsd](ComSim/Schema/ComSim.xsd) in the repository. |
 | `-l LOG_FILENAME`       | Redirects logged events to a log file. |
 | `-lt LOG_TRANSFORM`     | File name of optional XSLT transform for use with log file. |
 | `-lc`                   | Log events to the console. |
@@ -141,13 +141,13 @@ Syntax of simulation nodes are defined in XML Schema files. The following table 
 
 | Schema                                                                          | Namespace                                                         | Description                                                                                                            |
 |:--------------------------------------------------------------------------------|:------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|
-| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)                                   | `http://trustanchorgroup.com/Schema/ComSim.xsd`                   | Defines the main structure of a simulation model file.                                                                 |
-| [ComSimMqtt.xsd](TAG.Simulator.MQTT/Schema/ComSimMqtt.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/MQTT.xsd`              | Defines simulation extensions for actors communicating MQTT.                                                           |
-| [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://trustanchorgroup.com/Schema/ComSim/ComSimPerformance.xsd` | Defines simulation extensions for Performance Counters.                                                                |
-| [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://trustanchorgroup.com/Schema/ComSim/ComSimXmlDSig.xsd`     | Defines simulation extensions for Digital XML Signatures.                                                              |
-| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.                                                           |
-| [ComSimXmppIoT.xsd](TAG.Simulator.XMPP.IoT/Schema/ComSimXmppIoT.xsd)            | `http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd`           | Defines simulator XMPP extensions for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT).                |
-| [ComSimXmppLegal.xsd](TAG.Simulator.XMPP.Legal/Schema/ComSimXmppLegal.xsd)      | `http://trustanchorgroup.com/Schema/ComSim/XMPPLegal.xsd`         | Defines simulator XMPP extensions providing support for extensions to XMPP supporting digital IDs and smart contracts. |
+| [ComSim.xsd](TAG.Simulator/Schema/ComSim.xsd)                                   | `http://lab.tagroot.io/Schema/ComSim.xsd`                   | Defines the main structure of a simulation model file.                                                                 |
+| [ComSimMqtt.xsd](TAG.Simulator.MQTT/Schema/ComSimMqtt.xsd)                      | `http://lab.tagroot.io/Schema/ComSim/MQTT.xsd`              | Defines simulation extensions for actors communicating MQTT.                                                           |
+| [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd` | Defines simulation extensions for Performance Counters.                                                                |
+| [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd`     | Defines simulation extensions for Digital XML Signatures.                                                              |
+| [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://lab.tagroot.io/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.                                                           |
+| [ComSimXmppIoT.xsd](TAG.Simulator.XMPP.IoT/Schema/ComSimXmppIoT.xsd)            | `http://lab.tagroot.io/Schema/ComSim/XMPPIoT.xsd`           | Defines simulator XMPP extensions for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT).                |
+| [ComSimXmppLegal.xsd](TAG.Simulator.XMPP.Legal/Schema/ComSimXmppLegal.xsd)      | `http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd`         | Defines simulator XMPP extensions providing support for extensions to XMPP supporting digital IDs and smart contracts. |
 
 ## Contact
 

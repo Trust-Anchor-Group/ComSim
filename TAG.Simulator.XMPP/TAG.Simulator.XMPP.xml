@@ -545,7 +545,7 @@
         </member>
         <member name="F:TAG.Simulator.XMPP.Actors.XmppActor.XmppNamespace">
             <summary>
-            http://trustanchorgroup.com/Schema/ComSim/XMPP.xsd
+            http://lab.tagroot.io/Schema/ComSim/XMPP.xsd
             </summary>
         </member>
         <member name="F:TAG.Simulator.XMPP.Actors.XmppActor.XmppSchema">

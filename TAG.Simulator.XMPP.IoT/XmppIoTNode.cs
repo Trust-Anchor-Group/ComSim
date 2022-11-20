@@ -9,7 +9,7 @@ namespace TAG.Simulator.XMPP.IoT
 	public abstract class XmppIoTNode : SimulationNodeChildren
 	{
 		internal const string XmppIoTSchemaResource = "TAG.Simulator.XMPP.IoT.Schema.ComSimXmppIoT.xsd";
-		internal const string XmppIoTNamespace = "http://trustanchorgroup.com/Schema/ComSim/XMPPIoT.xsd";
+		internal const string XmppIoTNamespace = "http://lab.tagroot.io/Schema/ComSim/XMPPIoT.xsd";
 
 		/// <summary>
 		/// Abstract base class for IoT XMPP simulation nodes.

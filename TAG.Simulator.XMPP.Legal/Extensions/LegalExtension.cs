@@ -39,7 +39,7 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => "http://trustanchorgroup.com/Schema/ComSim/XMPPLegal.xsd";
+		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd";
 
 		/// <summary>
 		/// Creates a new instance of the node.
