@@ -40,7 +40,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd";
+		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd";
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

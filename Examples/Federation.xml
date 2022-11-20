@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
        xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
-       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
+       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
@@ -64,12 +64,12 @@
       <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
     </Timer>
     <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcpNl" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
-      <xmpp:MessageHandler name="Loc" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppLocalMessageReceived" actorName="To" eventArgs="e"/>
-      <xmpp:MessageHandler name="Fed" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppFederatedMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="Loc" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="XmppLocalMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="Fed" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="XmppFederatedMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
     <xmpp:XmppActorTcp domain="cybercity.online" userName="XmppTcp" id="XmppTcpSe" N="100" apiKey="LabApiKey2" secret="LabSecret2" alwaysConnected="true">
-      <xmpp:MessageHandler name="Loc" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppLocalMessageReceived" actorName="To" eventArgs="e"/>
-      <xmpp:MessageHandler name="Fed" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="XmppFederatedMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="Loc" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="XmppLocalMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="Fed" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="XmppFederatedMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
   </Actors>
   <Distributions>
@@ -201,7 +201,7 @@
       <Start/>
       <xmpp:SendMessage actor="From" to="{To.FullJID}">
         <Xml>
-          <Loc xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+          <Loc xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd">
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
           </Loc>
         </Xml>
@@ -214,7 +214,7 @@
       <Start/>
       <xmpp:SendMessage actor="From" to="{To.FullJID}">
         <Xml>
-          <Fed xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+          <Fed xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd">
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
           </Fed>
         </Xml>

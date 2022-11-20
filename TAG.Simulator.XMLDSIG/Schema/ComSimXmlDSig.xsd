@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ComSimXmlDSig"
-           targetNamespace="http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd"
+           targetNamespace="http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd"
            elementFormDefault="qualified"
-           xmlns="http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd"
-           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd"
+           xmlns="http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:cs="http://lab.tagroot.io/Schema/ComSim.xsd">
 

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
        xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
-       xmlns:xmldsig="http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd"
-       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
+       xmlns:xmldsig="http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd"
+       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT10S"
        timeUnit="PT1S"
@@ -60,8 +60,8 @@
       <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
     </Timer>
     <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
-      <xmpp:MessageHandler name="Msg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="UnsignedMessageReceived" actorName="To" eventArgs="e"/>
-      <xmpp:MessageHandler name="SignedMsg" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="SignedMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="Msg" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="UnsignedMessageReceived" actorName="To" eventArgs="e"/>
+      <xmpp:MessageHandler name="SignedMsg" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="SignedMessageReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
   </Actors>
   <Distributions>
@@ -152,7 +152,7 @@
       <Start/>
       <xmpp:SendMessage actor="From" to="{To.FullJID}">
         <Xml>
-          <Msg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+          <Msg xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd">
             <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
           </Msg>
         </Xml>
@@ -181,7 +181,7 @@
       <xmpp:SendMessage actor="From" to="{To.FullJID}">
         <xmldsig:Sign rsaKeyName="{From.BareJID}" rsaKeySize="4096">
           <Xml>
-            <SignedMsg xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+            <SignedMsg xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd">
               <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
             </SignedMsg>
           </Xml>

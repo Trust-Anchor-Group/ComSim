@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="XmlMessages"
-           targetNamespace="https://lab.tagroot.io/Examples/XmlMessages.xsd"
+           targetNamespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd"
            elementFormDefault="qualified"
-           xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd"
-           xmlns:mstns="https://lab.tagroot.io/Examples/XmlMessages.xsd"
+           xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:element name="Msg">

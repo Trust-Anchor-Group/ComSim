@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
        xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
-       xmlns:xmldsig="http://lab.tagroot.io/Schema/ComSim/ComSimXmlDSig.xsd"
-       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd"
+       xmlns:xmldsig="http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd"
+       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
@@ -36,7 +36,7 @@
   </Assemblies>
   <Actors>
     <xmpp:XmppActorTcp domain="lab.tagroot.io" userName="XmppTcp" id="XmppTcp" N="100" apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
-      <xmpp:IqGetHandler name="Sign" namespace="https://lab.tagroot.io/Examples/XmlMessages.xsd" event="SignatureRequestReceived" actorName="To" eventArgs="e"/>
+      <xmpp:IqGetHandler name="Sign" namespace="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd" event="SignatureRequestReceived" actorName="To" eventArgs="e"/>
     </xmpp:XmppActorTcp>
   </Actors>
   <Distributions>
@@ -66,7 +66,7 @@
       <Count counter="Requests"/>
       <xmpp:Request actor="From" to="{To.FullJID}" type="Get" responseVariable="Response">
         <Xml>
-          <Sign xmlns="https://lab.tagroot.io/Examples/XmlMessages.xsd">
+          <Sign xmlns="http://lab.tagroot.io/Schema/Examples/XmlMessages.xsd">
             <Msg>
               <StartTime>{StartTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")}</StartTime>
             </Msg>

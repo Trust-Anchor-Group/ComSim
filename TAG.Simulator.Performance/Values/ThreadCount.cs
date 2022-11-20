@@ -30,7 +30,7 @@ namespace TAG.Simulator.Performance.Values
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/ComSimPerformance.xsd";
+		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/Performance.xsd";
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
