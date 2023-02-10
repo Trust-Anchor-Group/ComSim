@@ -6,7 +6,7 @@
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
     <Description>Extension library to the ComSim simulator, providing support for XMPP communication.</Description>
-    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+    <Copyright>Copyright © Trust Anchor Group 2020-2023. All rights reserved.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -6,7 +6,7 @@
     <Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Description>The TAG Network Communication Simulator (or TAG ComSim) is a white-label console utility application written in C# provided by Trust Anchor Group (TAG for short). It can be used to simulate network communication traffic in large-scale networks.</Description>
-    <Copyright>Copyright © Trust Anchor Group 2020. All rights reserved.</Copyright>
+    <Copyright>Copyright © Trust Anchor Group 2020-2023. All rights reserved.</Copyright>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
