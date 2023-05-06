@@ -101,7 +101,7 @@ namespace TAG.Simulator.Statistics
 
 			Output.Write("```layout: ");
 			Output.WriteLine(Title);
-			Output.WriteLine("<Layout2D xmlns=\"http://waher.se/Layout/Layout2D.xsd\"");
+			Output.WriteLine("<Layout2D xmlns=\"http://waher.se/Schema/Layout2D.xsd\"");
 			Output.WriteLine("          background=\"WhiteBackground\" pen=\"BlackPen\"");
 			Output.WriteLine("          font=\"Text\" textColor=\"Black\">");
 			Output.WriteLine("  <SolidPen id=\"BlackPen\" color=\"Black\" width=\"1px\"/>");
