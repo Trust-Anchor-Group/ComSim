@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Description>The TAG Network Communication Simulator (or TAG ComSim) is a white-label console utility application written in C# provided by Trust Anchor Group (TAG for short). It can be used to simulate network communication traffic in large-scale networks.</Description>
@@ -51,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator.ModBus\TAG.Simulator.ModBus.csproj" />
     <ProjectReference Include="..\TAG.Simulator.MQTT\TAG.Simulator.MQTT.csproj" />
     <ProjectReference Include="..\TAG.Simulator.MQ\TAG.Simulator.MQ.csproj" />
     <ProjectReference Include="..\TAG.Simulator.Performance\TAG.Simulator.Performance.csproj" />

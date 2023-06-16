@@ -128,9 +128,11 @@ namespace TAG.Simulator.ObjectModel.Actors
 
 			Console.Out.Write(this.id);
 
-			foreach (Actor Actor in this.instances)
+			foreach (IActor Actor in this.instances)
 			{
-				await Actor.StartInstance();
+				if (Actor is Actor Actor2)
+					await Actor2.StartInstance();
+
 				Console.Out.Write('.');
 			}
 
@@ -142,9 +144,10 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// </summary>
 		public override async Task Finalize()
 		{
-			foreach (Actor Actor in this.instances)
+			foreach (IActor Actor in this.instances)
 			{
-				await Actor.FinalizeInstance();
+				if (Actor is Actor Actor2)
+					await Actor2.FinalizeInstance();
 
 				if (Actor is IDisposable Disposable)
 					Disposable.Dispose();

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSimModBus"
+           targetNamespace="http://lab.tagroot.io/Schema/ComSim/ModBus.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://lab.tagroot.io/Schema/ComSim/ModBus.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/ModBus.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://lab.tagroot.io/Schema/ComSim.xsd">
+
+	<xs:import namespace="http://lab.tagroot.io/Schema/ComSim.xsd"/>
+
+	<xs:element name="ModBusClient">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:Actor"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ModBusServer">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:Actor">
+					<xs:attribute name="port" type="cs:PortNumber" use="required"/>
+					<xs:attribute name="tls" type="xs:boolean" use="optional" default="false"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ModBusDevice">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:Actor">
+					<xs:attribute name="startAddress" type="xs:unsignedByte" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ModBusRegister">
+		<xs:complexContent>
+			<xs:extension base="cs:ExtensibleElement">
+				<xs:attribute name="register" type="xs:unsignedShort" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="ModBusCoil" type="ModBusRegister"/>
+	<xs:element name="ModBusDiscreteInput" type="ModBusRegister"/>
+	<xs:element name="ModBusHoldingFloatingPointRegister" type="ModBusRegister"/>
+	<xs:element name="ModBusHoldingRegister" type="ModBusRegister"/>
+	<xs:element name="ModBusInputFloatingPointRegister" type="ModBusRegister"/>
+	<xs:element name="ModBusInputRegister" type="ModBusRegister"/>
+
+	<xs:element name="ReturnValue">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ModBusOperation">
+		<xs:complexContent>
+			<xs:extension base="cs:ActivityNode">
+				<xs:attribute name="host" type="xs:string" use="optional"/>
+				<xs:attribute name="port" type="xs:string" use="required"/>
+				<xs:attribute name="address" type="xs:string" use="required"/>
+				<xs:attribute name="register" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ModBusReadOperation">
+		<xs:complexContent>
+			<xs:extension base="ModBusOperation">
+				<xs:attribute name="responseVariable" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ModBusWriteOperation">
+		<xs:complexContent>
+			<xs:extension base="ModBusOperation">
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:group ref="cs:Value"/>
+					</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="ReadModBusCoil" type="ModBusReadOperation"/>
+	<xs:element name="ReadModBusDiscreteInput" type="ModBusReadOperation"/>
+	<xs:element name="ReadModBusHoldingFloatingPointRegister" type="ModBusReadOperation"/>
+	<xs:element name="ReadModBusHoldingRegister" type="ModBusReadOperation"/>
+	<xs:element name="ReadModBusInputFloatingPointRegister" type="ModBusReadOperation"/>
+	<xs:element name="ReadModBusInputRegister" type="ModBusReadOperation"/>
+
+	<xs:element name="WriteModBusCoil" type="ModBusWriteOperation"/>
+
+</xs:schema>

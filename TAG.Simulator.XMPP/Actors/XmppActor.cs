@@ -221,19 +221,19 @@ namespace TAG.Simulator.XMPP.Actors
 				this.client = new XmppClient(this.xmppCredentials, "en", typeof(XmppActor).GetTypeInfo().Assembly, this.sniffer);
 
 			this.client.OnStateChanged += this.Client_OnStateChanged;
-			this.client.OnChatMessage += Client_OnChatMessage;
-			this.client.OnConnectionError += Client_OnConnectionError;
-			this.client.OnError += Client_OnError;
-			this.client.OnErrorMessage += Client_OnErrorMessage;
-			this.client.OnGroupChatMessage += Client_OnGroupChatMessage;
-			this.client.OnHeadlineMessage += Client_OnHeadlineMessage;
-			this.client.OnNormalMessage += Client_OnNormalMessage;
-			this.client.OnPresence += Client_OnPresence;
-			this.client.OnPresenceSubscribe += Client_OnPresenceSubscribe;
-			this.client.OnRosterItemAdded += Client_OnRosterItemAdded;
-			this.client.OnRosterItemRemoved += Client_OnRosterItemRemoved;
-			this.client.OnRosterItemUpdated += Client_OnRosterItemUpdated;
-			this.client.CustomPresenceXml += Client_CustomPresenceXml;
+			this.client.OnChatMessage += this.Client_OnChatMessage;
+			this.client.OnConnectionError += this.Client_OnConnectionError;
+			this.client.OnError += this.Client_OnError;
+			this.client.OnErrorMessage += this.Client_OnErrorMessage;
+			this.client.OnGroupChatMessage += this.Client_OnGroupChatMessage;
+			this.client.OnHeadlineMessage += this.Client_OnHeadlineMessage;
+			this.client.OnNormalMessage += this.Client_OnNormalMessage;
+			this.client.OnPresence += this.Client_OnPresence;
+			this.client.OnPresenceSubscribe += this.Client_OnPresenceSubscribe;
+			this.client.OnRosterItemAdded += this.Client_OnRosterItemAdded;
+			this.client.OnRosterItemRemoved += this.Client_OnRosterItemRemoved;
+			this.client.OnRosterItemUpdated += this.Client_OnRosterItemUpdated;
+			this.client.CustomPresenceXml += this.Client_CustomPresenceXml;
 
 			string InstanceIndexSuffix = this.InstanceIndex.ToString();
 			int c = this.N.ToString().Length;
@@ -251,7 +251,7 @@ namespace TAG.Simulator.XMPP.Actors
 
 					if (Node is Extensions.IXmppExtension Extension)
 					{
-						object ExtensionObj = await Extension.Add(this, Client);
+						object ExtensionObj = await Extension.Add(this, this.Client);
 
 						if (!string.IsNullOrEmpty(Extension.Id))
 							this.Model.Variables[Extension.Id + InstanceIndexSuffix] = ExtensionObj;

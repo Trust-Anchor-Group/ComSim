@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComSim", "ComSim\ComSim.csproj", "{C1AE6303-7818-444E-B88A-EA9AC1398329}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -18,10 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 		Examples\ContentType.xml = Examples\ContentType.xml
 		Examples\Distributions.xml = Examples\Distributions.xml
 		Examples\EventXmlToHtml.xslt = Examples\EventXmlToHtml.xslt
-		Examples\Examples.svg = Examples\Examples.svg
 		Examples\Federation.xml = Examples\Federation.xml
 		Examples\GuessANumber.xml = Examples\GuessANumber.xml
 		Examples\HighLoad.xml = Examples\HighLoad.xml
+		Examples\ModBusDeviceControl.xml = Examples\ModBusDeviceControl.xml
 		Examples\mq-dev-config.mqsc = Examples\mq-dev-config.mqsc
 		Examples\Performance.ws = Examples\Performance.ws
 		Examples\ProtocolPerformance.ws = Examples\ProtocolPerformance.ws
@@ -60,6 +60,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMPP.IoT", "TAG.Simulator.XMPP.IoT\TAG.Simulator.XMPP.IoT.csproj", "{83318439-E397-4465-B5D4-6C66B10B3699}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAG.Simulator.XMPP.Legal", "TAG.Simulator.XMPP.Legal\TAG.Simulator.XMPP.Legal.csproj", "{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAG.Simulator.ModBus", "TAG.Simulator.ModBus\TAG.Simulator.ModBus.csproj", "{ECC8A625-F68F-4392-B48A-735920F9AABE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8270BEF7-CA9C-4D37-AA40-EA0B6BEA7483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECC8A625-F68F-4392-B48A-735920F9AABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECC8A625-F68F-4392-B48A-735920F9AABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECC8A625-F68F-4392-B48A-735920F9AABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECC8A625-F68F-4392-B48A-735920F9AABE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>ComSim</Product>
+    <Copyright>Copyright © Trust Anchor Group 2023. All rights reserved.</Copyright>
+    <Description>Extension library to the ComSim simulator, providing support for ModBus communication.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Schema\ComSimModBus.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\ComSimModBus.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Waher.Things.Modbus" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
+  </ItemGroup>
+
+</Project>

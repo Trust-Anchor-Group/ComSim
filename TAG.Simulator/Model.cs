@@ -801,7 +801,7 @@ namespace TAG.Simulator
 
 			do
 			{
-				Result = (int)(MaxValueExclusive * GetRandomDouble());
+				Result = (int)(MaxValueExclusive * this.GetRandomDouble());
 			}
 			while (Result >= MaxValueExclusive);
 
@@ -914,7 +914,7 @@ namespace TAG.Simulator
 		{
 			if (this.executing)
 			{
-				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, seconds);
+				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, this.seconds);
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 
@@ -934,7 +934,7 @@ namespace TAG.Simulator
 		{
 			if (this.executing)
 			{
-				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, seconds);
+				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, this.seconds);
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 

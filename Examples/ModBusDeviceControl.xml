@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:modbus="http://lab.tagroot.io/Schema/ComSim/ModBus.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT5S"
+       timeUnit="PT1S"
+       timeCycle="PT10M"
+       duration="PT10M">
+	<Meta>
+		<Title>ModBus Devices (Sensors, Actuators &amp; Controllers)</Title>
+		<Introduction>Simulates a set of ModBus Sensors, Actuators and Controllers.</Introduction>
+		<Description>
+			<![CDATA[ 
+			Simulates 20 ModBus Sensors (10 Outdoor and 10 Indoor Temperature Sensors), 10 ModBus Actuators (Heaters) and 10 ModBus Controllers 
+			(Thermostats, clients of one sensor and actuator each), controlling Heater output, based on Sensor output. Outdoor Sensor 
+			Temperature Value varies randomly over time. Indoor Sensor Temperature Value varies depending on Outdoor Temperature and
+			Heater output, using a simplified heat transfer function. Controllers read sensor data  and control Heater output based on 
+			current Indoor Temperature, comparing it to a goal Temperature that can be configured. Model is simplified, heat transfer made 
+			quicker, to illustrate communicative aspects, rather than physical properties. All devices can be interacted with using
+			external clients, such as the [Simple IoT Client](https://waher.se/IoTGateway/SimpleIoTClient.md) or
+			[Tag ID App](https://github.com/Trust-Anchor-Group/IdApp).
+			]]>
+		</Description>
+		<ModelScript>
+			<![CDATA[
+			IntToStr2(i):=i<10?"0"+Str(i):Str(i);
+			
+			foreach i in 1..10 do
+			(
+				Global["DataOutdoorTemp"+IntToStr2(i)]:=
+				{
+					"Temperature":Uniform(-10,25)
+				};
+
+				Global["DataIndoorTemp"+IntToStr2(i)]:=
+				{
+					"Temperature":22
+				};
+				
+				Global["DataHeater"+IntToStr2(i)]:=
+				{
+					"Enabled":false,
+					"Temperature":22
+				};
+				
+				Global["DataThermostat"+IntToStr2(i)]:=
+				{
+					"Enabled":true,
+					"Goal":22
+				};
+			);
+			]]>
+		</ModelScript>
+	</Meta>
+	<Assemblies>
+		<Assembly fileName="TAG.Simulator.ModBus.dll"/>
+	</Assemblies>
+	<Actors>
+		<Timer id="ModelTimer" N="10" period="PT1S">
+			<ExternalEvent name="Elapsed" event="ModelTimerElapsed" actorName="ModelTimer"/>
+		</Timer>
+		<Timer id="ControlTimer" N="10" period="PT5S">
+			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimer"/>
+		</Timer>
+		<modbus:ModBusServer id="ModBusGateway" port="502" tls="true" N="2">
+			<modbus:ModBusDevice id="OutdoorTemp" N="5" startAddress="0">
+				<modbus:ModBusHoldingFloatingPointRegister register="0">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusHoldingFloatingPointRegister>
+			</modbus:ModBusDevice>
+			<modbus:ModBusDevice id="IndoorTemp" N="5" startAddress="5">
+				<modbus:ModBusHoldingFloatingPointRegister register="0">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Sensor">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusHoldingFloatingPointRegister>
+			</modbus:ModBusDevice>
+			<modbus:ModBusDevice id="Heater" N="5" startAddress="10">
+				<modbus:ModBusCoil register="0">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEnabledEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterEnabledEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusCoil>
+				<modbus:ModBusHoldingFloatingPointRegister register="2">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterTemperatureEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterTemperatureEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusHoldingFloatingPointRegister>
+			</modbus:ModBusDevice>
+			<modbus:ModBusDevice id="Thermostat" N="5" startAddress="15">
+				<modbus:ModBusCoil register="0">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEnabledEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatEnabledEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusCoil>
+				<modbus:ModBusHoldingFloatingPointRegister register="2">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatGoalTemperatureEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatGoalTemperatureEvent" actorName="Actuator">
+						<Parameter name="e"/>
+					</ExternalEvent>
+				</modbus:ModBusHoldingFloatingPointRegister>
+			</modbus:ModBusDevice>
+		</modbus:ModBusServer>
+		<modbus:ModBusClient id="ThermostatClient" N="10">
+		</modbus:ModBusClient>
+	</Actors>
+	<Distributions>
+	</Distributions>
+	<Events>
+		<EventHandler id="ModelTimerElapsed" activity="Step">
+			<Description>Event raised every second, to increment the simulated temperature values.</Description>
+		</EventHandler>
+		<EventHandler id="ControlTimerElapsed" activity="Control">
+			<Description>Event raised every five seconds, where the thermostat reads the corresponding sensor values, and performs any necessary control actions.</Description>
+		</EventHandler>
+		<EventHandler id="ReadOutdoorTemperatureEvent" activity="ReadOutdoorTemperature">
+			<Description>Event raised when a client wants to read an outdoor temperature sensor.</Description>
+		</EventHandler>
+		<EventHandler id="ReadIndoorTemperatureEvent" activity="ReadIndoorTemperature">
+			<Description>Event raised when a client wants to read an indoor temperature sensor.</Description>
+		</EventHandler>
+		<EventHandler id="ReadHeaterEnabledEvent" activity="ReadHeaterEnabled">
+			<Description>Event raised when a client wants to read the enabled register in a heater.</Description>
+		</EventHandler>
+		<EventHandler id="ReadHeaterTemperatureEvent" activity="ReadHeaterTemperature">
+			<Description>Event raised when a client wants to read the temperature register in a heater.</Description>
+		</EventHandler>
+		<EventHandler id="ReadThermostatEnabledEvent" activity="ReadThermostatEnabled">
+			<Description>Event raised when a client wants to read the enabled register in a thermostat.</Description>
+		</EventHandler>
+		<EventHandler id="ReadThermostatGoalTemperatureEvent" activity="ReadThermostatGoalTemperature">
+			<Description>Event raised when a client wants to read the goal temperature register in a thermostat.</Description>
+		</EventHandler>
+		<EventHandler id="SetHeaterEnabledEvent" activity="SetHeaterEnabled">
+			<Description>Event raised when a control command is received enabling or disabling a Heater.</Description>
+		</EventHandler>
+		<EventHandler id="SetThermostatEnabledEvent" activity="SetThermostatEnabled">
+			<Description>Event raised when a control command is received enabling or disabling a Thermostat.</Description>
+		</EventHandler>
+		<EventHandler id="SetThermostatGoalTemperatureEvent" activity="SetThermostatGoalTemperature">
+			<Description>Event raised when a control command is received setting the Goal Temperature for a Thermostat.</Description>
+		</EventHandler>
+	</Events>
+	<Activities>
+		<Activity id="Step" logStart="false" logEnd="false">
+			<Description>Calculates the next step for simulated physical quantities in one system.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=ModelTimer.InstanceId.Substring(10);
+				i:=Num(Index);
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				OutdoorTempData:=Global["DataOutdoorTemp"+Index];
+				IndoorTempData:=Global["DataIndoorTemp"+Index];
+				HeaterData:=Global["DataHeater"+Index];
+				ThermostatData:=Global["DataThermostat"+Index];
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				OutdoorTempData.Temperature+=Uniform(-0.25,0.25);
+				]]>
+			</Eval>
+			<Sample name="Outdoor Temperature {i}">
+				<Script>OutdoorTempData.Temperature C</Script>
+			</Sample>
+			<Eval>
+				<![CDATA[
+				IndoorTempData.Temperature+=0.01*(
+					(OutdoorTempData.Temperature-IndoorTempData.Temperature)+
+					(HeaterData.Temperature-IndoorTempData.Temperature));
+				]]>
+			</Eval>
+			<Sample name="Indoor Temperature {i}">
+				<Script>IndoorTempData.Temperature C</Script>
+			</Sample>
+			<Eval>
+				<![CDATA[
+				HeaterData.Temperature+=0.01*(
+					(IndoorTempData.Temperature-HeaterData.Temperature)+
+					(HeaterData.Enabled?100-HeaterData.Temperature:0));
+				]]>
+			</Eval>
+			<Sample name="Heater Temperature {i}">
+				<Script>HeaterData.Temperature C</Script>
+			</Sample>
+			<Sample name="Heater Enabled {i}">
+				<Script>HeaterData.Enabled?40:0</Script>
+			</Sample>
+			<Conditional>
+				<Condition condition="ThermostatData.Enabled">
+					<Sample name="Thermostat Goal {i}">
+						<Script>ThermostatData.Goal C</Script>
+					</Sample>
+				</Condition>
+			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="Control" logStart="false" logEnd="false">
+			<Description>Performs the actions of a thermostat, by reading the corresponding sensors and taking necessary actions to control the indoor temperature to match a preset and configurable goal temperature.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=ControlTimer.InstanceId.Substring(12);
+				i:=Num(Index);
+				]]>
+			</Eval>
+			<Eval>
+				<![CDATA[
+				Thermostat:=Global["Thermostat"+Index];
+				ThermostatData:=Global["DataThermostat"+Index];
+				ThermostatControlClient:=Global["ThermostatControlClient"+Index];
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="!ThermostatData.Enabled">
+					<Finished/>
+				</Condition>
+			</Conditional>
+			<Parallel>
+				<Thread>
+					<Eval>
+						<![CDATA[
+						IndoorPort:=502+floor(i/5);
+						IndoorAddress:=i MOD 5;
+						]]>
+					</Eval>
+					<modbus:ReadModBusCoil register="0"
+																 port="{IndoorPort}"
+																 address="{IndoorAddress}"
+																 responseVariable="IndoorEnabled"/>
+					<modbus:ReadModBusHoldingFloatingPointRegister register="2"
+																												 port="{IndoorPort}"
+																												 address="{IndoorAddress}"
+																												 responseVariable="IndoorTemperature"/>
+				</Thread>
+				<Thread>
+					<Eval>
+						<![CDATA[
+						HeaterPort:=502+floor(i/5);
+						HeaterAddress:=i MOD 5+10;
+						]]>
+					</Eval>
+				</Thread>
+			</Parallel>
+			<Conditional>
+				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
+					<Count counter="Enable"/>
+					<modbus:WriteModBusCoil register="0"
+																	port="{HeaterPort}"
+																	address="{HeaterAddress}">
+						<Boolean value="true"/>
+					</modbus:WriteModBusCoil>
+				</Condition>
+				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
+					<Count counter="Disable"/>
+					<modbus:WriteModBusCoil register="0"
+																	port="{HeaterPort}"
+																	address="{HeaterAddress}">
+						<Boolean value="false"/>
+					</modbus:WriteModBusCoil>
+				</Condition>
+			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadOutdoorTemperature" logStart="false" logEnd="false">
+			<Description>Performs a readout of an outdoor temperature sensor.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Temperature</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadIndoorTemperature" logStart="false" logEnd="false">
+			<Description>Performs a readout of an indoor temperature sensor.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Temperature</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadHeaterEnabled" logStart="false" logEnd="false">
+			<Description>Performs a readout of the enabled register in a heater.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Enabled</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadHeaterTemperature" logStart="false" logEnd="false">
+			<Description>Performs a readout of the temperature register in a heater.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Temperature</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadThermostatEnabled" logStart="false" logEnd="false">
+			<Description>Performs a readout of the enabled register in a thermostat.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Enabled</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="ReadThermostatGoalTemperature" logStart="false" logEnd="false">
+			<Description>Performs a readout of the goal temperature register in a thermostat.</Description>
+			<Start/>
+			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<modbus:ReturnValue>
+				<Script>Data.Goal</Script>
+			</modbus:ReturnValue>
+			<Stop/>
+		</Activity>
+		<Activity id="SetHeaterEnabled" logStart="false" logEnd="false">
+			<Description>Enables or disables a heater.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=Heater.InstanceId.Substring(6);
+				Data:=Global["DataHeater"+Index];
+				Data.Enabled:=Value
+				]]>
+			</Eval>
+			<Stop/>
+		</Activity>
+		<Activity id="SetThermostatEnabled" logStart="false" logEnd="false">
+			<Description>Enables or disables a thermostat.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=Thermostat.InstanceId.Substring(10);
+				Data:=Global["DataThermostat"+Index];
+				Data.Enabled:=Value
+				]]>
+			</Eval>
+			<Stop/>
+		</Activity>
+		<Activity id="SetThermostatGoalTemperature" logStart="false" logEnd="false">
+			<Description>Sets the Goal Temperature of a thermostat.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				Index:=Thermostat.InstanceId.Substring(10);
+				Data:=Global["DataThermostat"+Index];
+				Data.Goal:=Value
+				]]>
+			</Eval>
+			<Stop/>
+		</Activity>
+	</Activities>
+	<Graphs>
+		<CombinedSampleGraph header="System 1" title="Temperatue System 1" legend="true">
+			<Source ref="Thermostat Goal 1"/>
+			<Source ref="Outdoor Temperature 1"/>
+			<Source ref="Indoor Temperature 1"/>
+			<Source ref="Heater Temperature 1"/>
+			<Source ref="Heater Enabled 1"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 2" title="Temperatue System 2" legend="true">
+			<Source ref="Thermostat Goal 2"/>
+			<Source ref="Outdoor Temperature 2"/>
+			<Source ref="Indoor Temperature 2"/>
+			<Source ref="Heater Temperature 2"/>
+			<Source ref="Heater Enabled 2"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 3" title="Temperatue System 3" legend="true">
+			<Source ref="Thermostat Goal 3"/>
+			<Source ref="Outdoor Temperature 3"/>
+			<Source ref="Indoor Temperature 3"/>
+			<Source ref="Heater Temperature 3"/>
+			<Source ref="Heater Enabled 3"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 4" title="Temperatue System 4" legend="true">
+			<Source ref="Thermostat Goal 4"/>
+			<Source ref="Outdoor Temperature 4"/>
+			<Source ref="Indoor Temperature 4"/>
+			<Source ref="Heater Temperature 4"/>
+			<Source ref="Heater Enabled 4"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 5" title="Temperatue System 5" legend="true">
+			<Source ref="Thermostat Goal 5"/>
+			<Source ref="Outdoor Temperature 5"/>
+			<Source ref="Indoor Temperature 5"/>
+			<Source ref="Heater Temperature 5"/>
+			<Source ref="Heater Enabled 5"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 6" title="Temperatue System 6" legend="true">
+			<Source ref="Thermostat Goal 6"/>
+			<Source ref="Outdoor Temperature 6"/>
+			<Source ref="Indoor Temperature 6"/>
+			<Source ref="Heater Temperature 6"/>
+			<Source ref="Heater Enabled 6"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 7" title="Temperatue System 7" legend="true">
+			<Source ref="Thermostat Goal 7"/>
+			<Source ref="Outdoor Temperature 7"/>
+			<Source ref="Indoor Temperature 7"/>
+			<Source ref="Heater Temperature 7"/>
+			<Source ref="Heater Enabled 7"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 8" title="Temperatue System 8" legend="true">
+			<Source ref="Thermostat Goal 8"/>
+			<Source ref="Outdoor Temperature 8"/>
+			<Source ref="Indoor Temperature 8"/>
+			<Source ref="Heater Temperature 8"/>
+			<Source ref="Heater Enabled 8"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 9" title="Temperatue System 9" legend="true">
+			<Source ref="Thermostat Goal 9"/>
+			<Source ref="Outdoor Temperature 9"/>
+			<Source ref="Indoor Temperature 9"/>
+			<Source ref="Heater Temperature 9"/>
+			<Source ref="Heater Enabled 9"/>
+		</CombinedSampleGraph>
+		<CombinedSampleGraph header="System 10" title="Temperatue System 10" legend="true">
+			<Source ref="Thermostat Goal 10"/>
+			<Source ref="Outdoor Temperature 10"/>
+			<Source ref="Indoor Temperature 10"/>
+			<Source ref="Heater Temperature 10"/>
+			<Source ref="Heater Enabled 10"/>
+		</CombinedSampleGraph>
+	</Graphs>
+</Model>
