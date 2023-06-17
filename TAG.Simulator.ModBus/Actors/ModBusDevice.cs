@@ -8,7 +8,7 @@ namespace TAG.Simulator.ModBus.Actors
 	/// <summary>
 	/// Represents a simulated ModBus device
 	/// </summary>
-	public class ModBusDevice : Actor
+	public class ModBusDevice : ModBusActor
 	{
 		private byte startAddress;
 
@@ -21,16 +21,6 @@ namespace TAG.Simulator.ModBus.Actors
 			: base(Parent, Model)
 		{
 		}
-
-		/// <summary>
-		/// XML Namespace where the element is defined.
-		/// </summary>
-		public override string Namespace => ModBusServer.ComSimModBusNamespace;
-
-		/// <summary>
-		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
-		/// </summary>
-		public override string SchemaResource => ModBusServer.ComSimModBusSchema;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -56,7 +46,7 @@ namespace TAG.Simulator.ModBus.Actors
 		{
 			this.startAddress = (byte)XML.Attribute(Definition, "startAddress", 0);
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>

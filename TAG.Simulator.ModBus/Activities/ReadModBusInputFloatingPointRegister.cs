@@ -1,41 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TAG.Simulator.ModBus.Actors;
+using TAG.Simulator.ModBus.Activities;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Script;
 
-namespace TAG.Simulator.ModBus.Activities
+namespace TAG.Simulator.ModBus.Registers.Activities
 {
 	/// <summary>
-	/// Returns a value during a register readout.
+	/// Reads an input floating-point register value.
 	/// </summary>
-	public class ReturnValue : ActivityNode
+	public class ReadModBusInputFloatingPointRegister : ModBusReadOperation
 	{
 		/// <summary>
-		/// Returns a value during a register readout.
+		/// Reads an input floating-point register value.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public ReturnValue(ISimulationNode Parent, Model Model)
+		public ReadModBusInputFloatingPointRegister(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// XML Namespace where the element is defined.
-		/// </summary>
-		public override string Namespace => ModBusActor.ComSimModBusNamespace;
-
-		/// <summary>
-		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
-		/// </summary>
-		public override string SchemaResource => ModBusActor.ComSimModBusSchema;
-
-		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(ReturnValue);
+		public override string LocalName => nameof(ReadModBusInputFloatingPointRegister);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -45,7 +35,7 @@ namespace TAG.Simulator.ModBus.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ReturnValue(Parent, Model);
+			return new ReadModBusInputFloatingPointRegister(Parent, Model);
 		}
 
 		/// <summary>
@@ -56,7 +46,6 @@ namespace TAG.Simulator.ModBus.Activities
 		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			throw new NotImplementedException();
-			// TODO
 		}
 	}
 }

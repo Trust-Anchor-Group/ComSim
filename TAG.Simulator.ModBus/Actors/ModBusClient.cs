@@ -6,19 +6,16 @@ using Waher.Content.Xml;
 namespace TAG.Simulator.ModBus.Actors
 {
 	/// <summary>
-	/// Hosts a ModBus IP Gateway
+	/// Represents a simulated ModBus client
 	/// </summary>
-	public class ModBusServer : ModBusActor
+	public class ModBusClient : ModBusActor
 	{
-		private int port;
-		private bool tls;
-
 		/// <summary>
-		/// Hosts a ModBus IP Gateway
+		/// Represents a simulated ModBus client
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public ModBusServer(ISimulationNode Parent, Model Model)
+		public ModBusClient(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -26,7 +23,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(ModBusServer);
+		public override string LocalName => nameof(ModBusClient);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -36,19 +33,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ModBusServer(Parent, Model);
-		}
-
-		/// <summary>
-		/// Sets properties and attributes of class in accordance with XML definition.
-		/// </summary>
-		/// <param name="Definition">XML definition</param>
-		public override Task FromXml(XmlElement Definition)
-		{
-			this.port = XML.Attribute(Definition, "port", 502);
-			this.tls = XML.Attribute(Definition, "tls", false);
-
-			return base.FromXml(Definition);
+			return new ModBusClient(Parent, Model);
 		}
 
 		/// <summary>
