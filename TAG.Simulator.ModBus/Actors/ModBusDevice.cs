@@ -11,6 +11,7 @@ namespace TAG.Simulator.ModBus.Actors
 	public class ModBusDevice : ModBusActor
 	{
 		private byte startAddress;
+		private byte instanceAddress;
 
 		/// <summary>
 		/// Represents a simulated ModBus device
@@ -19,6 +20,18 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <param name="Model">Model in which the node is defined.</param>
 		public ModBusDevice(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
+		{
+		}
+
+		/// <summary>
+		/// Represents a simulated ModBus device
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="InstanceIndex">Instance index.</param>
+		/// <param name="InstanceId">ID of instance</param>
+		public ModBusDevice(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
 		{
 		}
 
@@ -59,7 +72,11 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			throw new System.NotImplementedException();
+			return Task.FromResult<Actor>(new ModBusDevice(this, this.Model, InstanceIndex, InstanceId)
+			{
+				startAddress = this.startAddress,
+				instanceAddress = (byte)(this.startAddress + InstanceIndex - 1)
+			});
 		}
 
 		/// <summary>

@@ -28,6 +28,18 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
+		/// Abstract base class for ModBus actors.
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="InstanceIndex">Instance index.</param>
+		/// <param name="InstanceId">ID of instance</param>
+		public ModBusActor(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
+		{
+		}
+
+		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
 		public override string Namespace => ComSimModBusNamespace;

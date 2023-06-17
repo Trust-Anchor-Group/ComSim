@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Content.Xml;
+using Waher.Networking.Modbus;
 
 namespace TAG.Simulator.ModBus.Actors
 {
@@ -21,6 +20,18 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
+		/// Represents a simulated ModBus client
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="InstanceIndex">Instance index.</param>
+		/// <param name="InstanceId">ID of instance</param>
+		public ModBusClient(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
+		{
+		}
+
+		/// <summarmy>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(ModBusClient);
@@ -46,7 +57,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			throw new System.NotImplementedException();
+			return Task.FromResult<Actor>(new ModBusClient(this, this.Model, InstanceIndex, InstanceId));
 		}
 
 		/// <summary>

@@ -24,6 +24,18 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
+		/// Hosts a ModBus IP Gateway
+		/// </summary>
+		/// <param name="Parent">Parent node</param>
+		/// <param name="Model">Model in which the node is defined.</param>
+		/// <param name="InstanceIndex">Instance index.</param>
+		/// <param name="InstanceId">ID of instance</param>
+		public ModBusServer(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
+			: base(Parent, Model, InstanceIndex, InstanceId)
+		{
+		}
+
+		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(ModBusServer);
@@ -61,7 +73,11 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			throw new System.NotImplementedException();
+			return Task.FromResult<Actor>(new ModBusServer(this, this.Model, InstanceIndex, InstanceId)
+			{
+				tls = this.tls,
+				port = (ushort)(this.port + InstanceIndex - 1)
+			});
 		}
 
 		/// <summary>
