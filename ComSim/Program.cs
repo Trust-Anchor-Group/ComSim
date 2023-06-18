@@ -67,16 +67,16 @@ namespace ComSim
 	/// </summary>
 	class Program
 	{
-		private static readonly Dictionary<string, Dictionary<string, string>> importedKeys = new Dictionary<string, Dictionary<string, string>>();
+		private static readonly Dictionary<string, Dictionary<string, string>> importedKeys = new();
 
 		static int Main(string[] args)
 		{
 			try
 			{
-				StringBuilder CommandLine = new StringBuilder("ComSim.exe");
-				LinkedList<string> Master = new LinkedList<string>();
-				LinkedList<string> Css = new LinkedList<string>();
-				LinkedList<string> AssemblyFolders = new LinkedList<string>();
+				StringBuilder CommandLine = new("ComSim.exe");
+				LinkedList<string> Master = new();
+				LinkedList<string> Css = new();
+				LinkedList<string> AssemblyFolders = new();
 				Encoding Encoding = Encoding.UTF8;
 				XmlDocument Model = null;
 				string ProgramDataFolder = null;
@@ -101,7 +101,7 @@ namespace ComSim
 					CommandLine.Append(' ');
 
 					s = args[i];
-					Quote = s.IndexOf(' ') >= 0;
+					Quote = s.Contains(' ');
 					if (Quote)
 						CommandLine.Append('"');
 
@@ -358,7 +358,7 @@ namespace ComSim
 				{
 					if (N is XmlElement E && E.LocalName == "Assemblies")
 					{
-						Dictionary<string, Assembly> Loaded = new Dictionary<string, Assembly>();
+						Dictionary<string, Assembly> Loaded = new();
 
 						foreach (Assembly A in AppDomain.CurrentDomain.GetAssemblies())
 							Loaded[A.GetName().Name] = A;
@@ -388,7 +388,7 @@ namespace ComSim
 										FileName = FileName2;
 								}
 
-								LinkedList<string> ToLoad = new LinkedList<string>();
+								LinkedList<string> ToLoad = new();
 								ToLoad.AddLast(FileName);
 
 								while (!string.IsNullOrEmpty(FileName = ToLoad.First?.Value))
@@ -448,14 +448,14 @@ namespace ComSim
 
 				Console.Out.WriteLine("Validating model.");
 
-				Dictionary<string, XmlSchema> Schemas = new Dictionary<string, XmlSchema>();
-				LinkedList<XmlElement> ToProcess = new LinkedList<XmlElement>();
+				Dictionary<string, XmlSchema> Schemas = new();
+				LinkedList<XmlElement> ToProcess = new();
 				XmlElement Loop;
 				string Last = null;
 
 				ToProcess.AddLast(Model.DocumentElement);
 
-				while (!((Loop = ToProcess.First?.Value) is null))
+				while ((Loop = ToProcess.First?.Value) is not null)
 				{
 					ToProcess.RemoveFirst();
 
@@ -493,7 +493,7 @@ namespace ComSim
 				if (LogConsole)
 					Log.Register(new ConsoleEventSink(false));
 
-				TaskCompletionSource<bool> Done = new TaskCompletionSource<bool>(false);
+				TaskCompletionSource<bool> Done = new(false);
 
 				try
 				{
@@ -610,7 +610,7 @@ namespace ComSim
 				{
 					Console.Out.WriteLine("Generating XML report: " + XmlOutputFileName);
 
-					XmlWriterSettings Settings = new XmlWriterSettings()
+					XmlWriterSettings Settings = new()
 					{
 						Encoding = Encoding.UTF8,
 						Indent = true,

@@ -22,7 +22,6 @@
 			<xs:complexContent>
 				<xs:extension base="cs:Actor">
 					<xs:attribute name="port" type="cs:PortNumber" use="required"/>
-					<xs:attribute name="tls" type="xs:boolean" use="optional" default="false"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>

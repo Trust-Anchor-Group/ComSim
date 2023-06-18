@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel.Actors;
-using Waher.Networking.Modbus;
 
 namespace TAG.Simulator.ModBus.Actors
 {
@@ -65,7 +64,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task InitializeInstance()
 		{
-			throw new System.NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -73,7 +72,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task StartInstance()
 		{
-			throw new System.NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -81,7 +80,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task FinalizeInstance()
 		{
-			throw new System.NotImplementedException();
+			return Task.CompletedTask;
 		}
 	}
 }

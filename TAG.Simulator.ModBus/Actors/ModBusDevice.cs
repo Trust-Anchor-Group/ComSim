@@ -84,7 +84,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task InitializeInstance()
 		{
-			throw new System.NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -92,7 +92,11 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task StartInstance()
 		{
-			throw new System.NotImplementedException();
+			if (this.Parent.Parent is ModBusServer Server)
+			{
+			}
+
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -100,7 +104,11 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task FinalizeInstance()
 		{
-			throw new System.NotImplementedException();
+			if (this.Parent.Parent is ModBusServer Server)
+			{
+			}
+
+			return Task.CompletedTask;
 		}
 	}
 }

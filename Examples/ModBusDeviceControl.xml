@@ -62,7 +62,7 @@
 		<Timer id="ControlTimer" N="10" period="PT5S">
 			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimer"/>
 		</Timer>
-		<modbus:ModBusServer id="ModBusGateway" port="502" tls="true" N="2">
+		<modbus:ModBusServer id="ModBusGateway" port="502" N="2">
 			<modbus:ModBusDevice id="OutdoorTemp" N="5" startAddress="0">
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">

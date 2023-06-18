@@ -2,6 +2,7 @@
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
+using Waher.Networking.Modbus;
 
 namespace TAG.Simulator.ModBus.Actors
 {
@@ -10,8 +11,8 @@ namespace TAG.Simulator.ModBus.Actors
 	/// </summary>
 	public class ModBusServer : ModBusActor
 	{
+		private ModBusTcpServer server;
 		private int port;
-		private bool tls;
 
 		/// <summary>
 		/// Hosts a ModBus IP Gateway
@@ -41,6 +42,12 @@ namespace TAG.Simulator.ModBus.Actors
 		public override string LocalName => nameof(ModBusServer);
 
 		/// <summary>
+		/// Reference to the ModBus TCP server object.
+		/// (Only available on initialized instances.)
+		/// </summary>
+		public ModBusTcpServer Server => this.server;
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -58,7 +65,6 @@ namespace TAG.Simulator.ModBus.Actors
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.port = XML.Attribute(Definition, "port", 502);
-			this.tls = XML.Attribute(Definition, "tls", false);
 
 			return base.FromXml(Definition);
 		}
@@ -75,7 +81,6 @@ namespace TAG.Simulator.ModBus.Actors
 		{
 			return Task.FromResult<Actor>(new ModBusServer(this, this.Model, InstanceIndex, InstanceId)
 			{
-				tls = this.tls,
 				port = (ushort)(this.port + InstanceIndex - 1)
 			});
 		}
@@ -83,9 +88,9 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
-		public override Task InitializeInstance()
+		public override async Task InitializeInstance()
 		{
-			throw new System.NotImplementedException();
+			this.server	= await ModBusTcpServer.CreateAsync(this.port);
 		}
 
 		/// <summary>
@@ -93,7 +98,7 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task StartInstance()
 		{
-			throw new System.NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -101,7 +106,10 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task FinalizeInstance()
 		{
-			throw new System.NotImplementedException();
+			this.server?.Dispose();
+			this.server = null;
+
+			return Task.CompletedTask;
 		}
 	}
 }
