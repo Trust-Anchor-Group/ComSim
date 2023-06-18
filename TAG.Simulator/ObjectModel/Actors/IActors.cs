@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Actors
+﻿namespace TAG.Simulator.ObjectModel.Actors
 {
 	/// <summary>
 	/// Interface for collections of actors.

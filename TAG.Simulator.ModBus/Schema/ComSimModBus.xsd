@@ -19,11 +19,10 @@
 
 	<xs:element name="ModBusServer">
 		<xs:complexType>
-			<xs:complexContent>
-				<xs:extension base="cs:Actor">
-					<xs:attribute name="port" type="cs:PortNumber" use="required"/>
-				</xs:extension>
-			</xs:complexContent>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="ModBusDevice"/>
+			</xs:choice>
+			<xs:attribute name="port" type="cs:PortNumber" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -86,9 +85,9 @@
 	<xs:complexType name="ModBusWriteOperation">
 		<xs:complexContent>
 			<xs:extension base="ModBusOperation">
-					<xs:choice minOccurs="1" maxOccurs="1">
-						<xs:group ref="cs:Value"/>
-					</xs:choice>
+				<xs:choice minOccurs="1" maxOccurs="1">
+					<xs:group ref="cs:Value"/>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

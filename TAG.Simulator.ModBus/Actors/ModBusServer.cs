@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 using Waher.Networking.Modbus;
@@ -9,7 +10,7 @@ namespace TAG.Simulator.ModBus.Actors
 	/// <summary>
 	/// Hosts a ModBus IP Gateway
 	/// </summary>
-	public class ModBusServer : ModBusActor
+	public class ModBusServer : SimulationNodeChildren, IActors
 	{
 		private ModBusTcpServer server;
 		private int port;
@@ -25,16 +26,14 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
-		/// Hosts a ModBus IP Gateway
+		/// XML Namespace where the element is defined.
 		/// </summary>
-		/// <param name="Parent">Parent node</param>
-		/// <param name="Model">Model in which the node is defined.</param>
-		/// <param name="InstanceIndex">Instance index.</param>
-		/// <param name="InstanceId">ID of instance</param>
-		public ModBusServer(ISimulationNode Parent, Model Model, int InstanceIndex, string InstanceId)
-			: base(Parent, Model, InstanceIndex, InstanceId)
-		{
-		}
+		public override string Namespace => ModBusActor.ComSimModBusNamespace;
+
+		/// <summary>
+		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+		/// </summary>
+		public override string SchemaResource => ModBusActor.ComSimModBusSchema;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -70,46 +69,42 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
-		/// Creates an instance of the actor.
-		/// 
-		/// Note: Parent of newly created actor should point to this node (the creator of the instance object).
+		/// Registers an actor with the collection of actors.
 		/// </summary>
-		/// <param name="InstanceIndex">Instance index.</param>
-		/// <param name="InstanceId">ID of instance</param>
-		/// <returns>Actor instance.</returns>
-		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
+		/// <param name="Actor">Actor</param>
+		public void Register(IActor Actor)
 		{
-			return Task.FromResult<Actor>(new ModBusServer(this, this.Model, InstanceIndex, InstanceId)
-			{
-				port = (ushort)(this.port + InstanceIndex - 1)
-			});
+			if (this.Parent is IActors Actors)
+				Actors.Register(Actor);
 		}
 
 		/// <summary>
-		/// Initializes an instance of an actor.
+		/// Initialized the node before simulation.
 		/// </summary>
-		public override async Task InitializeInstance()
+		public override async Task Initialize()
 		{
 			this.server	= await ModBusTcpServer.CreateAsync(this.port);
+
+			await base.Initialize();
 		}
 
 		/// <summary>
-		/// Starts an instance of an actor.
+		/// Starts the node.
 		/// </summary>
-		public override Task StartInstance()
+		public override Task Start()
 		{
-			return Task.CompletedTask;
+			return base.Start();
 		}
 
 		/// <summary>
-		/// Finalizes an instance of an actor.
+		/// Finalizes the node after simulation.
 		/// </summary>
-		public override Task FinalizeInstance()
+		public override Task Finalize()
 		{
-			this.server?.Dispose();
+			this.server.Dispose();
 			this.server = null;
 
-			return Task.CompletedTask;
+			return base.Finalize();
 		}
 	}
 }

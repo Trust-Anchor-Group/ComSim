@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using TAG.Simulator.ObjectModel.Events;
 using Waher.Script;
 
