@@ -79,5 +79,16 @@ namespace TAG.Simulator.ObjectModel.Values
 		{
 			Output.Write(this.name);
 		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Variable TypedTo = (Variable)To;
+
+			TypedTo.name = this.name;
+		}
 	}
 }

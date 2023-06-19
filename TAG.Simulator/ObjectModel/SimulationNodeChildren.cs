@@ -120,5 +120,16 @@ namespace TAG.Simulator.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			SimulationNodeChildren TypedTo = (SimulationNodeChildren)To;
+
+			foreach (ISimulationNode Child in this.Children)
+				TypedTo.AddChild(Child.Copy());
+		}
 	}
 }

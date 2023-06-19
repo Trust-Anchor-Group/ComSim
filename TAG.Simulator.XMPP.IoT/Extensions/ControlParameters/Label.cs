@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 
@@ -51,6 +50,17 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		{
 			this.value = Definition.InnerText;
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Label TypedTo = (Label)To;
+
+			TypedTo.value = this.value;
 		}
 
 	}

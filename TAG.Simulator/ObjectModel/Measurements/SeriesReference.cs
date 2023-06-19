@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.Statistics;
 using Waher.Content.Xml;
@@ -11,7 +10,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 	/// </summary>
 	public abstract class SeriesReference : SimulationNode
 	{
-		private string _for;
+		private string @for;
 		private IBucket bucket;
 
 		/// <summary>
@@ -27,7 +26,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		/// <summary>
 		/// ID of series
 		/// </summary>
-		public string For => this._for;
+		public string For => this.@for;
 
 		/// <summary>
 		/// Referenced bucket.
@@ -40,7 +39,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this._for = XML.Attribute(Definition, "for");
+			this.@for = XML.Attribute(Definition, "for");
 
 			return Task.CompletedTask;
 		}
@@ -50,8 +49,20 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		/// </summary>
 		public override Task Start()
 		{
-			this.bucket = this.Model.GetSampleBucket(this._for);
+			this.bucket = this.Model.GetSampleBucket(this.@for);
 			return base.Start();
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			SeriesReference TypedTo = (SeriesReference)To;
+
+			TypedTo.@for = this.@for;
+			TypedTo.bucket = this.bucket;
 		}
 
 	}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using Waher.Script;
 
@@ -68,6 +67,18 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		{
 			await this.expression.EvaluateAsync(this.Model.Variables);
 			await base.Initialize();
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			ModelScript TypedTo = (ModelScript)To;
+
+			TypedTo.script = this.script;
+			TypedTo.expression = this.expression;
 		}
 	}
 }

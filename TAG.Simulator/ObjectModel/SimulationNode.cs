@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -191,5 +192,39 @@ namespace TAG.Simulator.ObjectModel
 		private Expression lastActorExpression = null;
 		private readonly object synchObj = new object();
 
+		/// <summary>
+		/// Copies the node.
+		/// </summary>
+		/// <returns>Copy</returns>
+		public virtual ISimulationNode Copy()
+		{
+			ISimulationNode Result = this.Create(this.parent, this.model);
+			this.CopyContents(Result);
+			return Result;
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public abstract void CopyContents(ISimulationNode To);
+
+		/// <summary>
+		/// Copies an array of simulation nodes.
+		/// </summary>
+		/// <typeparam name="T">Type of simulation node.</typeparam>
+		/// <param name="Nodes">Nodes</param>
+		/// <returns>Copies of the nodes.</returns>
+		public static T[] Copy<T>(T[] Nodes)
+			where T : ISimulationNode
+		{
+			int i, c = Nodes.Length;
+			T[] Result = new T[c];
+
+			for (i = 0; i < c; i++)
+				Result[i] = (T)Nodes[i].Copy();
+
+			return Result;
+		}
 	}
 }

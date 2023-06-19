@@ -18,7 +18,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	public class CustomGraph : Graph, ICustomGraph, IBucket
 	{
 		private readonly LinkedList<KeyValuePair<DateTime, double>> statistics = new LinkedList<KeyValuePair<DateTime, double>>();
-		private string _for;
+		private string @for;
 		private string script;
 		private StringBuilder times = null;
 		private StringBuilder values = null;
@@ -48,7 +48,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)
 		/// </summary>
-		public string For => this._for;
+		public string For => this.@for;
 
 		/// <summary>
 		/// Bucket ID
@@ -91,7 +91,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this._for = XML.Attribute(Definition, "for");
+			this.@for = XML.Attribute(Definition, "for");
 
 			if (Definition.HasAttribute("timeVariable"))
 			{
@@ -105,7 +105,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			if (Definition.HasAttribute("valueVariable"))
 				this.values.Append(Definition.GetAttribute("valueVariable"));
 			else
-				this.values.Append(this._for);
+				this.values.Append(this.@for);
 
 			this.values.Append(":=[");
 
@@ -259,7 +259,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			lock (this)
 			{
 				Output.WriteStartElement(RowElement);
-				Output.WriteAttributeString("type", this._for);
+				Output.WriteAttributeString("type", this.@for);
 				Output.WriteAttributeString("count", this.count.ToString());
 
 				if (!(this.unit is null))

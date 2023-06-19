@@ -96,5 +96,12 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="Output">Output</param>
 		Task ExportXml(XmlWriter Output);
+
+		/// <summary>
+		/// Copies the node.
+		/// </summary>
+		/// <returns>Copy</returns>
+		ISimulationNode Copy();
+
 	}
 }

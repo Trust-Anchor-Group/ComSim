@@ -192,14 +192,14 @@ namespace TAG.Simulator.MQTT.Actors
 			this.client.TrustServer = this.trustServer;
 
 			this.client.OnStateChanged += this.Client_OnStateChanged;
-			this.client.OnConnectionError += Client_OnConnectionError;
-			this.client.OnError += Client_OnError;
-			this.client.OnContentReceived += Client_OnContentReceived;
-			this.client.OnPing += Client_OnPing;
-			this.client.OnPingResponse += Client_OnPingResponse;
-			this.client.OnPublished += Client_OnPublished;
-			this.client.OnSubscribed += Client_OnSubscribed;
-			this.client.OnUnsubscribed += Client_OnUnsubscribed;
+			this.client.OnConnectionError += this.Client_OnConnectionError;
+			this.client.OnError += this.Client_OnError;
+			this.client.OnContentReceived += this.Client_OnContentReceived;
+			this.client.OnPing += this.Client_OnPing;
+			this.client.OnPingResponse += this.Client_OnPingResponse;
+			this.client.OnPublished += this.Client_OnPublished;
+			this.client.OnSubscribed += this.Client_OnSubscribed;
+			this.client.OnUnsubscribed += this.Client_OnUnsubscribed;
 
 			this.connected = new TaskCompletionSource<bool>();
 		}

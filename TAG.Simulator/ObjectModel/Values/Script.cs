@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -146,6 +145,18 @@ namespace TAG.Simulator.ObjectModel.Values
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Activities.Eval.ExportPlantUml(this.script, Output, Indentation, QuoteChar, false);
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Script TypedTo = (Script)To;
+
+			TypedTo.expression = this.expression;
+			TypedTo.script = this.script;
 		}
 	}
 }

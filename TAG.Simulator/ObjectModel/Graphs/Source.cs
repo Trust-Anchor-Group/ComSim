@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
 
@@ -10,7 +9,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 	/// </summary>
 	public class Source : SimulationNode, ISource
 	{
-		private string _ref;
+		private string @ref;
 
 		/// <summary>
 		/// Graph source reference.
@@ -30,7 +29,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// Reference
 		/// </summary>
-		public string Reference => this._ref;
+		public string Reference => this.@ref;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -49,7 +48,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this._ref = XML.Attribute(Definition, "ref");
+			this.@ref = XML.Attribute(Definition, "ref");
 
 			return Task.CompletedTask;
 		}
@@ -63,6 +62,17 @@ namespace TAG.Simulator.ObjectModel.Graphs
 				SourceRecipient.Register(this);
 
 			return base.Initialize();
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Source TypedTo = (Source)To;
+
+			TypedTo.@ref = this.@ref;
 		}
 	}
 }

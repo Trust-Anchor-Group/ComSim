@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content;
@@ -144,6 +143,19 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// </summary>
 		/// <param name="Output">Export output</param>
 		public abstract void ExportPdfBody(StringBuilder Output);
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Distribution TypedTo = (Distribution)To;
+
+			TypedTo.id = this.id;
+			TypedTo.n = this.n;
+			TypedTo.timeCycleUnits = this.timeCycleUnits;
+		}
 
 	}
 }

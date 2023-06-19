@@ -183,5 +183,19 @@ namespace TAG.Simulator.XMLDSIG.Values
 			Eval.ExportPlantUml("Sign(" + this.rootName + ")", Output, Indentation, QuoteChar, false);
 		}
 
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Sign TypedTo = (Sign)To;
+
+			TypedTo.value = this.value;
+			TypedTo.rsaKeyName = this.rsaKeyName;
+			TypedTo.rootName = this.rootName;
+			TypedTo.rsaKeySize = this.rsaKeySize;
+		}
+
 	}
 }

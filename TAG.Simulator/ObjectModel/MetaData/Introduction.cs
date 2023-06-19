@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -85,6 +84,17 @@ namespace TAG.Simulator.ObjectModel.MetaData
 			Output.WriteElementString("Introduction", this.introduction);
 
 			return base.ExportXml(Output);
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Introduction TypedTo = (Introduction)To;
+
+			TypedTo.introduction = this.introduction;
 		}
 	}
 }

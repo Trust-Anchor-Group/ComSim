@@ -17,10 +17,10 @@ namespace TAG.Simulator.XMPP.Events
 	/// </summary>
 	public abstract class HandlerNode : SimulationNode, IExternalEvent
 	{
-		private IEvent _event;
+		private IEvent @event;
 		private IActor actor;
 		private string name;
-		private string _namespace;
+		private string @namespace;
 		private string eventId;
 		private string actorName;
 		private string eventArgs;
@@ -38,7 +38,7 @@ namespace TAG.Simulator.XMPP.Events
 		/// <summary>
 		/// Event reference.
 		/// </summary>
-		public IEvent Event => this._event;
+		public IEvent Event => this.@event;
 
 		/// <summary>
 		/// Local element name for the handler
@@ -48,7 +48,7 @@ namespace TAG.Simulator.XMPP.Events
 		/// <summary>
 		/// Namespace for the handler
 		/// </summary>
-		public string HandlerNamespace => this._namespace;
+		public string HandlerNamespace => this.@namespace;
 
 		/// <summary>
 		/// Event to trigger
@@ -87,7 +87,7 @@ namespace TAG.Simulator.XMPP.Events
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.name = XML.Attribute(Definition, "name");
-			this._namespace = XML.Attribute(Definition, "namespace");
+			this.@namespace = XML.Attribute(Definition, "namespace");
 			this.eventId = XML.Attribute(Definition, "event");
 			this.actorName = XML.Attribute(Definition, "actorName");
 			this.eventArgs = XML.Attribute(Definition, "eventArgs");
@@ -114,10 +114,10 @@ namespace TAG.Simulator.XMPP.Events
 		/// </summary>
 		public override Task Start()
 		{
-			if (!this.Model.TryGetEvent(this.eventId, out this._event))
+			if (!this.Model.TryGetEvent(this.eventId, out this.@event))
 				throw new Exception("Event not found: " + this.eventId);
 
-			this._event.Register(this);
+			this.@event.Register(this);
 
 			return base.Start();
 		}
@@ -141,7 +141,7 @@ namespace TAG.Simulator.XMPP.Events
 					Variables[Argument.Key] = Argument.Value;
 			}
 
-			this._event?.Trigger(Variables);
+			this.@event?.Trigger(Variables);
 		}
 
 		/// <summary>
@@ -162,5 +162,21 @@ namespace TAG.Simulator.XMPP.Events
 		/// <param name="Client">XMPP Client</param>
 		public abstract void RegisterHandlers(IActor Actor, XmppClient Client);
 
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			HandlerNode TypedTo = (HandlerNode)To;
+
+			TypedTo.@event = this.@event;
+			TypedTo.actor = this.actor;
+			TypedTo.name = this.name;
+			TypedTo.@namespace = this.@namespace;
+			TypedTo.eventId = this.eventId;
+			TypedTo.actorName = this.actorName;
+			TypedTo.eventArgs = this.eventArgs;
+		}
 	}
 }

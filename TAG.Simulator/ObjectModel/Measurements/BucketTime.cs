@@ -68,5 +68,18 @@ namespace TAG.Simulator.ObjectModel.Measurements
 			this.Bucket.BucketTime = this.duration;
 		}
 
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			BucketTime TypedTo = (BucketTime)To;
+
+			TypedTo.duration = this.duration;
+
+			base.CopyContents(To);
+		}
+
 	}
 }

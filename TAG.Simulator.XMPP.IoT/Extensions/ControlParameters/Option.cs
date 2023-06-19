@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 using Waher.Content.Xml;
@@ -60,6 +59,18 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 			this.label = XML.Attribute(Definition, "label");
 
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Option TypedTo = (Option)To;
+
+			TypedTo.value = this.value;
+			TypedTo.label = this.label;
 		}
 
 	}

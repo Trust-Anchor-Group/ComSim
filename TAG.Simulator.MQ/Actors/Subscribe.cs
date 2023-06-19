@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 using Waher.Content.Xml;
@@ -70,6 +69,18 @@ namespace TAG.Simulator.MQ.Actors
 			this.extEvent = XML.Attribute(Definition, "extEvent");
 
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Subscribe TypedTo = (Subscribe)To;
+
+			TypedTo.queue = this.queue;
+			TypedTo.extEvent = this.extEvent;
 		}
 
 	}

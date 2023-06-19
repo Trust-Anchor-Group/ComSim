@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Waher.Content.Xml;
@@ -87,6 +86,17 @@ namespace TAG.Simulator.ObjectModel.Values
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Output.Write(this.value.ToString());
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Boolean TypedTo = (Boolean)To;
+
+			TypedTo.value = this.value;
 		}
 	}
 }

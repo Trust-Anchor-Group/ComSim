@@ -14,7 +14,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 	/// </summary>
 	public class Triggered : ActivityNode, ITriggerNode
 	{
-		private string _event;
+		private string @event;
 		private IEvent eventRef;
 
 		/// <summary>
@@ -30,7 +30,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Condition string
 		/// </summary>
-		public string Event => this._event;
+		public string Event => this.@event;
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -54,7 +54,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this._event = XML.Attribute(Definition, "event");
+			this.@event = XML.Attribute(Definition, "event");
 
 			return base.FromXml(Definition);
 		}
@@ -67,8 +67,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 			if (this.Parent is Wait Wait)
 				Wait.Register(this);
 
-			if (!this.Model.TryGetEvent(this._event, out this.eventRef))
-				throw new Exception("Event " + this._event + " not found.");
+			if (!this.Model.TryGetEvent(this.@event, out this.eventRef))
+				throw new Exception("Event " + this.@event + " not found.");
 
 			return base.Initialize();
 		}
@@ -113,7 +113,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Indent(Output, Indentation);
 
 			Output.Write("#FireBrick:");
-			Output.Write(this._event);
+			Output.Write(this.@event);
 			Output.WriteLine("<");
 
 			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);

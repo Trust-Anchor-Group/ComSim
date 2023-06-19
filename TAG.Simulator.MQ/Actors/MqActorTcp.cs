@@ -199,7 +199,7 @@ namespace TAG.Simulator.MQ.Actors
 							Stopped = new TaskCompletionSource<bool>()
 						};
 
-						Subscription.Subscribe(Client);
+						Subscription.Subscribe(this.Client);
 						Subscriptions.Add(Subscription);
 					}
 				}

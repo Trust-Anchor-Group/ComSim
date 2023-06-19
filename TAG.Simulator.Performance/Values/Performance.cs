@@ -171,5 +171,22 @@ namespace TAG.Simulator.Performance.Values
 			Output.Write(')');
 		}
 
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Performance TypedTo = (Performance)To;
+
+			TypedTo.performanceCategory = this.performanceCategory;
+			TypedTo.performanceCounter = this.performanceCounter;
+			TypedTo.category = this.category;
+			TypedTo.instance = this.instance;
+			TypedTo.counter = this.counter;
+			TypedTo.multiplier = this.multiplier;
+			TypedTo.divider = this.divider;
+		}
+
 	}
 }

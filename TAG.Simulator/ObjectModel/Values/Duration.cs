@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -155,6 +154,17 @@ namespace TAG.Simulator.ObjectModel.Values
 				Output.Append(' ');
 				Output.Append(Nr == 1 ? SingUnit : (PlurUnit ?? SingUnit));
 			}
+		}
+
+		/// <summary>
+		/// Copies contents of the node to a new node.
+		/// </summary>
+		/// <param name="To">Node to receive copied contents.</param>
+		public override void CopyContents(ISimulationNode To)
+		{
+			Duration TypedTo = (Duration)To;
+
+			TypedTo.value = this.value;
 		}
 	}
 }
