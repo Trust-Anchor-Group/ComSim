@@ -12,7 +12,10 @@
 	<xs:element name="ModBusClient">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="cs:Actor"/>
+				<xs:extension base="cs:Actor">
+					<xs:attribute name="host" type="xs:string" use="optional"/>
+					<xs:attribute name="port" type="xs:string" use="required"/>
+				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
@@ -66,8 +69,7 @@
 	<xs:complexType name="ModBusOperation">
 		<xs:complexContent>
 			<xs:extension base="cs:ActivityNode">
-				<xs:attribute name="host" type="xs:string" use="optional"/>
-				<xs:attribute name="port" type="xs:string" use="required"/>
+				<xs:attribute name="client" type="xs:string" use="required"/>
 				<xs:attribute name="address" type="xs:string" use="required"/>
 				<xs:attribute name="register" type="xs:string" use="required"/>
 			</xs:extension>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Activities;
 using TAG.Simulator.ObjectModel.Activities;
+using Waher.Networking.Modbus;
 using Waher.Script;
 
 namespace TAG.Simulator.ModBus.Registers.Activities
@@ -43,9 +45,18 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			throw new NotImplementedException();
+			ModbusTcpClient Client = await this.GetClient(Variables);
+			byte Address = await this.address.GetUInt8ValueAsync(Variables);
+			ushort Register = await this.register.GetUInt16ValueAsync(Variables);
+
+			BitArray Bits = await Client.ReadCoils(Address, Register, 1);
+			string VariableName = await this.responseVariable.GetValueAsync(Variables);
+
+			Variables[VariableName] = Bits[0];
+
+			return null;
 		}
 	}
 }

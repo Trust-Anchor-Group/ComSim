@@ -1,5 +1,10 @@
 ﻿using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
+using Waher.Content.Xml;
+using Waher.Networking.Modbus;
+using Waher.Networking.Sniffers;
 
 namespace TAG.Simulator.ModBus.Actors
 {
@@ -8,6 +13,10 @@ namespace TAG.Simulator.ModBus.Actors
 	/// </summary>
 	public class ModBusClient : ModBusActor
 	{
+		private ModbusTcpClient client;
+		private string host;
+		private int port;
+
 		/// <summary>
 		/// Represents a simulated ModBus client
 		/// </summary>
@@ -36,6 +45,18 @@ namespace TAG.Simulator.ModBus.Actors
 		public override string LocalName => nameof(ModBusClient);
 
 		/// <summary>
+		/// Sets properties and attributes of class in accordance with XML definition.
+		/// </summary>
+		/// <param name="Definition">XML definition</param>
+		public override Task FromXml(XmlElement Definition)
+		{
+			this.host = XML.Attribute(Definition, "host", "localhost");
+			this.port = XML.Attribute(Definition, "port", ModbusTcpClient.DefaultPort);
+
+			return base.FromXml(Definition);
+		}
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -56,7 +77,11 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			return Task.FromResult<Actor>(new ModBusClient(this, this.Model, InstanceIndex, InstanceId));
+			return Task.FromResult<Actor>(new ModBusClient(this, this.Model, InstanceIndex, InstanceId)
+			{
+				host = this.host,
+				port = this.port
+			});
 		}
 
 		/// <summary>
@@ -64,15 +89,17 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task InitializeInstance()
 		{
+			this.client = null;
 			return Task.CompletedTask;
 		}
 
 		/// <summary>
 		/// Starts an instance of an actor.
 		/// </summary>
-		public override Task StartInstance()
+		public override async Task StartInstance()
 		{
-			return Task.CompletedTask;
+			ISniffer Sniffer = this.Model.GetSniffer(this.InstanceId);
+			this.client = await ModbusTcpClient.Connect(this.host, this.port, Sniffer);
 		}
 
 		/// <summary>
@@ -80,7 +107,15 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task FinalizeInstance()
 		{
+			this.client?.Dispose();
+			this.client = null;
+
 			return Task.CompletedTask;
 		}
+
+		/// <summary>
+		/// ModBus TCP client reference.
+		/// </summary>
+		public ModbusTcpClient Client => this.client;
 	}
 }

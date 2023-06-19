@@ -1,4 +1,8 @@
-﻿namespace TAG.Simulator.ModBus.Registers.Registers
+﻿using System.Threading.Tasks;
+using TAG.Simulator.ModBus.Actors;
+using Waher.Networking.Modbus;
+
+namespace TAG.Simulator.ModBus.Registers.Registers
 {
 	/// <summary>
 	/// A holding floating-point register.
@@ -29,6 +33,34 @@
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
 			return new ModBusHoldingFloatingPointRegister(Parent, Model);
+		}
+
+		/// <summary>
+		/// Registers the node on the ModBus server object instance.
+		/// </summary>
+		/// <param name="InstanceAddress">Instance address.</param>
+		/// <param name="Server">ModBus server object instance.</param>
+		public override void RegisterRegister(byte InstanceAddress, ModBusServer Server)
+		{
+			base.RegisterRegister(InstanceAddress, Server);
+
+			Server.Server.OnReadMultipleRegisters += this.Server_OnReadMultipleRegisters;
+		}
+
+		/// <summary>
+		/// Unregisters the node from the ModBus server object instance.
+		/// </summary>
+		/// <param name="Server">ModBus server object instance.</param>
+		public override void UnregisterRegister(ModBusServer Server)
+		{
+			Server.Server.OnReadMultipleRegisters -= this.Server_OnReadMultipleRegisters;
+		}
+
+		private async Task Server_OnReadMultipleRegisters(object Sender, ReadWordsEventArgs e)
+		{
+			if (e.UnitAddress != this.instanceAddress)
+				return;
+
 		}
 	}
 }

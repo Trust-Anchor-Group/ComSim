@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ModBus.Registers;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 
@@ -41,6 +42,11 @@ namespace TAG.Simulator.ModBus.Actors
 		public override string LocalName => nameof(ModBusDevice);
 
 		/// <summary>
+		/// Instance address
+		/// </summary>
+		public byte InstanceAddress => this.instanceAddress;
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -72,11 +78,19 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			return Task.FromResult<Actor>(new ModBusDevice(this, this.Model, InstanceIndex, InstanceId)
+			ModBusDevice Result = new ModBusDevice(this, this.Model, InstanceIndex, InstanceId)
 			{
 				startAddress = this.startAddress,
 				instanceAddress = (byte)(this.startAddress + InstanceIndex - 1)
-			});
+			};
+
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is ModBusRegister Register)
+					Result.AddChild(Register.Copy());
+			}
+
+			return Task.FromResult<Actor>(Result);
 		}
 
 		/// <summary>
@@ -94,6 +108,11 @@ namespace TAG.Simulator.ModBus.Actors
 		{
 			if (this.Parent.Parent is ModBusServer Server)
 			{
+				foreach (ISimulationNode Node in this.Children)
+				{
+					if (Node is ModBusRegister Register)
+						Register.RegisterRegister(this.instanceAddress, Server);
+				}
 			}
 
 			return Task.CompletedTask;
@@ -106,6 +125,11 @@ namespace TAG.Simulator.ModBus.Actors
 		{
 			if (this.Parent.Parent is ModBusServer Server)
 			{
+				foreach (ISimulationNode Node in this.Children)
+				{
+					if (Node is ModBusRegister Register)
+						Register.UnregisterRegister(Server);
+				}
 			}
 
 			return Task.CompletedTask;

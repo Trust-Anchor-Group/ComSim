@@ -90,9 +90,6 @@
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterTemperatureEvent" actorName="Actuator">
 						<Parameter name="e"/>
 					</ExternalEvent>
-					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterTemperatureEvent" actorName="Actuator">
-						<Parameter name="e"/>
-					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
 			<modbus:ModBusDevice id="Thermostat" N="10" startAddress="30">
@@ -114,7 +111,7 @@
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
 		</modbus:ModBusServer>
-		<modbus:ModBusClient id="ThermostatClient" N="10">
+		<modbus:ModBusClient id="ThermostatClient" N="10" host="localhost" port="502">
 		</modbus:ModBusClient>
 	</Actors>
 	<Distributions>
@@ -233,46 +230,28 @@
 					<Finished/>
 				</Condition>
 			</Conditional>
-			<Parallel>
-				<Thread>
-					<Eval>
-						<![CDATA[
-						IndoorPort:=502+floor(i/5);
-						IndoorAddress:=i MOD 5;
-						]]>
-					</Eval>
-					<modbus:ReadModBusCoil register="0"
-																 port="{IndoorPort}"
-																 address="{IndoorAddress}"
-																 responseVariable="IndoorEnabled"/>
-					<modbus:ReadModBusHoldingFloatingPointRegister register="2"
-																												 port="{IndoorPort}"
-																												 address="{IndoorAddress}"
-																												 responseVariable="IndoorTemperature"/>
-				</Thread>
-				<Thread>
-					<Eval>
-						<![CDATA[
-						HeaterPort:=502+floor(i/5);
-						HeaterAddress:=i MOD 5+10;
-						]]>
-					</Eval>
-				</Thread>
-			</Parallel>
+			<modbus:ReadModBusCoil register="0"
+														 client="ThermostatClient{Index}"
+														 address="{i+20}"
+														 responseVariable="HeaterEnabled"/>
+			<modbus:ReadModBusHoldingFloatingPointRegister register="0"
+																										 client="ThermostatClient{Index}"
+																										 address="{i}"
+																										 responseVariable="IndoorTemperature"/>
 			<Conditional>
-				<Condition condition="Indoor.Temperature&lt;ThermostatData.Goal °C and !Heater.Enabled.Value">
+				<Condition condition="IndoorTemperature&lt;ThermostatData.Goal °C and !HeaterEnabled">
 					<Count counter="Enable"/>
 					<modbus:WriteModBusCoil register="0"
-																	port="{HeaterPort}"
-																	address="{HeaterAddress}">
+																	client="ThermostatClient{Index}"
+																	address="{i+20}">
 						<Boolean value="true"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
-				<Condition condition="Indoor.Temperature&gt;ThermostatData.Goal °C and Heater.Enabled.Value">
+				<Condition condition="IndoorTemperature&gt;ThermostatData.Goal °C and HeaterEnabled">
 					<Count counter="Disable"/>
 					<modbus:WriteModBusCoil register="0"
-																	port="{HeaterPort}"
-																	address="{HeaterAddress}">
+																	client="ThermostatClient{Index}"
+																	address="{i+20}">
 						<Boolean value="false"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
