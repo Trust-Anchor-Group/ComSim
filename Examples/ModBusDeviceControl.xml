@@ -4,8 +4,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT10M"
-       duration="PT10M">
+       timeCycle="PT1M"
+       duration="PT1M">
 	<Meta>
 		<Title>ModBus Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of ModBus Sensors, Actuators and Controllers.</Introduction>
@@ -84,6 +84,7 @@
 					</ExternalEvent>
 					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterEnabledEvent" actorName="Actuator">
 						<Parameter name="e"/>
+						<Parameter name="Value"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
@@ -157,16 +158,16 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=ModelTimer.InstanceId.Substring(10);
-				i:=Num(Index);
+				Suffix:=ModelTimer.InstanceId.Substring(10);
+				i:=Num(Suffix);
 				]]>
 			</Eval>
 			<Eval>
 				<![CDATA[
-				OutdoorTempData:=Global["DataOutdoorTemp"+Index];
-				IndoorTempData:=Global["DataIndoorTemp"+Index];
-				HeaterData:=Global["DataHeater"+Index];
-				ThermostatData:=Global["DataThermostat"+Index];
+				OutdoorTempData:=Global["DataOutdoorTemp"+Suffix];
+				IndoorTempData:=Global["DataIndoorTemp"+Suffix];
+				HeaterData:=Global["DataHeater"+Suffix];
+				ThermostatData:=Global["DataThermostat"+Suffix];
 				]]>
 			</Eval>
 			<Eval>
@@ -214,15 +215,15 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=ControlTimer.InstanceId.Substring(12);
-				i:=Num(Index);
+				Suffix:=ControlTimer.InstanceId.Substring(12);
+				i:=Num(Suffix);
 				]]>
 			</Eval>
 			<Eval>
 				<![CDATA[
-				Thermostat:=Global["Thermostat"+Index];
-				ThermostatData:=Global["DataThermostat"+Index];
-				ThermostatControlClient:=Global["ThermostatControlClient"+Index];
+				Thermostat:=Global["Thermostat"+Suffix];
+				ThermostatData:=Global["DataThermostat"+Suffix];
+				ThermostatControlClient:=Global["ThermostatControlClient"+Suffix];
 				]]>
 			</Eval>
 			<Conditional>
@@ -231,18 +232,18 @@
 				</Condition>
 			</Conditional>
 			<modbus:ReadModBusCoil register="0"
-														 client="ThermostatClient{Index}"
+														 client="ThermostatClient{Suffix}"
 														 address="{i+20}"
 														 responseVariable="HeaterEnabled"/>
 			<modbus:ReadModBusHoldingFloatingPointRegister register="0"
-																										 client="ThermostatClient{Index}"
+																										 client="ThermostatClient{Suffix}"
 																										 address="{i}"
 																										 responseVariable="IndoorTemperature"/>
 			<Conditional>
 				<Condition condition="IndoorTemperature&lt;ThermostatData.Goal °C and !HeaterEnabled">
 					<Count counter="Enable"/>
 					<modbus:WriteModBusCoil register="0"
-																	client="ThermostatClient{Index}"
+																	client="ThermostatClient{Suffix}"
 																	address="{i+20}">
 						<Boolean value="true"/>
 					</modbus:WriteModBusCoil>
@@ -250,7 +251,7 @@
 				<Condition condition="IndoorTemperature&gt;ThermostatData.Goal °C and HeaterEnabled">
 					<Count counter="Disable"/>
 					<modbus:WriteModBusCoil register="0"
-																	client="ThermostatClient{Index}"
+																	client="ThermostatClient{Suffix}"
 																	address="{i+20}">
 						<Boolean value="false"/>
 					</modbus:WriteModBusCoil>
@@ -317,8 +318,8 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=Heater.InstanceId.Substring(6);
-				Data:=Global["DataHeater"+Index];
+				Suffix:=Heater.InstanceId.Substring(6);
+				Data:=Global["DataHeater"+Suffix];
 				Data.Enabled:=Value
 				]]>
 			</Eval>
@@ -329,8 +330,8 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=Thermostat.InstanceId.Substring(10);
-				Data:=Global["DataThermostat"+Index];
+				Suffix:=Thermostat.InstanceId.Substring(10);
+				Data:=Global["DataThermostat"+Suffix];
 				Data.Enabled:=Value
 				]]>
 			</Eval>
@@ -341,8 +342,8 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Index:=Thermostat.InstanceId.Substring(10);
-				Data:=Global["DataThermostat"+Index];
+				Suffix:=Thermostat.InstanceId.Substring(10);
+				Data:=Global["DataThermostat"+Suffix];
 				Data.Goal:=Value
 				]]>
 			</Eval>

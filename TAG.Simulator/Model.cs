@@ -862,10 +862,21 @@ namespace TAG.Simulator
 		/// <returns>Sniffer, if any, null otherwise.</returns>
 		public ISniffer GetSniffer(string Actor)
 		{
+			return this.GetSniffer(Actor, BinaryPresentationMethod.Base64);
+		}
+
+		/// <summary>
+		/// Gets a sniffer, if sniffer output is desired.
+		/// </summary>
+		/// <param name="Actor">Actor</param>
+		/// <param name="BinaryMode">How to treat binary data.</param>
+		/// <returns>Sniffer, if any, null otherwise.</returns>
+		public ISniffer GetSniffer(string Actor, BinaryPresentationMethod BinaryMode)
+		{
 			if (string.IsNullOrEmpty(this.snifferFolder))
 				return null;
 			else
-				return new XmlFileSniffer(Path.Combine(this.snifferFolder, Actor + ".xml"), this.snifferTransformFileName, BinaryPresentationMethod.Base64);
+				return new XmlFileSniffer(Path.Combine(this.snifferFolder, Actor + ".xml"), this.snifferTransformFileName, BinaryMode);
 		}
 
 		/// <summary>

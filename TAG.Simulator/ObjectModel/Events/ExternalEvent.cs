@@ -94,13 +94,22 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Initialize()
 		{
-			this.actor = this.Parent as IActor;
-			if (!(this.actor is null))
-				this.actor.Register(this);
-			else
-				throw new Exception("External event registered on a node that is not an actor.");
+			ISimulationNode Loop = this.Parent;
 
-			return base.Initialize();
+			while (!(Loop is null))
+			{
+				if (Loop is IActor Actor)
+				{
+					this.actor = Actor;
+					this.actor.Register(this);
+
+					return base.Initialize();
+				}
+
+				Loop = Loop.Parent;
+			}
+
+			throw new Exception("External event registered on a node that is not hosted by an actor.");
 		}
 
 		/// <summary>

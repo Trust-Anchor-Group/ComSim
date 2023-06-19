@@ -9,7 +9,7 @@ namespace TAG.Simulator.ModBus.Registers
 	/// <summary>
 	/// Abstract base class for ModBus registers.
 	/// </summary>
-	public abstract class ModBusRegister : SimulationNode
+	public abstract class ModBusRegister : SimulationNodeChildren
 	{
 		private ushort register;
 
@@ -51,7 +51,7 @@ namespace TAG.Simulator.ModBus.Registers
 		{
 			this.register = (ushort)XML.Attribute(Definition, "register", 0);
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
@@ -79,6 +79,8 @@ namespace TAG.Simulator.ModBus.Registers
 			ModBusRegister TypedTo = (ModBusRegister)To;
 
 			TypedTo.register = this.register;
+
+			base.CopyContents(To);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
 using Waher.Networking.Modbus;
 
@@ -45,6 +46,7 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 			base.RegisterRegister(InstanceAddress, Server);
 
 			Server.Server.OnReadCoils += this.Server_OnReadCoils;
+			Server.Server.OnWriteCoil += this.Server_OnWriteCoil;
 		}
 
 		/// <summary>
@@ -54,13 +56,34 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		public override void UnregisterRegister(ModBusServer Server)
 		{
 			Server.Server.OnReadCoils -= this.Server_OnReadCoils;
+			Server.Server.OnWriteCoil -= this.Server_OnWriteCoil;
 		}
 
-		private async Task Server_OnReadCoils(object Sender, ReadBitsEventArgs e)
+		private Task Server_OnReadCoils(object Sender, ReadBitsEventArgs e)
 		{
-			if (e.UnitAddress != this.instanceAddress)
-				return;
+			if (e.UnitAddress == this.instanceAddress)
+			{
+				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteReadoutRequest",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Register", this),
+					new KeyValuePair<string, object>("RegisterNr", this.Register));
+			}
 
+			return Task.CompletedTask;
+		}
+
+		private Task Server_OnWriteCoil(object Sender, WriteBitEventArgs e)
+		{
+			if (e.UnitAddress == this.instanceAddress)
+			{
+				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteSetRequest",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Register", this),
+					new KeyValuePair<string, object>("RegisterNr", this.Register),
+					new KeyValuePair<string, object>("Value", e.Value));
+			}
+
+			return Task.CompletedTask;
 		}
 	}
 }

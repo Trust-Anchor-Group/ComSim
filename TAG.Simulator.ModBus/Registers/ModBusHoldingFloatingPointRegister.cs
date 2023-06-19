@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
 using Waher.Networking.Modbus;
 
@@ -56,11 +57,17 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 			Server.Server.OnReadMultipleRegisters -= this.Server_OnReadMultipleRegisters;
 		}
 
-		private async Task Server_OnReadMultipleRegisters(object Sender, ReadWordsEventArgs e)
+		private Task Server_OnReadMultipleRegisters(object Sender, ReadWordsEventArgs e)
 		{
-			if (e.UnitAddress != this.instanceAddress)
-				return;
+			if (e.UnitAddress == this.instanceAddress)
+			{
+				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteReadoutRequest",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Register", this),
+					new KeyValuePair<string, object>("RegisterNr", this.Register));
+			}
 
+			return Task.CompletedTask;
 		}
 	}
 }
