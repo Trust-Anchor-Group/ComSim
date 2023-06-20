@@ -55,5 +55,13 @@ namespace TAG.Simulator.ObjectModel.Actors
 			get;
 		}
 
+		/// <summary>
+		/// References to created instances.
+		/// </summary>
+		IActor[] Instances
+		{
+			get;
+		}
+
 	}
 }

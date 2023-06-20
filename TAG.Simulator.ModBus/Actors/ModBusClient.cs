@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
@@ -13,6 +14,7 @@ namespace TAG.Simulator.ModBus.Actors
 	/// </summary>
 	public class ModBusClient : ModBusActor
 	{
+		private readonly SemaphoreSlim synchObj = new SemaphoreSlim(1);
 		private ModbusTcpClient client;
 		private ISniffer sniffer;
 		private string host;
@@ -126,5 +128,21 @@ namespace TAG.Simulator.ModBus.Actors
 		/// ModBus TCP client reference.
 		/// </summary>
 		public ModbusTcpClient Client => this.client;
+
+		/// <summary>
+		/// Locks the client for use by one caller.
+		/// </summary>
+		public async Task Lock()
+		{
+			await this.synchObj.WaitAsync();
+		}
+
+		/// <summary>
+		/// Unlocks the client.
+		/// </summary>
+		public void Unlock()
+		{
+			this.synchObj.Release();
+		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Activities;
+using TAG.Simulator.ModBus.Actors;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Networking.Modbus;
 using Waher.Script;
@@ -72,15 +73,22 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			ModbusTcpClient Client = await this.GetClient(Variables);
+			ModBusClient Client = await this.GetClient(Variables);
 			byte Address = await this.address.GetUInt8ValueAsync(Variables);
 			ushort Register = await this.register.GetUInt16ValueAsync(Variables);
-
-			ushort[] Words = await Client.ReadMultipleRegisters(Address, Register, 2);
-			float Value = ToFloat(FloatByteOrder.NetworkOrder, Words[0], Words[1]);
 			string VariableName = await this.responseVariable.GetValueAsync(Variables);
 
-			Variables[VariableName] = Value;
+			await Client.Lock();
+			try
+			{
+				ushort[] Words = await Client.Client.ReadMultipleRegisters(Address, Register, 2);
+				float Value = ToFloat(FloatByteOrder.NetworkOrder, Words[0], Words[1]);
+				Variables[VariableName] = Value;
+			}
+			finally
+			{
+				Client.Unlock();
+			}
 
 			return null;
 		}

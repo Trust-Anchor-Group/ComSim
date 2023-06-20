@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
@@ -10,6 +12,7 @@ namespace TAG.Simulator.ModBus.Actors
 	/// </summary>
 	public class ModBusDevice : ModBusActor
 	{
+		private readonly Dictionary<ushort, ModBusDevice> devicesPerAddress = new Dictionary<ushort, ModBusDevice>();
 		private byte startAddress;
 		private byte instanceAddress;
 
@@ -85,6 +88,46 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
+			lock (this.devicesPerAddress)
+			{
+				this.devicesPerAddress.Clear();
+
+				if (!(this.Instances is null))
+				{
+					foreach (IActor Actor in this.Instances)
+					{
+						if (Actor is ModBusDevice Device)
+						{
+							if (this.devicesPerAddress.ContainsKey(Device.instanceAddress))
+								throw new Exception("Multiple devices with the same address: " + Device.instanceAddress.ToString());
+
+							this.devicesPerAddress[Device.instanceAddress] = Device;
+						}
+					}
+				}
+			}
+
+			return base.Start();
+		}
+
+		/// <summary>
+		/// Finalizes the node after simulation.
+		/// </summary>
+		public override Task Finalize()
+		{
+			lock (this.devicesPerAddress)
+			{
+				this.devicesPerAddress.Clear();
+			}
+
+			return base.Finalize();
+		}
+
+		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
 		public override Task InitializeInstance()
@@ -106,6 +149,22 @@ namespace TAG.Simulator.ModBus.Actors
 		public override Task FinalizeInstance()
 		{
 			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Finds the instance corresponding to a unit address.
+		/// </summary>
+		/// <param name="Address">Unit address</param>
+		/// <returns>Instance, if found.</returns>
+		public ModBusDevice FindInstance(ushort Address)
+		{
+			lock (this.devicesPerAddress)
+			{
+				if (this.devicesPerAddress.TryGetValue(Address, out ModBusDevice Instance))
+					return Instance;
+			}
+
+			return null;
 		}
 	}
 }

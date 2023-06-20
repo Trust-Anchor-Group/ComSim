@@ -105,10 +105,10 @@ namespace TAG.Simulator.ModBus.Registers
 		/// <returns>Instance, if found.</returns>
 		public ModBusDevice FindInstance(ushort Address)
 		{
-			if (!(this.Parent is ModBusDevice Device))
+			if (this.Parent is ModBusDevice Device)
+				return Device.FindInstance(Address);
+			else
 				return null;
-
-			return Device;
 		}
 	}
 }

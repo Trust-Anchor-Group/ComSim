@@ -72,6 +72,11 @@ namespace TAG.Simulator.ObjectModel.Actors
 		public Variables Variables => this.variables;
 
 		/// <summary>
+		/// References to created instances.
+		/// </summary>
+		public IActor[] Instances => this.instances;
+
+		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>

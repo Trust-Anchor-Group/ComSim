@@ -80,14 +80,14 @@ namespace TAG.Simulator.ModBus.Activities
 		/// Gets the ModBus TCP Client to use in the operation.
 		/// </summary>
 		/// <param name="Variables">Current variables.</param>
-		/// <returns>ModBus TCP Client reference.</returns>
-		public async Task<ModbusTcpClient> GetClient(Variables Variables)
+		/// <returns>ModBus Client reference.</returns>
+		public async Task<ModBusClient> GetClient(Variables Variables)
 		{
 			object Obj = await this.Model.GetActorObjectAsync(this.client, Variables);
 			if (!(Obj is ModBusClient Client))
 				throw new Exception("Client ID does not point to a ModBus client.");
 
-			return Client.Client;
+			return Client;
 		}
 	}
 }

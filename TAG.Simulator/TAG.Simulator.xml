@@ -2345,6 +2345,11 @@
             Collection of actor-variables.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.Instances">
+            <summary>
+            References to created instances.
+            </summary>
+        </member>
         <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.FromXml(System.Xml.XmlElement)">
             <summary>
             Sets properties and attributes of class in accordance with XML definition.
@@ -2484,6 +2489,11 @@
         <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.ActivityObject">
             <summary>
             Returns the object that will be used by the actor for actions during an activity.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.Instances">
+            <summary>
+            References to created instances.
             </summary>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.IActors">
