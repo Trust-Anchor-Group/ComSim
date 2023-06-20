@@ -129,7 +129,7 @@ namespace TAG.Simulator.ObjectModel
 			SimulationNodeChildren TypedTo = (SimulationNodeChildren)To;
 
 			foreach (ISimulationNode Child in this.Children)
-				TypedTo.AddChild(Child.Copy());
+				TypedTo.AddChild(Child.Copy(TypedTo, this.Model));
 		}
 	}
 }

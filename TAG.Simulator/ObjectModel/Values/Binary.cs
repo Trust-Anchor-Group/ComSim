@@ -150,7 +150,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		{
 			Binary TypedTo = (Binary)To;
 
-			TypedTo.elements = Copy(this.elements);
+			TypedTo.elements = Copy(this.elements, To, this.Model);
 		}
 	}
 }

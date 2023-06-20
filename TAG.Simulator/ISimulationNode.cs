@@ -100,8 +100,10 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Copies the node.
 		/// </summary>
+		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model owning the node.</param>
 		/// <returns>Copy</returns>
-		ISimulationNode Copy();
+		ISimulationNode Copy(ISimulationNode Parent, Model Model);
 
 	}
 }

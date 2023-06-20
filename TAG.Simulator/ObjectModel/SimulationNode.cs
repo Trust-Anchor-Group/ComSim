@@ -195,10 +195,12 @@ namespace TAG.Simulator.ObjectModel
 		/// <summary>
 		/// Copies the node.
 		/// </summary>
+		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model owning the node.</param>
 		/// <returns>Copy</returns>
-		public virtual ISimulationNode Copy()
+		public virtual ISimulationNode Copy(ISimulationNode Parent, Model Model)
 		{
-			ISimulationNode Result = this.Create(this.parent, this.model);
+			ISimulationNode Result = this.Create(Parent, Model);
 			this.CopyContents(Result);
 			return Result;
 		}
@@ -214,15 +216,17 @@ namespace TAG.Simulator.ObjectModel
 		/// </summary>
 		/// <typeparam name="T">Type of simulation node.</typeparam>
 		/// <param name="Nodes">Nodes</param>
+		/// <param name="Parent">Parent node.</param>
+		/// <param name="Model">Model owning the node.</param>
 		/// <returns>Copies of the nodes.</returns>
-		public static T[] Copy<T>(T[] Nodes)
+		public static T[] Copy<T>(T[] Nodes, ISimulationNode Parent, Model Model)
 			where T : ISimulationNode
 		{
 			int i, c = Nodes.Length;
 			T[] Result = new T[c];
 
 			for (i = 0; i < c; i++)
-				Result[i] = (T)Nodes[i].Copy();
+				Result[i] = (T)Nodes[i].Copy(Parent, Model);
 
 			return Result;
 		}
