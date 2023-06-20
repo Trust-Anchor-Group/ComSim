@@ -65,7 +65,7 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 				this.Model.ExternalEvent(Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
-					new KeyValuePair<string, object>("RegisterNr", this.Register));
+					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
 			}
 
 			return Task.CompletedTask;
@@ -80,7 +80,7 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 				this.Model.ExternalEvent(Device, "OnExecuteSetRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
-					new KeyValuePair<string, object>("RegisterNr", this.Register),
+					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr),
 					new KeyValuePair<string, object>("Value", e.Value));
 			}
 

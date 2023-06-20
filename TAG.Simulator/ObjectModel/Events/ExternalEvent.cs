@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
@@ -15,7 +16,7 @@ namespace TAG.Simulator.ObjectModel.Events
 	{
 		private Dictionary<string, Parameter> parameters = null;
 		private IEvent eventReference;
-		private IActor actor;
+		private IExternalEventsNode events;
 		private string name;
 		private string eventId;
 		private string actorName;
@@ -46,9 +47,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		public string ActorName => this.actorName;
 
 		/// <summary>
-		/// Actor reference.
+		/// Reference to collection of external events.
 		/// </summary>
-		public IActor Actor => this.actor;
+		public IExternalEventsNode Events => this.events;
 
 		/// <summary>
 		/// Referenced event object.
@@ -94,22 +95,14 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Initialize()
 		{
-			return Task.CompletedTask;
-		}
-
-		/// <summary>
-		/// Starts the node.
-		/// </summary>
-		public override Task Start()
-		{
 			ISimulationNode Loop = this.Parent;
 
 			while (!(Loop is null))
 			{
-				if (Loop is IActor Actor)
+				if (Loop is IExternalEventsNode Events)
 				{
-					this.actor = Actor;
-					this.actor.Register(this);
+					this.events = Events;
+					this.events.Register(this);
 					break;
 				}
 				else
@@ -119,6 +112,14 @@ namespace TAG.Simulator.ObjectModel.Events
 			if (Loop is null)
 				throw new Exception("External event registered on a node that is not hosted by an actor.");
 
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
 			if (!this.Model.TryGetEvent(this.eventId, out this.eventReference))
 				throw new Exception("Event node not found: " + this.eventId);
 

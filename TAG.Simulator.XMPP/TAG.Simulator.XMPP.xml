@@ -904,6 +904,11 @@
             Actor reference.
             </summary>
         </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Events">
+            <summary>
+            Reference to collection of external events.
+            </summary>
+        </member>
         <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.EventArgs">
             <summary>
             Variable name for the event arguments

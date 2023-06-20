@@ -581,11 +581,11 @@
             <param name="BinaryMode">How to treat binary data.</param>
             <returns>Sniffer, if any, null otherwise.</returns>
         </member>
-        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.ObjectModel.Actors.IActor,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.ObjectModel.Events.IExternalEventsNode,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Method called when an external event has been received.
             </summary>
-            <param name="Source">Actor receiving the event.</param>
+            <param name="Source">Node receiving the event.</param>
             <param name="Name">Name of event.</param>
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
@@ -2391,20 +2391,6 @@
             Finalizes an instance of an actor.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
-            <summary>
-            Registers an external event on the actor.
-            </summary>
-            <param name="ExternalEvent">External event</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
-            <summary>
-            Tries to get an external event, given its name.
-            </summary>
-            <param name="Name">Name of external event.</param>
-            <param name="ExternalEvent">External event object.</param>
-            <returns>If an external event with the corresponding name was found.</returns>
-        </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.Actor.FreeCount">
             <summary>
             Number of individuals in population that are free.
@@ -2428,13 +2414,6 @@
             <summary>
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.Actor.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
-            <summary>
-            Allows the actor to add notes related to the actor in use case diagrams.
-            </summary>
-            <param name="Output">Use Case diagram output.</param>
-            <param name="Id">ID of actor in use case diagram.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.Actors">
             <summary>
@@ -2473,11 +2452,6 @@
             in simulator models.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.Id">
-            <summary>
-            ID of actor.
-            </summary>
-        </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.InstanceId">
             <summary>
             ID of actor instance.
@@ -2487,20 +2461,6 @@
             <summary>
             Collection of actor-variables.
             </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
-            <summary>
-            Registers an external event on the actor.
-            </summary>
-            <param name="ExternalEvent">External event</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
-            <summary>
-            Tries to get an external event, given its name.
-            </summary>
-            <param name="Name">Name of external event.</param>
-            <param name="ExternalEvent">External event object.</param>
-            <returns>If an external event with the corresponding name was found.</returns>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Actors.IActor.FreeCount">
             <summary>
@@ -2525,13 +2485,6 @@
             <summary>
             Returns the object that will be used by the actor for actions during an activity.
             </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Actors.IActor.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
-            <summary>
-            Allows the actor to add notes related to the actor in use case diagrams.
-            </summary>
-            <param name="Output">Use Case diagram output.</param>
-            <param name="Id">ID of actor in use case diagram.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Actors.IActors">
             <summary>
@@ -3462,9 +3415,9 @@
             Optional name for actor variable reference of sender of external event.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Actor">
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Events">
             <summary>
-            Actor reference.
+            Reference to collection of external events.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEvent.Event">
@@ -3519,6 +3472,49 @@
             <param name="Source">Actor receiving the event.</param>
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.ExternalEventsNode">
+            <summary>
+            Abstract base class for nodes that registers external events.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.externalEvents">
+            <summary>
+            Registered external events.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for nodes that registers external events.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.Id">
+            <summary>
+            ID of collection node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
+            <summary>
+            Registers an external event on the actor.
+            </summary>
+            <param name="ExternalEvent">External event</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
+            <summary>
+            Tries to get an external event, given its name.
+            </summary>
+            <param name="Name">Name of external event.</param>
+            <param name="ExternalEvent">External event object.</param>
+            <returns>If an external event with the corresponding name was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.ExternalEventsNode.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
+            <summary>
+            Allows the actor to add notes related to the actor in use case diagrams.
+            </summary>
+            <param name="Output">Use Case diagram output.</param>
+            <param name="Id">ID of actor in use case diagram.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.FromPopulation">
             <summary>
@@ -3660,9 +3656,9 @@
             Optional name for actor variable reference of sender of external event.
             </summary>
         </member>
-        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Actor">
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Events">
             <summary>
-            Actor reference.
+            Reference to collection of external events.
             </summary>
         </member>
         <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEvent.Parameters">
@@ -3677,6 +3673,37 @@
             <param name="Source">Actor receiving the event.</param>
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
+        </member>
+        <member name="T:TAG.Simulator.ObjectModel.Events.IExternalEventsNode">
+            <summary>
+            Interface for nodes that can register external events.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.ObjectModel.Events.IExternalEventsNode.Id">
+            <summary>
+            ID of collection node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IExternalEventsNode.Register(TAG.Simulator.ObjectModel.Events.IExternalEvent)">
+            <summary>
+            Registers an external event on the actor.
+            </summary>
+            <param name="ExternalEvent">External event</param>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IExternalEventsNode.TryGetExternalEvent(System.String,TAG.Simulator.ObjectModel.Events.IExternalEvent@)">
+            <summary>
+            Tries to get an external event, given its name.
+            </summary>
+            <param name="Name">Name of external event.</param>
+            <param name="ExternalEvent">External event object.</param>
+            <returns>If an external event with the corresponding name was found.</returns>
+        </member>
+        <member name="M:TAG.Simulator.ObjectModel.Events.IExternalEventsNode.AnnotateActorUseCaseUml(System.IO.StreamWriter,System.String)">
+            <summary>
+            Allows the actor to add notes related to the actor in use case diagrams.
+            </summary>
+            <param name="Output">Use Case diagram output.</param>
+            <param name="Id">ID of actor in use case diagram.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.ITimeTriggerEvent">
             <summary>

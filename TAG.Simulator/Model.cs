@@ -882,19 +882,29 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Method called when an external event has been received.
 		/// </summary>
-		/// <param name="Source">Actor receiving the event.</param>
+		/// <param name="Source">Node receiving the event.</param>
 		/// <param name="Name">Name of event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public bool ExternalEvent(IActor Source, string Name, params KeyValuePair<string, object>[] Arguments)
+		public bool ExternalEvent(IExternalEventsNode Source, string Name, params KeyValuePair<string, object>[] Arguments)
 		{
 			if (Source.TryGetExternalEvent(Name, out IExternalEvent ExternalEvent))
 			{
-				ExternalEvent.Trigger(Source, Arguments);
-				return true;
+				ISimulationNode Loop = Source;
+
+				while (!(Loop is null))
+				{
+					if (Loop is IActor Actor)
+					{
+						ExternalEvent.Trigger(Actor, Arguments);
+						return true;
+					}
+					else
+						Loop = Loop.Parent;
+				}
 			}
-			else
-				return false;
+
+			return false;
 		}
 
 		/// <summary>

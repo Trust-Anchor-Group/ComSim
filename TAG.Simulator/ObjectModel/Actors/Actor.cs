@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Events;
@@ -12,10 +11,9 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// <summary>
 	/// Abstract base class for actors
 	/// </summary>
-	public abstract class Actor : SimulationNodeChildren, IActor
+	public abstract class Actor : ExternalEventsNode, IActor
 	{
 		private readonly Variables variables;
-		private Dictionary<string, IExternalEvent> externalEvents = null;
 		private List<IActor> freeIndividuals = null;
 		private IActor[] instances;
 		private string id;
@@ -51,7 +49,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// ID of actor.
 		/// </summary>
-		public string Id => this.id;
+		public override string Id => this.id;
 
 		/// <summary>
 		/// ID of actor instance.
@@ -185,40 +183,6 @@ namespace TAG.Simulator.ObjectModel.Actors
 		public abstract Task FinalizeInstance();
 
 		/// <summary>
-		/// Registers an external event on the actor.
-		/// </summary>
-		/// <param name="ExternalEvent">External event</param>
-		public void Register(IExternalEvent ExternalEvent)
-		{
-			string Name = ExternalEvent.Name;
-
-			if (this.externalEvents is null)
-				this.externalEvents = new Dictionary<string, IExternalEvent>();
-
-			if (this.externalEvents.ContainsKey(Name))
-				throw new Exception("External event named " + Name + " already registered on actor " + this.id);
-			else
-				this.externalEvents[Name] = ExternalEvent;
-		}
-
-		/// <summary>
-		/// Tries to get an external event, given its name.
-		/// </summary>
-		/// <param name="Name">Name of external event.</param>
-		/// <param name="ExternalEvent">External event object.</param>
-		/// <returns>If an external event with the corresponding name was found.</returns>
-		public bool TryGetExternalEvent(string Name, out IExternalEvent ExternalEvent)
-		{
-			if (this.externalEvents is null)
-			{
-				ExternalEvent = null;
-				return false;
-			}
-			else
-				return this.externalEvents.TryGetValue(Name, out ExternalEvent);
-		}
-
-		/// <summary>
 		/// Number of individuals in population that are free.
 		/// </summary>
 		public int FreeCount => this.freeIndividuals?.Count ?? 0;
@@ -252,15 +216,5 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
 		public virtual object ActivityObject => this;
-
-		/// <summary>
-		/// Allows the actor to add notes related to the actor in use case diagrams.
-		/// </summary>
-		/// <param name="Output">Use Case diagram output.</param>
-		/// <param name="Id">ID of actor in use case diagram.</param>
-		public virtual void AnnotateActorUseCaseUml(StreamWriter Output, string Id)
-		{
-		}
-
 	}
 }

@@ -259,16 +259,16 @@ namespace TAG.Simulator.ObjectModel.Events
 
 				foreach (IExternalEvent ExternalEvent in this.externalEvents)
 				{
-					if (ExternalEvent.Actor is null)
+					if (ExternalEvent.Events is null)
 						continue;
 
 					Output.Write("actor \"");
 
 					if (string.IsNullOrEmpty(ExternalEvent.ActorName))
 					{
-						s = ExternalEvent.Actor.Id + "_" + IndexStr + "_B" + i.ToString();
+						s = ExternalEvent.Events.Id + "_" + IndexStr + "_B" + i.ToString();
 
-						Output.Write(ExternalEvent.Actor.Id);
+						Output.Write(ExternalEvent.Events.Id);
 						Output.Write("\" as ");
 						Output.WriteLine(s);
 					}
@@ -280,11 +280,11 @@ namespace TAG.Simulator.ObjectModel.Events
 						Output.Write("\" as ");
 						Output.Write(s);
 						Output.Write(" <<");
-						Output.Write(ExternalEvent.Actor.Id);
+						Output.Write(ExternalEvent.Events.Id);
 						Output.WriteLine(">>");
 					}
 
-					ExternalEvent.Actor.AnnotateActorUseCaseUml(Output, s);
+					ExternalEvent.Events.AnnotateActorUseCaseUml(Output, s);
 
 					Output.Write(s);
 					Output.Write(" --> UC");

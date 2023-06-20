@@ -26,9 +26,9 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
-		/// Actor reference.
+		/// Reference to collection of external events.
 		/// </summary>
-		IActor Actor
+		IExternalEventsNode Events
 		{
 			get;
 		}

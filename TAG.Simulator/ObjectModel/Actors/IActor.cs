@@ -1,5 +1,4 @@
-﻿using System.IO;
-using TAG.Simulator.ObjectModel.Events;
+﻿using TAG.Simulator.ObjectModel.Events;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Actors
@@ -8,16 +7,8 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// Basic interface for simulator nodes. Implementing this interface allows classes with default contructors to be used
 	/// in simulator models.
 	/// </summary>
-	public interface IActor : ISimulationNodeChildren
+	public interface IActor : ISimulationNodeChildren, IExternalEventsNode
 	{
-		/// <summary>
-		/// ID of actor.
-		/// </summary>
-		string Id
-		{
-			get;
-		}
-
 		/// <summary>
 		/// ID of actor instance.
 		/// </summary>
@@ -33,20 +24,6 @@ namespace TAG.Simulator.ObjectModel.Actors
 		{
 			get;
 		}
-
-		/// <summary>
-		/// Registers an external event on the actor.
-		/// </summary>
-		/// <param name="ExternalEvent">External event</param>
-		void Register(IExternalEvent ExternalEvent);
-
-		/// <summary>
-		/// Tries to get an external event, given its name.
-		/// </summary>
-		/// <param name="Name">Name of external event.</param>
-		/// <param name="ExternalEvent">External event object.</param>
-		/// <returns>If an external event with the corresponding name was found.</returns>
-		bool TryGetExternalEvent(string Name, out IExternalEvent ExternalEvent);
 
 		/// <summary>
 		/// Number of individuals in population that are free.
@@ -77,13 +54,6 @@ namespace TAG.Simulator.ObjectModel.Actors
 		{
 			get;
 		}
-
-		/// <summary>
-		/// Allows the actor to add notes related to the actor in use case diagrams.
-		/// </summary>
-		/// <param name="Output">Use Case diagram output.</param>
-		/// <param name="Id">ID of actor in use case diagram.</param>
-		void AnnotateActorUseCaseUml(StreamWriter Output, string Id);
 
 	}
 }

@@ -37,28 +37,6 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		}
 
 		/// <summary>
-		/// Starts the node.
-		/// </summary>
-		public override Task Start()
-		{
-			if (this.Parent.Parent is ModBusServer Server)
-				this.RegisterRegister(Server);
-
-			return base.Start();
-		}
-
-		/// <summary>
-		/// Finalizes the node after simulation.
-		/// </summary>
-		public override Task Finalize()
-		{
-			if (this.Parent.Parent is ModBusServer Server)
-				this.UnregisterRegister(Server);
-
-			return base.Finalize();
-		}
-
-		/// <summary>
 		/// Registers the node on the ModBus server object instance.
 		/// </summary>
 		/// <param name="Server">ModBus server object instance.</param>
@@ -85,7 +63,7 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 				this.Model.ExternalEvent(Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
-					new KeyValuePair<string, object>("RegisterNr", this.Register));
+					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
 			}
 
 			return Task.CompletedTask;

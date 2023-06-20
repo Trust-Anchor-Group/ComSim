@@ -66,6 +66,11 @@ namespace TAG.Simulator.XMPP.Events
 		public IActor Actor => this.actor;
 
 		/// <summary>
+		/// Reference to collection of external events.
+		/// </summary>
+		public IExternalEventsNode Events => this.actor;
+
+		/// <summary>
 		/// Variable name for the event arguments
 		/// </summary>
 		public string EventArgs => this.eventArgs;

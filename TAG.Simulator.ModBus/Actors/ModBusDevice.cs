@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ModBus.Registers;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 
