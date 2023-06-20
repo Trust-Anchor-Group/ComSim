@@ -167,12 +167,6 @@
             </summary>
             <param name="Output">Output</param>
         </member>
-        <member name="M:TAG.Simulator.ISimulationNode.Copy">
-            <summary>
-            Copies the node.
-            </summary>
-            <returns>Copy</returns>
-        </member>
         <member name="T:TAG.Simulator.ISimulationNodeChildren">
             <summary>
             Basic interface for simulator nodes with child nodes.
@@ -2687,12 +2681,6 @@
             </summary>
             <param name="Output">Export output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Distributions.Chi.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.ChiSquare">
             <summary>
             Chi-square distribution
@@ -2804,12 +2792,6 @@
             Exports the PDF function body.
             </summary>
             <param name="Output">Export output</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Distributions.Distribution.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Distributions.Distributions">
             <summary>
@@ -3584,12 +3566,6 @@
             Initialized the node before simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.FromPopulation.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.IEvent">
             <summary>
             Interface for events
@@ -3769,12 +3745,6 @@
             <summary>
             Initialized the node before simulation.
             </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Events.Parameter.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Events.SetVariable">
             <summary>
@@ -4622,12 +4592,6 @@
             Initialized the node before simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Graphs.Source.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Measurements.BucketTime">
             <summary>
             Defines the bucket time of a series.
@@ -4668,12 +4632,6 @@
             <summary>
             Starts the node.
             </summary>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Measurements.BucketTime.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Measurements.Measurements">
             <summary>
@@ -4798,12 +4756,6 @@
             Starts the node.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Measurements.SeriesReference.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Description">
             <summary>
             Description of model
@@ -4852,12 +4804,6 @@
             </summary>
             <param name="Output">Output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.Description.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Introduction">
             <summary>
             Introduction to model
@@ -4905,12 +4851,6 @@
             Exports XML
             </summary>
             <param name="Output">Output</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.Introduction.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Meta">
             <summary>
@@ -4995,12 +4935,6 @@
             Initialized the node before simulation.
             </summary>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.ModelScript.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Preparation">
             <summary>
             Preparation of model
@@ -5049,12 +4983,6 @@
             </summary>
             <param name="Output">Output</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.Preparation.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.MetaData.Title">
             <summary>
             Title of model
@@ -5102,12 +5030,6 @@
             Exports XML
             </summary>
             <param name="Output">Output</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.Title.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNode">
             <summary>
@@ -5219,26 +5141,6 @@
             <returns>Actor</returns>
             <exception cref="T:System.Exception">If actor could not be found.</exception>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Copy">
-            <summary>
-            Copies the node.
-            </summary>
-            <returns>Copy</returns>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNode.Copy``1(``0[])">
-            <summary>
-            Copies an array of simulation nodes.
-            </summary>
-            <typeparam name="T">Type of simulation node.</typeparam>
-            <param name="Nodes">Nodes</param>
-            <returns>Copies of the nodes.</returns>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.SimulationNodeChildren">
             <summary>
             Abstract base class for simulation nodes with children
@@ -5291,12 +5193,6 @@
             Exports XML
             </summary>
             <param name="Output">Output</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.SimulationNodeChildren.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.StringAttribute">
             <summary>
@@ -5452,12 +5348,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Binary.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte">
             <summary>
             Byte value.
@@ -5495,12 +5385,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Byte.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Char">
             <summary>
@@ -5540,12 +5424,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Char.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Double">
             <summary>
             Double value.
@@ -5583,12 +5461,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Double.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.IBinaryElement">
             <summary>
@@ -5640,12 +5512,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int16.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24">
             <summary>
             Int24 value.
@@ -5683,12 +5549,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int24.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32">
             <summary>
@@ -5728,12 +5588,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int32.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48">
             <summary>
             Int48 value.
@@ -5771,12 +5625,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int48.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64">
             <summary>
@@ -5816,12 +5664,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Int64.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte">
             <summary>
             SByte value.
@@ -5859,12 +5701,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.SByte.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Single">
             <summary>
@@ -5904,12 +5740,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Single.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16">
             <summary>
             UInt16 value.
@@ -5947,12 +5777,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt16.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24">
             <summary>
@@ -5992,12 +5816,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt24.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32">
             <summary>
             UInt32 value.
@@ -6035,12 +5853,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt32.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48">
             <summary>
@@ -6080,12 +5892,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt48.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64">
             <summary>
             UInt64 value.
@@ -6124,12 +5930,6 @@
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.UInt64.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String">
             <summary>
             Utf8String value.
@@ -6167,12 +5967,6 @@
             </summary>
             <param name="Output">Output stream.</param>
             <param name="Variables">Set of variables for the activity.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.BinaryElements.Utf8String.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Boolean">
             <summary>
@@ -6233,12 +6027,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Boolean.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.DateTime">
             <summary>
             DateTime value.
@@ -6297,12 +6085,6 @@
             <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.DateTime.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Duration">
             <summary>
@@ -6384,12 +6166,6 @@
             <param name="Duration">Duration</param>
             <returns>String representation of duration.</returns>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Duration.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.IValue">
             <summary>
             Interface for values
@@ -6467,12 +6243,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Json.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Number">
             <summary>
             Number value.
@@ -6531,12 +6301,6 @@
             <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Number.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Script">
             <summary>
@@ -6609,12 +6373,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Script.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.String">
             <summary>
             String value.
@@ -6674,12 +6432,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.String.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Time">
             <summary>
             Time value.
@@ -6738,12 +6490,6 @@
             <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Time.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Value">
             <summary>
@@ -6828,12 +6574,6 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Variable.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.ObjectModel.Values.Xml">
             <summary>
             XML value.
@@ -6889,12 +6629,6 @@
             <param name="Output">Output</param>
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
-        </member>
-        <member name="M:TAG.Simulator.ObjectModel.Values.Xml.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
         </member>
         <member name="T:TAG.Simulator.Statistics.Bucket">
             <summary>

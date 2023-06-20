@@ -282,11 +282,5 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.MQTT.Actors.Subscribe.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
     </members>
 </doc>

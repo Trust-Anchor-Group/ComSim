@@ -141,16 +141,5 @@ namespace TAG.Simulator.ObjectModel.Values
 		{
 			Activities.Eval.ExportPlantUml("BINARY", Output, Indentation, QuoteChar, false);
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Binary TypedTo = (Binary)To;
-
-			TypedTo.elements = Copy(this.elements, To, this.Model);
-		}
 	}
 }

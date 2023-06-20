@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -96,14 +95,5 @@ namespace TAG.Simulator
 		/// </summary>
 		/// <param name="Output">Output</param>
 		Task ExportXml(XmlWriter Output);
-
-		/// <summary>
-		/// Copies the node.
-		/// </summary>
-		/// <param name="Parent">Parent node.</param>
-		/// <param name="Model">Model owning the node.</param>
-		/// <returns>Copy</returns>
-		ISimulationNode Copy(ISimulationNode Parent, Model Model);
-
 	}
 }

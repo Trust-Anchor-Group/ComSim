@@ -52,18 +52,5 @@ namespace TAG.Simulator.ObjectModel.Measurements
 			this.bucket = this.Model.GetSampleBucket(this.@for);
 			return base.Start();
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			SeriesReference TypedTo = (SeriesReference)To;
-
-			TypedTo.@for = this.@for;
-			TypedTo.bucket = this.bucket;
-		}
-
 	}
 }

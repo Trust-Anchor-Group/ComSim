@@ -78,28 +78,19 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			ModBusDevice Result = new ModBusDevice(this, this.Model, InstanceIndex, InstanceId)
+			return Task.FromResult<Actor>(new ModBusDevice(this, this.Model, InstanceIndex, InstanceId)
 			{
 				startAddress = this.startAddress,
 				instanceAddress = (byte)(this.startAddress + InstanceIndex - 1)
-			};
-
-			foreach (ISimulationNode Node in this.Children)
-			{
-				if (Node is ModBusRegister Register)
-					Result.AddChild(Register.Copy(Result, this.Model));
-			}
-
-			return Task.FromResult<Actor>(Result);
+			});
 		}
 
 		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
-		public override async Task InitializeInstance()
+		public override Task InitializeInstance()
 		{
-			foreach (ISimulationNode Node in this.Children)
-				await Node.Initialize();
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -107,15 +98,6 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task StartInstance()
 		{
-			if (this.Parent.Parent is ModBusServer Server)
-			{
-				foreach (ISimulationNode Node in this.Children)
-				{
-					if (Node is ModBusRegister Register)
-						Register.RegisterRegister(this.instanceAddress, Server);
-				}
-			}
-
 			return Task.CompletedTask;
 		}
 
@@ -124,15 +106,6 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task FinalizeInstance()
 		{
-			if (this.Parent.Parent is ModBusServer Server)
-			{
-				foreach (ISimulationNode Node in this.Children)
-				{
-					if (Node is ModBusRegister Register)
-						Register.UnregisterRegister(Server);
-				}
-			}
-
 			return Task.CompletedTask;
 		}
 	}

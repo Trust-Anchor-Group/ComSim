@@ -73,18 +73,5 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 				((Result = await this.script.EvaluateAsync(Variables)) is System.Byte Value ? Value : 
 				Convert.ToByte(Result)));
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Byte TypedTo = (Byte)To;
-
-			TypedTo.value = this.value;
-			TypedTo.script = this.script;
-		}
-
 	}
 }

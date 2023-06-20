@@ -37,14 +37,33 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		}
 
 		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
+			if (this.Parent.Parent is ModBusServer Server)
+				this.RegisterRegister(Server);
+
+			return base.Start();
+		}
+
+		/// <summary>
+		/// Finalizes the node after simulation.
+		/// </summary>
+		public override Task Finalize()
+		{
+			if (this.Parent.Parent is ModBusServer Server)
+				this.UnregisterRegister(Server);
+
+			return base.Finalize();
+		}
+
+		/// <summary>
 		/// Registers the node on the ModBus server object instance.
 		/// </summary>
-		/// <param name="InstanceAddress">Instance address.</param>
 		/// <param name="Server">ModBus server object instance.</param>
-		public override void RegisterRegister(byte InstanceAddress, ModBusServer Server)
+		public override void RegisterRegister(ModBusServer Server)
 		{
-			base.RegisterRegister(InstanceAddress, Server);
-
 			Server.Server.OnReadInputRegisters += this.Server_OnReadInputRegisters;
 		}
 
@@ -59,9 +78,11 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 
 		private Task Server_OnReadInputRegisters(object Sender, ReadWordsEventArgs e)
 		{
-			if (e.UnitAddress == this.instanceAddress)
+			ModBusDevice Device = this.FindInstance(e.UnitAddress);
+
+			if (!(Device is null))
 			{
-				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteReadoutRequest",
+				this.Model.ExternalEvent(Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.Register));

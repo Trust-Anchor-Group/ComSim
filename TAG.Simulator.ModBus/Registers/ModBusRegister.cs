@@ -14,11 +14,6 @@ namespace TAG.Simulator.ModBus.Registers
 		private ushort register;
 
 		/// <summary>
-		/// Unit address used by instance.
-		/// </summary>
-		protected byte instanceAddress;
-
-		/// <summary>
 		/// Abstract base class for ModBus registers.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
@@ -57,12 +52,8 @@ namespace TAG.Simulator.ModBus.Registers
 		/// <summary>
 		/// Registers the node on the ModBus server object instance.
 		/// </summary>
-		/// <param name="InstanceAddress">Instance address.</param>
 		/// <param name="Server">ModBus server object instance.</param>
-		public virtual void RegisterRegister(byte InstanceAddress, ModBusServer Server)
-		{
-			this.instanceAddress = InstanceAddress;
-		}
+		public abstract void RegisterRegister(ModBusServer Server);
 
 		/// <summary>
 		/// Unregisters the node from the ModBus server object instance.
@@ -71,16 +62,16 @@ namespace TAG.Simulator.ModBus.Registers
 		public abstract void UnregisterRegister(ModBusServer Server);
 
 		/// <summary>
-		/// Copies contents of the node to a new node.
+		/// Finds the instance corresponding to a unit address.
 		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
+		/// <param name="Address">Unit address</param>
+		/// <returns>Instance, if found.</returns>
+		public ModBusDevice FindInstance(ushort Address)
 		{
-			ModBusRegister TypedTo = (ModBusRegister)To;
+			if (!(this.Parent is ModBusDevice Device))
+				return null;
 
-			TypedTo.register = this.register;
-
-			base.CopyContents(To);
+			return Device;
 		}
 	}
 }

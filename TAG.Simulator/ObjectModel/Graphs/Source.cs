@@ -63,16 +63,5 @@ namespace TAG.Simulator.ObjectModel.Graphs
 
 			return base.Initialize();
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Source TypedTo = (Source)To;
-
-			TypedTo.@ref = this.@ref;
-		}
 	}
 }

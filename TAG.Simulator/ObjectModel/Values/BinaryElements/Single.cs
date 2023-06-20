@@ -73,18 +73,5 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 				((Result = await this.script.EvaluateAsync(Variables)) is System.Single Value ? Value :
 				Convert.ToSingle(Result))), 0, 4);
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Single TypedTo = (Single)To;
-
-			TypedTo.value = this.value;
-			TypedTo.script = this.script;
-		}
-
 	}
 }

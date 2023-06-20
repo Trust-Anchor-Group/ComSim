@@ -39,12 +39,9 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		/// <summary>
 		/// Registers the node on the ModBus server object instance.
 		/// </summary>
-		/// <param name="InstanceAddress">Instance address.</param>
 		/// <param name="Server">ModBus server object instance.</param>
-		public override void RegisterRegister(byte InstanceAddress, ModBusServer Server)
+		public override void RegisterRegister(ModBusServer Server)
 		{
-			base.RegisterRegister(InstanceAddress, Server);
-
 			Server.Server.OnReadCoils += this.Server_OnReadCoils;
 			Server.Server.OnWriteCoil += this.Server_OnWriteCoil;
 		}
@@ -61,9 +58,11 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 
 		private Task Server_OnReadCoils(object Sender, ReadBitsEventArgs e)
 		{
-			if (e.UnitAddress == this.instanceAddress)
+			ModBusDevice Device = this.FindInstance(e.UnitAddress);
+
+			if (!(Device is null))
 			{
-				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteReadoutRequest",
+				this.Model.ExternalEvent(Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.Register));
@@ -74,9 +73,11 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 
 		private Task Server_OnWriteCoil(object Sender, WriteBitEventArgs e)
 		{
-			if (e.UnitAddress == this.instanceAddress)
+			ModBusDevice Device = this.FindInstance(e.UnitAddress);
+
+			if (!(Device is null))
 			{
-				this.Model.ExternalEvent((ModBusDevice)this.Parent, "OnExecuteSetRequest",
+				this.Model.ExternalEvent(Device, "OnExecuteSetRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.Register),

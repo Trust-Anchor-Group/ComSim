@@ -76,13 +76,5 @@ namespace TAG.Simulator.Performance.Values
 		{
 			Output.Write("ThreadCount");
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-		}
 	}
 }

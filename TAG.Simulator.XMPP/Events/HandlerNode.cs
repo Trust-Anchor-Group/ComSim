@@ -161,22 +161,5 @@ namespace TAG.Simulator.XMPP.Events
 		/// <param name="Actor">Actor instance reference</param>
 		/// <param name="Client">XMPP Client</param>
 		public abstract void RegisterHandlers(IActor Actor, XmppClient Client);
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			HandlerNode TypedTo = (HandlerNode)To;
-
-			TypedTo.@event = this.@event;
-			TypedTo.actor = this.actor;
-			TypedTo.name = this.name;
-			TypedTo.@namespace = this.@namespace;
-			TypedTo.eventId = this.eventId;
-			TypedTo.actorName = this.actorName;
-			TypedTo.eventArgs = this.eventArgs;
-		}
 	}
 }

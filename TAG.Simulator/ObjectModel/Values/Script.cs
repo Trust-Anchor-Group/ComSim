@@ -146,17 +146,5 @@ namespace TAG.Simulator.ObjectModel.Values
 		{
 			Activities.Eval.ExportPlantUml(this.script, Output, Indentation, QuoteChar, false);
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Script TypedTo = (Script)To;
-
-			TypedTo.expression = this.expression;
-			TypedTo.script = this.script;
-		}
 	}
 }

@@ -955,12 +955,6 @@
             <param name="Actor">Actor instance reference</param>
             <param name="Client">XMPP Client</param>
         </member>
-        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
         <member name="T:TAG.Simulator.XMPP.Events.IqGetHandler">
             <summary>
             Custom IQ[type=get] handler.

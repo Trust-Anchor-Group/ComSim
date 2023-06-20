@@ -75,17 +75,5 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 
 			Output.Write(Bin, 0, c);
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Utf8String TypedTo = (Utf8String)To;
-
-			TypedTo.value = this.value;
-		}
-
 	}
 }

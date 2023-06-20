@@ -94,6 +94,14 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// </summary>
 		public override Task Initialize()
 		{
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
 			ISimulationNode Loop = this.Parent;
 
 			while (!(Loop is null))
@@ -102,21 +110,15 @@ namespace TAG.Simulator.ObjectModel.Events
 				{
 					this.actor = Actor;
 					this.actor.Register(this);
-
-					return base.Initialize();
+					break;
 				}
-
-				Loop = Loop.Parent;
+				else
+					Loop = Loop.Parent;
 			}
 
-			throw new Exception("External event registered on a node that is not hosted by an actor.");
-		}
+			if (Loop is null)
+				throw new Exception("External event registered on a node that is not hosted by an actor.");
 
-		/// <summary>
-		/// Starts the node.
-		/// </summary>
-		public override Task Start()
-		{
 			if (!this.Model.TryGetEvent(this.eventId, out this.eventReference))
 				throw new Exception("Event node not found: " + this.eventId);
 

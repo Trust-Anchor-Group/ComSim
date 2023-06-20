@@ -91,6 +91,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		public override async Task Initialize()
 		{
 			await base.Initialize();
+
 			this.Model.Register(this);
 
 			if (this.Parent is IActors Actors)

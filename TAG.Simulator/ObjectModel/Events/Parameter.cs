@@ -82,18 +82,5 @@ namespace TAG.Simulator.ObjectModel.Events
 			(this.Parent as ExternalEvent)?.Register(this);
 			return Task.CompletedTask;
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Parameter TypedTo = (Parameter)To;
-
-			TypedTo.name = this.name;
-			TypedTo.variable = this.variable;
-		}
-
 	}
 }

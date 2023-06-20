@@ -107,22 +107,5 @@ namespace TAG.Simulator.ObjectModel.Distributions
 			Output.Append(CommonTypes.Encode(this.t0));
 			Output.Append(").^2/2)");
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Chi TypedTo = (Chi)To;
-
-			TypedTo.t0 = this.t0;
-			TypedTo.k = this.k;
-			TypedTo.kHalf = this.kHalf;
-			TypedTo.c = this.c;
-
-			base.CopyContents(To);
-		}
-
 	}
 }

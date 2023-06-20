@@ -60,18 +60,5 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 
 			return Task.CompletedTask;
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Option TypedTo = (Option)To;
-
-			TypedTo.value = this.value;
-			TypedTo.label = this.label;
-		}
-
 	}
 }

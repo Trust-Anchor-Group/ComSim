@@ -127,11 +127,5 @@
             <param name="Indentation">Number of tabs to indent.</param>
             <param name="QuoteChar">Quote character.</param>
         </member>
-        <member name="M:TAG.Simulator.XMLDSIG.Values.Sign.CopyContents(TAG.Simulator.ISimulationNode)">
-            <summary>
-            Copies contents of the node to a new node.
-            </summary>
-            <param name="To">Node to receive copied contents.</param>
-        </member>
     </members>
 </doc>

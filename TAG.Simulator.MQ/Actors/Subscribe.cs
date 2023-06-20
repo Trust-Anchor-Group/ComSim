@@ -70,18 +70,5 @@ namespace TAG.Simulator.MQ.Actors
 
 			return Task.CompletedTask;
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Subscribe TypedTo = (Subscribe)To;
-
-			TypedTo.queue = this.queue;
-			TypedTo.extEvent = this.extEvent;
-		}
-
 	}
 }

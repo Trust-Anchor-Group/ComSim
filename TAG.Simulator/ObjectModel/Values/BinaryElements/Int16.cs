@@ -73,18 +73,5 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 				((Result = await this.script.EvaluateAsync(Variables)) is System.Int16 Value ? Value :
 				Convert.ToInt16(Result))), 0, 2);
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			Int16 TypedTo = (Int16)To;
-
-			TypedTo.value = this.value;
-			TypedTo.script = this.script;
-		}
-
 	}
 }

@@ -73,17 +73,5 @@ namespace TAG.Simulator.ObjectModel.Events
 
 			return base.Initialize();
 		}
-
-		/// <summary>
-		/// Copies contents of the node to a new node.
-		/// </summary>
-		/// <param name="To">Node to receive copied contents.</param>
-		public override void CopyContents(ISimulationNode To)
-		{
-			FromPopulation TypedTo = (FromPopulation)To;
-
-			TypedTo.actor = this.actor;
-			TypedTo.actorId = this.actorId;
-		}
 	}
 }
