@@ -87,7 +87,7 @@ namespace TAG.Simulator.ModBus.Actors
 			foreach (ISimulationNode Node in this.Children)
 			{
 				if (Node is ModBusRegister Register)
-					Result.AddChild(Register.Copy());
+					Result.AddChild(Register.Copy(Result, this.Model));
 			}
 
 			return Task.FromResult<Actor>(Result);
@@ -96,9 +96,10 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
-		public override Task InitializeInstance()
+		public override async Task InitializeInstance()
 		{
-			return Task.CompletedTask;
+			foreach (ISimulationNode Node in this.Children)
+				await Node.Initialize();
 		}
 
 		/// <summary>
