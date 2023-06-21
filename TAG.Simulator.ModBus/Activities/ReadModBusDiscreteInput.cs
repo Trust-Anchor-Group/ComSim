@@ -56,8 +56,11 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 			await Client.Lock();
 			try
 			{
-				BitArray Bits = await Client.Client.ReadInputDiscretes(Address, Register, 1);
-				Variables[VariableName] = Bits[0];
+				if (!(Client.Client is null))
+				{
+					BitArray Bits = await Client.Client.ReadInputDiscretes(Address, Register, 1);
+					Variables[VariableName] = Bits[0];
+				}
 			}
 			finally
 			{

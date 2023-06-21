@@ -55,9 +55,12 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 			await Client.Lock();
 			try
 			{
-				ushort[] Words = await Client.Client.ReadInputRegisters(Address, Register, 2);
-				float Value = ReadModBusHoldingFloatingPointRegister.ToFloat(FloatByteOrder.NetworkOrder, Words[0], Words[1]);
-				Variables[VariableName] = Value;
+				if (!(Client.Client is null))
+				{
+					ushort[] Words = await Client.Client.ReadInputRegisters(Address, Register, 2);
+					float Value = ReadModBusHoldingFloatingPointRegister.ToFloat(FloatByteOrder.NetworkOrder, Words[0], Words[1]);
+					Variables[VariableName] = Value;
+				}
 			}
 			finally
 			{

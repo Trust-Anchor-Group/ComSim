@@ -60,7 +60,10 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 			await Client.Lock();
 			try
 			{
-				Result = await Client.Client.WriteCoil(Address, Register, Value != 0);
+				if (!(Client.Client is null))
+					Result = await Client.Client.WriteCoil(Address, Register, Value != 0);
+				else
+					return null;
 			}
 			finally
 			{

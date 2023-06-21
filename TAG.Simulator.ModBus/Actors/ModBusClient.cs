@@ -108,20 +108,26 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <summary>
 		/// Finalizes an instance of an actor.
 		/// </summary>
-		public override Task FinalizeInstance()
+		public override async Task FinalizeInstance()
 		{
-			this.client?.Dispose();
-			this.client = null;
-
-			if (!(this.sniffer is null))
+			await this.Lock();
+			try
 			{
-				if (this.sniffer is IDisposable Disposable)
-					Disposable.Dispose();
+				this.client?.Dispose();
+				this.client = null;
 
-				this.sniffer = null;
+				if (!(this.sniffer is null))
+				{
+					if (this.sniffer is IDisposable Disposable)
+						Disposable.Dispose();
+
+					this.sniffer = null;
+				}
 			}
-
-			return Task.CompletedTask;
+			finally
+			{
+				this.Unlock();
+			}
 		}
 
 		/// <summary>

@@ -55,8 +55,11 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 			await Client.Lock();
 			try
 			{
-				ushort[] Words = await Client.Client.ReadMultipleRegisters(Address, Register, 1);
-				Variables[VariableName] = Words[0];
+				if (!(Client.Client is null))
+				{
+					ushort[] Words = await Client.Client.ReadMultipleRegisters(Address, Register, 1);
+					Variables[VariableName] = Words[0];
+				}
 			}
 			finally
 			{
