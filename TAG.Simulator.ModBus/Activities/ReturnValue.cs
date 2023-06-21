@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
+using TAG.Simulator.ModBus.Registers;
+using TAG.Simulator.ModBus.Registers.Activities;
+using TAG.Simulator.ModBus.Registers.Registers;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Networking.Modbus;
@@ -88,9 +91,32 @@ namespace TAG.Simulator.ModBus.Activities
 			}
 			else if (Obj is ReadWordsEventArgs ReadWordsEventArgs)
 			{
-				// TODO: Check if floating-point register
+				ModBusRegister Register = GetRegister(Variables);
 				ushort RegisterNr = GetRegisterNr(Variables);
-				ReadWordsEventArgs[RegisterNr] = (ushort)Expression.ToDouble(Value);
+				double FloatValue = Expression.ToDouble(Value);
+
+				if (Register is ModBusHoldingFloatingPointRegister ||
+					Register is ModBusInputFloatingPointRegister)
+				{
+					ReadModBusHoldingFloatingPointRegister.FromFloat(FloatByteOrder.NetworkOrder,
+						(float)FloatValue, out ushort Value1, out ushort Value2);
+
+					if (RegisterNr >= ReadWordsEventArgs.ReferenceNr &&
+						RegisterNr < ReadWordsEventArgs.ReferenceNr + ReadWordsEventArgs.NrWords)
+					{
+						ReadWordsEventArgs[RegisterNr] = Value1;
+					}
+
+					RegisterNr++;
+
+					if (RegisterNr >= ReadWordsEventArgs.ReferenceNr &&
+						RegisterNr < ReadWordsEventArgs.ReferenceNr + ReadWordsEventArgs.NrWords)
+					{
+						ReadWordsEventArgs[RegisterNr] = Value2;
+					}
+				}
+				else
+					ReadWordsEventArgs[RegisterNr] = (ushort)FloatValue;
 			}
 			else if (Obj is WriteWordEventArgs WriteWordEventArgs)
 			{
@@ -109,6 +135,17 @@ namespace TAG.Simulator.ModBus.Activities
 				throw new Exception("RegisterNr variable not found.");
 
 			return (ushort)Expression.ToDouble(v.ValueObject);
+		}
+
+		private static ModBusRegister GetRegister(Variables Variables)
+		{
+			if (!Variables.TryGetVariable("Register", out Waher.Script.Variable v))
+				throw new Exception("Register variable not found.");
+
+			if (v.ValueObject is ModBusRegister Register)
+				return Register;
+			else
+				throw new Exception("Register variable does not contain a ModBusRegister object reference.");
 		}
 	}
 }

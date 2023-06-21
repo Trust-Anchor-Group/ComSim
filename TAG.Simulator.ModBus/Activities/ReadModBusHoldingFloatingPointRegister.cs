@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Activities;
 using TAG.Simulator.ModBus.Actors;
 using TAG.Simulator.ObjectModel.Activities;
-using Waher.Networking.Modbus;
 using Waher.Script;
 
 namespace TAG.Simulator.ModBus.Registers.Activities
@@ -137,6 +136,53 @@ namespace TAG.Simulator.ModBus.Registers.Activities
 			}
 
 			return BitConverter.ToSingle(Bin, 0);
+		}
+
+		internal static void FromFloat(FloatByteOrder Order, float Value, 
+			out ushort Value1, out ushort Value2)
+		{
+			byte[] Bin = BitConverter.GetBytes(Value);
+			byte A, B, C, D;
+
+			switch (Order)
+			{
+				case FloatByteOrder.NetworkOrder:
+				default:
+					A = Bin[0];
+					B = Bin[1];
+					C = Bin[2];
+					D = Bin[3];
+					break;
+
+				case FloatByteOrder.ByteSwap:
+					B = Bin[0];
+					A = Bin[1];
+					D = Bin[2];
+					C = Bin[3];
+					break;
+
+				case FloatByteOrder.WordSwap:
+					C = Bin[0];
+					D = Bin[1];
+					A = Bin[2];
+					B = Bin[3];
+					break;
+
+				case FloatByteOrder.ByteAndWordSwap:
+					D = Bin[0];
+					C = Bin[1];
+					B = Bin[2];
+					A = Bin[3];
+					break;
+			}
+
+			Value1 = A;
+			Value1 <<= 8;
+			Value1 |= B;
+
+			Value2 = C;
+			Value2 <<= 8;
+			Value2 |= D;
 		}
 
 	}
