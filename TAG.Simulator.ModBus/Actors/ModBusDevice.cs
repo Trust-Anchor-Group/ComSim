@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ModBus.Registers;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 
@@ -13,6 +14,8 @@ namespace TAG.Simulator.ModBus.Actors
 	public class ModBusDevice : ModBusActor
 	{
 		private readonly Dictionary<ushort, ModBusDevice> devicesPerAddress = new Dictionary<ushort, ModBusDevice>();
+		private readonly Dictionary<ushort, ModBusRegister> registersByNr = new Dictionary<ushort, ModBusRegister>();
+		private readonly object synchObj = new object();
 		private byte startAddress;
 		private byte instanceAddress;
 
@@ -92,9 +95,10 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task Start()
 		{
-			lock (this.devicesPerAddress)
+			lock (this.synchObj)
 			{
 				this.devicesPerAddress.Clear();
+				this.registersByNr.Clear();
 
 				if (!(this.Instances is null))
 				{
@@ -109,6 +113,20 @@ namespace TAG.Simulator.ModBus.Actors
 						}
 					}
 				}
+
+				if (!(this.Children is null))
+				{
+					foreach (ISimulationNode Node in this.Children)
+					{
+						if (Node is ModBusRegister Register)
+						{
+							if (this.registersByNr.ContainsKey(Register.RegisterNr))
+								throw new Exception("Multiple registers with the same number: " + Register.RegisterNr.ToString());
+
+							this.registersByNr[Register.RegisterNr] = Register;
+						}
+					}
+				}
 			}
 
 			return base.Start();
@@ -119,9 +137,10 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override Task Finalize()
 		{
-			lock (this.devicesPerAddress)
+			lock (this.synchObj)
 			{
 				this.devicesPerAddress.Clear();
+				this.registersByNr.Clear();
 			}
 
 			return base.Finalize();
@@ -158,10 +177,26 @@ namespace TAG.Simulator.ModBus.Actors
 		/// <returns>Instance, if found.</returns>
 		public ModBusDevice FindInstance(ushort Address)
 		{
-			lock (this.devicesPerAddress)
+			lock (this.synchObj)
 			{
 				if (this.devicesPerAddress.TryGetValue(Address, out ModBusDevice Instance))
 					return Instance;
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Finds the register corresponding to a register number.
+		/// </summary>
+		/// <param name="RegisterNr">Register Number</param>
+		/// <returns>Instance, if found.</returns>
+		public ModBusRegister FindRegister(ushort RegisterNr)
+		{
+			lock (this.synchObj)
+			{
+				if (this.registersByNr.TryGetValue(RegisterNr, out ModBusRegister Register))
+					return Register;
 			}
 
 			return null;

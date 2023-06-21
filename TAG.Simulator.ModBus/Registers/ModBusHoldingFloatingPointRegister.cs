@@ -58,13 +58,11 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
-			if (!(Device is null))
-			{
-				this.Model.ExternalEvent(Device, "OnExecuteReadoutRequest",
-					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Register", this),
-					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
-			}
+			this.Model.ExternalEvent(this, "OnExecuteReadoutRequest",
+				new KeyValuePair<string, object>("e", e),
+				new KeyValuePair<string, object>("Device", Device),
+				new KeyValuePair<string, object>("Register", this),
+				new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
 
 			return Task.CompletedTask;
 		}
