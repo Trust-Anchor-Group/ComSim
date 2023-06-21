@@ -590,6 +590,16 @@
             <param name="Arguments">Event arguments.</param>
             <returns>If event was handled</returns>
         </member>
+        <member name="M:TAG.Simulator.Model.ExternalEvent(TAG.Simulator.ObjectModel.Events.IExternalEventsNode,TAG.Simulator.ObjectModel.Actors.IActor,System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            Method called when an external event has been received.
+            </summary>
+            <param name="Source">Node receiving the event.</param>
+            <param name="Actor">Actor handling the event.</param>
+            <param name="Name">Name of event.</param>
+            <param name="Arguments">Event arguments.</param>
+            <returns>If event was handled</returns>
+        </member>
         <member name="M:TAG.Simulator.Model.IncActivityStartCount(System.String,System.String,System.Boolean,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
             <summary>
             Called when an activity is started.

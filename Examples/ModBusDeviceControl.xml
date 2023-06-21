@@ -65,48 +65,48 @@
 		<modbus:ModBusServer port="502">
 			<modbus:ModBusDevice id="OutdoorTemp" N="10" startAddress="0">
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Sensor">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
 			<modbus:ModBusDevice id="IndoorTemp" N="10" startAddress="10">
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Sensor">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
 			<modbus:ModBusDevice id="Heater" N="10" startAddress="20">
 				<modbus:ModBusCoil register="0">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEnabledEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
-					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterEnabledEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
 						<Parameter name="Value"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterTemperatureEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
 			<modbus:ModBusDevice id="Thermostat" N="10" startAddress="30">
 				<modbus:ModBusCoil register="0">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEnabledEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
-					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatEnabledEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
-					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatGoalTemperatureEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatGoalTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
-					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatGoalTemperatureEvent" actorName="Actuator">
+					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatGoalTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
@@ -262,7 +262,7 @@
 		<Activity id="ReadOutdoorTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of an outdoor temperature sensor.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Temperature</Script>
 			</modbus:ReturnValue>
@@ -271,7 +271,7 @@
 		<Activity id="ReadIndoorTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of an indoor temperature sensor.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Temperature</Script>
 			</modbus:ReturnValue>
@@ -280,7 +280,7 @@
 		<Activity id="ReadHeaterEnabled" logStart="false" logEnd="false">
 			<Description>Performs a readout of the enabled register in a heater.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Enabled</Script>
 			</modbus:ReturnValue>
@@ -289,7 +289,7 @@
 		<Activity id="ReadHeaterTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of the temperature register in a heater.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Temperature</Script>
 			</modbus:ReturnValue>
@@ -298,7 +298,7 @@
 		<Activity id="ReadThermostatEnabled" logStart="false" logEnd="false">
 			<Description>Performs a readout of the enabled register in a thermostat.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Enabled</Script>
 			</modbus:ReturnValue>
@@ -307,7 +307,7 @@
 		<Activity id="ReadThermostatGoalTemperature" logStart="false" logEnd="false">
 			<Description>Performs a readout of the goal temperature register in a thermostat.</Description>
 			<Start/>
-			<Eval>Data:=Global["Data"+Sensor.InstanceId]</Eval>
+			<Eval>Data:=Global["Data"+Device.InstanceId]</Eval>
 			<modbus:ReturnValue>
 				<Script>Data.Goal</Script>
 			</modbus:ReturnValue>

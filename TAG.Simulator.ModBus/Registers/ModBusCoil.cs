@@ -60,11 +60,13 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
-			this.Model.ExternalEvent(this, "OnExecuteReadoutRequest",
-				new KeyValuePair<string, object>("e", e),
-				new KeyValuePair<string, object>("Device", Device),
-				new KeyValuePair<string, object>("Register", this),
-				new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
+			if (!(Device is null))
+			{
+				this.Model.ExternalEvent(this, Device, "OnExecuteReadoutRequest",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Register", this),
+					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
+			}
 
 			return Task.CompletedTask;
 		}
@@ -73,12 +75,14 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
-			this.Model.ExternalEvent(this, "OnExecuteSetRequest",
-				new KeyValuePair<string, object>("e", e),
-				new KeyValuePair<string, object>("Device", Device),
-				new KeyValuePair<string, object>("Register", this),
-				new KeyValuePair<string, object>("RegisterNr", this.RegisterNr),
-				new KeyValuePair<string, object>("Value", e.Value));
+			if (!(Device is null))
+			{
+				this.Model.ExternalEvent(this, Device, "OnExecuteSetRequest",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Register", this),
+					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr),
+					new KeyValuePair<string, object>("Value", e.Value));
+			}
 
 			return Task.CompletedTask;
 		}
