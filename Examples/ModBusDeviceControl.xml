@@ -318,7 +318,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Heater.InstanceId.Substring(6);
+				Suffix:=Device.InstanceId.Substring(6);
 				Data:=Global["DataHeater"+Suffix];
 				Data.Enabled:=Value
 				]]>
@@ -330,7 +330,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Thermostat.InstanceId.Substring(10);
+				Suffix:=Device.InstanceId.Substring(10);
 				Data:=Global["DataThermostat"+Suffix];
 				Data.Enabled:=Value
 				]]>
@@ -342,7 +342,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Thermostat.InstanceId.Substring(10);
+				Suffix:=Device.InstanceId.Substring(10);
 				Data:=Global["DataThermostat"+Suffix];
 				Data.Goal:=Value
 				]]>
