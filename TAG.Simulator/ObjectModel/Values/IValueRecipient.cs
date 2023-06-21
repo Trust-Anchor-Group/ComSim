@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Values
+﻿namespace TAG.Simulator.ObjectModel.Values
 {
 	/// <summary>
 	/// Interface for nodes holding a value node

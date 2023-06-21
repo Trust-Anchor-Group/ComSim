@@ -67,6 +67,7 @@
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
@@ -74,6 +75,7 @@
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
@@ -81,15 +83,18 @@
 				<modbus:ModBusCoil register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 					<ExternalEvent name="OnExecuteSetRequest" event="SetHeaterEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 						<Parameter name="Value"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
@@ -97,17 +102,21 @@
 				<modbus:ModBusCoil register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatGoalTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 					<ExternalEvent name="OnExecuteSetRequest" event="SetThermostatGoalTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
+						<Parameter name="RegisterNr"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
