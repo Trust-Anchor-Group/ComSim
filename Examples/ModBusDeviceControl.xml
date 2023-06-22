@@ -63,7 +63,7 @@
 			<ExternalEvent name="Elapsed" event="ControlTimerElapsed" actorName="ControlTimer"/>
 		</Timer>
 		<modbus:ModBusServer port="502">
-			<modbus:ModBusDevice id="OutdoorTemp" N="10" startAddress="0">
+			<modbus:ModBusDevice id="OutdoorTemp" N="10" startAddress="10">
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadOutdoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
@@ -72,7 +72,7 @@
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
-			<modbus:ModBusDevice id="IndoorTemp" N="10" startAddress="10">
+			<modbus:ModBusDevice id="IndoorTemp" N="10" startAddress="20">
 				<modbus:ModBusHoldingFloatingPointRegister register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadIndoorTemperatureEvent" actorName="Device">
 						<Parameter name="e"/>
@@ -81,7 +81,7 @@
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
-			<modbus:ModBusDevice id="Heater" N="10" startAddress="20">
+			<modbus:ModBusDevice id="Heater" N="10" startAddress="30">
 				<modbus:ModBusCoil register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadHeaterEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
@@ -103,7 +103,7 @@
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
-			<modbus:ModBusDevice id="Thermostat" N="10" startAddress="30">
+			<modbus:ModBusDevice id="Thermostat" N="10" startAddress="40">
 				<modbus:ModBusCoil register="0">
 					<ExternalEvent name="OnExecuteReadoutRequest" event="ReadThermostatEnabledEvent" actorName="Device">
 						<Parameter name="e"/>
@@ -251,18 +251,18 @@
 			</Conditional>
 			<modbus:ReadModBusCoil register="0"
 														 client="ThermostatClient{Suffix}"
-														 address="{i+20}"
+														 address="{i+30}"
 														 responseVariable="HeaterEnabled"/>
 			<modbus:ReadModBusHoldingFloatingPointRegister register="0"
 																										 client="ThermostatClient{Suffix}"
-																										 address="{i+10}"
+																										 address="{i+20}"
 																										 responseVariable="IndoorTemperature"/>
 			<Conditional>
 				<Condition condition="IndoorTemperature&lt;ThermostatData.Goal °C and !HeaterEnabled">
 					<Count counter="Enable"/>
 					<modbus:WriteModBusCoil register="0"
 																	client="ThermostatClient{Suffix}"
-																	address="{i+20}">
+																	address="{i+30}">
 						<Boolean value="true"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
@@ -270,7 +270,7 @@
 					<Count counter="Disable"/>
 					<modbus:WriteModBusCoil register="0"
 																	client="ThermostatClient{Suffix}"
-																	address="{i+20}">
+																	address="{i+30}">
 						<Boolean value="false"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
