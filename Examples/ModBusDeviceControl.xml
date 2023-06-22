@@ -251,18 +251,18 @@
 			</Conditional>
 			<modbus:ReadModBusCoil register="0"
 														 client="ThermostatClient{Suffix}"
-														 address="{i+30}"
+														 address="{i+29}"
 														 responseVariable="HeaterEnabled"/>
 			<modbus:ReadModBusHoldingFloatingPointRegister register="0"
 																										 client="ThermostatClient{Suffix}"
-																										 address="{i+20}"
+																										 address="{i+19}"
 																										 responseVariable="IndoorTemperature"/>
 			<Conditional>
 				<Condition condition="IndoorTemperature&lt;ThermostatData.Goal °C and !HeaterEnabled">
 					<Count counter="Enable"/>
 					<modbus:WriteModBusCoil register="0"
 																	client="ThermostatClient{Suffix}"
-																	address="{i+30}">
+																	address="{i+29}">
 						<Boolean value="true"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
@@ -270,7 +270,7 @@
 					<Count counter="Disable"/>
 					<modbus:WriteModBusCoil register="0"
 																	client="ThermostatClient{Suffix}"
-																	address="{i+30}">
+																	address="{i+29}">
 						<Boolean value="false"/>
 					</modbus:WriteModBusCoil>
 				</Condition>
