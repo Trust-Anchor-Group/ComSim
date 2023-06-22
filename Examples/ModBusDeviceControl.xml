@@ -4,8 +4,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT1M">
+       timeCycle="PT10M"
+       duration="PT10M">
 	<Meta>
 		<Title>ModBus Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of ModBus Sensors, Actuators and Controllers.</Introduction>
@@ -255,7 +255,7 @@
 														 responseVariable="HeaterEnabled"/>
 			<modbus:ReadModBusHoldingFloatingPointRegister register="0"
 																										 client="ThermostatClient{Suffix}"
-																										 address="{i}"
+																										 address="{i+10}"
 																										 responseVariable="IndoorTemperature"/>
 			<Conditional>
 				<Condition condition="IndoorTemperature&lt;ThermostatData.Goal °C and !HeaterEnabled">
@@ -336,8 +336,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Device.InstanceId.Substring(6);
-				Data:=Global["DataHeater"+Suffix];
+				Data:=Global["Data"+Device.InstanceId];
 				Data.Enabled:=Value
 				]]>
 			</Eval>
@@ -348,8 +347,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Device.InstanceId.Substring(10);
-				Data:=Global["DataThermostat"+Suffix];
+				Data:=Global["Data"+Device.InstanceId];
 				Data.Enabled:=Value
 				]]>
 			</Eval>
@@ -360,8 +358,7 @@
 			<Start/>
 			<Eval>
 				<![CDATA[
-				Suffix:=Device.InstanceId.Substring(10);
-				Data:=Global["DataThermostat"+Suffix];
+				Data:=Global["Data"+Device.InstanceId];
 				Data.Goal:=Value
 				]]>
 			</Eval>
