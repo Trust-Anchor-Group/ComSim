@@ -4,8 +4,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT10M"
-       duration="PT10M">
+       timeCycle="PT1H"
+       duration="PT1H">
 	<Meta>
 		<Title>ModBus Devices (Sensors, Actuators &amp; Controllers)</Title>
 		<Introduction>Simulates a set of ModBus Sensors, Actuators and Controllers.</Introduction>
@@ -27,10 +27,13 @@
 			
 			foreach i in 1..10 do
 			(
-				Global["DataOutdoorTemp"+IntToStr2(i)]:=
+				G:=
 				{
-					"Temperature":Uniform(-10,25)
+					"DayAverageTemperature":Uniform(-10,15),
+					"DayTemperatureAmplitude":Uniform(2,10)
 				};
+				G.Temperature:=G.DayAverageTemperature;
+				Global["DataOutdoorTemp"+IntToStr2(i)]:=G;
 
 				Global["DataIndoorTemp"+IntToStr2(i)]:=
 				{
@@ -114,6 +117,7 @@
 						<Parameter name="e"/>
 						<Parameter name="Register"/>
 						<Parameter name="RegisterNr"/>
+						<Parameter name="Value"/>
 					</ExternalEvent>
 				</modbus:ModBusCoil>
 				<modbus:ModBusHoldingFloatingPointRegister register="2">
@@ -126,6 +130,7 @@
 						<Parameter name="e"/>
 						<Parameter name="Register"/>
 						<Parameter name="RegisterNr"/>
+						<Parameter name="Value"/>
 					</ExternalEvent>
 				</modbus:ModBusHoldingFloatingPointRegister>
 			</modbus:ModBusDevice>
@@ -190,7 +195,14 @@
 			</Eval>
 			<Eval>
 				<![CDATA[
-				OutdoorTempData.Temperature+=Uniform(-0.25,0.25);
+				t:=Now.TimeOfDay.TotalHours;
+				
+				Attractor:=OutdoorTempData.DayAverageTemperature-
+					OutdoorTempData.DayTemperatureAmplitude*sin((t+2)/12*pi);
+					
+				OutdoorTempData.Temperature+=
+					(Attractor-OutdoorTempData.Temperature)/100+
+					Uniform(-0.25,0.25);
 				]]>
 			</Eval>
 			<Sample name="Outdoor Temperature {i}">

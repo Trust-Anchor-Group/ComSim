@@ -120,8 +120,15 @@ namespace TAG.Simulator.ModBus.Activities
 			}
 			else if (Obj is WriteWordEventArgs WriteWordEventArgs)
 			{
-				// TODO: Check if floating-point register
-				WriteWordEventArgs.Value = (ushort)Expression.ToDouble(Value);
+				ModBusRegister Register = GetRegister(Variables);
+
+				if (Register is ModBusHoldingFloatingPointRegister ||
+					Register is ModBusInputFloatingPointRegister)
+				{
+					throw new NotSupportedException("Returning values in floating-point set operations not supported.");
+				}
+				else
+					WriteWordEventArgs.Value = (ushort)Expression.ToDouble(Value);
 			}
 			else
 				throw new Exception("Unrecognized event arguments type: " + Obj.GetType().FullName);

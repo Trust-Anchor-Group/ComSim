@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
 using Waher.Networking.Modbus;
+using Waher.Networking.Sniffers;
 
 namespace TAG.Simulator.ModBus.Actors
 {
@@ -13,6 +15,7 @@ namespace TAG.Simulator.ModBus.Actors
 	public class ModBusServer : SimulationNodeChildren, IActors
 	{
 		private ModBusTcpServer server;
+		private ISniffer sniffer;
 		private int port;
 
 		/// <summary>
@@ -83,7 +86,8 @@ namespace TAG.Simulator.ModBus.Actors
 		/// </summary>
 		public override async Task Initialize()
 		{
-			this.server	= await ModBusTcpServer.CreateAsync(this.port);
+			this.sniffer = this.Model.GetSniffer("ModBus" + this.port.ToString(), BinaryPresentationMethod.Hexadecimal);
+			this.server = await ModBusTcpServer.CreateAsync(this.port, this.sniffer);
 
 			await base.Initialize();
 		}
@@ -103,6 +107,14 @@ namespace TAG.Simulator.ModBus.Actors
 		{
 			this.server.Dispose();
 			this.server = null;
+
+			if (!(this.sniffer is null))
+			{
+				if (this.sniffer is IDisposable Disposable)
+					Disposable.Dispose();
+
+				this.sniffer = null;
+			}
 
 			return base.Finalize();
 		}
