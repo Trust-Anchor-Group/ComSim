@@ -23,37 +23,58 @@
 		</Description>
 		<ModelScript>
 			<![CDATA[
+			LogInformation("Loading states.");
+			
 			IntToStr2(i):=i<10?"0"+Str(i):Str(i);
 			
 			foreach i in 1..10 do
 			(
+				s:=IntToStr2(i);
 				G:=
 				{
-					"DayAverageTemperature":Uniform(-10,15),
-					"DayTemperatureAmplitude":Uniform(2,10)
+					"DayAverageTemperature":GetSetting("DayAvgTemp"+s,Uniform(-10,15)),
+					"DayTemperatureAmplitude":GetSetting("DayTempAmpl"+s,Uniform(2,10))
 				};
-				G.Temperature:=G.DayAverageTemperature;
-				Global["DataOutdoorTemp"+IntToStr2(i)]:=G;
+				G.Temperature:=GetSetting("OutdoorTemp"+s,G.DayAverageTemperature);
+				Global["DataOutdoorTemp"+s]:=G;
 
-				Global["DataIndoorTemp"+IntToStr2(i)]:=
+				Global["DataIndoorTemp"+s]:=
 				{
-					"Temperature":22
+					"Temperature":GetSetting("IndoorTemp"+s,22)
 				};
 				
-				Global["DataHeater"+IntToStr2(i)]:=
+				Global["DataHeater"+s]:=
 				{
-					"Enabled":false,
-					"Temperature":22
+					"Enabled":GetSetting("HeaterEnabled"+s,false),
+					"Temperature":GetSetting("HeaterTemp"+s,22)
 				};
 				
-				Global["DataThermostat"+IntToStr2(i)]:=
+				Global["DataThermostat"+s]:=
 				{
-					"Enabled":true,
-					"Goal":22
+					"Enabled":GetSetting("ThermostatEnabled"+s,true),
+					"Goal":GetSetting("ThermostatGoal"+s,22)
 				};
 			);
 			]]>
 		</ModelScript>
+		<FinalizeScript>
+			<![CDATA[
+			LogInformation("Saving states.");
+			
+			foreach i in 1..10 do
+			(
+				s:=IntToStr2(i);
+				SetSetting("DayAvgTemp"+s,Global["DataOutdoorTemp"+s].DayAverageTemperature);
+				SetSetting("DayTempAmpl"+s,Global["DataOutdoorTemp"+s].DayTemperatureAmplitude);
+				SetSetting("OutdoorTemp"+s,Global["DataOutdoorTemp"+s].Temperature);
+				SetSetting("IndoorTemp"+s,Global["DataIndoorTemp"+s].Temperature);
+				SetSetting("HeaterEnabled"+s,Global["DataHeater"+s].Enabled);
+				SetSetting("HeaterTemp"+s,Global["DataHeater"+s].Temperature);
+				SetSetting("ThermostatEnabled"+s,Global["DataThermostat"+s].Enabled);
+				SetSetting("ThermostatGoal"+s,Global["DataThermostat"+s].Goal);
+			)
+			]]>
+		</FinalizeScript>
 	</Meta>
 	<Assemblies>
 		<Assembly fileName="TAG.Simulator.ModBus.dll"/>
