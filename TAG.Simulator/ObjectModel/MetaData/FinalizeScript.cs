@@ -64,15 +64,6 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Initialized the node before simulation.
 		/// </summary>
-		public override async Task Initialize()
-		{
-			await this.expression.EvaluateAsync(this.Model.Variables);
-			await base.Initialize();
-		}
-
-		/// <summary>
-		/// Initialized the node before simulation.
-		/// </summary>
 		public override async Task Finalize()
 		{
 			await this.expression.EvaluateAsync(this.Model.Variables);

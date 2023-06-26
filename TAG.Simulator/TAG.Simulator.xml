@@ -4893,11 +4893,6 @@
             </summary>
             <param name="Definition">XML definition</param>
         </member>
-        <member name="M:TAG.Simulator.ObjectModel.MetaData.FinalizeScript.Initialize">
-            <summary>
-            Initialized the node before simulation.
-            </summary>
-        </member>
         <member name="M:TAG.Simulator.ObjectModel.MetaData.FinalizeScript.Finalize">
             <summary>
             Initialized the node before simulation.
