@@ -36,6 +36,7 @@
     <PackageReference Include="Waher.Persistence.Serialization.Compiled" Version="1.7.1" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.1.3" />
     <PackageReference Include="Waher.Runtime.Inventory.Loader" Version="1.0.9" />
+    <PackageReference Include="Waher.Runtime.Settings" Version="1.0.10" />
     <PackageReference Include="Waher.Runtime.Timing" Version="1.0.5" />
     <PackageReference Include="Waher.Script" Version="2.4.13" />
     <PackageReference Include="Waher.Script.Content" Version="2.0.7" />
