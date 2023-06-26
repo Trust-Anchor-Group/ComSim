@@ -57,7 +57,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "ReadSensor";
+		public override string LocalName => nameof(ReadSensor);
 
 		/// <summary>
 		/// Creates a new instance of the node.

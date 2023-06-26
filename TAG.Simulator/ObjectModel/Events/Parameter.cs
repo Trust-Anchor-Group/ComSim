@@ -39,7 +39,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Parameter";
+		public override string LocalName => nameof(Parameter);
 
 		/// <summary>
 		/// Name of external event

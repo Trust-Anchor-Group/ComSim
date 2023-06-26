@@ -20,7 +20,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "EventHandler";
+		public override string LocalName => nameof(EventHandler);
 
 		/// <summary>
 		/// Creates a new instance of the node.

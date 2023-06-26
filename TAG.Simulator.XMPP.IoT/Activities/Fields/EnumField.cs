@@ -31,7 +31,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "EnumField";
+		public override string LocalName => nameof(EnumField);
 
 		/// <summary>
 		/// Creates a new instance of the node.

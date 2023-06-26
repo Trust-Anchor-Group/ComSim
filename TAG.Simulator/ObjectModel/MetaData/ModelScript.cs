@@ -35,7 +35,7 @@ namespace TAG.Simulator.ObjectModel.MetaData
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "ModelScript";
+		public override string LocalName => nameof(ModelScript);
 
 		/// <summary>
 		/// Creates a new instance of the node.

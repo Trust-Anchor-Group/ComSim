@@ -22,7 +22,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Actors";
+		public override string LocalName => nameof(Actors);
 
 		/// <summary>
 		/// Creates a new instance of the node.

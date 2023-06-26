@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "FromPopulation";
+		public override string LocalName => nameof(FromPopulation);
 
 		/// <summary>
 		/// Name of actor defining the population.

@@ -30,7 +30,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "SetVariable";
+		public override string LocalName => nameof(SetVariable);
 
 		/// <summary>
 		/// Name of variable within the scope of the event.

@@ -53,7 +53,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Request";
+		public override string LocalName => nameof(Request);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

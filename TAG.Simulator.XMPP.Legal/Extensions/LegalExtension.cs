@@ -29,7 +29,7 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "LegalExtension";
+		public override string LocalName => nameof(LegalExtension);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

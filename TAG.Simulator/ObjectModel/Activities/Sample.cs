@@ -31,7 +31,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Sample";
+		public override string LocalName => nameof(Sample);
 
 		/// <summary>
 		/// Name of variable within the scope of the event.

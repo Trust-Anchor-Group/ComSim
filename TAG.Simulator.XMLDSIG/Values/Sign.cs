@@ -35,7 +35,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Sign";
+		public override string LocalName => nameof(Sign);
 
 		/// <summary>
 		/// XML Namespace where the element is defined.

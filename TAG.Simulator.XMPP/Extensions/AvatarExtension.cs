@@ -24,7 +24,7 @@ namespace TAG.Simulator.XMPP.Extensions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "AvatarExtension";
+		public override string LocalName => nameof(AvatarExtension);
 
 		/// <summary>
 		/// Creates a new instance of the node.

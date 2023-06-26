@@ -34,7 +34,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Gamma";
+		public override string LocalName => nameof(Gamma);
 
 		/// <summary>
 		/// Creates a new instance of the node.

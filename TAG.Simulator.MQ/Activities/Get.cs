@@ -35,7 +35,7 @@ namespace TAG.Simulator.MQ.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Get";
+		public override string LocalName => nameof(Get);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

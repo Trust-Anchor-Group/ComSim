@@ -56,7 +56,7 @@ namespace TAG.Simulator.ObjectModel.Measurements
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "OutlierRemoval";
+		public override string LocalName => nameof(OutlierRemoval);
 
 		/// <summary>
 		/// Creates a new instance of the node.

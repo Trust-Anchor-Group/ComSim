@@ -23,7 +23,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Thread";
+		public override string LocalName => nameof(Thread);
 
 		/// <summary>
 		/// Creates a new instance of the node.

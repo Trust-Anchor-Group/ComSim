@@ -43,7 +43,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "CustomGraph";
+		public override string LocalName => nameof(CustomGraph);
 
 		/// <summary>
 		/// If the graph represents the visualization of a given entity. (Otherwise, null, or the empty string.)

@@ -26,7 +26,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Call";
+		public override string LocalName => nameof(Call);
 
 		/// <summary>
 		/// Creates a new instance of the node.

@@ -32,7 +32,7 @@ namespace TAG.Simulator.XMPP.Actors
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "XmppActorTcp";
+		public override string LocalName => nameof(XmppActorTcp);
 
 		/// <summary>
 		/// Creates a new instance of the node.

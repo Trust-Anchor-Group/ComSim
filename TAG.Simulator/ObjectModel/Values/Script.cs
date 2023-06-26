@@ -50,7 +50,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Script";
+		public override string LocalName => nameof(Script);
 
 		/// <summary>
 		/// Creates a new instance of the node.

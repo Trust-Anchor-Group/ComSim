@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Values.BinaryElements
 		/// <summary>
 		/// Local name of Binary element defining contents of class.
 		/// </summary>
-		public override string LocalName => "UInt16";
+		public override string LocalName => nameof(UInt16);
 
 		/// <summary>
 		/// Creates a new instance of the node.

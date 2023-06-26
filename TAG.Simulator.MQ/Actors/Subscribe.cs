@@ -26,7 +26,7 @@ namespace TAG.Simulator.MQ.Actors
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Subscribe";
+		public override string LocalName => nameof(Subscribe);
 
 		/// <summary>
 		/// XML Namespace where the element is defined.

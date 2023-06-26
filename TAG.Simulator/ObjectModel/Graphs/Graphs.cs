@@ -20,7 +20,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Graphs";
+		public override string LocalName => nameof(Graphs);
 
 		/// <summary>
 		/// Creates a new instance of the node.

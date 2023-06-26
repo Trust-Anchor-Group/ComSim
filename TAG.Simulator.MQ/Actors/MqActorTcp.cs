@@ -67,7 +67,7 @@ namespace TAG.Simulator.MQ.Actors
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "MqActorTcp";
+		public override string LocalName => nameof(MqActorTcp);
 
 		/// <summary>
 		/// XML Namespace where the element is defined.

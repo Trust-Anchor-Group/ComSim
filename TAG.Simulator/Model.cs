@@ -107,7 +107,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Model";
+		public override string LocalName => nameof(Model);
 
 		/// <summary>
 		/// Base of simulation time

@@ -43,7 +43,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Boolean";
+		public override string LocalName => nameof(Boolean);
 
 		/// <summary>
 		/// Creates a new instance of the node.

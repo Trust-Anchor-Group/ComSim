@@ -36,7 +36,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Option";
+		public override string LocalName => nameof(Option);
 
 		/// <summary>
 		/// Creates a new instance of the node.

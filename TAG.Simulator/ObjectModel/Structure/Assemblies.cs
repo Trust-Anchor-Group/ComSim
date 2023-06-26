@@ -20,7 +20,7 @@ namespace TAG.Simulator.ObjectModel.Structure
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Assemblies";
+		public override string LocalName => nameof(Assemblies);
 
 		/// <summary>
 		/// Creates a new instance of the node.

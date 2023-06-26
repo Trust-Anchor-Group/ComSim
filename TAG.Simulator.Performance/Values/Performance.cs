@@ -35,7 +35,7 @@ namespace TAG.Simulator.Performance.Values
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Performance";
+		public override string LocalName => nameof(Performance);
 
 		/// <summary>
 		/// XML Namespace where the element is defined.

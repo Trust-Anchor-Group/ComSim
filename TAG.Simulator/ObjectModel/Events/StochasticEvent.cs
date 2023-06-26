@@ -31,7 +31,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "StochasticEvent";
+		public override string LocalName => nameof(StochasticEvent);
 
 		/// <summary>
 		/// ID of Distribution

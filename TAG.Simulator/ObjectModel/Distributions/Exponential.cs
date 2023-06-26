@@ -27,7 +27,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Exponential";
+		public override string LocalName => nameof(Exponential);
 
 		/// <summary>
 		/// λ

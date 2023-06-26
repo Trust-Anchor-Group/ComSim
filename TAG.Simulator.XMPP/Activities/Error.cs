@@ -35,7 +35,7 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Error";
+		public override string LocalName => nameof(Error);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

@@ -24,7 +24,7 @@ namespace TAG.Simulator.XMPP.Events
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "PresenceHandler";
+		public override string LocalName => nameof(PresenceHandler);
 
 		/// <summary>
 		/// Creates a new instance of the node.

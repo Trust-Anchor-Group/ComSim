@@ -39,7 +39,7 @@ namespace TAG.Simulator.MQTT.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Publish";
+		public override string LocalName => nameof(Publish);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.

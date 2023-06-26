@@ -29,7 +29,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "QuantityField";
+		public override string LocalName => nameof(QuantityField);
 
 		/// <summary>
 		/// Creates a new instance of the node.

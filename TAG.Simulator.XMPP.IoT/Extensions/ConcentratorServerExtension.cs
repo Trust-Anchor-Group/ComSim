@@ -24,7 +24,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "ConcentratorServerExtension";
+		public override string LocalName => nameof(ConcentratorServerExtension);
 
 		/// <summary>
 		/// Creates a new instance of the node.

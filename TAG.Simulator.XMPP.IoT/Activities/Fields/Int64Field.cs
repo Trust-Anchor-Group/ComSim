@@ -25,7 +25,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities.Fields
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Int64Field";
+		public override string LocalName => nameof(Int64Field);
 
 		/// <summary>
 		/// Creates a new instance of the node.

@@ -25,7 +25,7 @@ namespace TAG.Simulator.ObjectModel.Structure
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Assembly";
+		public override string LocalName => nameof(Assembly);
 
 		/// <summary>
 		/// Filename of assembly.

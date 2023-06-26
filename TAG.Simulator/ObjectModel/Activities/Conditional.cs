@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
@@ -26,7 +25,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Conditional";
+		public override string LocalName => nameof(Conditional);
 
 		/// <summary>
 		/// Creates a new instance of the node.

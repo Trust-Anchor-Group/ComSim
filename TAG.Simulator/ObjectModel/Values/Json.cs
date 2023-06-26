@@ -26,7 +26,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <summary>
 		/// Local name of JSON element defining contents of class.
 		/// </summary>
-		public override string LocalName => "Json";
+		public override string LocalName => nameof(Json);
 
 		/// <summary>
 		/// Creates a new instance of the node.

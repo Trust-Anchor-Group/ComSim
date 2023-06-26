@@ -29,7 +29,7 @@ namespace TAG.Simulator.XMPP.IoT
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => "NodeReference";
+		public override string LocalName => nameof(NodeReference);
 
 		/// <summary>
 		/// Creates a new instance of the node.
