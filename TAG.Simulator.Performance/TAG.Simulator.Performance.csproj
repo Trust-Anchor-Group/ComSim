@@ -7,7 +7,7 @@
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
     <Description>Defines simulation extensions for sampling of local performance counters.</Description>
-    <Copyright>Copyright © Trust Anchor Group 2020-2023. All rights reserved.</Copyright>
+    <Copyright>Copyright © Trust Anchor Group 2020-2024. All rights reserved.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

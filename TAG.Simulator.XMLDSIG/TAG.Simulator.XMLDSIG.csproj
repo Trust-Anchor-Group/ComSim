@@ -7,7 +7,7 @@
     <Product>ComSim</Product>
     <Description>Defines simulation extensions for XML Digital Signatures (XMLDSIG):
 https://www.w3.org/TR/xmldsig-core/</Description>
-    <Copyright>Copyright © Trust Anchor Group 2020-2023. All rights reserved.</Copyright>
+    <Copyright>Copyright © Trust Anchor Group 2020-2024. All rights reserved.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

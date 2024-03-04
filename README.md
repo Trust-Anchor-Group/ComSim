@@ -53,7 +53,7 @@ direct, indirect, incidental, special, exemplary, or consequential damages (incl
 of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including 
 negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
 
-The TAG ComSim is © Trust Anchor Group AB 2020-2023. All rights reserved.
+The TAG ComSim is © Trust Anchor Group AB 2020-2024. All rights reserved.
 
 ## Command-line arguments
 
