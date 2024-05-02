@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Waher.Networking" Version="2.2.4" />
+    <PackageReference Include="Waher.Networking" Version="2.2.5" />
     <PackageReference Include="Waher.Networking.Modbus" Version="1.1.0" />
   </ItemGroup>
 
