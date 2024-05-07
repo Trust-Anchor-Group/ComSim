@@ -1,0 +1,1314 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator.XMPP</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.XMPP.AccountCredentials">
+            <summary>
+            XMPP Account credentials
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.AccountCredentials.#ctor">
+            <summary>
+            XMPP Account credentials
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.AccountCredentials.ObjectId">
+            <summary>
+            Object ID
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.AccountCredentials.Domain">
+            <summary>
+            Account user name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.AccountCredentials.UserName">
+            <summary>
+            Account user name
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.AccountCredentials.PasswordHash">
+            <summary>
+            Password hash
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.AccountCredentials.PasswordHashMethod">
+            <summary>
+            Password hash method
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.Error">
+            <summary>
+            Sends a custom IQ error response to a recipient
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sends a custom IQ error response to a recipient
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Error.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Error.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Error.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Error.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.RequestType">
+            <summary>
+            Type of IQ request
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Activities.RequestType.Get">
+            <summary>
+            IQ get request.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Activities.RequestType.Set">
+            <summary>
+            IQ set request.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.Request">
+            <summary>
+            Sends a custom IQ request to a recipient
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sends a custom IQ request to a recipient
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Request.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Request.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Request.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Request.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.Respond">
+            <summary>
+            Sends a custom IQ response to a recipient
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sends a custom IQ response to a recipient
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Respond.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Respond.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.Respond.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.Respond.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.SendMessage">
+            <summary>
+            Sends a custom message to a recipient
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sends a custom message to a recipient
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SendMessage.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SendMessage.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SendMessage.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String,System.String,System.Boolean,System.Char)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+            <param name="Value">Value</param>
+            <param name="Quotes">Quotes</param>
+            <param name="QuoteChar">Quote character</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String,TAG.Simulator.ObjectModel.Values.IValue,System.Char)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+            <param name="Value">Value</param>
+            <param name="QuoteChar">Quote character</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SendMessage.AppendArgument(System.IO.StreamWriter,System.Int32,System.String)">
+            <summary>
+            Appends an argument
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Indentation</param>
+            <param name="Name">Name to append</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.SetPresence">
+            <summary>
+            Sets the presence of the current actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Sets the presence of the current actor.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SetPresence.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SetPresence.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SetPresence.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.Register(TAG.Simulator.ObjectModel.Values.IValue)">
+            <summary>
+            Registers a value for the argument.
+            </summary>
+            <param name="Value">Value node</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SetPresence.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.SubscribeTo">
+            <summary>
+            Subscribes to the presence of another entity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SubscribeTo.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Subscribes to the presence of another entity.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SubscribeTo.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SubscribeTo.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.SubscribeTo.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SubscribeTo.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SubscribeTo.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SubscribeTo.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.SubscribeTo.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Activities.UnsubscribeFrom">
+            <summary>
+            Unsubscribes from the presence of another entity.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Unsubscribes from the presence of another entity.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.Execute(Waher.Script.Variables)">
+            <summary>
+            Executes a node.
+            </summary>
+            <param name="Variables">Set of variables for the activity.</param>
+            <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Activities.UnsubscribeFrom.ExportPlantUml(System.IO.StreamWriter,System.Int32,System.Char)">
+            <summary>
+            Exports PlantUML
+            </summary>
+            <param name="Output">Output</param>
+            <param name="Indentation">Number of tabs to indent.</param>
+            <param name="QuoteChar">Quote character.</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActivityObject">
+            <summary>
+            Object used in simulation activities.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.Client">
+            <summary>
+            XMPP Client reference
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.UserName">
+            <summary>
+            User name used in connection
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.InstanceId">
+            <summary>
+            Instance ID
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActivityObject.InstanceIndex">
+            <summary>
+            Instance Index
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActivityObject.Item(System.String)">
+            <summary>
+            Access to extension objects.
+            </summary>
+            <param name="Index">Extension name</param>
+            <returns>Extension object, if found.</returns>
+            <exception cref="T:System.Exception">If no extension with the given name was found.</exception>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActor">
+            <summary>
+            Abstract base class for XMPP actors.
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActor.XmppNamespace">
+            <summary>
+            http://lab.tagroot.io/Schema/ComSim/XMPP.xsd
+            </summary>
+        </member>
+        <member name="F:TAG.Simulator.XMPP.Actors.XmppActor.XmppSchema">
+            <summary>
+            TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for XMPP actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Abstract base class for XMPP actors.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.IsOnline">
+            <summary>
+            If instance is online.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.TrustServer">
+            <summary>
+            If server is to be trusted, regardless of state of certificate.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.Domain">
+            <summary>
+            Domain
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.Host">
+            <summary>
+            Host
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.Client">
+            <summary>
+            XMPP Client
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.CreateInstanceAsync(System.Int32,System.String)">
+            <summary>
+            Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.CreateInstanceObject(System.Int32,System.String)">
+            <summary>
+            Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.InitializeInstance">
+            <summary>
+            Initializes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.StartInstance">
+            <summary>
+            Starts an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.FinalizeInstance">
+            <summary>
+            Finalizes an instance of an actor.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActor.GetInstanceCredentials">
+            <summary>
+            Gets XMPP credentials for the instance.
+            </summary>
+            <returns>XMPP Credentials</returns>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActor.ActivityObject">
+            <summary>
+            Returns the object that will be used by the actor for actions during an activity.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActorBosh">
+            <summary>
+            XMPP Actor connecting to the XMPP network using BOSH (HTTP).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorBosh.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using BOSH (HTTP).
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorBosh.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using BOSH (HTTP).
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorBosh.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorBosh.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorBosh.CreateInstanceObject(System.Int32,System.String)">
+            <summary>
+            Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorBosh.EndpointType">
+            <summary>
+            Type of XRD link representing endpoint.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActorEndpoint">
+            <summary>
+            Abstract base class for XMPP actors with custom endpoint.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for XMPP actors with custom endpoint.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Abstract base class for XMPP actors with custom endpoint.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.EndpointType">
+            <summary>
+            Type of XRD link representing endpoint.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.FindEndpoint(System.Xml.XmlDocument)">
+            <summary>
+            Finds the endpoint from the XRD XML definition.
+            </summary>
+            <param name="Xrd">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.CreateInstanceAsync(System.Int32,System.String)">
+            <summary>
+            Creates an instance of the actor.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorEndpoint.GetInstanceCredentials">
+            <summary>
+            Gets XMPP credentials for the instance.
+            </summary>
+            <returns>XMPP Credentials</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActorTcp">
+            <summary>
+            XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorTcp.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorTcp.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using traditional TCP (c2s).
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorTcp.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorTcp.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorTcp.CreateInstanceObject(System.Int32,System.String)">
+            <summary>
+            Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Actors.XmppActorWebSocket">
+            <summary>
+            XMPP Actor connecting to the XMPP network using web-sockets.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using web-sockets.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            XMPP Actor connecting to the XMPP network using web-sockets.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.CreateInstanceObject(System.Int32,System.String)">
+            <summary>
+            Creates an instance object of the XMPP actor, and initializes it.
+            
+            Note: Parent of newly created actor should point to this node (the creator of the instance object).
+            </summary>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+            <returns>Actor instance.</returns>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Actors.XmppActorWebSocket.EndpointType">
+            <summary>
+            Type of XRD link representing endpoint.
+            </summary>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Events.HandlerNode">
+            <summary>
+            Abstract base class for handler nodes
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for handler nodes
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Event">
+            <summary>
+            Event reference.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Name">
+            <summary>
+            Local element name for the handler
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.HandlerNamespace">
+            <summary>
+            Namespace for the handler
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.EventId">
+            <summary>
+            Event to trigger
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.ActorName">
+            <summary>
+            Variable name of the actor
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Actor">
+            <summary>
+            Actor reference.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Events">
+            <summary>
+            Reference to collection of external events.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.EventArgs">
+            <summary>
+            Variable name for the event arguments
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.Initialize">
+            <summary>
+            Initialized the node before simulation.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.Start">
+            <summary>
+            Starts the node.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.Trigger(TAG.Simulator.ObjectModel.Actors.IActor,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            Method called when an external event has been received.
+            </summary>
+            <param name="Source">Actor receiving the event.</param>
+            <param name="Arguments">Event arguments.</param>
+            <returns>If event was handled</returns>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.HandlerNode.Parameters">
+            <summary>
+            Parameters
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.HandlerNode.RegisterHandlers(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Registers handlers on the XMPP Client.
+            </summary>
+            <param name="Actor">Actor instance reference</param>
+            <param name="Client">XMPP Client</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Events.IqGetHandler">
+            <summary>
+            Custom IQ[type=get] handler.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqGetHandler.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Custom IQ[type=get] handler.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.IqGetHandler.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqGetHandler.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqGetHandler.RegisterHandlers(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Registers handlers on the XMPP Client.
+            </summary>
+            <param name="Actor">Actor instance reference</param>
+            <param name="Client">XMPP Client</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Events.IqSetHandler">
+            <summary>
+            Custom IQ[type=set] handler.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqSetHandler.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Custom IQ[type=set] handler.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.IqSetHandler.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqSetHandler.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.IqSetHandler.RegisterHandlers(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Registers handlers on the XMPP Client.
+            </summary>
+            <param name="Actor">Actor instance reference</param>
+            <param name="Client">XMPP Client</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Events.MessageHandler">
+            <summary>
+            Custom message handler.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.MessageHandler.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Custom message handler.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.MessageHandler.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.MessageHandler.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.MessageHandler.RegisterHandlers(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Registers handlers on the XMPP Client.
+            </summary>
+            <param name="Actor">Actor instance reference</param>
+            <param name="Client">XMPP Client</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Events.PresenceHandler">
+            <summary>
+            Custom message handler.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.PresenceHandler.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Custom message handler.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Events.PresenceHandler.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.PresenceHandler.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Events.PresenceHandler.RegisterHandlers(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Registers handlers on the XMPP Client.
+            </summary>
+            <param name="Actor">Actor instance reference</param>
+            <param name="Client">XMPP Client</param>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.AvatarExtension">
+            <summary>
+            Avatar XMPP extension
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.AvatarExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Avatar XMPP extension
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.AvatarExtension.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.AvatarExtension.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.AvatarExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.IXmppExtension">
+            <summary>
+            Interface for XMPP extensions
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.IXmppExtension.Id">
+            <summary>
+            Optional Extension ID
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.IXmppExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.MucExtension">
+            <summary>
+            Multi-User Chat XMPP extension
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.MucExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Multi-User Chat XMPP extension
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.MucExtension.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.MucExtension.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.MucExtension.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.MucExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.PepExtension">
+            <summary>
+            PEP XMPP extension
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PepExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            PEP XMPP extension
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.PepExtension.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PepExtension.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PepExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.PubSubExtension">
+            <summary>
+            PubSub XMPP extension
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PubSubExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            PubSub XMPP extension
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.PubSubExtension.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PubSubExtension.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PubSubExtension.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.PubSubExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+        <member name="T:TAG.Simulator.XMPP.Extensions.XmppExtension">
+            <summary>
+            Abstract base class for XMPP extensions.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.XmppExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Abstract base class for XMPP extensions.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.XmppExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model,System.Int32,System.String)">
+            <summary>
+            Abstract base class for XMPP extensions.
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <param name="InstanceIndex">Instance index.</param>
+            <param name="InstanceId">ID of instance</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.Id">
+            <summary>
+            ID of actor.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.InstanceId">
+            <summary>
+            ID of actor instance.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.InstanceIndex">
+            <summary>
+            Actor instance index.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Extensions.XmppExtension.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.XmppExtension.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Extensions.XmppExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+    </members>
+</doc>

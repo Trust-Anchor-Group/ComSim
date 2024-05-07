@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TAG.Simulator.XMPP.Legal</name>
+    </assembly>
+    <members>
+        <member name="T:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension">
+            <summary>
+            Legal XMPP extension
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.#ctor(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Legal XMPP extension
+            </summary>
+            <param name="Parent">Parent node</param>
+            <param name="Model">Model in which the node is defined.</param>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.LocalName">
+            <summary>
+            Local name of XML element defining contents of class.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.SchemaResource">
+            <summary>
+            Points to the embedded XML Schema resource defining the semantics of the XML namespace.
+            </summary>
+        </member>
+        <member name="P:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.Namespace">
+            <summary>
+            XML Namespace where the element is defined.
+            </summary>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.Create(TAG.Simulator.ISimulationNode,TAG.Simulator.Model)">
+            <summary>
+            Creates a new instance of the node.
+            </summary>
+            <param name="Parent">Parent node.</param>
+            <param name="Model">Model in which the node is defined.</param>
+            <returns>New instance</returns>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.FromXml(System.Xml.XmlElement)">
+            <summary>
+            Sets properties and attributes of class in accordance with XML definition.
+            </summary>
+            <param name="Definition">XML definition</param>
+        </member>
+        <member name="M:TAG.Simulator.XMPP.Legal.Extensions.LegalExtension.Add(TAG.Simulator.ObjectModel.Actors.IActor,Waher.Networking.XMPP.XmppClient)">
+            <summary>
+            Adds the extension to the client.
+            </summary>
+            <param name="Instance">Actor instance.</param>
+            <param name="Client">XMPP Client</param>
+            <returns>Extension object.</returns>
+        </member>
+    </members>
+</doc>
