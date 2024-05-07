@@ -9,8 +9,8 @@
     <Copyright>Copyright © Trust Anchor Group 2020-2024. All rights reserved.</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.MQTT\TAG.Simulator.MQTT.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>$(ProjectDir)\TAG.Simulator.MQTT.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

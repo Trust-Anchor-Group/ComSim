@@ -11,8 +11,8 @@
     <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator\TAG.Simulator.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>$(ProjectDir)\TAG.Simulator.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

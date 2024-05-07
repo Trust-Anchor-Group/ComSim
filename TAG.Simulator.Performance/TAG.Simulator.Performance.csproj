@@ -10,8 +10,8 @@
     <Copyright>Copyright © Trust Anchor Group 2020-2024. All rights reserved.</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\My Projects\ComSim\TAG.Simulator.Performance\TAG.Simulator.Performance.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>$(ProjectDir)\TAG.Simulator.Performance.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
