@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Waher.Content.Xml" Version="2.2.6" />
-    <PackageReference Include="Waher.Networking" Version="2.2.5" />
-    <PackageReference Include="Waher.Networking.MQTT" Version="2.0.3" />
-    <PackageReference Include="Waher.Script" Version="2.6.7" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.4.3" />
+    <PackageReference Include="Waher.Content.Xml" Version="2.3.0" />
+    <PackageReference Include="Waher.Networking" Version="2.2.6" />
+    <PackageReference Include="Waher.Networking.MQTT" Version="2.0.4" />
+    <PackageReference Include="Waher.Script" Version="2.6.8" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>

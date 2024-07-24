@@ -25,8 +25,8 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
-    <PackageReference Include="Waher.Networking" Version="2.2.5" />
-    <PackageReference Include="Waher.Networking.XMPP.Concentrator" Version="2.1.4" />
+    <PackageReference Include="Waher.Networking" Version="2.2.6" />
+    <PackageReference Include="Waher.Networking.XMPP.Concentrator" Version="2.2.0" />
     <PackageReference Include="Waher.Networking.XMPP.Control" Version="2.0.5" />
     <PackageReference Include="Waher.Networking.XMPP.Provisioning" Version="2.0.8" />
     <PackageReference Include="Waher.Networking.XMPP.Sensor" Version="2.1.5" />
