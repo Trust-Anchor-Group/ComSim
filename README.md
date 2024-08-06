@@ -32,7 +32,8 @@ license agreement including provisions equivalent to this license agreement.
 
 * For **Academic use**. This includes research projects, student projects or classroom projects. Redistribution of artefacts or source code requries attribution to the 
 [original source code repository](https://github.com/Trust-Anchor-Group/ComSim), as well as a license agreement including provisions equivalent to this license agreement. 
-Attribution and reference in published articles is encouraged. If access to other technologies based on IEEE P1451.99 is desired, please [contact Trust Anchor Group AB](#contact).
+Attribution and reference in published articles is encouraged. If access to other technologies based on Neuro-Foundation interfaces is desired, please contact 
+[Trust Anchor Group AB](#contact).
 
 * For **Security analysis**. If you perform any security analysis on the code, to see what security aspects the code might have, all we request of you, is that you 
 maintain the information in a confidential manner, inform us of any findings privately, with sufficient anticipation, before publishing your findings, in accordance 
@@ -120,7 +121,7 @@ Following is a list of extension modules provided in the repository:
 | [TAG.Simulator.Performance](TAG.Simulator.Performance) | Defines simulation extensions for sampling of local performance counters.                                              |
 | [TAG.Simulator.XMLDSIG](TAG.Simulator.XMLDSIG)         | Defines simulation extensions for [XML Digital Signatures (XMLDSIG)](https://www.w3.org/TR/xmldsig-core/).             |
 | [TAG.Simulator.XMPP](TAG.Simulator.XMPP)               | Defines simulation extensions for actors communicating [XMPP](https://xmpp.org/), as well as common XMPP Extensions.   |
-| [TAG.Simulator.XMPP.IoT](TAG.Simulator.XMPP.IoT)       | Defines XMPP extensions for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT).                          |
+| [TAG.Simulator.XMPP.IoT](TAG.Simulator.XMPP.IoT)       | Defines XMPP extensions for [Neuro-Foundation IoT interfaces](https://neuro-foundation.io).                            |
 | [TAG.Simulator.XMPP.Legal](TAG.Simulator.XMPP.Legal)   | Defines simulator XMPP extensions providing support for extensions to XMPP supporting digital IDs and smart contracts. |
 
 ## Script extensions
@@ -149,7 +150,7 @@ Syntax of simulation nodes are defined in XML Schema files. The following table 
 | [ComSimPerformance.xsd](TAG.Simulator.Performance/Schema/ComSimPerformance.xsd) | `http://lab.tagroot.io/Schema/ComSim/Performance.xsd`       | Defines simulation extensions for Performance Counters.                                                                |
 | [ComSimXmlDSig.xsd](TAG.Simulator.XMLDSIG/Schema/ComSimXmlDSig.xsd)             | `http://lab.tagroot.io/Schema/ComSim/XmlDSig.xsd`           | Defines simulation extensions for Digital XML Signatures.                                                              |
 | [ComSimXmpp.xsd](TAG.Simulator.XMPP/Schema/ComSimXmpp.xsd)                      | `http://lab.tagroot.io/Schema/ComSim/XMPP.xsd`              | Defines simulation extensions for actors communicating XMPP.                                                           |
-| [ComSimXmppIoT.xsd](TAG.Simulator.XMPP.IoT/Schema/ComSimXmppIoT.xsd)            | `http://lab.tagroot.io/Schema/ComSim/XMPPIoT.xsd`           | Defines simulator XMPP extensions for [IEEE XMPP IoT interfaces](https://gitlab.com/IEEE-SA/XMPPI/IoT).                |
+| [ComSimXmppIoT.xsd](TAG.Simulator.XMPP.IoT/Schema/ComSimXmppIoT.xsd)            | `http://lab.tagroot.io/Schema/ComSim/XMPPIoT.xsd`           | Defines simulator XMPP extensions for [Neuro-Foundation IoT interfaces](https://neuro-foundation.io).                  |
 | [ComSimXmppLegal.xsd](TAG.Simulator.XMPP.Legal/Schema/ComSimXmppLegal.xsd)      | `http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd`         | Defines simulator XMPP extensions providing support for extensions to XMPP supporting digital IDs and smart contracts. |
 
 ## Contact
