@@ -726,7 +726,7 @@ namespace TAG.Simulator
 			}
 			catch (Exception ex)
 			{
-				Log.Critical(ex);
+				Log.Exception(ex);
 			}
 		}
 

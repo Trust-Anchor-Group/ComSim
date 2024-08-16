@@ -103,7 +103,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 				}
 				catch (Exception ex)
 				{
-					Log.Critical(ex);
+					Log.Exception(ex);
 				}
 			}
 

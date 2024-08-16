@@ -90,7 +90,7 @@ namespace TAG.Simulator.MQ.Tasks
 			}
 			catch (Exception ex)
 			{
-				Log.Critical(ex);
+				Log.Exception(ex);
 			}
 		}
 	}

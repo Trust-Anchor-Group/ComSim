@@ -101,7 +101,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			}
 			catch (Exception ex)
 			{
-				Log.Critical(ex);
+				Log.Exception(ex);
 				return false;
 			}
 		}

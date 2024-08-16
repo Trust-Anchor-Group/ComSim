@@ -20,25 +20,25 @@
     <PackageReference Include="IBMMQDotnetClient" Version="9.3.5.1" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.1" />
-    <PackageReference Include="Waher.Content" Version="2.6.10" />
-    <PackageReference Include="Waher.Content.Xml" Version="2.3.0" />
+    <PackageReference Include="Waher.Content" Version="2.6.11" />
+    <PackageReference Include="Waher.Content.Xml" Version="2.3.1" />
     <PackageReference Include="Waher.Content.Xsl" Version="2.0.4" />
-    <PackageReference Include="Waher.Events" Version="1.1.3" />
-    <PackageReference Include="Waher.Events.Console" Version="1.1.2" />
+    <PackageReference Include="Waher.Events" Version="1.2.0" />
+    <PackageReference Include="Waher.Events.Console" Version="1.1.3" />
     <PackageReference Include="Waher.Events.Files" Version="1.1.5" />
     <PackageReference Include="Waher.Events.Persistence" Version="1.1.0" />
     <PackageReference Include="Waher.Networking" Version="2.2.6" />
     <PackageReference Include="Waher.Networking.DNS" Version="2.0.4" />
     <PackageReference Include="Waher.Networking.MQTT" Version="2.0.4" />
-    <PackageReference Include="Waher.Networking.XMPP" Version="2.1.7" />
+    <PackageReference Include="Waher.Networking.XMPP" Version="3.0.0" />
     <PackageReference Include="Waher.Persistence" Version="1.10.1" />
     <PackageReference Include="Waher.Persistence.Files" Version="1.11.7" />
-    <PackageReference Include="Waher.Persistence.Serialization.Compiled" Version="1.7.8" />
+    <PackageReference Include="Waher.Persistence.Serialization.Compiled" Version="1.7.9" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.1.5" />
     <PackageReference Include="Waher.Runtime.Inventory.Loader" Version="1.0.9" />
-    <PackageReference Include="Waher.Runtime.Settings" Version="1.1.0" />
+    <PackageReference Include="Waher.Runtime.Settings" Version="1.1.1" />
     <PackageReference Include="Waher.Runtime.Timing" Version="1.0.6" />
-    <PackageReference Include="Waher.Script" Version="2.6.8" />
+    <PackageReference Include="Waher.Script" Version="2.6.9" />
     <PackageReference Include="Waher.Script.Content" Version="2.1.5" />
     <PackageReference Include="Waher.Script.Cryptography" Version="2.1.3" />
     <PackageReference Include="Waher.Script.Data" Version="2.0.4" />
@@ -48,7 +48,7 @@
     <PackageReference Include="Waher.Script.Persistence" Version="2.5.0" />
     <PackageReference Include="Waher.Script.Statistics" Version="2.1.1" />
     <PackageReference Include="Waher.Script.Xml" Version="2.2.1" />
-    <PackageReference Include="Waher.Things" Version="1.4.2" />
+    <PackageReference Include="Waher.Things" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
