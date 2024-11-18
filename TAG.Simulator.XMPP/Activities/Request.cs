@@ -125,7 +125,7 @@ namespace TAG.Simulator.XMPP.Activities
 
 			TaskCompletionSource<LinkedListNode<IActivityNode>> T = new TaskCompletionSource<LinkedListNode<IActivityNode>>();
 
-			XmppActor.Client.SendIq(string.Empty, To, Xml, this.type.ToString().ToLower(), (sender, e) =>
+			await XmppActor.Client.SendIq(string.Empty, To, Xml, this.type.ToString().ToLower(), (sender, e) =>
 			{
 				if (e.Ok)
 				{

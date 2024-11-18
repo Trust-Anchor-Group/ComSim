@@ -43,7 +43,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 		/// <param name="Instance">Actor instance.</param>
 		/// <param name="Client">XMPP Client</param>
 		/// <returns>Extension object.</returns>
-		public override Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
+		public override async Task<object> Add(IActor Instance, Waher.Networking.XMPP.XmppClient Client)
 		{
 			ConcentratorServer Extension;
 
@@ -53,11 +53,11 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 			if (!Client.TryGetTag("ThingRegistryClient", out Obj) || !(Obj is ThingRegistryClient ThingRegistryClient))
 				ThingRegistryClient = null;
 
-			Extension = new ConcentratorServer(Client, ThingRegistryClient, ProvisioningClient);
+			Extension = await ConcentratorServer.Create(Client, ThingRegistryClient, ProvisioningClient);
 
 			Client.SetTag("ConcentratorServer", Extension);
 
-			return Task.FromResult<object>(Extension);
+			return Extension;
 		}
 
 	}

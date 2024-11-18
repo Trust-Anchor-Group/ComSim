@@ -127,7 +127,7 @@ namespace TAG.Simulator.XMPP.Activities
 				Body = Content.ToString();
 			}
 
-			XmppActor.Client.SendMessage(this.type, To, Xml, Body, Subject, Language, ThreadId, ParentThreadId);
+			await XmppActor.Client.SendMessage(this.type, To, Xml, Body, Subject, Language, ThreadId, ParentThreadId);
 
 			return null;
 		}

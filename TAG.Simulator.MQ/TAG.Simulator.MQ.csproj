@@ -25,9 +25,9 @@
 
   <ItemGroup>
     <PackageReference Include="IBMMQDotnetClient" Version="9.3.5.1" />
-    <PackageReference Include="Waher.Networking" Version="2.3.0" />
-    <PackageReference Include="Waher.Script" Version="2.7.0" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.6.0" />
+    <PackageReference Include="Waher.Networking" Version="3.0.0" />
+    <PackageReference Include="Waher.Script" Version="2.9.0" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>

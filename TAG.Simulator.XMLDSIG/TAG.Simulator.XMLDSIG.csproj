@@ -25,9 +25,9 @@ https://www.w3.org/TR/xmldsig-core/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.2" />
-    <PackageReference Include="Waher.Content.Xml" Version="2.3.2" />
-    <PackageReference Include="Waher.Script" Version="2.7.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.0" />
+    <PackageReference Include="Waher.Content.Xml" Version="2.3.3" />
+    <PackageReference Include="Waher.Script" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup>

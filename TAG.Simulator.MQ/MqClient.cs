@@ -1,12 +1,13 @@
-﻿using System;
+﻿using IBM.WMQ;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
-using IBM.WMQ;
 using TAG.Simulator.MQ.Tasks;
 using Waher.Events;
+using Waher.Networking;
 using Waher.Networking.Sniffers;
 
 namespace TAG.Simulator.MQ
@@ -14,7 +15,7 @@ namespace TAG.Simulator.MQ
 	/// <summary>
 	/// IBM MQ client
 	/// </summary>
-	public class MqClient : Sniffable, IDisposable
+	public class MqClient : CommunicationLayer, IDisposable
 	{
 		/// <summary>
 		/// Default port for IBM MQ is 1414.
@@ -58,7 +59,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="Sniffers">Sniffers</param>
 		public MqClient(string QueueManager, string Channel, string Cipher, string CipherSuite, string CertificateStore,
 			string Host, int Port, params ISniffer[] Sniffers)
-			: base(Sniffers)
+			: base(false, Sniffers)
 		{
 			this.queueManager = QueueManager;
 			this.channel = Channel;

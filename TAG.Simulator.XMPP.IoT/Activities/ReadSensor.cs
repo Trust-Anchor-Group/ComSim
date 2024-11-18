@@ -125,9 +125,8 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 
 			if (XmppClient.BareJidRegEx.IsMatch(To))
 			{
-				RosterItem Item = SensorClient.Client[To];
-				if (Item is null)
-					throw new Exception("No connection in roster with Bare JID: " + To);
+				RosterItem Item = SensorClient.Client[To]
+					?? throw new Exception("No connection in roster with Bare JID: " + To);
 
 				if (!Item.HasLastPresence || !Item.LastPresence.IsOnline)
 					throw new Exception("Contact not online: " + To);
@@ -139,7 +138,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			Dictionary<string, Field> FieldsAsObject = this.responseType == SensorDataResponseType.Object ? new Dictionary<string, Field>() : null;
 			List<Field> FieldsAsArray = this.responseType == SensorDataResponseType.Array ? new List<Field>() : null;
 			List<ThingError> Errors = new List<ThingError>();
-			SensorDataClientRequest Request = SensorClient.RequestReadout(To, this.nodeReferences, this.fields, this.fieldTypes);
+			SensorDataClientRequest Request = await SensorClient.RequestReadout(To, this.nodeReferences, this.fields, this.fieldTypes);
 
 			Request.OnErrorsReceived += (Sender, NewErrors) =>
 			{

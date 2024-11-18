@@ -104,6 +104,8 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 				this.Model.ExternalEvent(Instance, "CacheCleared",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

@@ -80,7 +80,7 @@ namespace TAG.Simulator.XMPP.Activities
 			if (!(Obj is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
 
-			XmppActor.Client.RequestPresenceSubscription(To);
+			await XmppActor.Client.RequestPresenceSubscription(To);
 
 			return null;
 		}

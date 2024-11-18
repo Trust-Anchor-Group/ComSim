@@ -49,8 +49,8 @@ namespace TAG.Simulator.MQ.Test
 		[TestMethod]
 		public async Task Test_04_Subscribe()
 		{
-			ManualResetEvent Cancel = new ManualResetEvent(false);
-			TaskCompletionSource<bool> Stopped = new TaskCompletionSource<bool>();
+			ManualResetEvent Cancel = new(false);
+			TaskCompletionSource<bool> Stopped = new();
 			int i;
 
 			this.client.SubscribeIncoming("DEV.QUEUE.1", Cancel, Stopped,

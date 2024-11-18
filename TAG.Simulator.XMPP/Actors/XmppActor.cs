@@ -10,6 +10,7 @@ using Waher.Networking.DNS;
 using Waher.Networking.DNS.ResourceRecords;
 using Waher.Networking.Sniffers;
 using Waher.Networking.XMPP;
+using Waher.Networking.XMPP.Events;
 using Waher.Persistence;
 using Waher.Persistence.Filters;
 
@@ -261,7 +262,7 @@ namespace TAG.Simulator.XMPP.Actors
 
 			if (this.alwaysConnected)
 			{
-				this.client.Connect(this.domain);
+				await this.client.Connect(this.domain);
 
 				if (this.xmppCredentials.AllowRegistration)
 				{
@@ -458,10 +459,13 @@ namespace TAG.Simulator.XMPP.Actors
 		/// <summary>
 		/// Finalizes an instance of an actor.
 		/// </summary>
-		public override Task FinalizeInstance()
+		public override async Task FinalizeInstance()
 		{
-			this.client?.Dispose();
-			this.client = null;
+			if (!(this.client is null))
+			{
+				await this.client.DisposeAsync();
+				this.client = null;
+			}
 
 			if (!(this.sniffer is null))
 			{
@@ -470,8 +474,6 @@ namespace TAG.Simulator.XMPP.Actors
 
 				this.sniffer = null;
 			}
-
-			return Task.CompletedTask;
 		}
 
 		/// <summary>

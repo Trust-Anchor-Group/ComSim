@@ -115,9 +115,8 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 
 			if (XmppClient.BareJidRegEx.IsMatch(To))
 			{
-				RosterItem Item = Controller.Client[To];
-				if (Item is null)
-					throw new Exception("No connection in roster with Bare JID: " + To);
+				RosterItem Item = Controller.Client[To]
+					?? throw new Exception("No connection in roster with Bare JID: " + To);
 
 				if (!Item.HasLastPresence || !Item.LastPresence.IsOnline)
 					throw new Exception("Contact not online: " + To);
@@ -126,27 +125,27 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			}
 
 			if (Value is bool b)
-				Controller.Set(To, Parameter, b, this.nodes);
+				await Controller.Set(To, Parameter, b, this.nodes);
 			else if (Value is double d)
-				Controller.Set(To, Parameter, d, this.nodes);
+				await Controller.Set(To, Parameter, d, this.nodes);
 			else if (Value is Enum e)
-				Controller.Set(To, Parameter, e, this.nodes);
+				await Controller.Set(To, Parameter, e, this.nodes);
 			else if (Value is int i)
-				Controller.Set(To, Parameter, i, this.nodes);
+				await Controller.Set(To, Parameter, i, this.nodes);
 			else if (Value is long l)
-				Controller.Set(To, Parameter, l, this.nodes);
+				await Controller.Set(To, Parameter, l, this.nodes);
 			else if (Value is string s)
-				Controller.Set(To, Parameter, s, this.nodes);
+				await Controller.Set(To, Parameter, s, this.nodes);
 			else if (Value is TimeSpan TS)
-				Controller.Set(To, Parameter, TS, this.nodes);
+				await Controller.Set(To, Parameter, TS, this.nodes);
 			else if (Value is System.DateTime TP)
-				Controller.Set(To, Parameter, TP, TP.TimeOfDay == TimeSpan.Zero, this.nodes);
+				await Controller.Set(To, Parameter, TP, TP.TimeOfDay == TimeSpan.Zero, this.nodes);
 			else if (Value is Waher.Content.Duration d2)
-				Controller.Set(To, Parameter, d2, this.nodes);
+				await Controller.Set(To, Parameter, d2, this.nodes);
 			else if (Value is ColorReference cl)
-				Controller.Set(To, Parameter, cl, this.nodes);
+				await Controller.Set(To, Parameter, cl, this.nodes);
 			else if (Value is SKColor cl2)
-				Controller.Set(To, Parameter, new ColorReference(cl2.Red, cl2.Green, cl2.Red, cl2.Alpha), this.nodes);
+				await Controller.Set(To, Parameter, new ColorReference(cl2.Red, cl2.Green, cl2.Red, cl2.Alpha), this.nodes);
 			else
 				throw new Exception("Unsupported control type: " + Value.GetType().FullName);
 

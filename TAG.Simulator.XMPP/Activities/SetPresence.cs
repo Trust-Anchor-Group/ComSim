@@ -103,7 +103,7 @@ namespace TAG.Simulator.XMPP.Activities
 				throw new Exception("Custom content in presence must be XML.");
 
 			XmppActor.Client.SetTag("CutomPresenceXML", Xml);
-			XmppActor.Client.SetPresence(this.availability);
+			await XmppActor.Client.SetPresence(this.availability);
 
 			return null;
 		}

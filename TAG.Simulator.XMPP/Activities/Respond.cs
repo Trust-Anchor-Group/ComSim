@@ -108,7 +108,7 @@ namespace TAG.Simulator.XMPP.Activities
 			else
 				throw new Exception("Responses must be XML, or empty.");
 
-			XmppActor.Client.SendIqResult(RequestId, To, Xml);
+			await XmppActor.Client.SendIqResult(RequestId, To, Xml);
 
 			return null;
 		}
