@@ -31,7 +31,7 @@
     <PackageReference Include="Waher.Networking.XMPP.Provisioning" Version="4.0.0" />
     <PackageReference Include="Waher.Networking.XMPP.Sensor" Version="4.0.0" />
     <PackageReference Include="Waher.Networking.XMPP.Synchronization" Version="4.0.0" />
-    <PackageReference Include="Waher.Things" Version="3.0.0" />
+    <PackageReference Include="Waher.Things" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
