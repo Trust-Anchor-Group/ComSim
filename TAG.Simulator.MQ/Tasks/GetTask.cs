@@ -35,7 +35,7 @@ namespace TAG.Simulator.MQ.Tasks
 		/// Performs work defined by the task.
 		/// </summary>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public override bool DoWork()
+		public override Task<bool> DoWork()
 		{
 			try
 			{
@@ -47,7 +47,7 @@ namespace TAG.Simulator.MQ.Tasks
 				this.result.TrySetException(ex);
 			}
 
-			return false;
+			return Task.FromResult(false);
 		}
 	}
 }

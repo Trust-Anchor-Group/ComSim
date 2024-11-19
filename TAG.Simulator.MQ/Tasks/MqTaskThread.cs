@@ -31,7 +31,7 @@ namespace TAG.Simulator.MQ.Tasks
 
 		public void Execute(MqTask Task)
 		{
-			lock (tasks)
+			lock (this.tasks)
 			{
 				this.tasks.AddLast(Task);
 			}
@@ -54,22 +54,22 @@ namespace TAG.Simulator.MQ.Tasks
 							Working = true;
 							while (true)
 							{
-								lock (tasks)
+								lock (this.tasks)
 								{
-									if (tasks.First is null)
+									if (this.tasks.First is null)
 										break;
 									else
 									{
-										Task = tasks.First.Value;
-										tasks.RemoveFirst();
+										Task = this.tasks.First.Value;
+										this.tasks.RemoveFirst();
 									}
 								}
 
-								if (Task.DoWork())
+								if (Task.DoWork().Result)
 								{
-									lock (tasks)
+									lock (this.tasks)
 									{
-										tasks.AddLast(Task);
+										this.tasks.AddLast(Task);
 									}
 								}
 							}

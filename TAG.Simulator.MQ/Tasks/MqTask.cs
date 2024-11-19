@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace TAG.Simulator.MQ.Tasks
 {
@@ -33,6 +34,6 @@ namespace TAG.Simulator.MQ.Tasks
 		/// Performs work defined by the task.
 		/// </summary>
 		/// <returns>If work should be continued (true), or if it is completed (false).</returns>
-		public abstract bool DoWork();
+		public abstract Task<bool> DoWork();
 	}
 }

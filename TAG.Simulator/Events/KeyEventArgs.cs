@@ -3,13 +3,6 @@
 namespace TAG.Simulator.Events
 {
 	/// <summary>
-	/// Delegate for key event handlers.
-	/// </summary>
-	/// <param name="Sender">Sender of event.</param>
-	/// <param name="e">Event arguments.</param>
-	public delegate void KeyEventHandler(object Sender, KeyEventArgs e);
-
-	/// <summary>
 	/// Event arguments for key events.
 	/// </summary>
 	public class KeyEventArgs : EventArgs

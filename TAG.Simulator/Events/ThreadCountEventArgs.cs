@@ -3,13 +3,6 @@
 namespace TAG.Simulator.Events
 {
 	/// <summary>
-	/// Delegate for thread count event handlers.
-	/// </summary>
-	/// <param name="Sender">Sender of event.</param>
-	/// <param name="e">Event arguments.</param>
-	public delegate void ThreadCountEventHandler(object Sender, ThreadCountEventArgs e);
-
-	/// <summary>
 	/// Event arguments for thread count events.
 	/// </summary>
 	public class ThreadCountEventArgs : EventArgs

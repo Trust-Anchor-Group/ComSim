@@ -319,10 +319,13 @@ namespace TAG.Simulator.MQTT.Actors
 		/// <summary>
 		/// Finalizes an instance of an actor.
 		/// </summary>
-		public override Task FinalizeInstance()
+		public override async Task FinalizeInstance()
 		{
-			this.client?.Dispose();
-			this.client = null;
+			if (!(this.client is null))
+			{
+				await this.client.DisposeAsync();
+				this.client = null;
+			}
 
 			if (!(this.sniffer is null))
 			{
@@ -331,8 +334,6 @@ namespace TAG.Simulator.MQTT.Actors
 
 				this.sniffer = null;
 			}
-
-			return Task.CompletedTask;
 		}
 
 		/// <summary>

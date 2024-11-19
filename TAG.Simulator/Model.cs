@@ -107,7 +107,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Model);
+		public override string LocalName => nameof(this.Model);
 
 		/// <summary>
 		/// Base of simulation time
@@ -624,17 +624,17 @@ namespace TAG.Simulator
 		{
 			this.executing = true;
 
-			Raise(OnInitializing, this);
+			OnInitializing.Raise(this);
 			Console.Out.WriteLine("Initializing...");
 			await this.ForEach(async (Node) => await Node.Initialize(), true);
 
 			try
 			{
-				Raise(OnStarting, this);
+				OnStarting.Raise(this);
 				Console.Out.WriteLine("Starting...");
 				await this.ForEach(async (Node) => await Node.Start(), true);
 
-				Raise(OnRunning, this);
+				OnRunning.Raise(this);
 				Console.Out.WriteLine("Running...");
 
 				Stopwatch Watch = new Stopwatch();
@@ -712,21 +712,9 @@ namespace TAG.Simulator
 				if (EmitDots)
 					Console.Out.WriteLine('.');
 
-				Raise(OnFinalizing, this);
+				OnFinalizing.Raise(this);
 				Console.Out.WriteLine("Finalizing...");
 				await this.ForEach(async (Node) => await Node.Finalize(), true);
-			}
-		}
-
-		internal static void Raise(System.EventHandler Event, object Sender)
-		{
-			try
-			{
-				Event?.Invoke(Sender, new EventArgs());
-			}
-			catch (Exception ex)
-			{
-				Log.Exception(ex);
 			}
 		}
 
@@ -833,7 +821,7 @@ namespace TAG.Simulator
 			if (string.IsNullOrEmpty(Result))
 			{
 				KeyEventArgs e = new KeyEventArgs(KeyName, LookupValue);
-				this.OnGetKey?.Invoke(this, e);
+				this.OnGetKey.Raise(this, e);
 
 				if (string.IsNullOrEmpty(e.Value))
 					throw new Exception("Unable to get value for key " + KeyName);
@@ -853,7 +841,7 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Event raised when the model needs a key from the system.
 		/// </summary>
-		public event KeyEventHandler OnGetKey;
+		public event EventHandler<KeyEventArgs> OnGetKey;
 
 		/// <summary>
 		/// Gets a sniffer, if sniffer output is desired.
@@ -1229,7 +1217,7 @@ namespace TAG.Simulator
 		{
 			ThreadCountEventArgs e = new ThreadCountEventArgs();
 
-			this.OnGetThreadCount?.Invoke(this, e);
+			this.OnGetThreadCount.Raise(this, e);
 			if (!e.Count.HasValue)
 				throw new Exception("Thread Count not available.");
 
@@ -1239,6 +1227,6 @@ namespace TAG.Simulator
 		/// <summary>
 		/// Event raised when the model needs to now the number of threads used by the simulator.
 		/// </summary>
-		public event ThreadCountEventHandler OnGetThreadCount;
+		public event EventHandler<ThreadCountEventArgs> OnGetThreadCount;
 	}
 }

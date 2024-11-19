@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace TAG.Simulator.MQ
 {
-	/// <summary>
-	/// Delegate for MQ Message event handlers or callback methods.
-	/// </summary>
-	/// <param name="Sender">Sender of event.</param>
-	/// <param name="e">Event arguments</param>
-	public delegate Task MqMessageEventHandler(object Sender, MqMessageEventArgs e);
-
 	/// <summary>
 	/// Event arguments for MQ Message events.
 	/// </summary>

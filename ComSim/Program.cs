@@ -67,16 +67,16 @@ namespace ComSim
 	/// </summary>
 	class Program
 	{
-		private static readonly Dictionary<string, Dictionary<string, string>> importedKeys = new();
+		private static readonly Dictionary<string, Dictionary<string, string>> importedKeys = [];
 
 		static int Main(string[] args)
 		{
 			try
 			{
 				StringBuilder CommandLine = new("ComSim.exe");
-				LinkedList<string> Master = new();
-				LinkedList<string> Css = new();
-				LinkedList<string> AssemblyFolders = new();
+				LinkedList<string> Master = [];
+				LinkedList<string> Css = [];
+				LinkedList<string> AssemblyFolders = [];
 				Encoding Encoding = Encoding.UTF8;
 				XmlDocument Model = null;
 				string ProgramDataFolder = null;
@@ -117,7 +117,7 @@ namespace ComSim
 					s = args[i++].ToLower();
 					s = s.ToLower();
 
-					if (s.StartsWith("/"))
+					if (s.StartsWith('/'))
 						s = "-" + s[1..];
 
 					switch (s)
@@ -266,7 +266,7 @@ namespace ComSim
 
 							if (!importedKeys.TryGetValue(KeyName, out Lookup))
 							{
-								Lookup = new Dictionary<string, string>();
+								Lookup = [];
 								importedKeys[KeyName] = Lookup;
 							}
 
@@ -358,7 +358,7 @@ namespace ComSim
 				{
 					if (N is XmlElement E && E.LocalName == "Assemblies")
 					{
-						Dictionary<string, Assembly> Loaded = new();
+						Dictionary<string, Assembly> Loaded = [];
 
 						foreach (Assembly A in AppDomain.CurrentDomain.GetAssemblies())
 							Loaded[A.GetName().Name] = A;
@@ -388,7 +388,7 @@ namespace ComSim
 										FileName = FileName2;
 								}
 
-								LinkedList<string> ToLoad = new();
+								LinkedList<string> ToLoad = [];
 								ToLoad.AddLast(FileName);
 
 								while (!string.IsNullOrEmpty(FileName = ToLoad.First?.Value))
@@ -448,8 +448,8 @@ namespace ComSim
 
 				Console.Out.WriteLine("Validating model.");
 
-				Dictionary<string, XmlSchema> Schemas = new();
-				LinkedList<XmlElement> ToProcess = new();
+				Dictionary<string, XmlSchema> Schemas = [];
+				LinkedList<XmlElement> ToProcess = [];
 				XmlElement Loop;
 				string Last = null;
 

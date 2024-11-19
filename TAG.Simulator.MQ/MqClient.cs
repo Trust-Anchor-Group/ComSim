@@ -296,7 +296,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="QueueName">Queue name.</param>
 		/// <param name="Callback">Method to call when new message has been read.</param>
 		/// <param name="State">State object to pass on to callback method.</param>
-		public void SubscribeIncoming(string QueueName, MqMessageEventHandler Callback, object State)
+		public void SubscribeIncoming(string QueueName, EventHandlerAsync<MqMessageEventArgs> Callback, object State)
 		{
 			this.SubscribeIncoming(QueueName, null, null, Callback, State);
 		}
@@ -308,7 +308,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="Cancel">Cancel event. Set this event object, to cancel subscription.</param>
 		/// <param name="Callback">Method to call when new message has been read.</param>
 		/// <param name="State">State object to pass on to callback method.</param>
-		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, MqMessageEventHandler Callback, object State)
+		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, EventHandlerAsync<MqMessageEventArgs> Callback, object State)
 		{
 			this.SubscribeIncoming(QueueName, Cancel, null, Callback, State);
 		}
@@ -322,7 +322,7 @@ namespace TAG.Simulator.MQ
 		/// <param name="Callback">Method to call when new message has been read.</param>
 		/// <param name="State">State object to pass on to callback method.</param>
 		public void SubscribeIncoming(string QueueName, ManualResetEvent Cancel, TaskCompletionSource<bool> Stopped,
-			MqMessageEventHandler Callback, object State)
+			EventHandlerAsync<MqMessageEventArgs> Callback, object State)
 		{
 			this.Information("Subscribing to messages from " + QueueName);
 			SubscriptionTask Item = new SubscriptionTask(this, QueueName, Cancel, Stopped, Callback, State);
