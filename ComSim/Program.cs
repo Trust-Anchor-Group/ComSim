@@ -641,7 +641,7 @@ namespace ComSim
 				Console.Out.WriteLine("Stopping modules...");
 				await Types.StopAllModules();
 				await DB.Flush();
-				Log.Terminate();
+				await Log.TerminateAsync();
 			}
 		}
 

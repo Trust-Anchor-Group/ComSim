@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Peter Waher</Authors>
+		<TargetFramework>net8.0</TargetFramework>
+		<Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
     <Description>Extension library to the ComSim simulator, providing support for IBM MQ communication.</Description>
@@ -25,9 +25,9 @@
 
   <ItemGroup>
     <PackageReference Include="IBMMQDotnetClient" Version="9.3.5.1" />
-    <PackageReference Include="Waher.Networking" Version="3.0.0" />
-    <PackageReference Include="Waher.Script" Version="2.9.0" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.7.0" />
+    <PackageReference Include="Waher.Networking" Version="4.0.0" />
+    <PackageReference Include="Waher.Script" Version="2.10.0" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.8.0" />
   </ItemGroup>
 
   <ItemGroup>

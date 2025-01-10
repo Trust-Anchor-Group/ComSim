@@ -100,8 +100,10 @@ namespace TAG.Simulator.MQTT.Activities
 
 			if (!(Content is byte[] Bin))
 			{
-				KeyValuePair<byte[], string> P = await InternetContent.EncodeAsync(Content, Encoding.UTF8);
-				Bin = P.Key;
+				ContentResponse Content2 = await InternetContent.EncodeAsync(Content, Encoding.UTF8);
+				Content2.AssertOk();
+
+				Bin = Content2.Encoded;
 			}
 
 			if (!(await this.GetActorObjectAsync(this.actor, Variables) is MqttActivityObject MqttActor))

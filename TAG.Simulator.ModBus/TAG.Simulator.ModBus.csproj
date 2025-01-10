@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Waher.Networking" Version="3.0.0" />
-    <PackageReference Include="Waher.Networking.Modbus" Version="2.0.0" />
+    <PackageReference Include="Waher.Networking" Version="4.0.0" />
+    <PackageReference Include="Waher.Networking.Modbus" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

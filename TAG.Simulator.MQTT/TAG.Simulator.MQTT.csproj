@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Peter Waher</Authors>
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Waher.Content.Xml" Version="2.3.3" />
-    <PackageReference Include="Waher.Networking" Version="3.0.0" />
-    <PackageReference Include="Waher.Networking.MQTT" Version="3.0.0" />
-    <PackageReference Include="Waher.Script" Version="2.9.0" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.7.0" />
+    <PackageReference Include="Waher.Content.Xml" Version="3.0.0" />
+    <PackageReference Include="Waher.Networking" Version="4.0.0" />
+    <PackageReference Include="Waher.Networking.MQTT" Version="3.1.0" />
+    <PackageReference Include="Waher.Script" Version="2.10.0" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.8.0" />
   </ItemGroup>
 
   <ItemGroup>
