@@ -25,10 +25,10 @@
 
   <ItemGroup>
     <PackageReference Include="Waher.Content.Xml" Version="3.0.0" />
-    <PackageReference Include="Waher.Networking" Version="4.0.0" />
+    <PackageReference Include="Waher.Networking" Version="4.1.0" />
     <PackageReference Include="Waher.Networking.MQTT" Version="3.1.0" />
-    <PackageReference Include="Waher.Script" Version="2.10.0" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.8.0" />
+    <PackageReference Include="Waher.Script" Version="2.10.2" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.8.2" />
   </ItemGroup>
 
   <ItemGroup>

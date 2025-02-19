@@ -25,13 +25,13 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="3.116.1" />
-    <PackageReference Include="Waher.Networking" Version="4.0.0" />
-    <PackageReference Include="Waher.Networking.XMPP.Concentrator" Version="4.1.0" />
+    <PackageReference Include="Waher.Networking" Version="4.1.0" />
+    <PackageReference Include="Waher.Networking.XMPP.Concentrator" Version="4.2.0" />
     <PackageReference Include="Waher.Networking.XMPP.Control" Version="4.1.0" />
     <PackageReference Include="Waher.Networking.XMPP.Provisioning" Version="4.1.0" />
-    <PackageReference Include="Waher.Networking.XMPP.Sensor" Version="4.1.0" />
+    <PackageReference Include="Waher.Networking.XMPP.Sensor" Version="4.1.1" />
     <PackageReference Include="Waher.Networking.XMPP.Synchronization" Version="4.1.0" />
-    <PackageReference Include="Waher.Things" Version="3.1.0" />
+    <PackageReference Include="Waher.Things" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
