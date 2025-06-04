@@ -24,10 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IBMMQDotnetClient" Version="9.4.2" />
-    <PackageReference Include="Waher.Networking" Version="4.4.0" />
-    <PackageReference Include="Waher.Script" Version="2.11.1" />
-    <PackageReference Include="Waher.Script.Persistence" Version="2.9.1" />
+    <PackageReference Include="IBMMQDotnetClient" Version="9.4.2.1" />
+    <PackageReference Include="Waher.Networking" Version="4.5.1" />
+    <PackageReference Include="Waher.Script" Version="2.12.0" />
+    <PackageReference Include="Waher.Script.Persistence" Version="2.9.2" />
   </ItemGroup>
 
   <ItemGroup>
