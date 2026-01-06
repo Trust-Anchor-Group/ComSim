@@ -38,7 +38,7 @@
 				Global["User"+IntToStr2(i)]:=
 				{
 					"Jid":"",
-					"LegalId",""
+					"LegalId":""
 				};
 			);
 			]]>
