@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85
 		Examples\Federation.xml = Examples\Federation.xml
 		Examples\GuessANumber.xml = Examples\GuessANumber.xml
 		Examples\HighLoad.xml = Examples\HighLoad.xml
+		Examples\LegalIdentities.xml = Examples\LegalIdentities.xml
 		Examples\ModBusDeviceControl.xml = Examples\ModBusDeviceControl.xml
 		Examples\mq-dev-config.mqsc = Examples\mq-dev-config.mqsc
 		Examples\Performance.ws = Examples\Performance.ws
