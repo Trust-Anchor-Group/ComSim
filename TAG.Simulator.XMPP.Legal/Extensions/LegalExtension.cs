@@ -192,6 +192,42 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 				return Task.CompletedTask;
 			};
 
+			Extension.IdentityReview += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "IdentityReview",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.ClientMessage += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "ClientMessage",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.ContractProposalReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "ContractProposalReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
+			Extension.PetitionClientUrlReceived += (Sender, e) =>
+			{
+				this.Model.ExternalEvent(Instance, "PetitionClientUrlReceived",
+					new KeyValuePair<string, object>("e", e),
+					new KeyValuePair<string, object>("Client", Client));
+
+				return Task.CompletedTask;
+			};
+
 			return Extension;
 		}
 	}
