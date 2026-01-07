@@ -226,7 +226,10 @@
 					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
 					<Conditional>
 						<Condition condition="empty(LegalId)">
-							<LogWarning message="No legal Id found on account." object="User"/>
+							<LogNotice message="Applying for new Legal ID." object="User"/>
+							<legal:ApplyLegalId actor="User" variable="LegalIdObject">
+								<legal:Property name="JID" value="{UserData.Jid}"/>
+							</legal:ApplyLegalId>
 						</Condition>
 						<Otherwise>
 							<Eval>
@@ -234,6 +237,7 @@
 								UserData.LegalId:=LegalId
 								]]>
 							</Eval>
+							<LogInformation message="Existing Legal ID found." object="User"/>
 						</Otherwise>
 					</Conditional>
 				</Condition>
