@@ -271,11 +271,33 @@
 				]]>
 			</Eval>
 			<Conditional>
-				<Condition condition="empty(FromUserData.LegalId) or empty(ToUserData.LegalId)">
-					<Inc counter="UnablePetitionIdentity"/>
+				<Condition condition="empty(FromUserData.LegalId)">
+					<LogWarning message="No sender legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
+				<Condition condition="empty(ToUserData.LegalId)">
+					<LogWarning message="No recipient legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
 				</Condition>
 				<Otherwise>
-					<Inc counter="DoUnablePetitionIdentity"/>
+					<LogNotice message="Sending petition for legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+						<Tag key="ToLegalId" value="{ToUserData.LegalId}"/>
+					</LogNotice>
+					<legal:PetitionIdentity actor="From" legalId="{ToUserData.LegalId}"
+																	variable="PetitionId" purpose="Simulation"/>
+					<LogInformation message="Identity petition sent.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+						<Tag key="ToLegalId" value="{ToUserData.LegalId}"/>
+					</LogInformation>
 				</Otherwise>
 			</Conditional>
 			<Stop/>
