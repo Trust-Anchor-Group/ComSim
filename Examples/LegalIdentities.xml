@@ -38,7 +38,12 @@
 				Global["User"+IntToStr2(i)]:=
 				{
 					"Jid":"SimLegalUser"+Str(i)+"@lab.tagroot.io",
-					"LegalId":""
+					"LegalId":"",
+					"IdPetitionLegalId":"",
+					"IdPetitionId":"",
+					"SignaturePetitionId":"",
+					"SignaturePetitionLegalId":"",
+					"SignaturePetitionContent":null
 				};
 			);
 			
@@ -292,6 +297,12 @@
 					</LogNotice>
 					<legal:PetitionIdentity actor="From" legalId="{ToUserData.LegalId}"
 																	variable="PetitionId" purpose="Simulation"/>
+							<Eval>
+								<![CDATA[
+								FromUserData.IdPetitionId:=PetitionId;
+								FromUserData.IdPetitionLegalId:=ToUserData.LegalId;
+								]]>
+							</Eval>
 					<LogInformation message="Identity petition sent.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
@@ -313,11 +324,46 @@
 				]]>
 			</Eval>
 			<Conditional>
-				<Condition condition="empty(FromUserData.LegalId) or empty(ToUserData.LegalId)">
-					<Inc counter="UnablePetitionSignature"/>
+				<Condition condition="empty(FromUserData.LegalId)">
+					<LogWarning message="No sender legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
+				<Condition condition="empty(ToUserData.LegalId)">
+					<LogWarning message="No recipient legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
 				</Condition>
 				<Otherwise>
-					<Inc counter="DoUnablePetitionSignature"/>
+					<LogNotice message="Sending petition for digital signature.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+						<Tag key="ToLegalId" value="{ToUserData.LegalId}"/>
+					</LogNotice>
+					<Eval>
+						<![CDATA[
+						Content:=Utf8Encode(Str(NewGuid()))
+						]]>
+					</Eval>
+					<legal:PetitionSignature actor="From" legalId="{ToUserData.LegalId}"
+																	 variable="PetitionId" purpose="Simulation"
+																	 content="{Content}"/>
+							<Eval>
+								<![CDATA[
+								FromUserData.SignaturePetitionId:=PetitionId;
+								FromUserData.SignaturePetitionLegalId:=ToUserData.LegalId;
+								FromUserData.SignaturePetitionContent:=Content;
+								]]>
+							</Eval>
+					<LogInformation message="Identity petition sent.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+						<Tag key="ToLegalId" value="{ToUserData.LegalId}"/>
+					</LogInformation>
 				</Otherwise>
 			</Conditional>
 			<Stop/>

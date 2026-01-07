@@ -75,4 +75,18 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="PetitionSignature">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="legalId" type="xs:string" use="required"/>
+					<xs:attribute name="purpose" type="xs:string" use="required"/>
+					<xs:attribute name="content" type="xs:string" use="required"/>
+					<xs:attribute name="variable" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>
