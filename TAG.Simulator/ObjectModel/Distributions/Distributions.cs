@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Distributions
+﻿namespace TAG.Simulator.ObjectModel.Distributions
 {
 	/// <summary>
 	/// Container for distributions.

@@ -1,5 +1,4 @@
-﻿using System;
-using Waher.Networking.MQTT;
+﻿using Waher.Networking.MQTT;
 
 namespace TAG.Simulator.MQTT.Actors
 {

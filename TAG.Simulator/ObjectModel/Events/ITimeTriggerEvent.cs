@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Events
+﻿namespace TAG.Simulator.ObjectModel.Events
 {
 	/// <summary>
 	/// Interface for events that can be triggered by elapsed time.

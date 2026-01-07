@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Waher.Events;
-using Waher.Script;
+﻿using Waher.Events;
 
 namespace TAG.Simulator.ObjectModel.Activities.EventLog
 {

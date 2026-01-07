@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.MQ.Actors
+﻿namespace TAG.Simulator.MQ.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities.

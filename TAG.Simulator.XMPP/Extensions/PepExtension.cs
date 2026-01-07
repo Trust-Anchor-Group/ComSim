@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Networking.XMPP.PEP;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Graphs
+﻿namespace TAG.Simulator.ObjectModel.Graphs
 {
 	/// <summary>
 	/// Combines execution time graphs

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Actors;

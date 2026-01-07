@@ -4,7 +4,6 @@ using System.Xml;
 using TAG.Simulator.ModBus.Actors;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using Waher.Networking.Modbus;
 using Waher.Script;
 
 namespace TAG.Simulator.ModBus.Activities

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Structure
+﻿namespace TAG.Simulator.ObjectModel.Structure
 {
 	/// <summary>
 	/// Container for assemblies.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Events
+﻿namespace TAG.Simulator.ObjectModel.Events
 {
 	/// <summary>
 	/// External Event

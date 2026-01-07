@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.XMPP.Actors
+﻿namespace TAG.Simulator.XMPP.Actors
 {
 	/// <summary>
 	/// XMPP Actor connecting to the XMPP network using web-sockets.

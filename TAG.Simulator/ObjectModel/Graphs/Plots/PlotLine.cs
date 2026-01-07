@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using TAG.Simulator.Statistics;
 
 namespace TAG.Simulator.ObjectModel.Graphs.Plots

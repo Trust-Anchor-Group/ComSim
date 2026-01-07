@@ -1,5 +1,4 @@
-﻿using System;
-using TAG.Simulator.XMPP.Extensions;
+﻿using TAG.Simulator.XMPP.Extensions;
 
 namespace TAG.Simulator.XMPP.IoT.Extensions
 {

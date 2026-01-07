@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator
+﻿namespace TAG.Simulator
 {
 	/// <summary>
 	/// Basic interface for simulator nodes with child nodes.

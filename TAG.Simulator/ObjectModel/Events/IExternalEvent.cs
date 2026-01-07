@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TAG.Simulator.ObjectModel.Actors;
 
 namespace TAG.Simulator.ObjectModel.Events

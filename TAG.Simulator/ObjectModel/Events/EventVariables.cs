@@ -1,5 +1,4 @@
-﻿using System;
-using TAG.Simulator.ObjectModel.Actors;
+﻿using TAG.Simulator.ObjectModel.Actors;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events

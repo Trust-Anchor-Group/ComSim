@@ -1,5 +1,4 @@
-﻿using System;
-using TAG.Simulator.ObjectModel.Activities;
+﻿using TAG.Simulator.ObjectModel.Activities;
 
 namespace TAG.Simulator.XMPP.IoT.Activities
 {

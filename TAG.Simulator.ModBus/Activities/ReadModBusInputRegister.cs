@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Activities;
 using TAG.Simulator.ModBus.Actors;
 using TAG.Simulator.ObjectModel.Activities;
-using Waher.Networking.Modbus;
 using Waher.Script;
 
 namespace TAG.Simulator.ModBus.Registers.Activities

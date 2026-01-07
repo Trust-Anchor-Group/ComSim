@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TAG.Simulator.ObjectModel.Measurements
+﻿namespace TAG.Simulator.ObjectModel.Measurements
 {
 	/// <summary>
 	/// Container for measurement configuration.
