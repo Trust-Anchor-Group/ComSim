@@ -223,11 +223,20 @@
 			</Eval>
 			<Conditional>
 				<Condition condition="empty(UserData.LegalId)">
-					<Inc counter="EmptyLegalId"/>
+					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
+					<Conditional>
+						<Condition condition="empty(LegalId)">
+							<LogWarning message="No legal Id found on account." object="User"/>
+						</Condition>
+						<Otherwise>
+							<Eval>
+								<![CDATA[
+								UserData.LegalId:=LegalId
+								]]>
+							</Eval>
+						</Otherwise>
+					</Conditional>
 				</Condition>
-				<Otherwise>
-					<Inc counter="NonEmptyLegalId"/>
-				</Otherwise>
 			</Conditional>
 			<Stop/>
 		</Activity>

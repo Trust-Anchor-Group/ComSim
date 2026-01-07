@@ -13,6 +13,16 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 	/// </summary>
 	public class LegalExtension : XmppExtension
 	{
+		/// <summary>
+		/// http://lab.tagroot.io/Schema/ComSim/XMPP.xsd
+		/// </summary>
+		public const string XmppNamespace = "http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd";
+
+		/// <summary>
+		/// TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd
+		/// </summary>
+		public const string XmppSchema = "TAG.Simulator.XMPP.Legal.Schema.ComSimXmppLegal.xsd";
+
 		private string componentAddress;
 
 		/// <summary>
@@ -33,12 +43,12 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
 		/// </summary>
-		public override string SchemaResource => "TAG.Simulator.XMPP.Legal.Schema.ComSimXmppLegal.xsd";
+		public override string SchemaResource => XmppSchema;
 
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => "http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd";
+		public override string Namespace => XmppNamespace;
 
 		/// <summary>
 		/// Creates a new instance of the node.

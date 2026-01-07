@@ -61,8 +61,8 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 			string Actor = await this.actor.GetValueAsync(Variables);
 			EventLevel Level = await this.level.GetValueAsync(Variables);
 
-			Log.Event(new Event(this.EventType, null, Object, Actor, EventId, Level,
-				string.Empty, string.Empty));
+			Log.Event(new Event(this.EventType, Message, Object, Actor, EventId, Level,
+				string.Empty, string.Empty, string.Empty));
 
 			return null;
 		}
