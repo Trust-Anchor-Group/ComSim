@@ -398,6 +398,14 @@
 			<xs:element name="Parallel" type="ParallelActivityNode"/>
 			<xs:element name="Sample" type="SampleActivityNode"/>
 			<xs:element name="Group" type="GroupActivityNode"/>
+			<xs:element name="LogDebug" type="LogActivityNode"/>
+			<xs:element name="LogInformation" type="LogActivityNode"/>
+			<xs:element name="LogNotice" type="LogActivityNode"/>
+			<xs:element name="LogWarning" type="LogActivityNode"/>
+			<xs:element name="LogError" type="LogActivityNode"/>
+			<xs:element name="LogCritical" type="LogActivityNode"/>
+			<xs:element name="LogAlert" type="LogActivityNode"/>
+			<xs:element name="LogEmergency" type="LogActivityNode"/>
 			<xs:any namespace="##other"/>
 		</xs:choice>
 	</xs:group>
@@ -422,7 +430,27 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="TriggerActivityNode">
+	<xs:complexType name="LogActivityNode">
+		<xs:complexContent>
+			<xs:extension base="ActivityNode">
+				<xs:attribute name="message" type="xs:string" use="required"/>
+				<xs:attribute name="level" type="EventLevel" use="optional" default="Minor"/>
+				<xs:attribute name="eventId" type="xs:string" use="optional"/>
+				<xs:attribute name="object" type="xs:string" use="optional"/>
+				<xs:attribute name="actor" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="EventLevel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Minor"/>
+			<xs:enumeration value="Medium"/>
+			<xs:enumeration value="Major"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+		<xs:complexType name="TriggerActivityNode">
 		<xs:complexContent>
 			<xs:extension base="ActivityNode">
 				<xs:attribute name="event" type="xs:string" use="required"/>
