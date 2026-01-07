@@ -118,7 +118,14 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 			Output.Write(':');
 			Output.Write(this.GetType().Name);
 			Output.Write('(');
-			Output.Write(this.message.Value);
+
+			Indentation++;
+
+			Output.AppendUmlArgument(Indentation, "Message", this.message.Value, true, QuoteChar);
+
+			foreach (Tag P in this.tags)
+				P.ExportPlantUml(Output, Indentation, QuoteChar);
+
 			Output.WriteLine(");");
 		}
 
