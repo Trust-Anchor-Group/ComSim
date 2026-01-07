@@ -34,9 +34,14 @@
     <PackageReference Include="Waher.Persistence" Version="1.17.0" />
     <PackageReference Include="Waher.Persistence.Files" Version="1.17.0" />
     <PackageReference Include="Waher.Persistence.Serialization.Compiled" Version="1.11.0" />
+    <PackageReference Include="Waher.Runtime.Cache" Version="2.1.2" />
+    <PackageReference Include="Waher.Runtime.Collections" Version="1.0.3" />
+    <PackageReference Include="Waher.Runtime.Counters" Version="2.0.0" />
     <PackageReference Include="Waher.Runtime.Inventory" Version="1.4.5" />
     <PackageReference Include="Waher.Runtime.Inventory.Loader" Version="1.1.0" />
+    <PackageReference Include="Waher.Runtime.IO" Version="1.0.5" />
     <PackageReference Include="Waher.Runtime.Settings" Version="1.2.0" />
+    <PackageReference Include="Waher.Runtime.Threading" Version="2.2.0" />
     <PackageReference Include="Waher.Runtime.Timing" Version="2.1.1" />
     <PackageReference Include="Waher.Script" Version="2.13.5" />
     <PackageReference Include="Waher.Script.Content" Version="2.2.4" />
