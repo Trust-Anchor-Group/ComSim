@@ -5,8 +5,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT5S"
        timeUnit="PT1S"
-       timeCycle="PT10M"
-       duration="PT10M">
+       timeCycle="PT1M"
+       duration="PT1M">
 	<Meta>
 		<Title>Legal Identities</Title>
 		<Introduction>Simulates a collection of XMPP accounts that apply for legal identities.</Introduction>
@@ -37,9 +37,16 @@
 			(
 				Global["User"+IntToStr2(i)]:=
 				{
-					"Jid":"",
+					"Jid":"SimLegalUser"+IntToStr2(i)+"@lab.tagroot.io",
 					"LegalId":""
 				};
+			);
+			
+			GetUserData(Actor):=
+			(
+				Suffix:=Actor.InstanceId.Substring(9);
+				i:=Num(Suffix);
+				Global["User"+Suffix];
 			);
 			]]>
 		</ModelScript>
@@ -123,8 +130,35 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
+		<Uniform id="CheckIdentity" from="0" to="10" N="10"/>
+		<Uniform id="PetitionIdentity" from="0" to="10" N="10"/>
+		<Uniform id="PetitionSignature" from="0" to="10" N="10"/>
 	</Distributions>
 	<Events>
+		<StochasticEvent distribution="CheckIdentity" activity="OnCheckIdentity">
+			<Description>Event to periodically check the status of a user's legal identity.</Description>
+			<ActorReference name="User" exclusive="true">
+				<FromPopulation actor="LegalUser"/>
+			</ActorReference>
+		</StochasticEvent>
+		<StochasticEvent distribution="PetitionIdentity" activity="OnPetitionIdentity">
+			<Description>Event to periodically petition the identity of someone else.</Description>
+			<ActorReference name="From" exclusive="true">
+				<FromPopulation actor="LegalUser"/>
+			</ActorReference>
+			<ActorReference name="To" exclusive="true">
+				<FromPopulation actor="LegalUser"/>
+			</ActorReference>
+		</StochasticEvent>
+		<StochasticEvent distribution="PetitionSignature" activity="OnPetitionSignature">
+			<Description>Event to periodically petition a digital signature of someone else.</Description>
+			<ActorReference name="From" exclusive="true">
+				<FromPopulation actor="LegalUser"/>
+			</ActorReference>
+			<ActorReference name="To" exclusive="true">
+				<FromPopulation actor="LegalUser"/>
+			</ActorReference>
+		</StochasticEvent>
 		<EventHandler id="ContractCreatedEvent" activity="OnContractCreated">
 			<Description>Event raised when a contract has been created for a user.</Description>
 		</EventHandler>
@@ -178,89 +212,137 @@
 		</EventHandler>
 	</Events>
 	<Activities>
+		<Activity id="OnCheckIdentity" logStart="false" logEnd="false">
+			<Description>Executed when a user checks its identity.</Description>
+			<Start/>
+			<Inc counter="CheckIdentity"/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User);
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="empty(UserData.LegalId)">
+					<Inc counter="EmptyLegalId"/>
+				</Condition>
+				<Otherwise>
+					<Inc counter="NonEmptyLegalId"/>
+				</Otherwise>
+			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="OnPetitionIdentity" logStart="false" logEnd="false">
+			<Description>Executed when a user petitions the identity of another user.</Description>
+			<Start/>
+			<Inc counter="PetitionIdentity"/>
+			<Stop/>
+		</Activity>
+		<Activity id="OnPetitionSignature" logStart="false" logEnd="false">
+			<Description>Executed when a user petitions a digital signature of another user.</Description>
+			<Start/>
+			<Inc counter="PetitionSignature"/>
+			<Stop/>
+		</Activity>
 		<Activity id="OnContractCreated" logStart="false" logEnd="false">
 			<Description>Executed when a contract has been created by a user.</Description>
 			<Start/>
+			<Inc counter="ContractCreated"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnContractDeleted" logStart="false" logEnd="false">
 			<Description>Executed when a contract has been deleted.</Description>
 			<Start/>
+			<Inc counter="ContractDeleted"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnContractSigned" logStart="false" logEnd="false">
 			<Description>Executed when a contract has been signed.</Description>
 			<Start/>
+			<Inc counter="ContractSigned"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnContractUpdated" logStart="false" logEnd="false">
 			<Description>Executed when a contract has been updated.</Description>
 			<Start/>
+			<Inc counter="ContractUpdated"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnIdentityUpdated" logStart="false" logEnd="false">
 			<Description>Executed when an identity has been updated.</Description>
 			<Start/>
+			<Inc counter="IdentityUpdated"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForContractReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for a contract has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForContract"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedContractResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for a contract has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForContractResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForIdentityReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for an identity has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForIdentity"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedIdentityResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for an identity has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForIdentityResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForSignatureReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for a signature has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForSignature"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedSignatureResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for a signature has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForSignatureResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForPeerReviewIDReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for a peer review ID has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForPeerReviewID"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedPeerReviewIDResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for a peer review ID has been received.</Description>
 			<Start/>
+			<Inc counter="PetitionForPeerReviewIDResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnIdentityReview" logStart="false" logEnd="false">
 			<Description>Executed when an Identity Application has been automatically reviewed.</Description>
 			<Start/>
+			<Inc counter="IdentityReview"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnClientMessage" logStart="false" logEnd="false">
 			<Description>Executed when a client message has been received.</Description>
 			<Start/>
+			<Inc counter="ClientMessage"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnContractProposalReceived" logStart="false" logEnd="false">
 			<Description>Executed when a new contract proposal has been received.</Description>
 			<Start/>
+			<Inc counter="ContractProposalReceived"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionClientUrlReceived" logStart="false" logEnd="false">
 			<Description>Executed when a Client URL has been sent to the client as part of a petition process. Such an URL must be opened by the client to complete the petition.</Description>
 			<Start/>
+			<Inc counter="PetitionClientUrlReceived"/>
 			<Stop/>
 		</Activity>
 	</Activities>
