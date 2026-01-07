@@ -5,6 +5,7 @@ using System.Xml;
 using TAG.Simulator.Extensions;
 using Waher.Content.Xml;
 using Waher.Events;
+using Waher.Runtime.Collections;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities.EventLog
@@ -14,6 +15,8 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 	/// </summary>
 	public abstract class LogActivityNode : ActivityNode
 	{
+		private ChunkedList<Tag> tags = new ChunkedList<Tag>();
+
 		/// <summary>
 		/// Message attribute
 		/// </summary>
@@ -50,6 +53,15 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 		}
 
 		/// <summary>
+		/// Registers a tag node.
+		/// </summary>
+		/// <param name="Tag">Tag node.</param>
+		public void Register(Tag Tag)
+		{
+			this.tags.Add(Tag);
+		}
+
+		/// <summary>
 		/// Executes a node.
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
@@ -61,9 +73,15 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 			string Object = await this.@object.GetValueAsync(Variables);
 			string Actor = await this.actor.GetValueAsync(Variables);
 			EventLevel Level = await this.level.GetValueAsync(Variables);
+			
+			int i, c = this.tags.Count;
+			KeyValuePair<string,object>[] Tags = new KeyValuePair<string, object>[c];
+
+			for (i = 0; i < c; i++)
+				Tags[i] = await this.tags[i].Evaluate(Variables);
 
 			Log.Event(new Event(this.EventType, Message, Object, Actor, EventId, Level,
-				string.Empty, string.Empty, string.Empty));
+				string.Empty, string.Empty, string.Empty, Tags));
 
 			return null;
 		}

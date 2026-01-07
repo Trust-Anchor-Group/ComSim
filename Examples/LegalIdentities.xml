@@ -226,7 +226,9 @@
 					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
 					<Conditional>
 						<Condition condition="empty(LegalId)">
-							<LogNotice message="Applying for new Legal ID." object="User"/>
+							<LogNotice message="Applying for new Legal ID." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+							</LogNotice>
 							<legal:ApplyLegalId actor="User" variable="LegalIdObject">
 								<legal:Property name="JID" value="{UserData.Jid}"/>
 							</legal:ApplyLegalId>
@@ -236,6 +238,10 @@
 								]]>
 							</Eval>
 							<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
+							<LogNotice message="Waiting for approval." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+								<Tag key="LegalId" value="{UserData.LegalId}"/>
+							</LogNotice>
 						</Condition>
 						<Otherwise>
 							<Eval>
@@ -243,7 +249,10 @@
 								UserData.LegalId:=LegalId
 								]]>
 							</Eval>
-							<LogInformation message="Existing Legal ID found." object="User"/>
+							<LogInformation message="Existing Legal ID found." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+								<Tag key="LegalId" value="{UserData.LegalId}"/>
+							</LogInformation>
 						</Otherwise>
 					</Conditional>
 				</Condition>

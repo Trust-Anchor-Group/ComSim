@@ -433,6 +433,14 @@
 	<xs:complexType name="LogActivityNode">
 		<xs:complexContent>
 			<xs:extension base="ActivityNode">
+				<xs:sequence>
+					<xs:element name="Tag" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="key" type="xs:string" use="required"/>
+							<xs:attribute name="value" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
 				<xs:attribute name="message" type="xs:string" use="required"/>
 				<xs:attribute name="level" type="EventLevel" use="optional" default="Minor"/>
 				<xs:attribute name="eventId" type="xs:string" use="optional"/>
@@ -450,7 +458,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-		<xs:complexType name="TriggerActivityNode">
+	<xs:complexType name="TriggerActivityNode">
 		<xs:complexContent>
 			<xs:extension base="ActivityNode">
 				<xs:attribute name="event" type="xs:string" use="required"/>
