@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using TAG.Simulator.Extensions;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities.Statistics
@@ -55,7 +56,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Statistics
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(":Inc(");
 			Output.Write(this.counter.Value);
 			Output.WriteLine(");");

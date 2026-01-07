@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
 using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.Extensions;
+using TAG.Simulator.MQTT.Actors;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.ObjectModel.Activities.Execution;
 using TAG.Simulator.ObjectModel.Values;
-using TAG.Simulator.MQTT.Actors;
 using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Networking.MQTT;
@@ -125,7 +125,7 @@ namespace TAG.Simulator.MQTT.Activities
 		{
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".Publish");
@@ -133,46 +133,21 @@ namespace TAG.Simulator.MQTT.Activities
 
 			Indentation++;
 
-			this.AppendArgument(Output, Indentation, "Topic", this.topic.Value, true, QuoteChar);
-			this.AppendArgument(Output, Indentation, "QoS", this.qos.ToString(), false, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Topic", this.topic.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "QoS", this.qos.ToString(), false, QuoteChar);
 
 			if (!this.retain)
-				this.AppendArgument(Output, Indentation, "Retain", "true", false, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Retain", "true", false, QuoteChar);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					this.AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
-					this.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
 			}
 
 			Output.WriteLine(");");
-		}
-
-		private void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
-		{
-			this.AppendArgument(Output, Indentation, Name);
-
-			if (Quotes)
-				Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
-			else
-				Eval.ExportPlantUml(Value, Output, Indentation, QuoteChar, false);
-		}
-
-		private void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
-		{
-			this.AppendArgument(Output, Indentation, Name);
-			Value.ExportPlantUml(Output, Indentation, QuoteChar);
-		}
-
-		private void AppendArgument(StreamWriter Output, int Indentation, string Name)
-		{
-			Output.WriteLine();
-			Indent(Output, Indentation);
-
-			Output.Write(Name);
-			Output.Write(": ");
 		}
 
 	}

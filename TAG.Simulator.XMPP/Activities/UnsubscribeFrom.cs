@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
 using Waher.Script;
-using System.IO;
 
 namespace TAG.Simulator.XMPP.Activities
 {
@@ -94,7 +95,7 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".UnsubscribeFrom");
@@ -102,7 +103,7 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			SendMessage.AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
 			
 			Output.WriteLine(");");
 		}

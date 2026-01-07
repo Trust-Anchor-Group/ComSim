@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel.Activities.Execution;
 using Waher.Content;
 using Waher.Content.Xml;
@@ -78,7 +79,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 						if (s.StartsWith("{") && s.EndsWith("}"))
 						{
 							this.AddChild(new Argument(this, this.Model, Attribute.Name,
-								new Expression(s.Substring(1, s.Length - 2).Trim())));
+								new Expression(s[1..^1].Trim())));
 						}
 						else if (CommonTypes.TryParse(s, out double d))
 							this.AddChild(new Argument(this, this.Model, Attribute.Name, d));
@@ -218,7 +219,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write('.');
@@ -230,7 +231,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			foreach (Argument Arg in this.arguments)
 			{
 				Output.WriteLine();
-				Indent(Output, Indentation);
+				Output.Indent(Indentation);
 
 				Output.Write(Arg.Name);
 				Output.Write(": ");

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Script;
@@ -157,14 +158,14 @@ namespace TAG.Simulator.Performance.Values
 			Output.Write(this.category.Replace('"', QuoteChar));
 			Output.WriteLine(',');
 
-			Indent(Output, Indentation + 1);
+			Output.Indent(Indentation + 1);
 
 			if (!string.IsNullOrEmpty(this.instance))
 			{
 				Output.Write(this.instance.Replace('"', QuoteChar));
 				Output.WriteLine(',');
 
-				Indent(Output, Indentation + 1);
+				Output.Indent(Indentation + 1);
 			}
 
 			Output.Write(this.counter.Replace('"', QuoteChar));

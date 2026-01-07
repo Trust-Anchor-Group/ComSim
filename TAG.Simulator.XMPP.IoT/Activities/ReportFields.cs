@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.IoT.Activities.Fields;
 using Waher.Content.Xml;
@@ -112,7 +113,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(":ReportFields(");
 			Output.Write(NewMomentaryValues.Join(NewMomentaryValues.GetThingReferences(this.fields)));
 			Output.WriteLine(");");

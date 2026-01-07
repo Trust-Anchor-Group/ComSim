@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using TAG.Simulator.Extensions;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities.Conditions
@@ -81,7 +82,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Conditions
 
 			if (!First)
 			{
-				Indent(Output, Indentation);
+				Output.Indent(Indentation);
 				Output.WriteLine("endif");
 			}
 		}

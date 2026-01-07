@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel.Activities.Execution;
 using Waher.Content.Xml;
 using Waher.Events;
@@ -116,7 +117,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Conditions
 		/// <param name="QuoteChar">Quote character.</param>
 		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 
 			if (this.Parent is While)
 			{
@@ -126,7 +127,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Conditions
 
 				base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 
-				Indent(Output, Indentation);
+				Output.Indent(Indentation);
 
 				Output.WriteLine("endwhile");
 			}

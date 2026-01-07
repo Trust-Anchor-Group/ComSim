@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.ObjectModel.Activities.Execution;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
@@ -143,7 +143,7 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".SendMessage");
@@ -151,79 +151,30 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
-			AppendArgument(Output, Indentation, "Type", this.type.ToString(), false, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Type", this.type.ToString(), false, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.subject.Value))
-				AppendArgument(Output, Indentation, "Subject", this.subject.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Subject", this.subject.Value, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.language.Value))
-				AppendArgument(Output, Indentation, "Language", this.language.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Language", this.language.Value, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.threadId.Value))
-				AppendArgument(Output, Indentation, "ThreadId", this.threadId.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "ThreadId", this.threadId.Value, true, QuoteChar);
 
 			if (!string.IsNullOrEmpty(this.parentThreadId.Value))
-				AppendArgument(Output, Indentation, "ParentThreadId", this.parentThreadId.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "ParentThreadId", this.parentThreadId.Value, true, QuoteChar);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
-					AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
 			}
 
 			Output.WriteLine(");");
 		}
-
-		/// <summary>
-		/// Appends an argument
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Indentation</param>
-		/// <param name="Name">Name to append</param>
-		/// <param name="Value">Value</param>
-		/// <param name="Quotes">Quotes</param>
-		/// <param name="QuoteChar">Quote character</param>
-		public static void AppendArgument(StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
-		{
-			AppendArgument(Output, Indentation, Name);
-
-			if (Quotes)
-				Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
-			else
-				Eval.ExportPlantUml(Value, Output, Indentation, QuoteChar, false);
-		}
-
-		/// <summary>
-		/// Appends an argument
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Indentation</param>
-		/// <param name="Name">Name to append</param>
-		/// <param name="Value">Value</param>
-		/// <param name="QuoteChar">Quote character</param>
-		public static void AppendArgument(StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
-		{
-			AppendArgument(Output, Indentation, Name);
-			Value.ExportPlantUml(Output, Indentation, QuoteChar);
-		}
-
-		/// <summary>
-		/// Appends an argument
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Indentation</param>
-		/// <param name="Name">Name to append</param>
-		public static void AppendArgument(StreamWriter Output, int Indentation, string Name)
-		{
-			Output.WriteLine();
-			Indent(Output, Indentation);
-
-			Output.Write(Name);
-			Output.Write(": ");
-		}
-
 	}
 }

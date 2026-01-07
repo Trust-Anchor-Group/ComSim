@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
 using Waher.Script;
-using System.IO;
 
 namespace TAG.Simulator.XMPP.Activities
 {
@@ -123,7 +124,7 @@ namespace TAG.Simulator.XMPP.Activities
 		{
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".Respond");
@@ -131,15 +132,15 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			SendMessage.AppendArgument(Output, Indentation, "Id", this.requestId.Value, true, QuoteChar);
-			SendMessage.AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Id", this.requestId.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					SendMessage.AppendArgument(Output, Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
-					SendMessage.AppendArgument(Output, Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
 			}
 
 			Output.WriteLine(");");

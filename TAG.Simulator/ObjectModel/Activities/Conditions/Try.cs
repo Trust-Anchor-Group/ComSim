@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -113,7 +114,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Conditions
 		/// <param name="QuoteChar">Quote character.</param>
 		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 
 			if (!First)
 				Output.Write("else");

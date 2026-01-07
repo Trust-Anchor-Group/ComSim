@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using SkiaSharp;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
@@ -160,7 +161,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(":ControlActuator(");
 			Output.Write(this.controller.Value);
 			Output.Write(", ");

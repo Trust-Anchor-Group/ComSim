@@ -124,17 +124,6 @@ namespace TAG.Simulator.ObjectModel
 		}
 
 		/// <summary>
-		/// Adds indentation to the current row.
-		/// </summary>
-		/// <param name="Output">Output.</param>
-		/// <param name="Indentation">Number of tabs to indent.</param>
-		protected static void Indent(StreamWriter Output, int Indentation)
-		{
-			if (Indentation > 0)
-				Output.Write(new string('\t', Indentation));
-		}
-
-		/// <summary>
 		/// Gets an actor object, given a string representation, possibly containing script, of the actor.
 		/// </summary>
 		/// <param name="Actor">Actor string representation.</param>

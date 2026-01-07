@@ -4,12 +4,13 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using Waher.Content.Xml;
-using Waher.Script;
 using Waher.Networking.XMPP;
 using Waher.Networking.XMPP.Sensor;
+using Waher.Script;
 using Waher.Things;
 using Waher.Things.SensorData;
 
@@ -91,16 +92,12 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 			{
 				if (Node is NodeReference NodeRef)
 				{
-					if (Nodes is null)
-						Nodes = new List<ThingReference>();
-
+					Nodes ??= new List<ThingReference>();
 					Nodes.Add(NodeRef.ThingReference);
 				}
 				else if (Node is FieldReference FieldRef)
 				{
-					if (Fields is null)
-						Fields = new List<string>();
-
+					Fields ??= new List<string>();
 					Fields.Add(FieldRef.Name);
 				}
 				else if (Node is FieldType FieldType)
@@ -216,7 +213,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 		{
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".ReadSensorData");
@@ -224,7 +221,7 @@ namespace TAG.Simulator.XMPP.IoT.Activities
 
 			Indentation++;
 
-			XMPP.Activities.SendMessage.AppendArgument(Output, Indentation, "To", this.to.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
 
 			Output.WriteLine(");");
 		}

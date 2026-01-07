@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
@@ -154,7 +155,7 @@ namespace TAG.Simulator.XMLDSIG.Activities
 					this.rootName = this.value?.LocalName;
 			}
 
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write(":Verify(");
 			Output.Write(this.rootName);
 			Output.WriteLine(");");

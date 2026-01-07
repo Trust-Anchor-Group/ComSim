@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Activities.Execution
@@ -110,7 +111,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 				{
 					if (Delimiters)
 					{
-						Indent(Output, Indentation);
+						Output.Indent(Indentation);
 						Output.Write(':');
 					}
 

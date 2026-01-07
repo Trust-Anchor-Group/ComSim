@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -70,7 +71,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.Write("partition \"");
 			Output.Write(this.title);
 			Output.WriteLine("\" {");
@@ -85,7 +86,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			}
 
 			Indentation--;
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 			Output.WriteLine("}");
 		}
 

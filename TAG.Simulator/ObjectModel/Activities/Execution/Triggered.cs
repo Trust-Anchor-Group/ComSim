@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel.Events;
 using Waher.Content.Xml;
 using Waher.Script;
@@ -102,7 +103,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 		/// <param name="QuoteChar">Quote character.</param>
 		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 
 			if (First)
 				Output.WriteLine("split");
@@ -110,7 +111,7 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 				Output.WriteLine("split again");
 
 			Indentation++;
-			Indent(Output, Indentation);
+			Output.Indent(Indentation);
 
 			Output.Write("#FireBrick:");
 			Output.Write(this.@event);
