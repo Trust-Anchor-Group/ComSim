@@ -20,7 +20,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 	/// </summary>
 	public class ApplyLegalId : ActivityNode
 	{
-		private ChunkedList<Property> properties = new ChunkedList<Property>();
+		private readonly ChunkedList<Property> properties = new ChunkedList<Property>();
 		private StringAttribute actor;
 		private StringAttribute variable;
 

@@ -15,7 +15,7 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 	/// </summary>
 	public abstract class LogActivityNode : ActivityNode
 	{
-		private ChunkedList<Tag> tags = new ChunkedList<Tag>();
+		private readonly ChunkedList<Tag> tags = new ChunkedList<Tag>();
 
 		/// <summary>
 		/// Message attribute
@@ -103,7 +103,7 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 			this.@object = new StringAttribute(XML.Attribute(Definition, "object"));
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>

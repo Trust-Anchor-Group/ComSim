@@ -106,9 +106,8 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// </summary>
 		/// <param name="Output">Output</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		/// <param name="First">If the condition is the first condition.</param>
 		/// <param name="QuoteChar">Quote character.</param>
-		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Output.AppendUmlArgument(Indentation, this.name.Value, this.value.Value, true, QuoteChar);
 		}

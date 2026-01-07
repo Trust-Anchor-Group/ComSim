@@ -9,8 +9,8 @@ namespace TAG.Simulator.MQ.Tasks
 	/// </summary>
 	internal static class MqTasks
 	{
-		private static readonly ManualResetEvent terminating = new ManualResetEvent(false);
-		private static readonly LinkedList<MqTaskThread> threads = new LinkedList<MqTaskThread>();
+		private static readonly ManualResetEvent terminating = new(false);
+		private static readonly LinkedList<MqTaskThread> threads = new();
 		private static bool terminated = false;
 
 		static MqTasks()
@@ -42,9 +42,7 @@ namespace TAG.Simulator.MQ.Tasks
 				}
 			}
 
-			if (T is null)
-				T = new MqTaskThread(terminating);
-
+			T ??= new MqTaskThread(terminating);
 			T.Execute(Item);
 		}
 
