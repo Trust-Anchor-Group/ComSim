@@ -10,3 +10,5 @@ call RunSimulation ContentType
 call RunSimulation Distributions
 call RunSimulation RequestResponse
 call RunSimulation XmppDeviceControl
+call RunSimulation ModBusDeviceControl
+call RunSimulation LegalIdentities
