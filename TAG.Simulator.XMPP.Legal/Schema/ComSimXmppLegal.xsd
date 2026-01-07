@@ -51,4 +51,15 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="ReadyForApproval">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+					<xs:attribute name="legalId" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

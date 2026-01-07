@@ -10,26 +10,24 @@ using TAG.Simulator.XMPP.Actors;
 using TAG.Simulator.XMPP.Legal.Extensions;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP.Contracts;
-using Waher.Runtime.Collections;
 using Waher.Script;
 
 namespace TAG.Simulator.XMPP.Legal.Activities
 {
 	/// <summary>
-	/// Applies for a new Legal ID
+	/// Flags an identity as ready for approval.
 	/// </summary>
-	public class ApplyLegalId : ActivityNode
+	public class ReadyForApproval : ActivityNode
 	{
-		private ChunkedList<Property> properties = new ChunkedList<Property>();
 		private StringAttribute actor;
-		private StringAttribute variable;
+		private StringAttribute legalId;
 
 		/// <summary>
-		/// Checks a user's identity.
+		/// Flags an identity as ready for approval.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public ApplyLegalId(ISimulationNode Parent, Model Model)
+		public ReadyForApproval(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -37,7 +35,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(ApplyLegalId);
+		public override string LocalName => nameof(ReadyForApproval);
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
@@ -57,7 +55,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ApplyLegalId(Parent, Model);
+			return new ReadyForApproval(Parent, Model);
 		}
 
 		/// <summary>
@@ -67,18 +65,9 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		public override Task FromXml(XmlElement Definition)
 		{
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
-			this.variable = new StringAttribute(XML.Attribute(Definition, "variable"));
+			this.legalId = new StringAttribute(XML.Attribute(Definition, "legalId"));
 
 			return base.FromXml(Definition);
-		}
-
-		/// <summary>
-		/// Registers a property node.
-		/// </summary>
-		/// <param name="Property">Property node.</param>
-		public void Register(Property Property)
-		{
-			this.properties.Add(Property);
 		}
 
 		/// <summary>
@@ -88,7 +77,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string Variable = await this.variable.GetValueAsync(Variables);
+			string LegalId = await this.legalId.GetValueAsync(Variables);
 
 			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
@@ -96,14 +85,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			if (!XmppActor.Client.TryGetExtension(out ContractsClient Contracts))
 				throw new Exception("Actor does not have a registered legal extension.");
 
-			int i, c = this.properties.Count;
-			Waher.Networking.XMPP.Contracts.Property[] Properties = new Waher.Networking.XMPP.Contracts.Property[c];
-
-			for (i = 0; i < c; i++)
-				Properties[i] = await this.properties[i].Evaluate(Variables);
-
-			LegalIdentity Id = await Contracts.ApplyAsync(Properties);
-			Variables[Variable] = Id;
+			await Contracts.ReadyForApprovalAsync(LegalId);
 
 			return null;
 		}
@@ -121,13 +103,12 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
-			Output.Write(".ApplyLegalId");
+			Output.Write(".ReadyForApproval");
 			Output.Write("(");
 
 			Indentation++;
 
-			foreach (Property P in this.properties)
-				P.ExportPlantUml(Output, Indentation, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "LegalId", this.legalId.Value, true, QuoteChar);
 
 			Output.WriteLine(");");
 		}

@@ -130,9 +130,9 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
-		<Uniform id="CheckIdentity" from="0" to="10" N="10"/>
-		<Uniform id="PetitionIdentity" from="0" to="10" N="10"/>
-		<Uniform id="PetitionSignature" from="0" to="10" N="10"/>
+		<Uniform id="CheckIdentity" from="0" to="10" N="5"/>
+		<Uniform id="PetitionIdentity" from="0" to="10" N="5"/>
+		<Uniform id="PetitionSignature" from="0" to="10" N="5"/>
 	</Distributions>
 	<Events>
 		<StochasticEvent distribution="CheckIdentity" activity="OnCheckIdentity">
@@ -230,6 +230,12 @@
 							<legal:ApplyLegalId actor="User" variable="LegalIdObject">
 								<legal:Property name="JID" value="{UserData.Jid}"/>
 							</legal:ApplyLegalId>
+							<Eval>
+								<![CDATA[
+								UserData.LegalId:=LegalIdObject.Id
+								]]>
+							</Eval>
+							<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
 						</Condition>
 						<Otherwise>
 							<Eval>
