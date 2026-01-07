@@ -235,12 +235,40 @@
 			<Description>Executed when a user petitions the identity of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionIdentity"/>
+			<Eval>
+				<![CDATA[
+				FromUserData:=GetUserData(From);
+				ToUserData:=GetUserData(To);
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="empty(FromUserData.LegalId) or empty(ToUserData.LegalId)">
+					<Inc counter="UnablePetitionIdentity"/>
+				</Condition>
+				<Otherwise>
+					<Inc counter="DoUnablePetitionIdentity"/>
+				</Otherwise>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionSignature" logStart="false" logEnd="false">
 			<Description>Executed when a user petitions a digital signature of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionSignature"/>
+			<Eval>
+				<![CDATA[
+				FromUserData:=GetUserData(From);
+				ToUserData:=GetUserData(To);
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="empty(FromUserData.LegalId) or empty(ToUserData.LegalId)">
+					<Inc counter="UnablePetitionSignature"/>
+				</Condition>
+				<Otherwise>
+					<Inc counter="DoUnablePetitionSignature"/>
+				</Otherwise>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="OnContractCreated" logStart="false" logEnd="false">
