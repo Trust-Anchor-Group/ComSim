@@ -39,6 +39,7 @@
 				{
 					"Jid":"SimLegalUser"+Str(i)+"@lab.tagroot.io",
 					"LegalId":"",
+					"LegalIdApproved":false,
 					"IdPetitionLegalId":"",
 					"IdPetitionId":"",
 					"SignaturePetitionId":"",
@@ -149,7 +150,7 @@
 	</Events>
 	<Activities>
 		<Activity id="OnCheckIdentity" logStart="false" logEnd="false">
-			<Description>Executed when a user checks its identity.</Description>
+			<Description>Executed stochastically when a user checks its identity.</Description>
 			<Start/>
 			<Inc counter="CheckIdentity"/>
 			<Eval>
@@ -157,6 +158,9 @@
 				UserData:=GetUserData(User)
 				]]>
 			</Eval>
+			<LogInformation message="Checking legal identity.">
+				<Tag key="JID" value="{UserData.Jid}"/>
+			</LogInformation>
 			<Conditional>
 				<Condition condition="empty(UserData.LegalId)">
 					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
@@ -170,7 +174,8 @@
 							</legal:ApplyLegalId>
 							<Eval>
 								<![CDATA[
-								UserData.LegalId:=LegalIdObject.Id
+								UserData.LegalId:=LegalIdObject.Id;
+								UserData.LegalIdApproved:=false
 								]]>
 							</Eval>
 							<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
@@ -182,7 +187,8 @@
 						<Otherwise>
 							<Eval>
 								<![CDATA[
-								UserData.LegalId:=LegalId
+								UserData.LegalId:=LegalId;
+								UserData.LegalIdApproved:=true
 								]]>
 							</Eval>
 							<LogInformation message="Existing Legal ID found." object="User">
@@ -196,7 +202,7 @@
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionIdentity" logStart="false" logEnd="false">
-			<Description>Executed when a user petitions the identity of another user.</Description>
+			<Description>Executed stochastically when a user petitions the identity of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionIdentity"/>
 			<Eval>
@@ -205,6 +211,10 @@
 				ToUserData:=GetUserData(To)
 				]]>
 			</Eval>
+			<LogInformation message="Petitioning legal identity.">
+				<Tag key="FromJid" value="{FromUserData.Jid}"/>
+				<Tag key="ToJid" value="{ToUserData.Jid}"/>
+			</LogInformation>
 			<Conditional>
 				<Condition condition="empty(FromUserData.LegalId)">
 					<LogWarning message="No sender legal identity.">
@@ -212,8 +222,20 @@
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
+				<Condition condition="!FromUserData.LegalIdApproved">
+					<LogWarning message="Sender legal identity not approved.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
 				<Condition condition="empty(ToUserData.LegalId)">
 					<LogWarning message="No recipient legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
+				<Condition condition="!ToUserData.LegalIdApproved">
+					<LogWarning message="Recipient legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
@@ -227,12 +249,12 @@
 					</LogNotice>
 					<legal:PetitionIdentity actor="From" legalId="{ToUserData.LegalId}"
 																	variable="PetitionId" purpose="Simulation"/>
-							<Eval>
-								<![CDATA[
-								FromUserData.IdPetitionId:=PetitionId;
-								FromUserData.IdPetitionLegalId:=ToUserData.LegalId;
-								]]>
-							</Eval>
+					<Eval>
+						<![CDATA[
+						FromUserData.IdPetitionId:=PetitionId;
+						FromUserData.IdPetitionLegalId:=ToUserData.LegalId;
+						]]>
+					</Eval>
 					<LogInformation message="Identity petition sent.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
@@ -244,7 +266,7 @@
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionSignature" logStart="false" logEnd="false">
-			<Description>Executed when a user petitions a digital signature of another user.</Description>
+			<Description>Executed stochastically when a user petitions a digital signature of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionSignature"/>
 			<Eval>
@@ -253,6 +275,10 @@
 				ToUserData:=GetUserData(To)
 				]]>
 			</Eval>
+			<LogInformation message="Petitioning digital signature.">
+				<Tag key="FromJid" value="{FromUserData.Jid}"/>
+				<Tag key="ToJid" value="{ToUserData.Jid}"/>
+			</LogInformation>
 			<Conditional>
 				<Condition condition="empty(FromUserData.LegalId)">
 					<LogWarning message="No sender legal identity.">
@@ -260,8 +286,20 @@
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
+				<Condition condition="!FromUserData.LegalIdApproved">
+					<LogWarning message="Sender legal identity not approved.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
 				<Condition condition="empty(ToUserData.LegalId)">
 					<LogWarning message="No recipient legal identity.">
+						<Tag key="FromJid" value="{FromUserData.Jid}"/>
+						<Tag key="ToJid" value="{ToUserData.Jid}"/>
+					</LogWarning>
+				</Condition>
+				<Condition condition="!ToUserData.LegalIdApproved">
+					<LogWarning message="Recipient legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
@@ -281,13 +319,13 @@
 					<legal:PetitionSignature actor="From" legalId="{ToUserData.LegalId}"
 																	 variable="PetitionId" purpose="Simulation"
 																	 content="{Content}"/>
-							<Eval>
-								<![CDATA[
-								FromUserData.SignaturePetitionId:=PetitionId;
-								FromUserData.SignaturePetitionLegalId:=ToUserData.LegalId;
-								FromUserData.SignaturePetitionContent:=Content;
-								]]>
-							</Eval>
+					<Eval>
+						<![CDATA[
+						FromUserData.SignaturePetitionId:=PetitionId;
+						FromUserData.SignaturePetitionLegalId:=ToUserData.LegalId;
+						FromUserData.SignaturePetitionContent:=Content;
+						]]>
+					</Eval>
 					<LogInformation message="Identity petition sent.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="FromLegalId" value="{FromUserData.LegalId}"/>
@@ -302,6 +340,25 @@
 			<Description>Executed when an identity has been updated.</Description>
 			<Start/>
 			<Inc counter="IdentityUpdated"/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User)
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="e.Identity.Id=UserData.LegalId">
+					<LogInformation message="Legal Identity Updated.">
+						<Tag key="JID" value="{UserData.Jid}"/>
+						<Tag key="LegalId" value="{e.Identity.Id}"/>
+						<Tag key="State" value="{e.Identity.State}"/>
+					</LogInformation>
+					<Eval>
+						<![CDATA[
+						UserData.LegalIdApproved:=Str(e.Identity.State)="Approved"
+						]]>
+					</Eval>
+				</Condition>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForIdentityReceived" logStart="false" logEnd="false">
