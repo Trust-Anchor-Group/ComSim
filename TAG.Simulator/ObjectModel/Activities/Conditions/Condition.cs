@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Activities.Execution;
 using Waher.Content.Xml;
 using Waher.Events;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Conditions
 {
 	/// <summary>
 	/// Represents a condition.

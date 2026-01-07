@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
 	/// Conditional execution in an activity, based on external events.
@@ -82,7 +82,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 				Tasks[c] = this.timeout.GetTask();
 
 			Task Result = await Task.WhenAny(Tasks);
-			i = Array.IndexOf<Task>(Tasks, Result);
+			i = Array.IndexOf(Tasks, Result);
 
 			if (i < 0)
 				throw new Exception("Unexpected error.");

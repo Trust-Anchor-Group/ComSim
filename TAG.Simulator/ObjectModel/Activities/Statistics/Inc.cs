@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Statistics
 {
 	/// <summary>
-	/// Represents a thread in parallel execution.
+	/// Increments a counter.
 	/// </summary>
-	public class Thread : ActivityNode
+	public class Inc : CounterActivityNode
 	{
 		/// <summary>
-		/// Represents a thread in parallel execution.
+		/// Increments a counter.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Thread(ISimulationNode Parent, Model Model)
+		public Inc(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -23,7 +24,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Thread);
+		public override string LocalName => nameof(Inc);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -33,7 +34,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Thread(Parent, Model);
+			return new Inc(Parent, Model);
 		}
 
 		/// <summary>
@@ -43,9 +44,22 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			await Activity.ExecuteActivity(Variables, this.FirstNode);
+			this.Model.IncrementCounter(await this.GetCounterAsync(Variables));
 			return null;
 		}
 
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Output">Output</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		/// <param name="QuoteChar">Quote character.</param>
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
+		{
+			Indent(Output, Indentation);
+			Output.Write(":Inc(");
+			Output.Write(this.counter.Value);
+			Output.WriteLine(");");
+		}
 	}
 }

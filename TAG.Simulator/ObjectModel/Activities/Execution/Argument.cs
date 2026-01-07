@@ -4,7 +4,7 @@ using System.Xml;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
 	/// Defines an argument in an action.

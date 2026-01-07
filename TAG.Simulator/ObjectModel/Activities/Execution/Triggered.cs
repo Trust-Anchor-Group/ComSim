@@ -2,29 +2,40 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
+using TAG.Simulator.ObjectModel.Events;
+using Waher.Content.Xml;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
-	/// Represents a condition that is always true.
+	/// Waits for an event to be triggered
 	/// </summary>
-	public class Otherwise : ActivityNode, IConditionNode
+	public class Triggered : ActivityNode, ITriggerNode
 	{
+		private string @event;
+		private IEvent eventRef;
+
 		/// <summary>
-		/// Represents a condition that is always true.
+		/// Waits for an event to be triggered
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Otherwise(ISimulationNode Parent, Model Model)
+		public Triggered(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
+		/// Condition string
+		/// </summary>
+		public string Event => this.@event;
+
+		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Otherwise);
+		public override string LocalName => nameof(Triggered);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -34,7 +45,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Otherwise(Parent, Model);
+			return new Triggered(Parent, Model);
+		}
+
+		/// <summary>
+		/// Sets properties and attributes of class in accordance with XML definition.
+		/// </summary>
+		/// <param name="Definition">XML definition</param>
+		public override Task FromXml(XmlElement Definition)
+		{
+			this.@event = XML.Attribute(Definition, "event");
+
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>
@@ -42,8 +64,11 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		public override Task Initialize()
 		{
-			if (this.Parent is Conditional Conditional)
-				Conditional.Register(this);
+			if (this.Parent is Wait Wait)
+				Wait.Register(this);
+
+			if (!this.Model.TryGetEvent(this.@event, out this.eventRef))
+				throw new Exception("Event " + this.@event + " not found.");
 
 			return base.Initialize();
 		}
@@ -60,13 +85,12 @@ namespace TAG.Simulator.ObjectModel.Activities
 		}
 
 		/// <summary>
-		/// If the node condition is true.
+		/// Gets a task object.
 		/// </summary>
-		/// <param name="Variables">Set of variables for the activity.</param>
-		/// <returns>If embedded nodes are to be executed.</returns>
-		public Task<bool> IsTrue(Variables Variables)
+		/// <returns>Task object signalling when trigger is activated.</returns>
+		public Task GetTask()
 		{
-			return Task.FromResult<bool>(true);
+			return this.eventRef.GetTrigger();
 		}
 
 		/// <summary>
@@ -79,7 +103,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.WriteLine("else (otherwise)");
+
+			if (First)
+				Output.WriteLine("split");
+			else
+				Output.WriteLine("split again");
+
+			Indentation++;
+			Indent(Output, Indentation);
+
+			Output.Write("#FireBrick:");
+			Output.Write(this.@event);
+			Output.WriteLine("<");
 
 			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 		}

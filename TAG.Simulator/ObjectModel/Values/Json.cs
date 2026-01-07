@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using TAG.Simulator.ObjectModel.Activities.Execution;
 using Waher.Content;
 using Waher.Script;
 
@@ -70,7 +71,7 @@ namespace TAG.Simulator.ObjectModel.Values
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Activities.Eval.ExportPlantUml("JSON", Output, Indentation, QuoteChar, false);
+			Eval.ExportPlantUml("JSON", Output, Indentation, QuoteChar, false);
 		}
 	}
 }

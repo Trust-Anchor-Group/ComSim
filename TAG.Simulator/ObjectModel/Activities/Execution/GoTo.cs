@@ -4,27 +4,34 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
-	/// Increments a counter.
+	/// Jumps to another node in the activity.
 	/// </summary>
-	public class Inc : CounterActivityNode
+	public class GoTo : ReferenceActivityNode 
 	{
+		private LinkedListNode<IActivityNode> node;
+
 		/// <summary>
-		/// Increments a counter.
+		/// Jumps to another node in the activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Inc(ISimulationNode Parent, Model Model)
+		public GoTo(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
+		/// Referenced node
+		/// </summary>
+		public LinkedListNode<IActivityNode> Node => this.node;
+
+		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Inc);
+		public override string LocalName => nameof(GoTo);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -34,7 +41,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Inc(Parent, Model);
+			return new GoTo(Parent, Model);
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
+			if (!this.Model.TryGetActivityNode(this.Reference, out this.node))
+				throw new Exception("Activity node not found: " + this.Reference);
+
+			return base.Start();
 		}
 
 		/// <summary>
@@ -42,10 +60,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			this.Model.IncrementCounter(await this.GetCounterAsync(Variables));
-			return null;
+			return Task.FromResult(this.node);
 		}
 
 		/// <summary>
@@ -57,9 +74,12 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.Write(":Inc(");
-			Output.Write(this.counter.Value);
-			Output.WriteLine(");");
+			Output.Write('(');
+			Output.Write(this.Reference);
+			Output.WriteLine(')');
+
+			Indent(Output, Indentation);
+			Output.WriteLine("detach");
 		}
 	}
 }

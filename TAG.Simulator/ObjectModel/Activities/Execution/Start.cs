@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
 	/// Represents the starting point of the activity.

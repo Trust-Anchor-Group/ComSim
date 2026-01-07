@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Conditions
 {
 	/// <summary>
 	/// Interface for elements taking <see cref="Condition"/> nodes.

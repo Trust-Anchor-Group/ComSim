@@ -3,38 +3,43 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Content;
+using TAG.Simulator.ObjectModel.Values;
 using Waher.Content.Xml;
 using Waher.Script;
+using Waher.Script.Objects;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Statistics
 {
 	/// <summary>
-	/// Represents a delay in an activity.
+	/// Sets a variable value when an event is triggered.
 	/// </summary>
-	public class Delay : ActivityNode
+	public class Sample : ActivityNode, IValueRecipient
 	{
-		private Duration duration;
+		private IValue value = null;
+		private StringAttribute name;
 
 		/// <summary>
-		/// Represents a delay in an activity.
+		/// Sets a variable value when an event is triggered.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Delay(ISimulationNode Parent, Model Model)
+		public Sample(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// Duration
-		/// </summary>
-		public Duration Duration => this.duration;
-
-		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Delay);
+		public override string LocalName => nameof(Sample);
+
+		/// <summary>
+		/// Name of variable within the scope of the event.
+		/// </summary>
+		public Task<string> GetNameAsync(Variables Variables)
+		{
+			return this.name.GetValueAsync(Variables);
+		}
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -44,7 +49,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Delay(Parent, Model);
+			return new Sample(Parent, Model);
 		}
 
 		/// <summary>
@@ -53,9 +58,21 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.duration = XML.Attribute(Definition, "duration", Duration.Zero);
+			this.name = new StringAttribute(XML.Attribute(Definition, "name"));
 
-			return Task.CompletedTask;
+			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Registers a value for the argument.
+		/// </summary>
+		/// <param name="Value">Value node</param>
+		public void Register(IValue Value)
+		{
+			if (this.value is null)
+				this.value = Value;
+			else
+				throw new Exception("Sample node already has a value defined.");
 		}
 
 		/// <summary>
@@ -65,12 +82,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			DateTime Now = DateTime.Now;
-			DateTime TP = Now + this.duration;
-			TimeSpan TS = TP - Now;
+			object Value = await this.value.EvaluateAsync(Variables);
+			string Name = await this.name.GetValueAsync(Variables);
 
-			if (TS > TimeSpan.Zero)
-				await Task.Delay(TS);
+			if (Value is double d)
+				this.Model.Sample(Name, d);
+			else if (Value is PhysicalQuantity Q)
+				this.Model.Sample(Name, Q);
+			else
+			{
+				d = Convert.ToDouble(Value);
+				this.Model.Sample(Name, d);
+			}
 
 			return null;
 		}
@@ -84,11 +107,14 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.Write(":Delay(");
+			Output.Write(":Sample(");
+			Output.Write(this.name.Value);
+			Output.WriteLine(',');
 
-			Values.Duration.ExportText(this.duration, Output);
-
+			Indent(Output, Indentation + 1);
+			this.value?.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 			Output.WriteLine(");");
 		}
+
 	}
 }

@@ -3,33 +3,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Waher.Content.Xml;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
-	/// Represents a statement that may or may not fail.
+	/// Executes script in an activity.
 	/// </summary>
-	public class Try : ActivityNode, IConditionNode
+	public class Eval : ActivityNode
 	{
-		private string condition;
+		private string script;
 		private Expression expression;
 
 		/// <summary>
-		/// Represents a statement that may or may not fail.
+		/// Represents a delay in an activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Try(ISimulationNode Parent, Model Model)
+		public Eval(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
 
 		/// <summary>
-		/// Condition string
+		/// Script string
 		/// </summary>
-		public string ConditionString => this.condition;
+		public string Script => this.script;
 
 		/// <summary>
 		/// Parsed expression
@@ -39,7 +38,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Try);
+		public override string LocalName => nameof(Eval);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -49,7 +48,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Try(Parent, Model);
+			return new Eval(Parent, Model);
 		}
 
 		/// <summary>
@@ -58,22 +57,16 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.condition = XML.Attribute(Definition, "condition");
-			this.expression = new Expression(this.condition);
+			this.script = Values.Script.RemoveIndent(Definition.InnerText);
+			this.expression = new Expression(this.script);
 
 			return base.FromXml(Definition);
 		}
 
 		/// <summary>
-		/// Initialized the node before simulation.
+		/// If children are to be parsed by <see cref="FromXml(XmlElement)"/>
 		/// </summary>
-		public override Task Initialize()
-		{
-			if (this.Parent is Conditional Conditional)
-				Conditional.Register(this);
-
-			return base.Initialize();
-		}
+		public override bool ParseChildren => false;
 
 		/// <summary>
 		/// Executes a node.
@@ -82,26 +75,8 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			await Activity.ExecuteActivity(Variables, this.FirstNode);
+			await this.expression.EvaluateAsync(Variables);
 			return null;
-		}
-
-		/// <summary>
-		/// If the node condition is true.
-		/// </summary>
-		/// <param name="Variables">Set of variables for the activity.</param>
-		/// <returns>If embedded nodes are to be executed.</returns>
-		public async Task<bool> IsTrue(Variables Variables)
-		{
-			try
-			{
-				await this.expression.EvaluateAsync(Variables);
-				return true;
-			}
-			catch (Exception)
-			{
-				return false;
-			}
 		}
 
 		/// <summary>
@@ -109,21 +84,48 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Output">Output</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
-		/// <param name="First">If the condition is the first condition.</param>
 		/// <param name="QuoteChar">Quote character.</param>
-		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
+		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			Indent(Output, Indentation);
-
-			if (!First)
-				Output.Write("else");
-
-			Output.Write("if (");
-			Output.Write(this.condition);
-			Output.WriteLine(") then (successful)");
-
-			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
+			ExportPlantUml(this.script, Output, Indentation, QuoteChar, true);
 		}
 
+		/// <summary>
+		/// Exports PlantUML
+		/// </summary>
+		/// <param name="Script">Script expression.</param>
+		/// <param name="Output">Output</param>
+		/// <param name="Indentation">Number of tabs to indent.</param>
+		/// <param name="QuoteChar">Quote character.</param>
+		/// <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
+		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation, char QuoteChar, bool Delimiters)
+		{
+			bool First = true;
+
+			if (QuoteChar != '"')
+				Script = Script.Replace('"', QuoteChar);
+
+			foreach (string Row in Script.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n'))
+			{
+				if (First)
+				{
+					if (Delimiters)
+					{
+						Indent(Output, Indentation);
+						Output.Write(':');
+					}
+
+					First = false;
+				}
+				else
+					Output.Write("\\n");
+
+				if (!string.IsNullOrEmpty(Row))
+					Output.Write(Row.Replace("\t", "\\t"));
+			}
+
+			if (!First && Delimiters)
+				Output.WriteLine(";");
+		}
 	}
 }

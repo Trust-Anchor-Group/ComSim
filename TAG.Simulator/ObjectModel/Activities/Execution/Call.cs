@@ -4,19 +4,21 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
-	/// Executes multiple threads in parallel.
+	/// Calls another activity.
 	/// </summary>
-	public class Parallel : ActivityNode
+	public class Call : ReferenceActivityNode 
 	{
+		private IActivity activity;
+
 		/// <summary>
-		/// Executes multiple threads in parallel.
+		/// Calls another activity.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Parallel(ISimulationNode Parent, Model Model)
+		public Call(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -24,7 +26,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Parallel);
+		public override string LocalName => nameof(Call);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -34,7 +36,18 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Parallel(Parent, Model);
+			return new Call(Parent, Model);
+		}
+
+		/// <summary>
+		/// Starts the node.
+		/// </summary>
+		public override Task Start()
+		{
+			if (!this.Model.TryGetActivity(this.Reference, out this.activity))
+				throw new Exception("Activity not found: " + this.Reference);
+
+			return base.Start();
 		}
 
 		/// <summary>
@@ -44,18 +57,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			Task[] Tasks = new Task[this.Count];
-			LinkedListNode<IActivityNode> Loop = this.FirstNode;
-			int i = 0;
-
-			while (!(Loop is null))
-			{
-				Tasks[i++] = Loop.Value.Execute(Variables);
-				Loop = Loop.Next;
-			}
-
-			await Task.WhenAll(Tasks);
-
+			await this.activity.ExecuteTask(Variables);
 			return null;
 		}
 
@@ -67,31 +69,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			bool First = true;
-			LinkedListNode<IActivityNode> Loop = this.FirstNode;
-
-			while (!(Loop is null))
-			{
-				Indent(Output, Indentation);
-
-				if (First)
-				{
-					First = false;
-					Output.WriteLine("fork");
-				}
-				else
-					Output.WriteLine("fork again");
-
-				Loop.Value.ExportPlantUml(Output, Indentation + 1, QuoteChar);
-				Loop = Loop.Next;
-			}
-
-			if (!First)
-			{
-				Indent(Output, Indentation);
-				Output.WriteLine("end fork");
-			}
+			Indent(Output, Indentation);
+			Output.Write('(');
+			Output.Write(this.Reference);
+			Output.WriteLine(')');
 		}
-
 	}
 }

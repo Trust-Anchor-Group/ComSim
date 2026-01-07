@@ -10,6 +10,7 @@ using Waher.Content.Xml;
 using Waher.Script;
 using Waher.Networking.XMPP;
 using System.IO;
+using TAG.Simulator.ObjectModel.Activities.Execution;
 
 namespace TAG.Simulator.XMPP.Activities
 {

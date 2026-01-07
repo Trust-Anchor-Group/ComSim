@@ -4,7 +4,7 @@ using System.Xml;
 using Waher.Content.Xml;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Statistics
 {
 	/// <summary>
 	/// Abstract base class for counter activity nodes.

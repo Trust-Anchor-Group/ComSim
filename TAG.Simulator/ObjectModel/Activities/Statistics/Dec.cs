@@ -4,19 +4,19 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Statistics
 {
 	/// <summary>
-	/// Terminates execution of activity.
+	/// Decrements a counter.
 	/// </summary>
-	public class Finished : ActivityNode 
+	public class Dec : CounterActivityNode
 	{
 		/// <summary>
-		/// Terminates execution of activity.
+		/// Decrements a counter.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Finished(ISimulationNode Parent, Model Model)
+		public Dec(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -24,7 +24,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Finished);
+		public override string LocalName => nameof(Dec);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -34,7 +34,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Finished(Parent, Model);
+			return new Dec(Parent, Model);
 		}
 
 		/// <summary>
@@ -42,9 +42,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			throw new FinishedException();
+			this.Model.DecrementCounter(await this.GetCounterAsync(Variables));
+			return null;
 		}
 
 		/// <summary>
@@ -56,7 +57,9 @@ namespace TAG.Simulator.ObjectModel.Activities
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.WriteLine("end");
+			Output.Write(":Dec(");
+			Output.Write(this.counter.Value);
+			Output.WriteLine(");");
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Conditions
 {
 	/// <summary>
 	/// Interface for condition nodes

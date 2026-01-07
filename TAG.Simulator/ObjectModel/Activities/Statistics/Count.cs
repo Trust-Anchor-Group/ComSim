@@ -1,23 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Waher.Script;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Statistics
 {
 	/// <summary>
-	/// Conditional execution in an activity.
+	/// Counts an instance of an event.
 	/// </summary>
-	public class Conditional : ActivityNode, IConditional
+	public class Count : CounterActivityNode
 	{
-		private readonly LinkedList<IConditionNode> conditions = new LinkedList<IConditionNode>();
-
 		/// <summary>
-		/// Conditional execution in an activity.
+		/// Counts an instance of an event.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Conditional(ISimulationNode Parent, Model Model)
+		public Count(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -25,7 +24,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Conditional);
+		public override string LocalName => nameof(Count);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -35,16 +34,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Conditional(Parent, Model);
-		}
-
-		/// <summary>
-		/// Register a conditional node.
-		/// </summary>
-		/// <param name="Node">Conditional node</param>
-		public void Register(IConditionNode Node)
-		{
-			this.conditions.AddLast(Node);
+			return new Count(Parent, Model);
 		}
 
 		/// <summary>
@@ -54,12 +44,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			foreach (IConditionNode Condition in this.conditions)
-			{
-				if (await Condition.IsTrue(Variables))
-					return await Condition.Execute(Variables);
-			}
-
+			this.Model.CountEvent(await this.GetCounterAsync(Variables));
 			return null;
 		}
 
@@ -71,20 +56,10 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			bool First = true;
-
-			foreach (IConditionNode Node in this.conditions)
-			{
-				Node.ExportPlantUml(Output, Indentation, First, QuoteChar);
-				First = false;
-			}
-
-			if (!First)
-			{
-				Indent(Output, Indentation);
-				Output.WriteLine("endif");
-			}
+			Indent(Output, Indentation);
+			Output.Write(":Count(");
+			Output.Write(this.counter.Value);
+			Output.WriteLine(");");
 		}
-
 	}
 }

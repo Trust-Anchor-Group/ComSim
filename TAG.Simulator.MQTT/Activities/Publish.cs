@@ -12,6 +12,7 @@ using Waher.Script;
 using Waher.Networking.MQTT;
 using System.IO;
 using Waher.Content;
+using TAG.Simulator.ObjectModel.Activities.Execution;
 
 namespace TAG.Simulator.MQTT.Activities
 {

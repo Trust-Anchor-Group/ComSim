@@ -3,27 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.ObjectModel.Values;
+using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Script;
-using Waher.Script.Objects;
 
-namespace TAG.Simulator.ObjectModel.Activities
+namespace TAG.Simulator.ObjectModel.Activities.Execution
 {
 	/// <summary>
-	/// Sets a variable value when an event is triggered.
+	/// Adds a timeout limit in a Wait statement.
 	/// </summary>
-	public class Sample : ActivityNode, IValueRecipient
+	public class Timeout : ActivityNode, ITriggerNode
 	{
-		private IValue value = null;
-		private StringAttribute name;
+		private Duration limit;
 
 		/// <summary>
-		/// Sets a variable value when an event is triggered.
+		/// Adds a timeout limit in a Wait statement.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Sample(ISimulationNode Parent, Model Model)
+		public Timeout(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -31,15 +29,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Sample);
-
-		/// <summary>
-		/// Name of variable within the scope of the event.
-		/// </summary>
-		public Task<string> GetNameAsync(Variables Variables)
-		{
-			return this.name.GetValueAsync(Variables);
-		}
+		public override string LocalName => nameof(Timeout);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -49,7 +39,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Sample(Parent, Model);
+			return new Timeout(Parent, Model);
 		}
 
 		/// <summary>
@@ -58,21 +48,20 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.name = new StringAttribute(XML.Attribute(Definition, "name"));
+			this.limit = XML.Attribute(Definition, "limit", Duration.Zero);
 
 			return base.FromXml(Definition);
 		}
 
 		/// <summary>
-		/// Registers a value for the argument.
+		/// Initialized the node before simulation.
 		/// </summary>
-		/// <param name="Value">Value node</param>
-		public void Register(IValue Value)
+		public override Task Initialize()
 		{
-			if (this.value is null)
-				this.value = Value;
-			else
-				throw new Exception("Sample node already has a value defined.");
+			if (this.Parent is Wait Wait)
+				Wait.Register(this);
+
+			return base.Initialize();
 		}
 
 		/// <summary>
@@ -82,20 +71,23 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			object Value = await this.value.EvaluateAsync(Variables);
-			string Name = await this.name.GetValueAsync(Variables);
-
-			if (Value is double d)
-				this.Model.Sample(Name, d);
-			else if (Value is PhysicalQuantity Q)
-				this.Model.Sample(Name, Q);
-			else
-			{
-				d = Convert.ToDouble(Value);
-				this.Model.Sample(Name, d);
-			}
-
+			await Activity.ExecuteActivity(Variables, this.FirstNode);
 			return null;
+		}
+
+		/// <summary>
+		/// Gets a task object.
+		/// </summary>
+		/// <returns>Task object signalling when trigger is activated.</returns>
+		public Task GetTask()
+		{
+			DateTime Now = DateTime.Now;
+			DateTime TP = Now + this.limit;
+			double ms = (TP - Now).TotalMilliseconds;
+			if (ms < 0)
+				ms = 0;
+
+			return Task.Delay((int)ms);
 		}
 
 		/// <summary>
@@ -103,17 +95,25 @@ namespace TAG.Simulator.ObjectModel.Activities
 		/// </summary>
 		/// <param name="Output">Output</param>
 		/// <param name="Indentation">Number of tabs to indent.</param>
+		/// <param name="First">If the condition is the first condition.</param>
 		/// <param name="QuoteChar">Quote character.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
+		public void ExportPlantUml(StreamWriter Output, int Indentation, bool First, char QuoteChar)
 		{
 			Indent(Output, Indentation);
-			Output.Write(":Sample(");
-			Output.Write(this.name.Value);
-			Output.WriteLine(',');
 
-			Indent(Output, Indentation + 1);
-			this.value?.ExportPlantUml(Output, Indentation + 1, QuoteChar);
-			Output.WriteLine(");");
+			if (First)
+				Output.WriteLine("split");
+			else
+				Output.WriteLine("split again");
+
+			Indentation++;
+			Indent(Output, Indentation);
+
+			Output.Write("#FireBrick:");
+			Values.Duration.ExportText(this.limit, Output);
+			Output.WriteLine("<");
+
+			base.ExportPlantUml(Output, Indentation + 1, QuoteChar);
 		}
 
 	}
