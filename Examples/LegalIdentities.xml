@@ -37,7 +37,7 @@
 			(
 				Global["User"+IntToStr2(i)]:=
 				{
-					"Jid":"SimLegalUser"+IntToStr2(i)+"@lab.tagroot.io",
+					"Jid":"SimLegalUser"+Str(i)+"@lab.tagroot.io",
 					"LegalId":""
 				};
 			);
