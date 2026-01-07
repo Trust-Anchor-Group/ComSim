@@ -116,8 +116,6 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			base.ExportPlantUml(Output, Indentation, QuoteChar);
-
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);

@@ -47,7 +47,7 @@
 				Suffix:=Actor.InstanceId.Substring(9);
 				i:=Num(Suffix);
 				Global["User"+Suffix];
-			);
+			)
 			]]>
 		</ModelScript>
 	</Meta>
@@ -137,6 +137,7 @@
 	<Events>
 		<StochasticEvent distribution="CheckIdentity" activity="OnCheckIdentity">
 			<Description>Event to periodically check the status of a user's legal identity.</Description>
+			<Description>If an approved legal identity is not found, an application is sent for one, marked as ready for approval.</Description>
 			<ActorReference name="User" exclusive="true">
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
@@ -218,7 +219,7 @@
 			<Inc counter="CheckIdentity"/>
 			<Eval>
 				<![CDATA[
-				UserData:=GetUserData(User);
+				UserData:=GetUserData(User)
 				]]>
 			</Eval>
 			<Conditional>
@@ -266,7 +267,7 @@
 			<Eval>
 				<![CDATA[
 				FromUserData:=GetUserData(From);
-				ToUserData:=GetUserData(To);
+				ToUserData:=GetUserData(To)
 				]]>
 			</Eval>
 			<Conditional>
@@ -286,7 +287,7 @@
 			<Eval>
 				<![CDATA[
 				FromUserData:=GetUserData(From);
-				ToUserData:=GetUserData(To);
+				ToUserData:=GetUserData(To)
 				]]>
 			</Eval>
 			<Conditional>
