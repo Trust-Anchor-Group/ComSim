@@ -55,7 +55,7 @@ namespace TAG.Simulator.XMLDSIG.Values
 			get
 			{
 				if (this.value is null)
-					return new ISimulationNode[0];
+					return Array.Empty<ISimulationNode>();
 				else
 					return new ISimulationNode[] { this.value };
 			}

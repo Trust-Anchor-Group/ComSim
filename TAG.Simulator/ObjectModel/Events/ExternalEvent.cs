@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.ObjectModel.Actors;
 using Waher.Content.Xml;
+using Waher.Events;
+using Waher.Runtime.Collections;
 using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -117,14 +119,26 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Starts the node.
 		/// </summary>
-		public override Task Start()
+		public override async Task Start()
 		{
 			if (!this.Model.TryGetEvent(this.eventId, out this.eventReference))
 				throw new Exception("Event node not found: " + this.eventId);
 
 			this.eventReference.Register(this);
 
-			return base.Start();
+			await base.Start();
+
+			if (this.hasQueued && this.eventReference.IsInitialized)
+				await this.TriggerQueued();
+		}
+
+		/// <summary>
+		/// Called when all nodes have been started.
+		/// </summary>
+		public override async Task Started()
+		{
+			if (this.hasQueued && this.eventReference.IsInitialized)
+				await this.TriggerQueued();
 		}
 
 		/// <summary>
@@ -173,9 +187,58 @@ namespace TAG.Simulator.ObjectModel.Events
 				}
 			}
 
-			if (!(this.eventReference is null))
+			if (this.eventReference is null || !this.eventReference.IsInitialized)
+			{
+				Log.Informational("External event queued.", this.eventId, Source.InstanceId);
+
+				lock (this.syncObj)
+				{
+					this.queued ??= new ChunkedList<QueuedEvent>(16);
+					this.queued.Add(new QueuedEvent()
+					{
+						Source = Source,
+						Variables = Variables
+					});
+					this.hasQueued = true;
+				}
+			}
+			else
+			{
+				if (this.hasQueued)
+					await this.TriggerQueued();
+
 				await this.eventReference.Trigger(Variables);
+			}
 		}
 
+		private async Task TriggerQueued()
+		{
+			QueuedEvent[] Queued;
+
+			lock (this.syncObj)
+			{
+				Queued = this.queued?.ToArray() ?? Array.Empty<QueuedEvent>();
+				this.queued = null;
+				this.hasQueued = false;
+			}
+
+			foreach (QueuedEvent Item in Queued)
+			{
+				Log.Informational("Queued event executed.", this.eventId,
+					Item.Source.InstanceId);
+
+				await this.eventReference.Trigger(Item.Variables);
+			}
+		}
+
+		private ChunkedList<QueuedEvent> queued = null;
+		private readonly object syncObj = new object();
+		private bool hasQueued = false;
+
+		private class QueuedEvent
+		{
+			public IActor Source;
+			public Variables Variables;
+		}
 	}
 }

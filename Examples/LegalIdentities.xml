@@ -100,25 +100,27 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
-		<Uniform id="PetitionIdentity" from="0" to="60" N="60"/>
-		<Uniform id="PetitionSignature" from="0" to="60" N="60"/>
+		<Uniform id="PetitionIdentity" from="10" to="60" N="500"/>
+		<Uniform id="PetitionSignature" from="10" to="60" N="500"/>
 	</Distributions>
 	<Events>
-		<StochasticEvent distribution="PetitionIdentity" activity="OnPetitionIdentity">
+		<StochasticEvent distribution="PetitionIdentity" activity="SendIdentityPetition"
+										 guard="From!=To">
 			<Description>Event to periodically petition the identity of someone else.</Description>
-			<ActorReference name="From" exclusive="true">
+			<ActorReference name="From" exclusive="false">
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
-			<ActorReference name="To" exclusive="true">
+			<ActorReference name="To" exclusive="false">
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
 		</StochasticEvent>
-		<StochasticEvent distribution="PetitionSignature" activity="OnPetitionSignature">
+		<StochasticEvent distribution="PetitionSignature" activity="SendSignaturePetition"
+										 guard="From!=To">
 			<Description>Event to periodically petition a digital signature of someone else.</Description>
-			<ActorReference name="From" exclusive="true">
+			<ActorReference name="From" exclusive="false">
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
-			<ActorReference name="To" exclusive="true">
+			<ActorReference name="To" exclusive="false">
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
 		</StochasticEvent>
@@ -151,9 +153,8 @@
 		<Activity id="OnStateChanged" logStart="false" logEnd="false">
 			<Description>Executed when the XMPP connection state changes for a user.</Description>
 			<Start/>
-			<Inc counter="State_{NewState}"/>
 			<Conditional>
-				<Condition condition="Str(NewState)='Connected'">
+				<Condition condition="NewState.ToString()='Connected'">
 					<Eval>
 						<![CDATA[
 						UserData:=GetUserData(User)
@@ -204,7 +205,7 @@
 			</Conditional>
 			<Stop/>
 		</Activity>
-		<Activity id="OnPetitionIdentity" logStart="false" logEnd="false">
+		<Activity id="SendIdentityPetition" logStart="false" logEnd="false">
 			<Description>Executed stochastically when a user petitions the identity of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionIdentity"/>
@@ -272,7 +273,7 @@
 			</Conditional>
 			<Stop/>
 		</Activity>
-		<Activity id="OnPetitionSignature" logStart="false" logEnd="false">
+		<Activity id="SendSignaturePetition" logStart="false" logEnd="false">
 			<Description>Executed stochastically when a user petitions a digital signature of another user.</Description>
 			<Start/>
 			<Inc counter="PetitionSignature"/>
@@ -365,7 +366,7 @@
 					</LogInformation>
 					<Eval>
 						<![CDATA[
-						UserData.LegalIdApproved:=Str(e.Identity.State)="Approved"
+						UserData.LegalIdApproved:=e.Identity.State.ToString()="Approved"
 						]]>
 					</Eval>
 				</Condition>

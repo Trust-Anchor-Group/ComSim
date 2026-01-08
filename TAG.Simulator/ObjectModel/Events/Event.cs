@@ -24,6 +24,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		private string activityId;
 		private string id;
 		private bool hasTriggers = false;
+		private bool isInitialized = false;
 
 		/// <summary>
 		/// Abstract base class for events
@@ -75,15 +76,22 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <summary>
 		/// Starts the node.
 		/// </summary>
-		public override Task Start()
+		public override async Task Start()
 		{
 			if (!this.Model.TryGetActivity(this.activityId, out this.activity))
 				throw new Exception("Activity not found: " + this.activityId);
 
 			this.activity.Register(this);
 
-			return base.Start();
+			await base.Start();
+
+			this.isInitialized = true;
 		}
+
+		/// <summary>
+		/// If the event has been initialized.
+		/// </summary>
+		public bool IsInitialized => this.isInitialized;
 
 		/// <summary>
 		/// Registers an event preparation node.
@@ -114,7 +122,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		public async Task Trigger(Variables Variables, Expression Guard = null, int GuardLimit = int.MaxValue)
 		{
 			if (this.activity is null)
-				return; // Not initialized yet.
+				throw new Exception("Activity not initialized yet.");
 
 			List<KeyValuePair<string, object>> Tags = new List<KeyValuePair<string, object>>();
 			KeyValuePair<string, object>[] Tags2 = null;

@@ -80,6 +80,11 @@ namespace TAG.Simulator
 		Task Start();
 
 		/// <summary>
+		/// Called when all nodes have been started.
+		/// </summary>
+		Task Started();
+
+		/// <summary>
 		/// Finalizes the node after simulation.
 		/// </summary>
 		Task Finalize();

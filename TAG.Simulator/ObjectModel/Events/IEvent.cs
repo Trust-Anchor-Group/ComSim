@@ -35,6 +35,11 @@ namespace TAG.Simulator.ObjectModel.Events
 		}
 
 		/// <summary>
+		/// If the event has been initialized.
+		/// </summary>
+		bool IsInitialized { get; }
+
+		/// <summary>
 		/// Triggers the event.
 		/// </summary>
 		/// <param name="Variables">Event variables</param>

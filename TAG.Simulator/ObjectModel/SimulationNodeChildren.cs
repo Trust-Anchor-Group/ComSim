@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Waher.Runtime.Collections;
 
 namespace TAG.Simulator.ObjectModel
 {
@@ -36,7 +37,7 @@ namespace TAG.Simulator.ObjectModel
 		{
 			if (this.ParseChildren)
 			{
-				List<ISimulationNode> Children = new List<ISimulationNode>();
+				ChunkedList<ISimulationNode> Children = new ChunkedList<ISimulationNode>();
 
 				if (!(this.children is null))
 					Children.AddRange(this.children);
@@ -50,7 +51,7 @@ namespace TAG.Simulator.ObjectModel
 				this.children = Children.ToArray();
 			}
 			else
-				this.children = new ISimulationNode[0];
+				this.children = Array.Empty<ISimulationNode>();
 		}
 
 		/// <summary>

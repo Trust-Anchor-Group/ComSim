@@ -633,6 +633,7 @@ namespace TAG.Simulator
 				OnStarting.Raise(this);
 				Console.Out.WriteLine("Starting...");
 				await this.ForEach(async (Node) => await Node.Start(), true);
+				await this.ForEach(async (Node) => await Node.Started(), true);
 
 				OnRunning.Raise(this);
 				Console.Out.WriteLine("Running...");
@@ -1139,7 +1140,7 @@ namespace TAG.Simulator
 					return Activities.ActivityOrder();
 			}
 
-			return new string[0];
+			return Array.Empty<string>();
 		}
 
 		/// <summary>

@@ -98,6 +98,14 @@ namespace TAG.Simulator.ObjectModel
 		}
 
 		/// <summary>
+		/// Called when all nodes have been started.
+		/// </summary>
+		public virtual Task Started()
+		{
+			return Task.CompletedTask;
+		}
+
+		/// <summary>
 		/// Finalizes the node after simulation.
 		/// </summary>
 		public virtual Task Finalize()
