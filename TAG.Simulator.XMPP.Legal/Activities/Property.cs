@@ -5,7 +5,6 @@ using System.Xml;
 using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.XMPP.Legal.Extensions;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -14,7 +13,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 	/// <summary>
 	/// Represents an identity property.
 	/// </summary>
-	public class Property : ActivityNode
+	public class Property : LegalActivityNode
 	{
 		private StringAttribute name;
 		private StringAttribute value;
@@ -33,16 +32,6 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(Property);
-
-		/// <summary>
-		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
-		/// </summary>
-		public override string SchemaResource => LegalExtension.XmppSchema;
-
-		/// <summary>
-		/// XML Namespace where the element is defined.
-		/// </summary>
-		public override string Namespace => LegalExtension.XmppNamespace;
 
 		/// <summary>
 		/// Creates a new instance of the node.

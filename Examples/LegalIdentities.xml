@@ -68,34 +68,42 @@
 			<ExternalEvent name="OnStateChanged" event="OnStateChangedEvent" actorName="User">
 				<Parameter name="NewState"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="IdentityUpdated" event="IdentityUpdatedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="PetitionForIdentityReceived" event="PetitionForIdentityReceivedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="PetitionedIdentityResponseReceived" event="PetitionedIdentityResponseReceivedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="PetitionForSignatureReceived" event="PetitionForSignatureReceivedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="PetitionedSignatureResponseReceived" event="PetitionedSignatureResponseReceivedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="IdentityReview" event="IdentityReviewEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 			<ExternalEvent name="ClientMessage" event="ClientMessageEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
 			</ExternalEvent>
 		</xmpp:XmppActorTcp>
 	</Actors>
@@ -208,7 +216,6 @@
 		<Activity id="SendIdentityPetition" logStart="false" logEnd="false">
 			<Description>Executed stochastically when a user petitions the identity of another user.</Description>
 			<Start/>
-			<Inc counter="PetitionIdentity"/>
 			<Eval>
 				<![CDATA[
 				FromUserData:=GetUserData(From);
@@ -276,7 +283,6 @@
 		<Activity id="SendSignaturePetition" logStart="false" logEnd="false">
 			<Description>Executed stochastically when a user petitions a digital signature of another user.</Description>
 			<Start/>
-			<Inc counter="PetitionSignature"/>
 			<Eval>
 				<![CDATA[
 				FromUserData:=GetUserData(From);
@@ -351,7 +357,6 @@
 		<Activity id="OnIdentityUpdated" logStart="false" logEnd="false">
 			<Description>Executed when an identity has been updated.</Description>
 			<Start/>
-			<Inc counter="IdentityUpdated"/>
 			<Eval>
 				<![CDATA[
 				UserData:=GetUserData(User)
@@ -376,37 +381,33 @@
 		<Activity id="OnPetitionForIdentityReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for an identity has been received.</Description>
 			<Start/>
-			<Inc counter="PetitionForIdentity"/>
+			<legal:IdentityPetitionResponse actor="User" variable="e" response="true"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedIdentityResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for an identity has been received.</Description>
 			<Start/>
-			<Inc counter="PetitionForIdentityResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForSignatureReceived" logStart="false" logEnd="false">
 			<Description>Executed when a petition for a signature has been received.</Description>
 			<Start/>
-			<Inc counter="PetitionForSignature"/>
+			<legal:SignaturePetitionResponse actor="User" variable="e" response="true"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionedSignatureResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for a signature has been received.</Description>
 			<Start/>
-			<Inc counter="PetitionForSignatureResponse"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnIdentityReview" logStart="false" logEnd="false">
 			<Description>Executed when an Identity Application has been automatically reviewed.</Description>
 			<Start/>
-			<Inc counter="IdentityReview"/>
 			<Stop/>
 		</Activity>
 		<Activity id="OnClientMessage" logStart="false" logEnd="false">
 			<Description>Executed when a client message has been received.</Description>
 			<Start/>
-			<Inc counter="ClientMessage"/>
 			<Stop/>
 		</Activity>
 	</Activities>

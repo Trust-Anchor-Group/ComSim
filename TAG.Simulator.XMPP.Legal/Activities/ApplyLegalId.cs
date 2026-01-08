@@ -7,7 +7,6 @@ using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.Actors;
-using TAG.Simulator.XMPP.Legal.Extensions;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP.Contracts;
 using Waher.Runtime.Collections;
@@ -18,7 +17,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 	/// <summary>
 	/// Applies for a new Legal ID
 	/// </summary>
-	public class ApplyLegalId : ActivityNode
+	public class ApplyLegalId : LegalActivityNode
 	{
 		private readonly ChunkedList<Property> properties = new ChunkedList<Property>();
 		private StringAttribute actor;
@@ -38,16 +37,6 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(ApplyLegalId);
-
-		/// <summary>
-		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
-		/// </summary>
-		public override string SchemaResource => LegalExtension.XmppSchema;
-
-		/// <summary>
-		/// XML Namespace where the element is defined.
-		/// </summary>
-		public override string Namespace => LegalExtension.XmppNamespace;
 
 		/// <summary>
 		/// Creates a new instance of the node.

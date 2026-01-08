@@ -89,119 +89,136 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 			{
 				await this.Model.ExternalEvent(Instance, "ContractCreated",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.ContractDeleted += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "ContractDeleted",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.ContractSigned += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "ContractSigned",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.ContractUpdated += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "ContractUpdated",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.IdentityUpdated += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "IdentityUpdated",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionForContractReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionForContractReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionedContractResponseReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionedContractResponseReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionForIdentityReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionForIdentityReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionedIdentityResponseReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionedIdentityResponseReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionForSignatureReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionForSignatureReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionedSignatureResponseReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionedSignatureResponseReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionForPeerReviewIDReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionForPeerReviewIDReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionedPeerReviewIDResponseReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionedPeerReviewIDResponseReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.IdentityReview += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "IdentityReview",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.ClientMessage += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "ClientMessage",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.ContractProposalReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "ContractProposalReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			Extension.PetitionClientUrlReceived += async (Sender, e) =>
 			{
 				await this.Model.ExternalEvent(Instance, "PetitionClientUrlReceived",
 					new KeyValuePair<string, object>("e", e),
-					new KeyValuePair<string, object>("Client", Client));
+					new KeyValuePair<string, object>("Client", Client),
+					new KeyValuePair<string, object>("Legal", Extension));
 			};
 
 			return Extension;

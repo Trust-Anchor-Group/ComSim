@@ -8,7 +8,6 @@ using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.Actors;
-using TAG.Simulator.XMPP.Legal.Extensions;
 using Waher.Content;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP.Contracts;
@@ -19,7 +18,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 	/// <summary>
 	/// Petitions another user for a digital signature.
 	/// </summary>
-	public class PetitionSignature : ActivityNode
+	public class PetitionSignature : LegalActivityNode
 	{
 		private StringAttribute actor;
 		private StringAttribute legalId;
@@ -41,16 +40,6 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(PetitionSignature);
-
-		/// <summary>
-		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
-		/// </summary>
-		public override string SchemaResource => LegalExtension.XmppSchema;
-
-		/// <summary>
-		/// XML Namespace where the element is defined.
-		/// </summary>
-		public override string Namespace => LegalExtension.XmppNamespace;
 
 		/// <summary>
 		/// Creates a new instance of the node.

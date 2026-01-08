@@ -9,24 +9,26 @@ using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP.Contracts;
+using Waher.Networking.XMPP.Contracts.EventArguments;
 using Waher.Script;
 
 namespace TAG.Simulator.XMPP.Legal.Activities
 {
 	/// <summary>
-	/// Checks a user's identity.
+	/// Sends a response to an identity petition.
 	/// </summary>
-	public class GetLatestApprovedLegalId : LegalActivityNode
+	public class IdentityPetitionResponse : LegalActivityNode
 	{
 		private StringAttribute actor;
 		private StringAttribute variable;
+		private BooleanAttribute response;
 
 		/// <summary>
-		/// Checks a user's identity.
+		/// Sends a response to an identity petition.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public GetLatestApprovedLegalId(ISimulationNode Parent, Model Model)
+		public IdentityPetitionResponse(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -34,7 +36,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(GetLatestApprovedLegalId);
+		public override string LocalName => nameof(IdentityPetitionResponse);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -44,7 +46,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new GetLatestApprovedLegalId(Parent, Model);
+			return new IdentityPetitionResponse(Parent, Model);
 		}
 
 		/// <summary>
@@ -55,6 +57,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		{
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 			this.variable = new StringAttribute(XML.Attribute(Definition, "variable"));
+			this.response = new BooleanAttribute(XML.Attribute(Definition, "response"));
 
 			return base.FromXml(Definition);
 		}
@@ -67,6 +70,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
 			string Variable = await this.variable.GetValueAsync(Variables);
+			bool Response = await this.response.GetValueAsync(Variables);
 
 			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
@@ -74,7 +78,13 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			if (!XmppActor.Client.TryGetExtension(out ContractsClient Contracts))
 				throw new Exception("Actor does not have a registered legal extension.");
 
-			Variables[Variable] = await Contracts.GetLatestApprovedLegalId();
+			if (!Variables.TryGetVariable(Variable, out Variable v))
+				throw new Exception("Variable not found: " + Variable);
+
+			if (!(v.ValueObject is LegalIdentityPetitionEventArgs e))
+				throw new Exception("Variable does not contain a legal identity petition event arguments: " + Variable);
+
+			await Contracts.PetitionIdentityResponseAsync(e.RequestedIdentityId, e.PetitionId, e.RequestorFullJid, Response);
 
 			return null;
 		}
@@ -92,12 +102,13 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
-			Output.Write(".GetLatestApprovedLegalId");
+			Output.Write(".IdentityPetitionResponse");
 			Output.Write("(");
 
 			Indentation++;
 
 			Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Response", this.response.Value, true, QuoteChar);
 
 			Output.WriteLine(");");
 		}
