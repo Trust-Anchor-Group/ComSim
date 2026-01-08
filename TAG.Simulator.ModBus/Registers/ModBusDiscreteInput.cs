@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
 using Waher.Networking.Modbus;
 
-namespace TAG.Simulator.ModBus.Registers.Registers
+namespace TAG.Simulator.ModBus.Registers
 {
 	/// <summary>
 	/// A discrete input.
@@ -54,19 +54,17 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 			Server.Server.OnReadInputDiscretes -= this.Server_OnReadInputDiscretes;
 		}
 
-		private Task Server_OnReadInputDiscretes(object Sender, ReadBitsEventArgs e)
+		private async Task Server_OnReadInputDiscretes(object Sender, ReadBitsEventArgs e)
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
 			if (!(Device is null))
 			{
-				this.Model.ExternalEvent(this, Device, "OnExecuteReadoutRequest",
+				await this.Model.ExternalEvent(this, Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

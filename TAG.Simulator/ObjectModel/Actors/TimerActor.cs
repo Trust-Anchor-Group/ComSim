@@ -5,6 +5,7 @@ using System.Xml;
 using System.Threading.Tasks;
 using Waher.Content;
 using Waher.Content.Xml;
+using Waher.Events;
 
 namespace TAG.Simulator.ObjectModel.Actors
 {
@@ -94,7 +95,17 @@ namespace TAG.Simulator.ObjectModel.Actors
 
 		private void TimerCallback(object State)
 		{
-			this.Model.ExternalEvent(this, "Elapsed");
+			Task.Run(async () =>
+			{
+				try
+				{
+					await this.Model.ExternalEvent(this, "Elapsed");
+				}
+				catch (Exception ex)
+				{
+					Log.Exception(ex);
+				}
+			});
 		}
 
 		/// <summary>

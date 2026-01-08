@@ -91,9 +91,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="PreparationNode">Preparation node.</param>
 		public void Register(IEventPreparation PreparationNode)
 		{
-			if (this.preparationNodes is null)
-				this.preparationNodes = new LinkedList<IEventPreparation>();
-
+			this.preparationNodes ??= new LinkedList<IEventPreparation>();
 			this.preparationNodes.AddLast(PreparationNode);
 		}
 
@@ -103,9 +101,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="ExternalEvent">External event.</param>
 		public void Register(IExternalEvent ExternalEvent)
 		{
-			if (this.externalEvents is null)
-				this.externalEvents = new LinkedList<IExternalEvent>();
-
+			this.externalEvents ??= new LinkedList<IExternalEvent>();
 			this.externalEvents.AddLast(ExternalEvent);
 		}
 
@@ -203,8 +199,7 @@ namespace TAG.Simulator.ObjectModel.Events
 			{
 				ex = Log.UnnestException(ex);
 
-				if (Tags2 is null)
-					Tags2 = Tags.ToArray();
+				Tags2 ??= Tags.ToArray();
 
 				this.Model.IncActivityErrorCount(this.activityId, this.id, ex, DateTime.Now - Start, Tags2);
 			}

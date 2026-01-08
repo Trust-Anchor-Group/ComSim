@@ -874,14 +874,14 @@ namespace TAG.Simulator
 		/// <param name="Name">Name of event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public bool ExternalEvent(IExternalEventsNode Source, string Name, params KeyValuePair<string, object>[] Arguments)
+		public async Task<bool> ExternalEvent(IExternalEventsNode Source, string Name, params KeyValuePair<string, object>[] Arguments)
 		{
 			ISimulationNode Loop = Source;
 
 			while (!(Loop is null))
 			{
 				if (Loop is IActor Actor)
-					return this.ExternalEvent(Source, Actor, Name, Arguments);
+					return await this.ExternalEvent(Source, Actor, Name, Arguments);
 				else
 					Loop = Loop.Parent;
 			}
@@ -897,11 +897,11 @@ namespace TAG.Simulator
 		/// <param name="Name">Name of event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public bool ExternalEvent(IExternalEventsNode Source, IActor Actor, string Name, params KeyValuePair<string, object>[] Arguments)
+		public async Task<bool> ExternalEvent(IExternalEventsNode Source, IActor Actor, string Name, params KeyValuePair<string, object>[] Arguments)
 		{
 			if (Source.TryGetExternalEvent(Name, out IExternalEvent ExternalEvent))
 			{
-				ExternalEvent.Trigger(Actor, Arguments);
+				await ExternalEvent.Trigger(Actor, Arguments);
 				return true;
 			}
 			else

@@ -135,8 +135,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			string Name = Parameter.Name;
 
-			if (this.parameters is null)
-				this.parameters = new Dictionary<string, Parameter>();
+			this.parameters ??= new Dictionary<string, Parameter>();
 
 			if (this.parameters.ContainsKey(Name))
 				throw new Exception("A parameter named " + Name + " has already been registered for external event " + this.eventId);
@@ -150,7 +149,7 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Source">Actor receiving the event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
+		public async Task Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
 		{
 			Variables Variables = this.Model.GetEventVariables(Source);
 
@@ -174,7 +173,8 @@ namespace TAG.Simulator.ObjectModel.Events
 				}
 			}
 
-			this.eventReference.Trigger(Variables);
+			if (!(this.eventReference is null))
+				await this.eventReference.Trigger(Variables);
 		}
 
 	}

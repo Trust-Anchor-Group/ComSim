@@ -40,8 +40,7 @@ namespace TAG.Simulator.ObjectModel.Events
         {
             string Name = ExternalEvent.Name;
 
-            if (this.externalEvents is null)
-                this.externalEvents = new Dictionary<string, IExternalEvent>();
+            this.externalEvents ??= new Dictionary<string, IExternalEvent>();
 
             if (this.externalEvents.ContainsKey(Name))
                 throw new Exception("External event named " + Name + " already registered.");

@@ -42,5 +42,6 @@ namespace TAG.Simulator.ObjectModel.Events
 		{
 			return Task.CompletedTask;
 		}
+
 	}
 }

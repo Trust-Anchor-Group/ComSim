@@ -43,10 +43,9 @@ namespace TAG.Simulator.XMPP.Events
 		/// <param name="Client">XMPP Client</param>
 		public override void RegisterHandlers(IActor Actor, XmppClient Client)
 		{
-			Client.RegisterIqGetHandler(this.Name, this.HandlerNamespace, (sender, e) =>
+			Client.RegisterIqGetHandler(this.Name, this.HandlerNamespace, async (sender, e) =>
 			{
-				this.Trigger(Actor, new KeyValuePair<string, object>(string.IsNullOrEmpty(this.EventArgs) ? "e" : this.EventArgs, e));
-				return Task.CompletedTask;
+				await this.Trigger(Actor, new KeyValuePair<string, object>(string.IsNullOrEmpty(this.EventArgs) ? "e" : this.EventArgs, e));
 			}, true);
 		}
 	}

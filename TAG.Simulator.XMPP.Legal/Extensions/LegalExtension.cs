@@ -85,157 +85,123 @@ namespace TAG.Simulator.XMPP.Legal.Extensions
 
 			Client.SetTag("ContractsClient", Extension);
 
-			Extension.ContractCreated += (Sender, e) =>
+			Extension.ContractCreated += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ContractCreated",
+				await this.Model.ExternalEvent(Instance, "ContractCreated",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.ContractDeleted += (Sender, e) =>
+			Extension.ContractDeleted += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ContractDeleted",
+				await this.Model.ExternalEvent(Instance, "ContractDeleted",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.ContractSigned += (Sender, e) =>
+			Extension.ContractSigned += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ContractSigned",
+				await this.Model.ExternalEvent(Instance, "ContractSigned",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.ContractUpdated += (Sender, e) =>
+			Extension.ContractUpdated += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ContractUpdated",
+				await this.Model.ExternalEvent(Instance, "ContractUpdated",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.IdentityUpdated += (Sender, e) =>
+			Extension.IdentityUpdated += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "IdentityUpdated",
+				await this.Model.ExternalEvent(Instance, "IdentityUpdated",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionForContractReceived += (Sender, e) =>
+			Extension.PetitionForContractReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionForContractReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionForContractReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedContractResponseReceived += (Sender, e) =>
+			Extension.PetitionedContractResponseReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedContractResponseReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionedContractResponseReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionForIdentityReceived += (Sender, e) =>
+			Extension.PetitionForIdentityReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionForIdentityReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionForIdentityReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedIdentityResponseReceived += (Sender, e) =>
+			Extension.PetitionedIdentityResponseReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedIdentityResponseReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionedIdentityResponseReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionForSignatureReceived += (Sender, e) =>
+			Extension.PetitionForSignatureReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionForSignatureReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionForSignatureReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedSignatureResponseReceived += (Sender, e) =>
+			Extension.PetitionedSignatureResponseReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedSignatureResponseReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionedSignatureResponseReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionForPeerReviewIDReceived += (Sender, e) =>
+			Extension.PetitionForPeerReviewIDReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionForPeerReviewIDReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionForPeerReviewIDReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionedPeerReviewIDResponseReceived += (Sender, e) =>
+			Extension.PetitionedPeerReviewIDResponseReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionedPeerReviewIDResponseReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionedPeerReviewIDResponseReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.IdentityReview += (Sender, e) =>
+			Extension.IdentityReview += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "IdentityReview",
+				await this.Model.ExternalEvent(Instance, "IdentityReview",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.ClientMessage += (Sender, e) =>
+			Extension.ClientMessage += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ClientMessage",
+				await this.Model.ExternalEvent(Instance, "ClientMessage",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.ContractProposalReceived += (Sender, e) =>
+			Extension.ContractProposalReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ContractProposalReceived",
+				await this.Model.ExternalEvent(Instance, "ContractProposalReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
-			Extension.PetitionClientUrlReceived += (Sender, e) =>
+			Extension.PetitionClientUrlReceived += async (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PetitionClientUrlReceived",
+				await this.Model.ExternalEvent(Instance, "PetitionClientUrlReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Extension;

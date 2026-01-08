@@ -133,7 +133,7 @@ namespace TAG.Simulator.XMPP.Events
 		/// <param name="Source">Actor receiving the event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		public virtual void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
+		public virtual async Task Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments)
 		{
 			Variables Variables = this.Model.GetEventVariables(Source);
 
@@ -146,7 +146,8 @@ namespace TAG.Simulator.XMPP.Events
 					Variables[Argument.Key] = Argument.Value;
 			}
 
-			this.@event?.Trigger(Variables);
+			if (!(this.@event is null))
+				await this.@event.Trigger(Variables);
 		}
 
 		/// <summary>

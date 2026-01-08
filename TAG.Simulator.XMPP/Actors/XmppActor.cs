@@ -291,118 +291,94 @@ namespace TAG.Simulator.XMPP.Actors
 			return Task.CompletedTask;
 		}
 
-		private Task Client_OnRosterItemUpdated(object Sender, RosterItem Item)
+		private async Task Client_OnRosterItemUpdated(object Sender, RosterItem Item)
 		{
-			this.Model.ExternalEvent(this, "RosterItemUpdated",
+			await this.Model.ExternalEvent(this, "RosterItemUpdated",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnRosterItemRemoved(object Sender, RosterItem Item)
+		private async Task Client_OnRosterItemRemoved(object Sender, RosterItem Item)
 		{
-			this.Model.ExternalEvent(this, "RosterItemRemoved",
+			await this.Model.ExternalEvent(this, "RosterItemRemoved",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnRosterItemAdded(object Sender, RosterItem Item)
+		private async Task Client_OnRosterItemAdded(object Sender, RosterItem Item)
 		{
-			this.Model.ExternalEvent(this, "RosterItemAdded",
+			await this.Model.ExternalEvent(this, "RosterItemAdded",
 				new KeyValuePair<string, object>("Item", Item),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnPresenceSubscribe(object Sender, PresenceEventArgs e)
+		private async Task Client_OnPresenceSubscribe(object Sender, PresenceEventArgs e)
 		{
-			if (!this.Model.ExternalEvent(this, "PresenceSubscribe",
+			if (!await this.Model.ExternalEvent(this, "PresenceSubscribe",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client)))
 			{
-				e.Accept();
+				await e.Accept();
 			}
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnPresence(object Sender, PresenceEventArgs e)
+		private async Task Client_OnPresence(object Sender, PresenceEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "Presence",
+			await this.Model.ExternalEvent(this, "Presence",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnNormalMessage(object Sender, MessageEventArgs e)
+		private async Task Client_OnNormalMessage(object Sender, MessageEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "NormalMessage",
+			await this.Model.ExternalEvent(this, "NormalMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnHeadlineMessage(object Sender, MessageEventArgs e)
+		private async Task Client_OnHeadlineMessage(object Sender, MessageEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "HeadlineMessage",
+			await this.Model.ExternalEvent(this, "HeadlineMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnGroupChatMessage(object Sender, MessageEventArgs e)
+		private async Task Client_OnGroupChatMessage(object Sender, MessageEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "GroupChatMessage",
+			await this.Model.ExternalEvent(this, "GroupChatMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnErrorMessage(object Sender, MessageEventArgs e)
+		private async Task Client_OnErrorMessage(object Sender, MessageEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "ErrorMessage",
+			await this.Model.ExternalEvent(this, "ErrorMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnError(object Sender, Exception Exception)
+		private async Task Client_OnError(object Sender, Exception Exception)
 		{
-			this.Model.ExternalEvent(this, "Error",
+			await this.Model.ExternalEvent(this, "Error",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnConnectionError(object Sender, Exception Exception)
+		private async Task Client_OnConnectionError(object Sender, Exception Exception)
 		{
-			this.Model.ExternalEvent(this, "ConnectionError",
+			await this.Model.ExternalEvent(this, "ConnectionError",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnChatMessage(object Sender, MessageEventArgs e)
+		private async Task Client_OnChatMessage(object Sender, MessageEventArgs e)
 		{
-			this.Model.ExternalEvent(this, "ChatMessage",
+			await this.Model.ExternalEvent(this, "ChatMessage",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
-		private Task Client_OnStateChanged(object Sender, XmppState NewState)
+		private async Task Client_OnStateChanged(object Sender, XmppState NewState)
 		{
 			switch (NewState)
 			{
@@ -419,7 +395,7 @@ namespace TAG.Simulator.XMPP.Actors
 							PasswordHashMethod = this.client.PasswordHashMethod
 						};
 
-						Database.Insert(this.credentials);
+						await Database.Insert(this.credentials);
 					}
 					break;
 
@@ -429,11 +405,9 @@ namespace TAG.Simulator.XMPP.Actors
 					break;
 			}
 
-			this.Model.ExternalEvent(this, "OnStateChanged",
+			await this.Model.ExternalEvent(this, "OnStateChanged",
 				new KeyValuePair<string, object>("NewState", NewState),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		/// <summary>

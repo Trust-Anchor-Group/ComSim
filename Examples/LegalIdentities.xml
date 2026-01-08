@@ -65,6 +65,10 @@
 		<xmpp:XmppActorTcp id="LegalUser" domain="lab.tagroot.io" userName="SimLegalUser" N="10"
 											 apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<legal:LegalExtension id="LegalComponent" componentAddress="legal.lab.tagroot.io"/>
+			<ExternalEvent name="OnStateChanged" event="OnStateChangedEvent" actorName="User">
+				<Parameter name="NewState"/>
+				<Parameter name="Client"/>
+			</ExternalEvent>
 			<ExternalEvent name="IdentityUpdated" event="IdentityUpdatedEvent" actorName="User">
 				<Parameter name="e"/>
 				<Parameter name="Client"/>
@@ -96,18 +100,10 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
-		<Uniform id="CheckIdentity" from="0" to="10" N="10"/>
-		<Uniform id="PetitionIdentity" from="20" to="60" N="20"/>
-		<Uniform id="PetitionSignature" from="20" to="60" N="20"/>
+		<Uniform id="PetitionIdentity" from="0" to="60" N="60"/>
+		<Uniform id="PetitionSignature" from="0" to="60" N="60"/>
 	</Distributions>
 	<Events>
-		<StochasticEvent distribution="CheckIdentity" activity="OnCheckIdentity">
-			<Description>Event to periodically check the status of a user's legal identity.</Description>
-			<Description>If an approved legal identity is not found, an application is sent for one, marked as ready for approval.</Description>
-			<ActorReference name="User" exclusive="true">
-				<FromPopulation actor="LegalUser"/>
-			</ActorReference>
-		</StochasticEvent>
 		<StochasticEvent distribution="PetitionIdentity" activity="OnPetitionIdentity">
 			<Description>Event to periodically petition the identity of someone else.</Description>
 			<ActorReference name="From" exclusive="true">
@@ -126,6 +122,9 @@
 				<FromPopulation actor="LegalUser"/>
 			</ActorReference>
 		</StochasticEvent>
+		<EventHandler id="OnStateChangedEvent" activity="OnStateChanged">
+			<Description>Event raised when the XMPP connection state has changed for a user.</Description>
+		</EventHandler>
 		<EventHandler id="IdentityUpdatedEvent" activity="OnIdentityUpdated">
 			<Description>Event raised when a legal identity has been updated for a user.</Description>
 		</EventHandler>
@@ -149,53 +148,57 @@
 		</EventHandler>
 	</Events>
 	<Activities>
-		<Activity id="OnCheckIdentity" logStart="false" logEnd="false">
-			<Description>Executed stochastically when a user checks its identity.</Description>
+		<Activity id="OnStateChanged" logStart="false" logEnd="false">
+			<Description>Executed when the XMPP connection state changes for a user.</Description>
 			<Start/>
-			<Inc counter="CheckIdentity"/>
-			<Eval>
-				<![CDATA[
-				UserData:=GetUserData(User)
-				]]>
-			</Eval>
-			<LogInformation message="Checking legal identity.">
-				<Tag key="JID" value="{UserData.Jid}"/>
-			</LogInformation>
+			<Inc counter="State_{NewState}"/>
 			<Conditional>
-				<Condition condition="empty(UserData.LegalId)">
-					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
+				<Condition condition="Str(NewState)='Connected'">
+					<Eval>
+						<![CDATA[
+						UserData:=GetUserData(User)
+						]]>
+					</Eval>
+					<LogInformation message="Checking legal identity.">
+						<Tag key="JID" value="{UserData.Jid}"/>
+					</LogInformation>
 					<Conditional>
-						<Condition condition="empty(LegalId)">
-							<LogNotice message="Applying for new Legal ID." object="User">
-								<Tag key="JID" value="{UserData.Jid}"/>
-							</LogNotice>
-							<legal:ApplyLegalId actor="User" variable="LegalIdObject">
-								<legal:Property name="JID" value="{UserData.Jid}"/>
-							</legal:ApplyLegalId>
-							<Eval>
-								<![CDATA[
-								UserData.LegalId:=LegalIdObject.Id;
-								UserData.LegalIdApproved:=false
-								]]>
-							</Eval>
-							<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
-							<LogNotice message="Waiting for approval." object="User">
-								<Tag key="JID" value="{UserData.Jid}"/>
-								<Tag key="LegalId" value="{UserData.LegalId}"/>
-							</LogNotice>
+						<Condition condition="empty(UserData.LegalId)">
+							<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
+							<Conditional>
+								<Condition condition="empty(LegalId)">
+									<LogNotice message="Applying for new Legal ID." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+									</LogNotice>
+									<legal:ApplyLegalId actor="User" variable="LegalIdObject">
+										<legal:Property name="JID" value="{UserData.Jid}"/>
+									</legal:ApplyLegalId>
+									<Eval>
+										<![CDATA[
+										UserData.LegalId:=LegalIdObject.Id;
+										UserData.LegalIdApproved:=false
+										]]>
+									</Eval>
+									<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
+									<LogNotice message="Waiting for approval." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+										<Tag key="LegalId" value="{UserData.LegalId}"/>
+									</LogNotice>
+								</Condition>
+								<Otherwise>
+									<Eval>
+										<![CDATA[
+										UserData.LegalId:=LegalId;
+										UserData.LegalIdApproved:=true
+										]]>
+									</Eval>
+									<LogInformation message="Existing Legal ID found." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+										<Tag key="LegalId" value="{UserData.LegalId}"/>
+									</LogInformation>
+								</Otherwise>
+							</Conditional>
 						</Condition>
-						<Otherwise>
-							<Eval>
-								<![CDATA[
-								UserData.LegalId:=LegalId;
-								UserData.LegalIdApproved:=true
-								]]>
-							</Eval>
-							<LogInformation message="Existing Legal ID found." object="User">
-								<Tag key="JID" value="{UserData.Jid}"/>
-								<Tag key="LegalId" value="{UserData.LegalId}"/>
-							</LogInformation>
-						</Otherwise>
 					</Conditional>
 				</Condition>
 			</Conditional>
@@ -217,24 +220,28 @@
 			</LogInformation>
 			<Conditional>
 				<Condition condition="empty(FromUserData.LegalId)">
+					<Inc counter="NoSenderId"/>
 					<LogWarning message="No sender legal identity.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="!FromUserData.LegalIdApproved">
+					<Inc counter="NoApprovedSenderId"/>
 					<LogWarning message="Sender legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="empty(ToUserData.LegalId)">
+					<Inc counter="NoRecipientId"/>
 					<LogWarning message="No recipient legal identity.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="!ToUserData.LegalIdApproved">
+					<Inc counter="NoApprovedRecipientId"/>
 					<LogWarning message="Recipient legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
@@ -281,24 +288,28 @@
 			</LogInformation>
 			<Conditional>
 				<Condition condition="empty(FromUserData.LegalId)">
+					<Inc counter="NoSenderId"/>
 					<LogWarning message="No sender legal identity.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="!FromUserData.LegalIdApproved">
+					<Inc counter="NoApprovedSenderId"/>
 					<LogWarning message="Sender legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="empty(ToUserData.LegalId)">
+					<Inc counter="NoRecipientId"/>
 					<LogWarning message="No recipient legal identity.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>
 					</LogWarning>
 				</Condition>
 				<Condition condition="!ToUserData.LegalIdApproved">
+					<Inc counter="NoApprovedRecipientId"/>
 					<LogWarning message="Recipient legal identity not approved.">
 						<Tag key="FromJid" value="{FromUserData.Jid}"/>
 						<Tag key="ToJid" value="{ToUserData.Jid}"/>

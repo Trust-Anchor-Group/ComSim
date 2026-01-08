@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
 using TAG.Simulator.ModBus.Registers;
 using TAG.Simulator.ModBus.Registers.Activities;
-using TAG.Simulator.ModBus.Registers.Registers;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using Waher.Networking.Modbus;

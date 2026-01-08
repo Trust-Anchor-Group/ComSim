@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TAG.Simulator.ObjectModel.Actors;
 
 namespace TAG.Simulator.ObjectModel.Events
@@ -46,7 +47,6 @@ namespace TAG.Simulator.ObjectModel.Events
 		/// <param name="Source">Actor receiving the event.</param>
 		/// <param name="Arguments">Event arguments.</param>
 		/// <returns>If event was handled</returns>
-		void Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments);
-
+		Task Trigger(IActor Source, params KeyValuePair<string, object>[] Arguments);
 	}
 }

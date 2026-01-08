@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TAG.Simulator.ModBus.Actors;
 using Waher.Networking.Modbus;
 
-namespace TAG.Simulator.ModBus.Registers.Registers
+namespace TAG.Simulator.ModBus.Registers
 {
 	/// <summary>
 	/// A coil.
@@ -56,35 +56,31 @@ namespace TAG.Simulator.ModBus.Registers.Registers
 			Server.Server.OnWriteCoil -= this.Server_OnWriteCoil;
 		}
 
-		private Task Server_OnReadCoils(object Sender, ReadBitsEventArgs e)
+		private async Task Server_OnReadCoils(object Sender, ReadBitsEventArgs e)
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
 			if (!(Device is null))
 			{
-				this.Model.ExternalEvent(this, Device, "OnExecuteReadoutRequest",
+				await this.Model.ExternalEvent(this, Device, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr));
 			}
-
-			return Task.CompletedTask;
 		}
 
-		private Task Server_OnWriteCoil(object Sender, WriteBitEventArgs e)
+		private async Task Server_OnWriteCoil(object Sender, WriteBitEventArgs e)
 		{
 			ModBusDevice Device = this.FindInstance(e.UnitAddress);
 
 			if (!(Device is null))
 			{
-				this.Model.ExternalEvent(this, Device, "OnExecuteSetRequest",
+				await this.Model.ExternalEvent(this, Device, "OnExecuteSetRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Register", this),
 					new KeyValuePair<string, object>("RegisterNr", this.RegisterNr),
 					new KeyValuePair<string, object>("Value", e.Value));
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }

@@ -55,16 +55,14 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Client.SetTag("SensorServer", Extension);
 
-			Extension.OnExecuteReadoutRequest += (Sender, e) =>
+			Extension.OnExecuteReadoutRequest += async (Sender, e) =>
 			{
-				if (!this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
+				if (!await this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client)))
 				{
-					e.ReportErrors(true, new ThingError(ThingReference.Empty, "No event handler registered on sensor."));
+					await e.ReportErrors(true, new ThingError(ThingReference.Empty, "No event handler registered on sensor."));
 				}
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);
