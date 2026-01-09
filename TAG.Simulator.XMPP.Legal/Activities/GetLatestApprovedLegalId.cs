@@ -71,7 +71,10 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
 				throw new Exception("Actor not an XMPP client.");
 
-			if (!XmppActor.Client.TryGetExtension(out ContractsClient Contracts))
+			if (XmppActor.Client is null)
+				throw new Exception("XMPP connection closed.");
+
+			if (!(XmppActor.Client?.TryGetExtension(out ContractsClient Contracts) ?? false))
 				throw new Exception("Actor does not have a registered legal extension.");
 
 			Variables[Variable] = await Contracts.GetLatestApprovedLegalId();
