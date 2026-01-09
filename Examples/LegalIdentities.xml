@@ -5,8 +5,8 @@
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
-       timeCycle="PT1M"
-       duration="PT1M">
+       timeCycle="PT10M"
+       duration="PT10M">
 	<Meta>
 		<Title>Legal Identities</Title>
 		<Introduction>Simulates a collection of XMPP accounts that apply for legal identities.</Introduction>
@@ -108,8 +108,8 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
-		<Uniform id="PetitionIdentity" from="10" to="60" N="500"/>
-		<Uniform id="PetitionSignature" from="10" to="60" N="500"/>
+		<Normal id="PetitionIdentity" μ="240" σ="60" N="2000"/>
+		<Normal id="PetitionSignature" μ="360" σ="60" N="2000"/>
 	</Distributions>
 	<Events>
 		<StochasticEvent distribution="PetitionIdentity" activity="SendIdentityPetition"
@@ -387,6 +387,14 @@
 		<Activity id="OnPetitionedIdentityResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for an identity has been received.</Description>
 			<Start/>
+			<Conditional>
+				<Condition condition="e.Response">
+					<Inc counter="IdentityPetitionSuccessful"/>
+				</Condition>
+				<Otherwise>
+					<Inc counter="IdentityPetitionDeclined"/>
+				</Otherwise>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="OnPetitionForSignatureReceived" logStart="false" logEnd="false">
@@ -398,6 +406,14 @@
 		<Activity id="OnPetitionedSignatureResponseReceived" logStart="false" logEnd="false">
 			<Description>Executed when a response to a petition for a signature has been received.</Description>
 			<Start/>
+			<Conditional>
+				<Condition condition="e.Response">
+					<Inc counter="SignaturePetitionSuccessful"/>
+				</Condition>
+				<Otherwise>
+					<Inc counter="SignaturePetitionDeclined"/>
+				</Otherwise>
+			</Conditional>
 			<Stop/>
 		</Activity>
 		<Activity id="OnIdentityReview" logStart="false" logEnd="false">

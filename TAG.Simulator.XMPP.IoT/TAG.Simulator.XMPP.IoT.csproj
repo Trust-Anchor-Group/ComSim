@@ -6,7 +6,7 @@
     <Company>Trust Anchor Group AB</Company>
     <Product>ComSim</Product>
     <Description>Extension library to the ComSim simulator, providing support for IoT-related extensions to XMPP.</Description>
-    <Copyright>Copyright © Trust Anchor Group 2020-2024. All rights reserved.</Copyright>
+    <Copyright>Copyright © Trust Anchor Group 2020-2026. All rights reserved.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
