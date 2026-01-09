@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>$(ProjectDir)\TAG.Simulator.XMPP.IoT.xml</DocumentationFile>
-  </PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="Schema\ComSimXmppIoT.xsd" />

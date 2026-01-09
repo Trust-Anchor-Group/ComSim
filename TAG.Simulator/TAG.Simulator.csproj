@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>$(ProjectDir)\TAG.Simulator.xml</DocumentationFile>
-  </PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="Schema\ComSim.xsd" />

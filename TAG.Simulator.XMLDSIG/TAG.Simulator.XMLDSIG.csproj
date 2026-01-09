@@ -11,8 +11,8 @@ https://www.w3.org/TR/xmldsig-core/</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>$(ProjectDir)\TAG.Simulator.XMLDSIG.xml</DocumentationFile>
-  </PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="Schema\ComSimXmlDSig.xsd" />
