@@ -54,7 +54,7 @@
 		</web:WebActor>
 	</Actors>
 	<Distributions>
-		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="200"/>
+		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="100"/>
 	</Distributions>
 	<Events>
 		<StochasticEvent distribution="DoUnauthenticatedTask" activity="GetUnauthenticatedPage">
