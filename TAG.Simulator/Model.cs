@@ -941,8 +941,6 @@ namespace TAG.Simulator
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 
-			this.Model.IncrementCounter("Finished");
-
 			if (LogEvent)
 				Log.Informational("Activity finished.", ActivityId, SourceId, "ActivityFinished", Tags);
 		}
@@ -962,8 +960,6 @@ namespace TAG.Simulator
 				PhysicalQuantity Q = new PhysicalQuantity(ElapsedTime.TotalSeconds, this.seconds);
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
-
-			this.Model.IncrementCounter("FinishedError");
 
 			Log.Error("Activity stopped due to error: " + Error.Message, ActivityId, SourceId, "ActivityError", EventLevel.Medium,
 				string.Empty, string.Empty, Error.StackTrace, Tags);
