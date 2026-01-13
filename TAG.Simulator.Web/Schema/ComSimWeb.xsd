@@ -40,6 +40,7 @@
 				</xs:choice>
 				<xs:attribute name="actor" type="xs:string" use="required"/>
 				<xs:attribute name="url" type="xs:string" use="required"/>
+				<xs:attribute name="timeout" type="xs:string" use="optional" default="PT10S"/>
 				<xs:attribute name="variable" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:complexContent>

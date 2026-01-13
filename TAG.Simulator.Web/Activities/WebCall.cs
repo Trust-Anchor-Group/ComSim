@@ -30,6 +30,7 @@ namespace TAG.Simulator.Web.Activities
 		private StringAttribute actor;
 		private StringAttribute url;
 		private StringAttribute variable;
+		private DurationAttribute timeout;
 
 		/// <summary>
 		/// Registers a header node.
@@ -49,6 +50,7 @@ namespace TAG.Simulator.Web.Activities
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 			this.url = new StringAttribute(XML.Attribute(Definition, "url"));
 			this.variable = new StringAttribute(XML.Attribute(Definition, "variable"));
+			this.timeout = new DurationAttribute(XML.Attribute(Definition, "timeout"));
 
 			return base.FromXml(Definition);
 		}
@@ -74,6 +76,7 @@ namespace TAG.Simulator.Web.Activities
 		{
 			string Url = await this.url.GetValueAsync(Variables);
 			string Variable = await this.variable.GetValueAsync(Variables);
+			Waher.Content.Duration Timeout = this.timeout.IsEmpty ? Waher.Content.Duration.FromSeconds(10) : await this.timeout.GetValueAsync(Variables);
 			object Content = this.value is null ? null : await this.value.EvaluateAsync(Variables);
 			int i, c = this.headers.Count;
 			KeyValuePair<string, string>[] Headers = new KeyValuePair<string, string>[c];
@@ -97,7 +100,9 @@ namespace TAG.Simulator.Web.Activities
 			else
 				Data = null;
 
-			ContentResponse Response = await this.CallMethod(WebActor.Client, Url, Data, Headers);
+			ContentResponse Response = await this.CallMethod(WebActor.Client, Url, Data, 
+				Timeout, Headers);
+
 			Response.AssertOk();
 
 			if (!string.IsNullOrEmpty(Variable))
@@ -112,10 +117,11 @@ namespace TAG.Simulator.Web.Activities
 		/// <param name="Client">Client performing the call.</param>
 		/// <param name="Url">URL</param>
 		/// <param name="Content">Content payload, if any.</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers.</param>
 		/// <returns>Response.</returns>
 		public abstract Task<ContentResponse> CallMethod(CookieWebClient Client, string Url,
-			byte[] Content, KeyValuePair<string, string>[] Headers);
+			byte[] Content, Waher.Content.Duration Timeout, KeyValuePair<string, string>[] Headers);
 
 		/// <summary>
 		/// Exports PlantUML

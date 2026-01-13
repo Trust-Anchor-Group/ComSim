@@ -36,12 +36,13 @@ namespace TAG.Simulator.Web.Activities
 		/// <param name="Client">Client performing the call.</param>
 		/// <param name="Url">URL</param>
 		/// <param name="Content">Content payload, if any.</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers.</param>
 		/// <returns>Response.</returns>
 		public override Task<ContentResponse> CallMethod(CookieWebClient Client, string Url, 
-			byte[] Content, KeyValuePair<string, string>[] Headers)
+			byte[] Content, Duration Timeout, KeyValuePair<string, string>[] Headers)
 		{
-			return Client.TRACE(Url, Headers);
+			return Client.TRACE(Url, Timeout, Headers);
 		}
 	}
 }

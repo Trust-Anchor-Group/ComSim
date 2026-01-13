@@ -42,6 +42,11 @@ namespace TAG.Simulator.ObjectModel
 		public string ValueString => this.valueString;
 
 		/// <summary>
+		/// If the attribute is empty.
+		/// </summary>
+		public bool IsEmpty => string.IsNullOrEmpty(this.valueString);
+
+		/// <summary>
 		/// Gets the value of the attribute.
 		/// </summary>
 		/// <param name="Variables">Current set of variables.</param>

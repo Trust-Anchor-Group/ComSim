@@ -69,24 +69,26 @@ namespace TAG.Simulator.Web.Actors
 		/// Performs a HEAD operation.
 		/// </summary>
 		/// <param name="Url">URL</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> HEAD(string Url,
+		public Task<ContentResponse> HEAD(string Url, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Head, Headers);
+			return this.Send(Url, HttpMethod.Head, Timeout, Headers);
 		}
 
 		/// <summary>
 		/// Performs a GET operation.
 		/// </summary>
 		/// <param name="Url">URL</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> GET(string Url,
+		public Task<ContentResponse> GET(string Url, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Get, Headers);
+			return this.Send(Url, HttpMethod.Get, Timeout, Headers);
 		}
 
 		/// <summary>
@@ -94,12 +96,13 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		/// <param name="Url">URL</param>
 		/// <param name="Data">Payload</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> POST(string Url, byte[] Data,
+		public Task<ContentResponse> POST(string Url, byte[] Data, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Post, Data, Headers);
+			return this.Send(Url, HttpMethod.Post, Data, Timeout, Headers);
 		}
 
 		/// <summary>
@@ -107,48 +110,52 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		/// <param name="Url">URL</param>
 		/// <param name="Data">Payload</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> PUT(string Url, byte[] Data,
+		public Task<ContentResponse> PUT(string Url, byte[] Data, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Put, Data, Headers);
+			return this.Send(Url, HttpMethod.Put, Data, Timeout, Headers);
 		}
 
 		/// <summary>
 		/// Performs a DELETE operation.
 		/// </summary>
 		/// <param name="Url">URL</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> DELETE(string Url,
+		public Task<ContentResponse> DELETE(string Url, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Delete, Headers);
+			return this.Send(Url, HttpMethod.Delete, Timeout, Headers);
 		}
 
 		/// <summary>
 		/// Performs a OPTIONS operation.
 		/// </summary>
 		/// <param name="Url">URL</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> OPTIONS(string Url,
+		public Task<ContentResponse> OPTIONS(string Url, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Options, Headers);
+			return this.Send(Url, HttpMethod.Options, Timeout, Headers);
 		}
 
 		/// <summary>
 		/// Performs a TRACE operation.
 		/// </summary>
 		/// <param name="Url">URL</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> TRACE(string Url,
+		public Task<ContentResponse> TRACE(string Url, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Trace, Headers);
+			return this.Send(Url, HttpMethod.Trace, Timeout, Headers);
 		}
 
 		/// <summary>
@@ -156,12 +163,13 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		/// <param name="Url">URL</param>
 		/// <param name="Data">Payload</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<ContentResponse> PATCH(string Url, byte[] Data,
+		public Task<ContentResponse> PATCH(string Url, byte[] Data, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, HttpMethod.Patch, Data, Headers);
+			return this.Send(Url, HttpMethod.Patch, Data, Timeout, Headers);
 		}
 
 		/// <summary>
@@ -169,12 +177,13 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		/// <param name="Url">URL</param>
 		/// <param name="Method">HTTP Method</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		private Task<ContentResponse> Send(string Url, HttpMethod Method,
+		private Task<ContentResponse> Send(string Url, HttpMethod Method, Duration Timeout,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			return this.Send(Url, Method, null, Headers);
+			return this.Send(Url, Method, null, Timeout, Headers);
 		}
 
 		/// <summary>
@@ -183,13 +192,14 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Method">HTTP Method</param>
 		/// <param name="Data">Binary payload.</param>
+		/// <param name="Timeout">Duration before a request times out.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
 		private async Task<ContentResponse> Send(string Url, HttpMethod Method, byte[] Data,
-			params KeyValuePair<string, string>[] Headers)
+			Duration Timeout, params KeyValuePair<string, string>[] Headers)
 		{
 			Uri Uri = new(Url);
-			using HttpClient Client = this.GetClient();
+			using HttpClient Client = this.GetClient(Timeout);
 			HttpRequestMessage Request = this.GetRequest(Method, Uri, Headers);
 
 			if (Data is not null)
@@ -253,8 +263,11 @@ namespace TAG.Simulator.Web.Actors
 			return await WebGetter.ProcessResponse(Response, Uri);
 		}
 
-		private HttpClient GetClient()
+		private HttpClient GetClient(Duration Timeout)
 		{
+			DateTime Now = DateTime.UtcNow;
+			TimeSpan TS = (Now + Timeout).Subtract(Now);
+
 			SocketsHttpHandler Handler = new()
 			{
 				Credentials = this.credentials,
@@ -263,7 +276,7 @@ namespace TAG.Simulator.Web.Actors
 				UseCookies = true,
 				AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli,
 				InitialHttp2StreamWindowSize = 65535,
-				ConnectTimeout = TimeSpan.FromSeconds(10),
+				ConnectTimeout = TS.TotalSeconds < 10 ? TS : TimeSpan.FromSeconds(10),
 				SslOptions = new SslClientAuthenticationOptions()
 				{
 					RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
@@ -272,7 +285,7 @@ namespace TAG.Simulator.Web.Actors
 
 			HttpClient Client = new(Handler)
 			{
-				Timeout = TimeSpan.FromSeconds(240)
+				Timeout = TS
 			};
 
 			if (this.protocolVersion is not null)

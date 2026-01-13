@@ -31,7 +31,7 @@ namespace TAG.Simulator.ObjectModel
 				this.hasEmbeddedScript = j > i;
 				this.isOnlyScript = this.hasEmbeddedScript && i == 0 && j == Value.Length - 1;
 				if (this.isOnlyScript)
-					this.expression = new Expression(Value.Substring(1, j - i - 1));
+					this.expression = new Expression(Value[1..(j - i)]);
 			}
 		}
 
@@ -39,6 +39,11 @@ namespace TAG.Simulator.ObjectModel
 		/// String value, from definition
 		/// </summary>
 		public string Value => this.value;
+
+		/// <summary>
+		/// If the attribute is empty.
+		/// </summary>
+		public bool IsEmpty => string.IsNullOrEmpty(this.value);
 
 		/// <summary>
 		/// Gets the value of the attribute.

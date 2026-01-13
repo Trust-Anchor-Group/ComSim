@@ -50,7 +50,7 @@
 		<Assembly fileName="TAG.Simulator.Web.dll"/>
 	</Assemblies>
 	<Actors>
-		<web:WebActor id="WebUser" N="10">
+		<web:WebActor id="WebUser" N="10" httpVersion="1.1">
 		</web:WebActor>
 	</Actors>
 	<Distributions>
@@ -65,10 +65,13 @@
 		</StochasticEvent>
 	</Events>
 	<Activities>
-		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
+		<Activity id="GetUnauthenticatedPage" logStart="true" logEnd="true">
 			<Description>Gets a web page that does not require the user to login.</Description>
 			<Start/>
-			<web:GET actor="User" url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation" variable="Response"/>
+			<web:GET actor="User" 
+							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation" 
+							 timeout="PT10S"
+							 variable="Response"/>
 			<Stop/>
 		</Activity>
 	</Activities>

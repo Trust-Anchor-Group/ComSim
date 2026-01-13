@@ -53,7 +53,7 @@ namespace TAG.Simulator.ObjectModel
 					this.hasEmbeddedScript = true;
 					this.isOnlyScript = this.hasEmbeddedScript && i == 0 && j == Value.Length - 1;
 					if (this.isOnlyScript)
-						this.expression = new Expression(Value.Substring(1, j - i - 1));
+						this.expression = new Expression(Value[1..(j - i)]);
 				}
 				else
 					throw new Exception("Invalid enumeration value: " + Value);
@@ -64,6 +64,11 @@ namespace TAG.Simulator.ObjectModel
 		/// String value, from definition
 		/// </summary>
 		public string ValueString => this.valueString;
+
+		/// <summary>
+		/// If the attribute is empty.
+		/// </summary>
+		public bool IsEmpty => string.IsNullOrEmpty(this.valueString);
 
 		/// <summary>
 		/// Gets the value of the attribute.
