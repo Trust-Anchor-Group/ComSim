@@ -118,7 +118,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			WebActor Result = new(this.Parent, this.Model, InstanceIndex, InstanceId)
+			WebActor Result = new(this, this.Model, InstanceIndex, InstanceId)
 			{
 				protocolVersion = this.protocolVersion,
 				userName = this.userName,
