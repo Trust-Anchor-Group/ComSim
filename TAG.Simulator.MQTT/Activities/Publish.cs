@@ -129,7 +129,7 @@ namespace TAG.Simulator.MQTT.Activities
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".Publish");
-			Output.Write("(");
+			Output.Write('(');
 
 			Indentation++;
 

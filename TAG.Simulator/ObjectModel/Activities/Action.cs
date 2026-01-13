@@ -224,7 +224,7 @@ namespace TAG.Simulator.ObjectModel.Activities
 			Output.Write(this.actor.Value);
 			Output.Write('.');
 			Output.Write(this.action.Value);
-			Output.Write("(");
+			Output.Write('(');
 
 			Indentation++;
 

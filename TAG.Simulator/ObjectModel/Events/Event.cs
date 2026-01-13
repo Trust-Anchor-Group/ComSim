@@ -294,7 +294,7 @@ namespace TAG.Simulator.ObjectModel.Events
 					Output.Write(IndexStr);
 					Output.Write(" : ");
 					Output.Write(ExternalEvent.Name);
-					Output.Write("(");
+					Output.Write('(');
 
 					IEnumerable<Parameter> Parameters = ExternalEvent.Parameters;
 					if (!(Parameters is null))

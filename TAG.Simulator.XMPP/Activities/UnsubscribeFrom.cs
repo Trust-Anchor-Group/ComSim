@@ -99,7 +99,7 @@ namespace TAG.Simulator.XMPP.Activities
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".UnsubscribeFrom");
-			Output.Write("(");
+			Output.Write('(');
 
 			Indentation++;
 

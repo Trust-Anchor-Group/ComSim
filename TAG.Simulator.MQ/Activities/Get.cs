@@ -106,7 +106,7 @@ namespace TAG.Simulator.MQ.Activities
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".Get");
-			Output.Write("(");
+			Output.Write('(');
 
 			Indentation++;
 
