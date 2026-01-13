@@ -112,7 +112,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			Output.Write(':');
 			Output.Write(this.actor.Value);
 			Output.Write(".ApplyLegalId");
-			Output.Write("(");
+			Output.Write('(');
 
 			Indentation++;
 

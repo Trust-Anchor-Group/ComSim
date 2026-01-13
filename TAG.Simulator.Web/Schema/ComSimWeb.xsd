@@ -38,6 +38,7 @@
 				<xs:choice>
 					<xs:element ref="Header" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:choice>
+				<xs:attribute name="actor" type="xs:string" use="required"/>
 				<xs:attribute name="url" type="xs:string" use="required"/>
 				<xs:attribute name="variable" type="xs:string" use="required"/>
 			</xs:extension>

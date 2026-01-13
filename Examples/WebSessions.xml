@@ -68,7 +68,7 @@
 		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
 			<Description>Gets a web page that does not require the user to login.</Description>
 			<Start/>
-			<web:GET url="https://lab.tagroot.io/Community/Index.md" variable="Response"/>
+			<web:GET actor="User" url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation" variable="Response"/>
 			<Stop/>
 		</Activity>
 	</Activities>

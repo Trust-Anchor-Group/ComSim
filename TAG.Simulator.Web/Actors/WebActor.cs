@@ -18,12 +18,12 @@ namespace TAG.Simulator.Web.Actors
 		/// <summary>
 		/// http://lab.tagroot.io/Schema/ComSim/Web.xsd
 		/// </summary>
-		public const string XmppNamespace = "http://lab.tagroot.io/Schema/ComSim/Web.xsd";
+		public const string WebNamespace = "http://lab.tagroot.io/Schema/ComSim/Web.xsd";
 
 		/// <summary>
-		/// TAG.Simulator.XMPP.Schema.ComSimXmpp.xsd
+		/// TAG.Simulator.Web.Schema.ComSimWeb.xsd
 		/// </summary>
-		public const string XmppSchema = "TAG.Simulator.Web.Schema.ComSimWeb.xsd";
+		public const string WebSchema = "TAG.Simulator.Web.Schema.ComSimWeb.xsd";
 
 		private CookieWebClient client;
 		private AccountCredentials credentials;
@@ -63,12 +63,12 @@ namespace TAG.Simulator.Web.Actors
 		/// <summary>
 		/// XML Namespace where the element is defined.
 		/// </summary>
-		public override string Namespace => XmppNamespace;
+		public override string Namespace => WebNamespace;
 
 		/// <summary>
 		/// Points to the embedded XML Schema resource defining the semantics of the XML namespace.
 		/// </summary>
-		public override string SchemaResource => XmppSchema;
+		public override string SchemaResource => WebSchema;
 
 		/// <summary>
 		/// XMPP Client

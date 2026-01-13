@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
-using TAG.Simulator.XMPP.Actors;
 using Waher.Content.Xml;
-using Waher.Networking.XMPP.Contracts;
 using Waher.Script;
 
-namespace TAG.Simulator.XMPP.Legal.Activities
+namespace TAG.Simulator.Web.Activities
 {
 	/// <summary>
-	/// Flags an identity as ready for approval.
+	/// Represents an identity property.
 	/// </summary>
-	public class ReadyForApproval : LegalActivityNode
+	public class Header : WebNode
 	{
-		private StringAttribute actor;
-		private StringAttribute legalId;
+		private StringAttribute name;
+		private StringAttribute value;
 
 		/// <summary>
-		/// Flags an identity as ready for approval.
+		/// Represents an identity property.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public ReadyForApproval(ISimulationNode Parent, Model Model)
+		public Header(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -34,7 +31,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(ReadyForApproval);
+		public override string LocalName => nameof(Header);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -44,7 +41,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new ReadyForApproval(Parent, Model);
+			return new Header(Parent, Model);
 		}
 
 		/// <summary>
@@ -53,10 +50,21 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <param name="Definition">XML definition</param>
 		public override Task FromXml(XmlElement Definition)
 		{
-			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
-			this.legalId = new StringAttribute(XML.Attribute(Definition, "legalId"));
+			this.name = new StringAttribute(XML.Attribute(Definition, "name"));
+			this.value = new StringAttribute(XML.Attribute(Definition, "value"));
 
 			return base.FromXml(Definition);
+		}
+
+		/// <summary>
+		/// Initialized the node before simulation.
+		/// </summary>
+		public override Task Initialize()
+		{
+			if (this.Parent is WebCall WebCall)
+				WebCall.Register(this);
+
+			return base.Initialize();
 		}
 
 		/// <summary>
@@ -64,22 +72,22 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// </summary>
 		/// <param name="Variables">Set of variables for the activity.</param>
 		/// <returns>Next node of execution, if different from the default, otherwise null (for default).</returns>
-		public override async Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
+		public override Task<LinkedListNode<IActivityNode>> Execute(Variables Variables)
 		{
-			string LegalId = await this.legalId.GetValueAsync(Variables);
+			return Task.FromResult<LinkedListNode<IActivityNode>>(null);
+		}
 
-			if (!(await this.GetActorObjectAsync(this.actor, Variables) is XmppActivityObject XmppActor))
-				throw new Exception("Actor not an XMPP client.");
+		/// <summary>
+		/// Evaluates the property name and value.
+		/// </summary>
+		/// <param name="Variables">Set of variables for the activity.</param>
+		/// <returns>Evaluated property.</returns>
+		public async Task<KeyValuePair<string, string>> Evaluate(Variables Variables)
+		{
+			string Name = await this.name.GetValueAsync(Variables);
+			string Value = await this.value.GetValueAsync(Variables);
 
-			if (XmppActor.Client is null)
-				throw new Exception("XMPP connection closed.");
-
-			if (!(XmppActor.Client?.TryGetExtension(out ContractsClient Contracts) ?? false))
-				throw new Exception("Actor does not have a registered legal extension.");
-
-			await Contracts.ReadyForApprovalAsync(LegalId);
-
-			return null;
+			return new KeyValuePair<string, string>(Name, Value);
 		}
 
 		/// <summary>
@@ -90,19 +98,8 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
-			base.ExportPlantUml(Output, Indentation, QuoteChar);
-
-			Output.Indent(Indentation);
-			Output.Write(':');
-			Output.Write(this.actor.Value);
-			Output.Write(".ReadyForApproval");
-			Output.Write('(');
-
-			Indentation++;
-
-			Output.AppendUmlArgument(Indentation, "LegalId", this.legalId.Value, true, QuoteChar);
-
-			Output.WriteLine(");");
+			Output.AppendUmlArgument(Indentation, this.name.Value, this.value.Value, true, QuoteChar);
 		}
+
 	}
 }

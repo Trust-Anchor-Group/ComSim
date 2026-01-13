@@ -7,6 +7,7 @@ using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Waher.Content;
+using Waher.Content.Getters;
 using Waher.Networking;
 using Waher.Networking.Sniffers;
 
@@ -20,7 +21,6 @@ namespace TAG.Simulator.Web.Actors
 		private readonly Version protocolVersion;
 		private readonly CookieContainer cookies = new();
 		private readonly NetworkCredential credentials = null;
-		private readonly ISniffer[] sniffers;
 
 		/// <summary>
 		/// HTTP Client with cookie support.
@@ -43,7 +43,6 @@ namespace TAG.Simulator.Web.Actors
 			: base(true, Sniffers)
 		{
 			this.protocolVersion = ProtocolVersion;
-			this.sniffers = Sniffers;
 
 			if (!string.IsNullOrEmpty(UserName))
 				this.credentials = new NetworkCredential(UserName, Password);
@@ -72,7 +71,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> HEAD(string Url,
+		public Task<ContentResponse> HEAD(string Url,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Head, Headers);
@@ -84,7 +83,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> GET(string Url,
+		public Task<ContentResponse> GET(string Url,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Get, Headers);
@@ -97,7 +96,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Data">Payload</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> POST(string Url, byte[] Data,
+		public Task<ContentResponse> POST(string Url, byte[] Data,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Post, Data, Headers);
@@ -110,7 +109,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Data">Payload</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> PUT(string Url, byte[] Data,
+		public Task<ContentResponse> PUT(string Url, byte[] Data,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Put, Data, Headers);
@@ -122,7 +121,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> DELETE(string Url,
+		public Task<ContentResponse> DELETE(string Url,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Delete, Headers);
@@ -134,7 +133,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> OPTIONS(string Url,
+		public Task<ContentResponse> OPTIONS(string Url,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Options, Headers);
@@ -146,7 +145,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Url">URL</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> TRACE(string Url,
+		public Task<ContentResponse> TRACE(string Url,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Trace, Headers);
@@ -159,7 +158,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Data">Payload</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		public Task<byte[]> PATCH(string Url, byte[] Data,
+		public Task<ContentResponse> PATCH(string Url, byte[] Data,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, HttpMethod.Patch, Data, Headers);
@@ -172,7 +171,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Method">HTTP Method</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		private Task<byte[]> Send(string Url, HttpMethod Method,
+		private Task<ContentResponse> Send(string Url, HttpMethod Method,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			return this.Send(Url, Method, null, Headers);
@@ -186,11 +185,12 @@ namespace TAG.Simulator.Web.Actors
 		/// <param name="Data">Binary payload.</param>
 		/// <param name="Headers">HTTP Headers</param>
 		/// <returns>Response</returns>
-		private async Task<byte[]> Send(string Url, HttpMethod Method, byte[] Data,
+		private async Task<ContentResponse> Send(string Url, HttpMethod Method, byte[] Data,
 			params KeyValuePair<string, string>[] Headers)
 		{
+			Uri Uri = new(Url);
 			using HttpClient Client = this.GetClient();
-			HttpRequestMessage Request = this.GetRequest(Method, Url, Headers);
+			HttpRequestMessage Request = this.GetRequest(Method, Uri, Headers);
 
 			if (Data is not null)
 				Request.Content = new ByteArrayContent(Data);
@@ -202,8 +202,13 @@ namespace TAG.Simulator.Web.Actors
 				sb.Append(Method.ToString().ToUpper());
 				sb.Append(' ');
 				sb.Append(Url);
-				sb.Append(" HTTP/");
-				sb.Append(this.protocolVersion.ToString());
+
+				if (this.protocolVersion is not null)
+				{
+					sb.Append(" HTTP/");
+					sb.Append(this.protocolVersion.ToString());
+				}
+
 				sb.AppendLine();
 
 				foreach (KeyValuePair<string, string> Header in Headers)
@@ -245,9 +250,7 @@ namespace TAG.Simulator.Web.Actors
 			if (this.HasSniffers && Data is not null)
 				this.ReceiveBinary(false, Data);
 
-			Response.EnsureSuccessStatusCode();
-
-			return Data;
+			return await WebGetter.ProcessResponse(Response, Uri);
 		}
 
 		private HttpClient GetClient()
@@ -269,24 +272,30 @@ namespace TAG.Simulator.Web.Actors
 
 			HttpClient Client = new(Handler)
 			{
-				DefaultRequestVersion = this.protocolVersion,
-				DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact,
 				Timeout = TimeSpan.FromSeconds(240)
 			};
+
+			if (this.protocolVersion is not null)
+			{
+				Client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact;
+				Client.DefaultRequestVersion = this.protocolVersion;
+			}
 
 			Client.DefaultRequestHeaders.ConnectionClose = false;
 
 			return Client;
 		}
 
-		private HttpRequestMessage GetRequest(HttpMethod Method, string Url,
+		private HttpRequestMessage GetRequest(HttpMethod Method, Uri Uri,
 			params KeyValuePair<string, string>[] Headers)
 		{
-			HttpRequestMessage Request = new(Method, Url)
+			HttpRequestMessage Request = new(Method, Uri);
+
+			if (this.protocolVersion is not null)
 			{
-				Version = this.protocolVersion,
-				VersionPolicy = HttpVersionPolicy.RequestVersionExact
-			};
+				Request.Version = this.protocolVersion;
+				Request.VersionPolicy = HttpVersionPolicy.RequestVersionExact;
+			}
 
 			if (Headers is not null)
 			{

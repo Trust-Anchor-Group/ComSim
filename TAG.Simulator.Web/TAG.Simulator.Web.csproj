@@ -31,8 +31,4 @@
 			<SubType>Designer</SubType>
 		</EmbeddedResource>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Activities\" />
-	</ItemGroup>
 </Project>
