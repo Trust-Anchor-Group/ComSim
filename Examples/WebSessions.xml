@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:web="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT1M"
+       duration="PT1M">
+	<Meta>
+		<Title>Web Sessions</Title>
+		<Introduction>Simulates a collection of Web sessions that navigate password-protected pages.</Introduction>
+		<Description>
+			<![CDATA[ 
+			Simulates 10 Web clients, each representing a human user. Each user performs actions
+			on web pages that require web login to authenticate the user. To maintain sessions,
+			each user maintains its own set of cookies.
+			]]>
+		</Description>
+		<Preparation>
+			<![CDATA[
+			Web
+			------
+
+			The Web Client need accounts to use. The first time a simulated user attempts to login,
+			the simulator prompts the user for credentials to input into the web login form.
+			Credentials are stored in the internal database for reuse in subsequent logins.
+			]]>
+		</Preparation>
+		<ModelScript>
+			<![CDATA[
+			IntToStr2(i):=i<10?"0"+Str(i):Str(i);
+			
+			foreach i in 1..10 do
+			(
+				Global["User"+IntToStr2(i)]:=
+				{
+				};
+			);
+			
+			GetUserData(Actor):=
+			(
+				Suffix:=Actor.InstanceId.Substring(7);
+				i:=Num(Suffix);
+				Global["User"+Suffix];
+			)
+			]]>
+		</ModelScript>
+	</Meta>
+	<Assemblies>
+		<Assembly fileName="TAG.Simulator.Web.dll"/>
+	</Assemblies>
+	<Actors>
+		<web:WebActor id="WebUser" N="10">
+		</web:WebActor>
+	</Actors>
+	<Distributions>
+		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="200"/>
+	</Distributions>
+	<Events>
+		<StochasticEvent distribution="DoUnauthenticatedTask" activity="GetUnauthenticatedPage">
+			<Description>Performs a web task that does not require authentication.</Description>
+			<ActorReference name="User" exclusive="true">
+				<FromPopulation actor="WebUser"/>
+			</ActorReference>
+		</StochasticEvent>
+	</Events>
+	<Activities>
+		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
+			<Description>Gets a web page that does not require the user to login.</Description>
+			<Start/>
+			<web:GET url="https://lab.tagroot.io/Community/Index.md" variable="Response"/>
+			<Stop/>
+		</Activity>
+	</Activities>
+	<Graphs>
+	</Graphs>
+</Model>

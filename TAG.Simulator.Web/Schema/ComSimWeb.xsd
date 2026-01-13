@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ComSimXmpp"
+           targetNamespace="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+           elementFormDefault="qualified"
+           xmlns="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+           xmlns:mstns="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cs="http://lab.tagroot.io/Schema/ComSim.xsd">
+
+	<xs:import namespace="http://lab.tagroot.io/Schema/ComSim.xsd"/>
+
+	<xs:element name="WebActor">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:Actor">
+					<xs:attribute name="httpVersion" type="HttpVersion" use="optional" default="Default"/>
+					<xs:attribute name="loginUrl" type="xs:string" use="optional"/>
+					<xs:attribute name="userName" type="xs:string" use="optional"/>
+					<xs:attribute name="password" type="xs:string" use="optional"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="HttpVersion">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1.0"/>
+			<xs:enumeration value="1.1"/>
+			<xs:enumeration value="2.0"/>
+			<xs:enumeration value="3.0"/>
+			<xs:enumeration value="Default"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="WebCall">
+		<xs:complexContent>
+			<xs:extension base="cs:ActivityNode">
+				<xs:choice>
+					<xs:element ref="Header" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:choice>
+				<xs:attribute name="url" type="xs:string" use="required"/>
+				<xs:attribute name="variable" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="WebCallWithPayload">
+		<xs:complexContent>
+			<xs:extension base="WebCall">
+				<xs:choice>
+					<xs:element ref="Payload" minOccurs="1" maxOccurs="1"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="Header">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="value" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Payload">
+		<xs:complexType>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:group ref="cs:Value"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="HEAD" type="WebCall"/>
+	<xs:element name="GET" type="WebCall"/>
+	<xs:element name="POST" type="WebCallWithPayload"/>
+	<xs:element name="PUT" type="WebCallWithPayload"/>
+	<xs:element name="DELETE" type="WebCall"/>
+	<xs:element name="OPTIONS" type="WebCall"/>
+	<xs:element name="TRACE" type="WebCall"/>
+	<xs:element name="PATCH" type="WebCallWithPayload"/>
+
+</xs:schema>
