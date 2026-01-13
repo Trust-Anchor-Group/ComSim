@@ -65,7 +65,7 @@
 		</StochasticEvent>
 	</Events>
 	<Activities>
-		<Activity id="GetUnauthenticatedPage" logStart="true" logEnd="true">
+		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
 			<Description>Gets a web page that does not require the user to login.</Description>
 			<Start/>
 			<web:GET actor="User" 
