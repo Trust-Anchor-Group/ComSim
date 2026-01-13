@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -332,6 +333,10 @@ namespace TAG.Simulator.Web.Actors
 						case "Cookie":
 							foreach (KeyValuePair<string, string> P in CommonTypes.ParseFieldValues(Header.Value))
 								this.cookies.Add(Request.RequestUri, new Cookie(P.Key, P.Value));
+							break;
+
+						case "Content-Type":
+							Request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(Header.Value);
 							break;
 
 						default:

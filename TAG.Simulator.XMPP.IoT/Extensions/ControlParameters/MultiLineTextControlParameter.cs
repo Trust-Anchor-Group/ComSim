@@ -46,11 +46,11 @@ namespace TAG.Simulator.XMPP.IoT.Extensions.ControlParameters
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
-		public override async Task FromXml(XmlElement Definition)
+		public override Task FromXml(XmlElement Definition)
 		{
 			this.regularExpression = XML.Attribute(Definition, "regularExpression");
 
-			await base.FromXml(Definition);
+			return base.FromXml(Definition);
 		}
 
 		/// <summary>

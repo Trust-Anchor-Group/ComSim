@@ -23,10 +23,10 @@ namespace TAG.Simulator.Web.Activities
 	/// <param name="Parent">Parent node</param>
 	/// <param name="Model">Model in which the node is defined.</param>
 	public abstract class WebCall(ISimulationNode Parent, Model Model)
-		: WebNode(Parent, Model), IValueRecipient
+		: WebNode(Parent, Model)
 	{
 		private readonly ChunkedList<Header> headers = [];
-		private IValue value;
+		private Payload payload;
 		private StringAttribute actor;
 		private StringAttribute url;
 		private StringAttribute variable;
@@ -45,26 +45,25 @@ namespace TAG.Simulator.Web.Activities
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
-		public override Task FromXml(XmlElement Definition)
+		public override async Task FromXml(XmlElement Definition)
 		{
 			this.actor = new StringAttribute(XML.Attribute(Definition, "actor"));
 			this.url = new StringAttribute(XML.Attribute(Definition, "url"));
 			this.variable = new StringAttribute(XML.Attribute(Definition, "variable"));
 			this.timeout = new DurationAttribute(XML.Attribute(Definition, "timeout"));
 
-			return base.FromXml(Definition);
-		}
+			await base.FromXml(Definition);
 
-		/// <summary>
-		/// Registers a value for the argument.
-		/// </summary>
-		/// <param name="Value">Value node</param>
-		public void Register(IValue Value)
-		{
-			if (this.value is null)
-				this.value = Value;
-			else
-				throw new Exception("Value already registered.");
+			foreach (ISimulationNode Node in this.Children)
+			{
+				if (Node is Payload Payload)
+				{
+					if (this.payload is null)
+						this.payload = Payload;
+					else
+						throw new Exception("Only one payload node allowed.");
+				}
+			}
 		}
 
 		/// <summary>
@@ -77,7 +76,7 @@ namespace TAG.Simulator.Web.Activities
 			string Url = await this.url.GetValueAsync(Variables);
 			string Variable = await this.variable.GetValueAsync(Variables);
 			Waher.Content.Duration Timeout = this.timeout.IsEmpty ? Waher.Content.Duration.FromSeconds(10) : await this.timeout.GetValueAsync(Variables);
-			object Content = this.value is null ? null : await this.value.EvaluateAsync(Variables);
+			object Content = this.payload?.Value is null ? null : await this.payload.Value.EvaluateAsync(Variables);
 			int i, c = this.headers.Count;
 			KeyValuePair<string, string>[] Headers = new KeyValuePair<string, string>[c];
 
@@ -100,7 +99,7 @@ namespace TAG.Simulator.Web.Activities
 			else
 				Data = null;
 
-			ContentResponse Response = await this.CallMethod(WebActor.Client, Url, Data, 
+			ContentResponse Response = await this.CallMethod(WebActor.Client, Url, Data,
 				Timeout, Headers);
 
 			Response.AssertOk();
@@ -147,12 +146,12 @@ namespace TAG.Simulator.Web.Activities
 			if (!string.IsNullOrEmpty(this.variable.Value))
 				Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, false, QuoteChar);
 
-			if (this.value is not null)
+			if (this.payload?.Value is not null)
 			{
-				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
+				if (this.payload.Value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
 					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.payload.Value, QuoteChar);
 			}
 
 			foreach (Header P in this.headers)

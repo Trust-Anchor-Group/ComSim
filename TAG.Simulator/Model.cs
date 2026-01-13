@@ -961,7 +961,7 @@ namespace TAG.Simulator
 				this.activityTimeStatistics.Sample(ActivityId, Q);
 			}
 
-			Log.Error("Activity stopped due to error: " + Error.Message, ActivityId, SourceId, "ActivityError", EventLevel.Medium,
+			Log.Critical("Activity stopped due to error: " + Error.Message, ActivityId, SourceId, "ActivityError", EventLevel.Medium,
 				string.Empty, string.Empty, Error.StackTrace, Tags);
 		}
 
