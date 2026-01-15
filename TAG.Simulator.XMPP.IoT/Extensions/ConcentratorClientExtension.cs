@@ -49,11 +49,9 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Extension.OnEvent += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnEvent",
+				return this.Model.ExternalEvent(Instance, "OnEvent",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

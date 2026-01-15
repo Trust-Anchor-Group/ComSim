@@ -49,38 +49,30 @@ namespace TAG.Simulator.XMPP.Extensions
 
 			Extension.AvatarAdded += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "AvatarAdded",
+				return this.Model.ExternalEvent(Instance, "AvatarAdded",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.AvatarRemoved += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "AvatarRemoved",
+				return this.Model.ExternalEvent(Instance, "AvatarRemoved",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.AvatarUpdated += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "AvatarUpdated",
+				return this.Model.ExternalEvent(Instance, "AvatarUpdated",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.VCardReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "VCardReceived",
+				return this.Model.ExternalEvent(Instance, "VCardReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

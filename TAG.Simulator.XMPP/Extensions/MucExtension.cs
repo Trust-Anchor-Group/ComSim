@@ -64,101 +64,79 @@ namespace TAG.Simulator.XMPP.Extensions
 
 			Extension.OccupantPresence += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OccupantPresence",
+				return this.Model.ExternalEvent(Instance, "OccupantPresence",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.OccupantRequest += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OccupantRequest",
+				return this.Model.ExternalEvent(Instance, "OccupantRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.PrivateMessageReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "PrivateMessageReceived",
+				return this.Model.ExternalEvent(Instance, "PrivateMessageReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RegistrationRequest += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RegistrationRequest",
+				return this.Model.ExternalEvent(Instance, "RegistrationRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomDeclinedInvitationReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomDeclinedInvitationReceived",
+				return this.Model.ExternalEvent(Instance, "RoomDeclinedInvitationReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomDestroyed += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomDestroyed",
+				return this.Model.ExternalEvent(Instance, "RoomDestroyed",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomInvitationReceived += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomInvitationReceived",
+				return this.Model.ExternalEvent(Instance, "RoomInvitationReceived",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomMessage += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomMessage",
+				return this.Model.ExternalEvent(Instance, "RoomMessage",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomOccupantMessage += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomOccupantMessage",
+				return this.Model.ExternalEvent(Instance, "RoomOccupantMessage",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomPresence += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomPresence",
+				return this.Model.ExternalEvent(Instance, "RoomPresence",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.RoomSubject += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "RoomSubject",
+				return this.Model.ExternalEvent(Instance, "RoomSubject",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

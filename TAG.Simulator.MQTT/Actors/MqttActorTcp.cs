@@ -206,74 +206,58 @@ namespace TAG.Simulator.MQTT.Actors
 
 		private Task Client_OnUnsubscribed(object Sender, ushort PacketIdentifier)
 		{
-			this.Model.ExternalEvent(this, "OnUnsubscribed",
+			return this.Model.ExternalEvent(this, "OnUnsubscribed",
 				new KeyValuePair<string, object>("PacketIdentifier", PacketIdentifier),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnSubscribed(object Sender, ushort PacketIdentifier)
 		{
-			this.Model.ExternalEvent(this, "OnSubscribed",
+			return this.Model.ExternalEvent(this, "OnSubscribed",
 				new KeyValuePair<string, object>("PacketIdentifier", PacketIdentifier),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnPublished(object Sender, ushort PacketIdentifier)
 		{
-			this.Model.ExternalEvent(this, "OnPublished",
+			return this.Model.ExternalEvent(this, "OnPublished",
 				new KeyValuePair<string, object>("PacketIdentifier", PacketIdentifier),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnPingResponse(object Sender, EventArgs e)
 		{
-			this.Model.ExternalEvent(this, "OnPingResponse",
+			return this.Model.ExternalEvent(this, "OnPingResponse",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnPing(object Sender, EventArgs e)
 		{
-			this.Model.ExternalEvent(this, "OnPing",
+			return this.Model.ExternalEvent(this, "OnPing",
 				new KeyValuePair<string, object>("e", e),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnContentReceived(object Sender, MqttContent Content)
 		{
-			this.Model.ExternalEvent(this, "OnContentReceived",
+			return this.Model.ExternalEvent(this, "OnContentReceived",
 				new KeyValuePair<string, object>("Content", Content),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnError(object Sender, Exception Exception)
 		{
-			this.Model.ExternalEvent(this, "Error",
+			return this.Model.ExternalEvent(this, "Error",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnConnectionError(object Sender, Exception Exception)
 		{
-			this.Model.ExternalEvent(this, "ConnectionError",
+			return this.Model.ExternalEvent(this, "ConnectionError",
 				new KeyValuePair<string, object>("Exception", Exception),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		private Task Client_OnStateChanged(object Sender, MqttState NewState)
@@ -298,11 +282,9 @@ namespace TAG.Simulator.MQTT.Actors
 					break;
 			}
 
-			this.Model.ExternalEvent(this, "OnStateChanged",
+			return this.Model.ExternalEvent(this, "OnStateChanged",
 				new KeyValuePair<string, object>("NewState", NewState),
 				new KeyValuePair<string, object>("Client", this.client));
-
-			return Task.CompletedTask;
 		}
 
 		/// <summary>

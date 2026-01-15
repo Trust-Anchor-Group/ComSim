@@ -64,56 +64,44 @@ namespace TAG.Simulator.XMPP.Extensions
 
 			Extension.AffiliationNotification += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "AffiliationNotification",
+				return this.Model.ExternalEvent(Instance, "AffiliationNotification",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.ItemNotification += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ItemNotification",
+				return this.Model.ExternalEvent(Instance, "ItemNotification",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.ItemRetracted += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "ItemRetracted",
+				return this.Model.ExternalEvent(Instance, "ItemRetracted",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.NodePurged += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "NodePurged",
+				return this.Model.ExternalEvent(Instance, "NodePurged",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.SubscriptionRequest += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "SubscriptionRequest",
+				return this.Model.ExternalEvent(Instance, "SubscriptionRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.SubscriptionStatusChanged += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "SubscriptionStatusChanged",
+				return this.Model.ExternalEvent(Instance, "SubscriptionStatusChanged",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

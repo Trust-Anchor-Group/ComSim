@@ -49,65 +49,51 @@ namespace TAG.Simulator.XMPP.Extensions
 
 			Extension.NonPepItemNotification += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "NonPepItemNotification",
+				return this.Model.ExternalEvent(Instance, "NonPepItemNotification",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.NonPepItemRetraction += (Sender, e) =>
 			 {
-				 this.Model.ExternalEvent(Instance, "NonPepItemRetraction",
+				 return this.Model.ExternalEvent(Instance, "NonPepItemRetraction",
 					 new KeyValuePair<string, object>("e", e),
 					 new KeyValuePair<string, object>("Client", Client));
-
-				 return Task.CompletedTask;
 			 };
 
 			Extension.OnUserActivity += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnUserActivity",
+				return this.Model.ExternalEvent(Instance, "OnUserActivity",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.OnUserAvatarMetaData += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnUserAvatarMetaData",
+				return this.Model.ExternalEvent(Instance, "OnUserAvatarMetaData",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.OnUserLocation += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnUserLocation",
+				return this.Model.ExternalEvent(Instance, "OnUserLocation",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.OnUserMood += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnUserMood",
+				return this.Model.ExternalEvent(Instance, "OnUserMood",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.OnUserTune += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnUserTune",
+				return this.Model.ExternalEvent(Instance, "OnUserTune",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

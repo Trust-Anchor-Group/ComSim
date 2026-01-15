@@ -74,38 +74,30 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Extension.CanControlQuestion += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
+				return this.Model.ExternalEvent(Instance, "OnExecuteReadoutRequest",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.CanReadQuestion += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "CanReadQuestion",
+				return this.Model.ExternalEvent(Instance, "CanReadQuestion",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.IsFriendQuestion += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "IsFriendQuestion",
+				return this.Model.ExternalEvent(Instance, "IsFriendQuestion",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.CacheCleared += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "CacheCleared",
+				return this.Model.ExternalEvent(Instance, "CacheCleared",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);

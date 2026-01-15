@@ -78,9 +78,9 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Client.SetTag("ControlServer", Extension);
 
-			Extension.OnGetControlParameters += (Node) =>
+			Extension.OnGetControlParameters += async (Node) =>
 			{
-				this.Model.ExternalEvent(Instance, "OnGetControlParameters",
+				await this.Model.ExternalEvent(Instance, "OnGetControlParameters",
 					new KeyValuePair<string, object>("Node", Node),
 					new KeyValuePair<string, object>("Client", Client));
 
@@ -89,7 +89,7 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 				foreach (ControlParameterNode Parameter in this.parameters)
 					Parameter.AddParameters(Parameters, Instance);
 
-				return Task.FromResult<ControlParameter[]>(Parameters.ToArray());
+				return Parameters.ToArray();
 			};
 
 			return Task.FromResult<object>(Extension);

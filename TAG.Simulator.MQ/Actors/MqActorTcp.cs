@@ -231,11 +231,9 @@ namespace TAG.Simulator.MQ.Actors
 
 			private Task MessageReceived(object Sender, MqMessageEventArgs e)
 			{
-				this.Model.ExternalEvent(this.Actor, this.ExtEventName,
+				return this.Model.ExternalEvent(this.Actor, this.ExtEventName,
 					new KeyValuePair<string, object>("Message", e.Message),
 					new KeyValuePair<string, object>("Client", this.Actor.client));
-
-				return Task.CompletedTask;
 			}
 		}
 

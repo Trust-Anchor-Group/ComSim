@@ -68,29 +68,23 @@ namespace TAG.Simulator.XMPP.IoT.Extensions
 
 			Extension.Claimed += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "Claimed",
+				return this.Model.ExternalEvent(Instance, "Claimed",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.Disowned += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "Disowned",
+				return this.Model.ExternalEvent(Instance, "Disowned",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			Extension.Removed += (Sender, e) =>
 			{
-				this.Model.ExternalEvent(Instance, "Removed",
+				return this.Model.ExternalEvent(Instance, "Removed",
 					new KeyValuePair<string, object>("e", e),
 					new KeyValuePair<string, object>("Client", Client));
-
-				return Task.CompletedTask;
 			};
 
 			return Task.FromResult<object>(Extension);
