@@ -55,7 +55,7 @@
 	</Actors>
 	<Distributions>
 		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="100"/>
-		<Normal id="ReplyToPost" μ="24" σ="6" N="10"/>
+		<Normal id="ReplyToPost" μ="42" σ="6" N="10"/>
 	</Distributions>
 	<Events>
 		<StochasticEvent distribution="DoUnauthenticatedTask" activity="GetUnauthenticatedPage">
