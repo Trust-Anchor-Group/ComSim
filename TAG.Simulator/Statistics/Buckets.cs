@@ -22,6 +22,7 @@ namespace TAG.Simulator.Statistics
 		private readonly string title;
 		private readonly string labelY;
 		private readonly Model model;
+		private readonly DateTime start0;
 		private DateTime start;
 
 		/// <summary>
@@ -49,7 +50,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="IDs">Predefined IDs</param>
 		public Buckets(DateTime StartTime, Duration BucketTime, string Title, string LabelY, Model Model, bool CalcStdDev, string[] IDs)
 		{
-			this.start = StartTime;
+			this.start = this.start0 = StartTime;
 			this.bucketTime = BucketTime;
 			this.title = Title;
 			this.labelY = LabelY;
@@ -78,7 +79,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="Buckets">Predefined buckets.</param>
 		public Buckets(DateTime StartTime, Duration BucketTime, string Title, string LabelY, Model Model, params IBucket[] Buckets)
 		{
-			this.start = StartTime;
+			this.start = this.start0 = StartTime;
 			this.bucketTime = BucketTime;
 			this.title = Title;
 			this.labelY = LabelY;
@@ -103,7 +104,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start0, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -123,7 +124,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start0, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -143,7 +144,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, false, this.start0, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -164,7 +165,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start0, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -185,7 +186,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Counter, out Bucket))
 				{
-					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Counter, this.GetTitle(Counter), this.labelY, this.model, true, this.start0, this.bucketTime);
 					this.buckets[Counter] = Bucket;
 				}
 			}
@@ -287,7 +288,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Id, out Bucket))
 				{
-					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, true, this.start, this.bucketTime);
+					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, true, this.start0, this.bucketTime);
 					this.buckets[Id] = Bucket;
 				}
 			}
@@ -308,7 +309,7 @@ namespace TAG.Simulator.Statistics
 			{
 				if (!this.buckets.TryGetValue(Id, out Bucket))
 				{
-					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, false, this.start, this.bucketTime);
+					Bucket = new Bucket(Id, this.GetTitle(Id), this.labelY, this.model, false, this.start0, this.bucketTime);
 					this.buckets[Id] = Bucket;
 				}
 			}

@@ -428,7 +428,7 @@ namespace TAG.Simulator.Statistics
 					return false;
 
 				Output.Write("G:=(");
-				Output.Write(Graph.GetPlotScript());
+				Output.Write(Graph.GetPlotScript(this.model, true));
 				Output.WriteLine(");");
 
 				Output.Write("G.LabelX:=\"Time × ");
