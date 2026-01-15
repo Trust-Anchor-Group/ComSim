@@ -49,8 +49,10 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 		/// <summary>
 		/// Gets the plot script
 		/// </summary>
+		/// <param name="Model">Underlying simulation model.</param>
+		/// <param name="ShowXAxis">If X-axis should be displayed.</param>
 		/// <returns>Graph script.</returns>
-		public override string GetPlotScript()
+		public override string GetPlotScript(Model Model, bool ShowXAxis)
 		{
 			this.Break();
 
@@ -59,7 +61,7 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 			for (i = 1; i < this.Index; i++)
 			{
 				if (i > 1)
-					this.graph.Append('+');
+					this.graph.AppendLine("+");
 
 				this.graph.Append("plot2dlinearea(x");
 				this.graph.Append(i.ToString());
@@ -67,13 +69,13 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 				this.graph.Append(i.ToString());
 				this.graph.Append(",alpha(\"");
 				this.graph.Append(this.Color);
-				this.graph.AppendLine("\",16))");
+				this.graph.Append("\",16))");
 			}
 
 			if (this.Index > 1)
-				this.graph.Append('+');
+				this.graph.AppendLine("+");
 
-			return base.GetPlotScript();
+			return base.GetPlotScript(Model, ShowXAxis);
 		}
 	}
 }

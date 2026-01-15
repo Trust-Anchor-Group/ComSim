@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using TAG.Simulator.Statistics;
+using Waher.Script;
 
 namespace TAG.Simulator.ObjectModel.Graphs.Plots
 {
@@ -58,7 +59,7 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 			{
 				this.Break();
 				return this.index > 1;
-			} 
+			}
 		}
 
 		/// <summary>
@@ -114,17 +115,28 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 		/// <summary>
 		/// Gets the plot script
 		/// </summary>
+		/// <param name="Model">Underlying simulation model.</param>
+		/// <param name="ShowXAxis">If X-axis should be displayed.</param>
 		/// <returns>Graph script.</returns>
-		public override string GetPlotScript()
+		public override string GetPlotScript(Model Model, bool ShowXAxis)
 		{
+			int i;
+
 			this.Break();
 
-			int i;
+			if (ShowXAxis)
+			{
+				this.graph.Append("plot2dline([");
+				this.graph.Append(Expression.ToString(Model.GetTimeCoordinates(Model.StartTime)));
+				this.graph.Append(',');
+				this.graph.Append(Expression.ToString(Model.GetTimeCoordinates(Model.EndTime)));
+				this.graph.Append("],[0,0],\"Transparent\",1)");
+			}
 
 			for (i = 1; i < this.index; i++)
 			{
-				if (i > 1)
-					this.graph.Append('+');
+				if (i > 1 || ShowXAxis)
+					this.graph.AppendLine("+");
 
 				this.graph.Append("plot2dline(x");
 				this.graph.Append(i.ToString());

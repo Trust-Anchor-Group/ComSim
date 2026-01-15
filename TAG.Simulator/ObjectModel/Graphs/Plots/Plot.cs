@@ -70,8 +70,10 @@ namespace TAG.Simulator.ObjectModel.Graphs.Plots
 		/// <summary>
 		/// Gets the plot script
 		/// </summary>
+		/// <param name="Model">Underlying simulation model.</param>
+		/// <param name="ShowXAxis">If X-axis should be displayed.</param>
 		/// <returns>Graph script.</returns>
-		public abstract string GetPlotScript();
+		public abstract string GetPlotScript(Model Model, bool ShowXAxis);
 
 	}
 }
