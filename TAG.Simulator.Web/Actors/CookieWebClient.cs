@@ -201,10 +201,7 @@ namespace TAG.Simulator.Web.Actors
 		{
 			Uri Uri = new(Url);
 			using HttpClient Client = this.GetClient(Timeout);
-			HttpRequestMessage Request = this.GetRequest(Method, Uri, Headers);
-
-			if (Data is not null)
-				Request.Content = new ByteArrayContent(Data);
+			HttpRequestMessage Request = this.GetRequest(Method, Uri, Data, Headers);
 
 			if (this.HasSniffers)
 			{
@@ -300,10 +297,13 @@ namespace TAG.Simulator.Web.Actors
 			return Client;
 		}
 
-		private HttpRequestMessage GetRequest(HttpMethod Method, Uri Uri,
+		private HttpRequestMessage GetRequest(HttpMethod Method, Uri Uri, byte[] Data,
 			params KeyValuePair<string, string>[] Headers)
 		{
 			HttpRequestMessage Request = new(Method, Uri);
+
+			if (Data is not null)
+				Request.Content = new ByteArrayContent(Data);
 
 			if (this.protocolVersion is not null)
 			{
@@ -336,6 +336,9 @@ namespace TAG.Simulator.Web.Actors
 							break;
 
 						case "Content-Type":
+							if (Request.Content is null)
+								throw new InvalidOperationException("No data provided for Content-Type header.");
+
 							Request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(Header.Value);
 							break;
 
