@@ -103,6 +103,8 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 			Script = Script.Trim();
 
 			bool IsObj = Script.StartsWith('{') && Script.EndsWith('}');
+			bool IsXml = Script.StartsWith('<') && Script.EndsWith('>');
+			bool CrLfAllowed = IsObj || IsXml;
 			bool First = true;
 
 			if (QuoteChar != '"')
@@ -120,13 +122,13 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 
 					First = false;
 				}
-				else if (IsObj)
+				else if (CrLfAllowed)
 					Output.Write('\n');
 				else
 					Output.Write("\\n");
 
 				if (!string.IsNullOrEmpty(Row))
-					Output.Write(IsObj ? Row : Row.Replace("\t", "\\t"));
+					Output.Write(CrLfAllowed ? Row : Row.Replace("\t", "\\t"));
 			}
 
 			if (!First && Delimiters)
