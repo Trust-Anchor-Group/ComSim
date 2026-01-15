@@ -11,7 +11,7 @@ using Waher.Persistence.Filters;
 namespace TAG.Simulator.Web.Actors
 {
 	/// <summary>
-	/// Abstract base class for XMPP actors.
+	/// Represents a web actor.
 	/// </summary>
 	public class WebActor : Actor
 	{
@@ -34,7 +34,7 @@ namespace TAG.Simulator.Web.Actors
 		private string password;
 
 		/// <summary>
-		/// Abstract base class for XMPP actors.
+		/// Represents a web actor.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
@@ -44,7 +44,7 @@ namespace TAG.Simulator.Web.Actors
 		}
 
 		/// <summary>
-		/// Abstract base class for XMPP actors.
+		/// Represents a web actor.
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
@@ -71,7 +71,7 @@ namespace TAG.Simulator.Web.Actors
 		public override string SchemaResource => WebSchema;
 
 		/// <summary>
-		/// XMPP Client
+		/// HTTP Client
 		/// </summary>
 		public CookieWebClient Client => this.client;
 
