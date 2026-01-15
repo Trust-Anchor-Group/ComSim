@@ -66,10 +66,10 @@
 		</web:WebActor>
 		<web:WebSocketActor id="Ws_User" N="10" protocol="ls"
 												url="wss://lab.tagroot.io/ClientEventsWS">
-			<ExternalEvent name="WebSocketConnected" event="OnConnected" actorName="User">
+			<ExternalEvent name="OnConnected" event="WebSocketConnected" actorName="User">
 				<Parameter name="Client"/>
 			</ExternalEvent>
-			<ExternalEvent name="WebSocketTextReceived" event="OnTextReceived" actorName="User">
+			<ExternalEvent name="OnTextReceived" event="WebSocketTextReceived" actorName="User">
 				<Parameter name="Client"/>
 				<Parameter name="Text"/>
 			</ExternalEvent>
