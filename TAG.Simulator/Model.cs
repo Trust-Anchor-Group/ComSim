@@ -260,9 +260,9 @@ namespace TAG.Simulator
 
 			this.end = this.start + this.duration;
 
-			this.bucketTimeMs = ((this.start + this.bucketTime) - this.start).TotalMilliseconds;
-			this.timeUnitMs = ((this.start + this.timeUnit) - this.start).TotalMilliseconds;
-			this.timeCycleMs = ((this.start + this.timeCycle) - this.start).TotalMilliseconds;
+			this.bucketTimeMs = (this.start + this.bucketTime - this.start).TotalMilliseconds;
+			this.timeUnitMs = (this.start + this.timeUnit - this.start).TotalMilliseconds;
+			this.timeCycleMs = (this.start + this.timeCycle - this.start).TotalMilliseconds;
 			this.timeCycleUnits = this.timeCycleMs / this.timeUnitMs;
 
 			this.counters = new Buckets(this.start, this.bucketTime, "%ID%", "Count (/ %BT%)", this);
