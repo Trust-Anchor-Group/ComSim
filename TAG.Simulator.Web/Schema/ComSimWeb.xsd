@@ -21,7 +21,18 @@
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
-	
+
+	<xs:element name="WebSocketActor">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:Actor">
+					<xs:attribute name="url" type="xs:string" use="required"/>
+					<xs:attribute name="protocol" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:simpleType name="HttpVersion">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="1.0"/>
@@ -79,5 +90,18 @@
 	<xs:element name="OPTIONS" type="WebCall"/>
 	<xs:element name="TRACE" type="WebCall"/>
 	<xs:element name="PATCH" type="WebCallWithPayload"/>
+
+	<xs:element name="SendSocket">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cs:ActivityNode">
+					<xs:sequence>
+						<xs:element ref="Payload"/>
+					</xs:sequence>
+					<xs:attribute name="actor" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 
 </xs:schema>

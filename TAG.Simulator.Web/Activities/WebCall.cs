@@ -83,7 +83,7 @@ namespace TAG.Simulator.Web.Activities
 			for (i = 0; i < c; i++)
 				Headers[i] = await this.headers[i].Evaluate(Variables);
 
-			if (await this.GetActorObjectAsync(this.actor, Variables) is not WebActivityObject WebActor)
+			if (await this.GetActorObjectAsync(this.actor, Variables) is not WebActorActivityObject WebActor)
 				throw new Exception("Actor not a web client.");
 
 			byte[] Data;

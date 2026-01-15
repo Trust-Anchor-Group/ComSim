@@ -14,9 +14,10 @@
 		<Description>
 			<![CDATA[ 
 			Simulates 10 Web clients, each representing a human user. Each web client also has
-			a corresponding XMPP client, representing a digital ID used for MFA. Each user performs 
-			actions on web pages that require digital signatures (quicklogin) to authenticate the 
-			user. To maintain web sessions, each user maintains its own set of cookies.
+			a corresponding Websocket client, to receive asynchronous events on, and an XMPP client, 
+			representing a digital ID used for MFA. Each user performs actions on web pages that 
+			require digital signatures (quicklogin) to authenticate the user. To maintain web sessions, 
+			each user maintains its own set of cookies.
 			]]>
 		</Description>
 		<Preparation>
@@ -63,6 +64,16 @@
 	<Actors>
 		<web:WebActor id="WebUser" N="10" httpVersion="1.1">
 		</web:WebActor>
+		<web:WebSocketActor id="Ws_User" N="10" protocol="ls"
+												url="wss://lab.tagroot.io/ClientEventsWS">
+			<ExternalEvent name="WebSocketConnected" event="OnConnected" actorName="User">
+				<Parameter name="Client"/>
+			</ExternalEvent>
+			<ExternalEvent name="WebSocketTextReceived" event="OnTextReceived" actorName="User">
+				<Parameter name="Client"/>
+				<Parameter name="Text"/>
+			</ExternalEvent>
+		</web:WebSocketActor>
 		<xmpp:XmppActorTcp id="MfaUser" domain="lab.tagroot.io" userName="SimMfaUser" N="10"
 											 apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<legal:LegalExtension id="LegalComponent" componentAddress="legal.lab.tagroot.io"/>
@@ -94,12 +105,18 @@
 				<FromPopulation actor="WebUser"/>
 			</ActorReference>
 		</StochasticEvent>
-		<StochasticEvent distribution="ReplyToPost" activity="PostReplyToPage">
+		<StochasticEvent distribution="ReplyToPost" activity="DoQuickLogin">
 			<Description>Performs a web task that requires authentication.</Description>
 			<ActorReference name="User" exclusive="true">
 				<FromPopulation actor="WebUser"/>
 			</ActorReference>
 		</StochasticEvent>
+		<EventHandler id="WebSocketConnected" activity="RegisterWebSocket">
+			<Description>Event raised when a web-socket connection has been established.</Description>
+		</EventHandler>
+		<EventHandler id="WebSocketTextReceived" activity="CheckQuickLoggedIn">
+			<Description>Event raised when a text message has been received over a web-socket connection.</Description>
+		</EventHandler>
 		<EventHandler id="OnStateChangedEvent" activity="OnStateChanged">
 			<Description>Event raised when the XMPP connection state has changed for a user.</Description>
 		</EventHandler>
@@ -111,17 +128,40 @@
 		</EventHandler>
 	</Events>
 	<Activities>
+		<Activity id="RegisterWebSocket" logStart="false" logEnd="false">
+			<Description>Registers the Tab ID for the web actor with the web socket.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User);
+				]]>
+			</Eval>
+			<web:SendSocket actor="User">
+				<web:Payload>
+					<Script>
+						<![CDATA[
+						{
+							"cmd": "Register",
+							"tabId": UserData.TabId,
+							"location": "https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation"
+						}
+						]]>
+					</Script>
+				</web:Payload>
+			</web:SendSocket>
+			<Stop/>
+		</Activity>
 		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
 			<Description>Gets a web page that does not require the user to login.</Description>
 			<Start/>
-			<web:GET actor="User" 
-							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation" 
+			<web:GET actor="User"
+							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation"
 							 timeout="PT10S"
 							 variable="Response"/>
 			<Stop/>
 		</Activity>
-		<Activity id="PostReplyToPage" logStart="false" logEnd="false">
-			<Description>Posts a reply to a page, which requires the user to login.</Description>
+		<Activity id="DoQuickLogin" logStart="false" logEnd="false">
+			<Description>Starts a Quick-Login procedure to login to the page.</Description>
 			<Start/>
 			<Eval>
 				<![CDATA[
@@ -155,7 +195,7 @@
 							Key:=After(s,",");
 						]]>
 					</Eval>
-					<xmpp:Request actor="UserData.MfaClient" responseVariable="Response" 
+					<xmpp:Request actor="UserData.MfaClient" responseVariable="Response"
 												to="{Domain}" type="Set">
 						<Script>
 							<![CDATA[
@@ -164,12 +204,22 @@
 								legalId=(UserData.LegalId) />
 							]]>
 						</Script>
-				</xmpp:Request>
+					</xmpp:Request>
 				</Condition>
 				<Otherwise>
 					<LogError message="User has no approved Legal ID, as required for QuickLogin." object="{User}"/>
 				</Otherwise>
 			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="CheckQuickLoggedIn" logStart="false" logEnd="false">
+			<Description>Executed when a message has been received that needs to be checked for a successful Quick Login.</Description>
+			<Start/>
+			<Stop/>
+		</Activity>
+		<Activity id="PostReplyToPage" logStart="false" logEnd="false">
+			<Description>Posts a reply to a page, which requires the user to login.</Description>
+			<Start/>
 			<!--
 			<web:POST actor="User"
 								url="https://lab.tagroot.io/Community/Api/ReplyToPost.ws"
