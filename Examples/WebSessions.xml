@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
        xmlns:web="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+       xmlns:xmpp="http://lab.tagroot.io/Schema/ComSim/XMPP.xsd"
+       xmlns:legal="http://lab.tagroot.io/Schema/ComSim/XMPPLegal.xsd"
        timeBase="StartOfSimulation"
        bucketTime="PT1S"
        timeUnit="PT1S"
@@ -11,19 +13,18 @@
 		<Introduction>Simulates a collection of Web sessions that navigate password-protected pages.</Introduction>
 		<Description>
 			<![CDATA[ 
-			Simulates 10 Web clients, each representing a human user. Each user performs actions
-			on web pages that require web login to authenticate the user. To maintain sessions,
-			each user maintains its own set of cookies.
+			Simulates 10 Web clients, each representing a human user. Each web client also has
+			a corresponding XMPP client, representing a digital ID used for MFA. Each user performs 
+			actions on web pages that require digital signatures (quicklogin) to authenticate the 
+			user. To maintain web sessions, each user maintains its own set of cookies.
 			]]>
 		</Description>
 		<Preparation>
 			<![CDATA[
-			Web
-			------
-
-			The Web Client need accounts to use. The first time a simulated user attempts to login,
-			the simulator prompts the user for credentials to input into the web login form.
-			Credentials are stored in the internal database for reuse in subsequent logins.
+			The XMPP Client accounts are created automatically, if the broker being used supports 
+			[XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
+			account registration process can be protected using keys and secrets, if the broker supports
+			[XEP-0348: Signing Forms](https://xmpp.org/extensions/xep-0348.html).
 			]]>
 		</Preparation>
 		<ModelScript>
@@ -34,6 +35,14 @@
 			(
 				Global["User"+IntToStr2(i)]:=
 				{
+					"TabId":Str(NewGuid()),
+					"Jid":"SimMfaUser"+Str(i)+"@lab.tagroot.io",
+					"MfaClient":null,
+					"LegalId":"",
+					"LegalIdApproved":false,
+					"SignaturePetitionId":"",
+					"SignaturePetitionLegalId":"",
+					"SignaturePetitionContent":null
 				};
 			);
 			
@@ -48,10 +57,31 @@
 	</Meta>
 	<Assemblies>
 		<Assembly fileName="TAG.Simulator.Web.dll"/>
+		<Assembly fileName="TAG.Simulator.XMPP.dll"/>
+		<Assembly fileName="TAG.Simulator.XMPP.Legal.dll"/>
 	</Assemblies>
 	<Actors>
 		<web:WebActor id="WebUser" N="10" httpVersion="1.1">
 		</web:WebActor>
+		<xmpp:XmppActorTcp id="MfaUser" domain="lab.tagroot.io" userName="SimMfaUser" N="10"
+											 apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
+			<legal:LegalExtension id="LegalComponent" componentAddress="legal.lab.tagroot.io"/>
+			<ExternalEvent name="OnStateChanged" event="OnStateChangedEvent" actorName="User">
+				<Parameter name="NewState"/>
+				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
+			</ExternalEvent>
+			<ExternalEvent name="IdentityUpdated" event="IdentityUpdatedEvent" actorName="User">
+				<Parameter name="e"/>
+				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
+			</ExternalEvent>
+			<ExternalEvent name="PetitionForSignatureReceived" event="PetitionForSignatureReceivedEvent" actorName="User">
+				<Parameter name="e"/>
+				<Parameter name="Client"/>
+				<Parameter name="Legal"/>
+			</ExternalEvent>
+		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
 		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="100"/>
@@ -70,6 +100,15 @@
 				<FromPopulation actor="WebUser"/>
 			</ActorReference>
 		</StochasticEvent>
+		<EventHandler id="OnStateChangedEvent" activity="OnStateChanged">
+			<Description>Event raised when the XMPP connection state has changed for a user.</Description>
+		</EventHandler>
+		<EventHandler id="IdentityUpdatedEvent" activity="OnIdentityUpdated">
+			<Description>Event raised when a legal identity has been updated for a user.</Description>
+		</EventHandler>
+		<EventHandler id="PetitionForSignatureReceivedEvent" activity="OnPetitionForSignatureReceived">
+			<Description>Event raised when another user has sent a petition for the user to perform a digital signatur.</Description>
+		</EventHandler>
 	</Events>
 	<Activities>
 		<Activity id="GetUnauthenticatedPage" logStart="false" logEnd="false">
@@ -84,6 +123,54 @@
 		<Activity id="PostReplyToPage" logStart="false" logEnd="false">
 			<Description>Posts a reply to a page, which requires the user to login.</Description>
 			<Start/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User);
+				]]>
+			</Eval>
+			<web:POST actor="User"
+								url="https://lab.tagroot.io/QuickLogin"
+								timeout="PT10S"
+								variable="Response">
+				<web:Payload>
+					<Script>
+						<![CDATA[
+						{
+							"serviceId": "",
+							"tab": UserData.TabId,
+							"mode": "image",
+							"purpose": "Simulation"
+						}						
+						]]>
+					</Script>
+				</web:Payload>
+			</web:POST>
+			<Conditional>
+				<Condition condition="UserData.LegalIdApproved">
+					<Eval>
+						<![CDATA[
+							Url:=Response.signUrl;
+							s:=After(Url,":");
+							Domain:=Before(s,",");
+							Key:=After(s,",");
+						]]>
+					</Eval>
+					<xmpp:Request actor="UserData.MfaClient" responseVariable="Response" 
+												to="{Domain}" type="Set">
+						<Script>
+							<![CDATA[
+							<ql xmlns='https://tagroot.io/schema/Signature' 
+								key=(Key) 
+								legalId=(UserData.LegalId) />
+							]]>
+						</Script>
+				</xmpp:Request>
+				</Condition>
+				<Otherwise>
+					<LogError message="User has no approved Legal ID, as required for QuickLogin." object="{User}"/>
+				</Otherwise>
+			</Conditional>
+			<!--
 			<web:POST actor="User"
 								url="https://lab.tagroot.io/Community/Api/ReplyToPost.ws"
 								timeout="PT10S"
@@ -100,6 +187,95 @@
 					</Script>
 				</web:Payload>
 			</web:POST>
+			-->
+			<Stop/>
+		</Activity>
+		<Activity id="OnStateChanged" logStart="false" logEnd="false">
+			<Description>Executed when the XMPP connection state changes for a user.</Description>
+			<Start/>
+			<Conditional>
+				<Condition condition="NewState.ToString()='Connected'">
+					<Eval>
+						<![CDATA[
+						UserData:=GetUserData(User)
+						]]>
+					</Eval>
+					<LogInformation message="Checking legal identity.">
+						<Tag key="JID" value="{UserData.Jid}"/>
+					</LogInformation>
+					<Conditional>
+						<Condition condition="empty(UserData.LegalId)">
+							<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
+							<Conditional>
+								<Condition condition="empty(LegalId)">
+									<LogNotice message="Applying for new Legal ID." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+									</LogNotice>
+									<legal:ApplyLegalId actor="User" variable="LegalIdObject">
+										<legal:Property name="JID" value="{UserData.Jid}"/>
+									</legal:ApplyLegalId>
+									<Eval>
+										<![CDATA[
+										UserData.LegalId:=LegalIdObject.Id;
+										UserData.LegalIdApproved:=false
+										]]>
+									</Eval>
+									<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
+									<LogNotice message="Waiting for approval." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+										<Tag key="LegalId" value="{UserData.LegalId}"/>
+									</LogNotice>
+								</Condition>
+								<Otherwise>
+									<Eval>
+										<![CDATA[
+										UserData.LegalId:=LegalId;
+										UserData.LegalIdApproved:=true;
+										UserData.MfaClient:=User
+										]]>
+									</Eval>
+									<LogInformation message="Existing Legal ID found." object="User">
+										<Tag key="JID" value="{UserData.Jid}"/>
+										<Tag key="LegalId" value="{UserData.LegalId}"/>
+									</LogInformation>
+								</Otherwise>
+							</Conditional>
+						</Condition>
+					</Conditional>
+				</Condition>
+			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="OnIdentityUpdated" logStart="false" logEnd="false">
+			<Description>Executed when an identity has been updated.</Description>
+			<Start/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User)
+				]]>
+			</Eval>
+			<Conditional>
+				<Condition condition="e.Identity.Id=UserData.LegalId">
+					<LogInformation message="Legal Identity Updated.">
+						<Tag key="JID" value="{UserData.Jid}"/>
+						<Tag key="LegalId" value="{e.Identity.Id}"/>
+						<Tag key="State" value="{e.Identity.State}"/>
+					</LogInformation>
+					<Eval>
+						<![CDATA[
+						UserData.LegalIdApproved:=e.Identity.State.ToString()="Approved";
+						if UserData.LegalIdApproved then
+							UserData.MfaClient:=User
+						]]>
+					</Eval>
+				</Condition>
+			</Conditional>
+			<Stop/>
+		</Activity>
+		<Activity id="OnPetitionForSignatureReceived" logStart="false" logEnd="false">
+			<Description>Executed when a petition for a signature has been received.</Description>
+			<Start/>
+			<legal:SignaturePetitionResponse actor="User" variable="e" response="true"/>
 			<Stop/>
 		</Activity>
 	</Activities>
