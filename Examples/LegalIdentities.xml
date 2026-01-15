@@ -20,9 +20,6 @@
 		</Description>
 		<Preparation>
 			<![CDATA[
-			XMPP
-			------
-
 			The XMPP Client accounts are created automatically, if the broker being used supports 
 			[XEP-0077: In-Band Registration](https://xmpp.org/extensions/xep-0077.html). The 
 			account registration process can be protected using keys and secrets, if the broker supports
