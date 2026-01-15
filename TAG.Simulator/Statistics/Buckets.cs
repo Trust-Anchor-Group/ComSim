@@ -349,8 +349,7 @@ namespace TAG.Simulator.Statistics
 				Duration? BucketTime = null;
 				int Count = 0;
 
-				if (Order is null)
-					Order = this.buckets.Keys;
+				Order ??= this.buckets.Keys;
 
 				foreach (string ActivityId in Order)
 				{
@@ -363,7 +362,7 @@ namespace TAG.Simulator.Statistics
 							else if (BucketTime != PeriodBucket.BucketTime)
 								throw new Exception("Graphs incompatible. Different bucket times: " + Title);
 
-							PeriodBucket.Flush();
+							PeriodBucket.Flush(Model.EndTime);
 
 							Statistic Last = null;
 
@@ -397,8 +396,7 @@ namespace TAG.Simulator.Statistics
 				int c = Counts.Count;
 				bool First = true;
 
-				if (Palette is null)
-					Palette = Model.CreatePalette(Count);
+				Palette ??= Model.CreatePalette(Count);
 
 				Script.Append("Time:=[");
 
@@ -527,9 +525,7 @@ namespace TAG.Simulator.Statistics
 						if (Distribution is null)
 							continue;
 
-						if (Distributions is null)
-							Distributions = new LinkedList<IDistribution>();
-
+						Distributions ??= new LinkedList<IDistribution>();
 						Distributions.AddLast(Distribution);
 						Distribution.ExportPdfOnceOnly(Script);
 					}

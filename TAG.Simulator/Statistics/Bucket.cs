@@ -346,11 +346,12 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Terminates the ongoing collection of data.
 		/// </summary>
-		public void Flush()
+		/// <param name="Until">Timestamp until which data should be flushed.</param>
+		public void Flush(DateTime Until)
 		{
 			lock (this)
 			{
-				if (this.count > 0)
+				while (this.count > 0 || this.stop < Until)
 					this.NextBucketLocked();
 			}
 		}
@@ -399,7 +400,7 @@ namespace TAG.Simulator.Statistics
 		/// <returns>If script was exported.</returns>
 		public bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span)
 		{
-			this.Flush();
+			this.Flush(this.model.EndTime);
 
 			string LabelY = this.labelY;
 
@@ -452,7 +453,7 @@ namespace TAG.Simulator.Statistics
 		/// <param name="RowElement">XML Row element name.</param>
 		public void ExportXml(XmlWriter Output, string RowElement)
 		{
-			this.Flush();
+			this.Flush(this.model.EndTime);
 
 			lock (this)
 			{

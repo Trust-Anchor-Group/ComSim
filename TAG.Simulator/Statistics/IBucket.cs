@@ -74,7 +74,8 @@ namespace TAG.Simulator.Statistics
 		/// <summary>
 		/// Terminates the ongoing collection of data.
 		/// </summary>
-		void Flush();
+		/// <param name="Until">Timestamp until which data should be flushed.</param>
+		void Flush(DateTime Until);
 
 		/// <summary>
 		/// Exports data to XML

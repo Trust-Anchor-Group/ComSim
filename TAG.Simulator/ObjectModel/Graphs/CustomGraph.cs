@@ -243,7 +243,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <summary>
 		/// Terminates the ongoing collection of data.
 		/// </summary>
-		public void Flush()
+		/// <param name="Until">Timestamp until which data should be flushed.</param>
+		public void Flush(DateTime Until)
 		{
 		}
 
@@ -254,7 +255,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <param name="RowElement">XML Row element name.</param>
 		public void ExportXml(XmlWriter Output, string RowElement)
 		{
-			this.Flush();
+			this.Flush(this.Model.EndTime);
 
 			lock (this)
 			{
@@ -283,7 +284,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		/// <param name="Output">Markdown output</param>
 		public override void ExportGraph(StreamWriter Output)
 		{
-			this.Flush();
+			this.Flush(this.Model.EndTime);
 
 			lock (this)
 			{
@@ -323,8 +324,8 @@ namespace TAG.Simulator.ObjectModel.Graphs
 		public override bool ExportGraphScript(StreamWriter Output, string CustomColor, bool Span)
 		{
 			string s = this.script.Trim();
-			if (!string.IsNullOrEmpty(s) && ";|<>/\\]}".IndexOf(s[s.Length - 1]) >= 0)
-				s = s.Substring(0, s.Length - 1);
+			if (!string.IsNullOrEmpty(s) && ";|<>/\\]}".IndexOf(s[^1]) >= 0)
+				s = s[..^1];
 
 			Output.Write(s);
 
