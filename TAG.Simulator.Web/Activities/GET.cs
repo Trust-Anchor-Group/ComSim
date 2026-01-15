@@ -13,7 +13,6 @@ namespace TAG.Simulator.Web.Activities
 	public class GET(ISimulationNode Parent, Model Model)
 		: WebCall(Parent, Model)
 	{
-
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
