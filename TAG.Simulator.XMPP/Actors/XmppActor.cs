@@ -397,6 +397,9 @@ namespace TAG.Simulator.XMPP.Actors
 
 						await Database.Insert(this.credentials);
 					}
+
+					await this.Model.ExternalEvent(this, "OnConnected",
+						new KeyValuePair<string, object>("Client", this.client));
 					break;
 
 				case XmppState.Error:

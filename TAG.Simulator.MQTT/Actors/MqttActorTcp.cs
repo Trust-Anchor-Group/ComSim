@@ -260,7 +260,7 @@ namespace TAG.Simulator.MQTT.Actors
 				new KeyValuePair<string, object>("Client", this.client));
 		}
 
-		private Task Client_OnStateChanged(object Sender, MqttState NewState)
+		private async Task Client_OnStateChanged(object Sender, MqttState NewState)
 		{
 			switch (NewState)
 			{
@@ -268,11 +268,14 @@ namespace TAG.Simulator.MQTT.Actors
 					this.isOnline = true;
 
 					if (string.IsNullOrEmpty(this.credentials.ObjectId))
-						Database.Insert(this.credentials);
+						await Database.Insert(this.credentials);
 
-					this.client.SUBSCRIBE(this.subscriptions);
+					await this.client.SUBSCRIBE(this.subscriptions);
 
 					this.connected?.TrySetResult(true);
+
+					await this.Model.ExternalEvent(this, "OnConnected",
+						new KeyValuePair<string, object>("Client", this.client));
 					break;
 
 				case MqttState.Error:
@@ -282,7 +285,7 @@ namespace TAG.Simulator.MQTT.Actors
 					break;
 			}
 
-			return this.Model.ExternalEvent(this, "OnStateChanged",
+			await this.Model.ExternalEvent(this, "OnStateChanged",
 				new KeyValuePair<string, object>("NewState", NewState),
 				new KeyValuePair<string, object>("Client", this.client));
 		}

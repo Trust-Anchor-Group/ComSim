@@ -77,8 +77,7 @@
 		<xmpp:XmppActorTcp id="MfaUser" domain="lab.tagroot.io" userName="SimMfaUser" N="10"
 											 apiKey="LabApiKey1" secret="LabSecret1" alwaysConnected="true">
 			<legal:LegalExtension id="LegalComponent" componentAddress="legal.lab.tagroot.io"/>
-			<ExternalEvent name="OnStateChanged" event="OnStateChangedEvent" actorName="User">
-				<Parameter name="NewState"/>
+			<ExternalEvent name="OnConnected" event="OnConnectedEvent" actorName="User">
 				<Parameter name="Client"/>
 				<Parameter name="Legal"/>
 			</ExternalEvent>
@@ -117,8 +116,8 @@
 		<EventHandler id="WebSocketTextReceived" activity="CheckQuickLoggedIn">
 			<Description>Event raised when a text message has been received over a web-socket connection.</Description>
 		</EventHandler>
-		<EventHandler id="OnStateChangedEvent" activity="OnStateChanged">
-			<Description>Event raised when the XMPP connection state has changed for a user.</Description>
+		<EventHandler id="OnConnectedEvent" activity="OnConnected">
+			<Description>Event raised when the XMPP connection state changes to connected for a user.</Description>
 		</EventHandler>
 		<EventHandler id="IdentityUpdatedEvent" activity="OnIdentityUpdated">
 			<Description>Event raised when a legal identity has been updated for a user.</Description>
@@ -240,57 +239,53 @@
 			-->
 			<Stop/>
 		</Activity>
-		<Activity id="OnStateChanged" logStart="false" logEnd="false">
-			<Description>Executed when the XMPP connection state changes for a user.</Description>
+		<Activity id="OnConnected" logStart="false" logEnd="false">
+			<Description>Executed when the XMPP connection state changes to connected for a user.</Description>
 			<Start/>
+			<Eval>
+				<![CDATA[
+				UserData:=GetUserData(User)
+				]]>
+			</Eval>
+			<LogInformation message="Checking legal identity.">
+				<Tag key="JID" value="{UserData.Jid}"/>
+			</LogInformation>
 			<Conditional>
-				<Condition condition="NewState.ToString()='Connected'">
-					<Eval>
-						<![CDATA[
-						UserData:=GetUserData(User)
-						]]>
-					</Eval>
-					<LogInformation message="Checking legal identity.">
-						<Tag key="JID" value="{UserData.Jid}"/>
-					</LogInformation>
+				<Condition condition="empty(UserData.LegalId)">
+					<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
 					<Conditional>
-						<Condition condition="empty(UserData.LegalId)">
-							<legal:GetLatestApprovedLegalId actor="User" variable="LegalId"/>
-							<Conditional>
-								<Condition condition="empty(LegalId)">
-									<LogNotice message="Applying for new Legal ID." object="User">
-										<Tag key="JID" value="{UserData.Jid}"/>
-									</LogNotice>
-									<legal:ApplyLegalId actor="User" variable="LegalIdObject">
-										<legal:Property name="JID" value="{UserData.Jid}"/>
-									</legal:ApplyLegalId>
-									<Eval>
-										<![CDATA[
-										UserData.LegalId:=LegalIdObject.Id;
-										UserData.LegalIdApproved:=false
-										]]>
-									</Eval>
-									<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
-									<LogNotice message="Waiting for approval." object="User">
-										<Tag key="JID" value="{UserData.Jid}"/>
-										<Tag key="LegalId" value="{UserData.LegalId}"/>
-									</LogNotice>
-								</Condition>
-								<Otherwise>
-									<Eval>
-										<![CDATA[
-										UserData.LegalId:=LegalId;
-										UserData.LegalIdApproved:=true;
-										UserData.MfaClient:=User
-										]]>
-									</Eval>
-									<LogInformation message="Existing Legal ID found." object="User">
-										<Tag key="JID" value="{UserData.Jid}"/>
-										<Tag key="LegalId" value="{UserData.LegalId}"/>
-									</LogInformation>
-								</Otherwise>
-							</Conditional>
+						<Condition condition="empty(LegalId)">
+							<LogNotice message="Applying for new Legal ID." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+							</LogNotice>
+							<legal:ApplyLegalId actor="User" variable="LegalIdObject">
+								<legal:Property name="JID" value="{UserData.Jid}"/>
+							</legal:ApplyLegalId>
+							<Eval>
+								<![CDATA[
+								UserData.LegalId:=LegalIdObject.Id;
+								UserData.LegalIdApproved:=false
+								]]>
+							</Eval>
+							<legal:ReadyForApproval actor="User" legalId="{UserData.LegalId}"/>
+							<LogNotice message="Waiting for approval." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+								<Tag key="LegalId" value="{UserData.LegalId}"/>
+							</LogNotice>
 						</Condition>
+						<Otherwise>
+							<Eval>
+								<![CDATA[
+								UserData.LegalId:=LegalId;
+								UserData.LegalIdApproved:=true;
+								UserData.MfaClient:=User
+								]]>
+							</Eval>
+							<LogInformation message="Existing Legal ID found." object="User">
+								<Tag key="JID" value="{UserData.Jid}"/>
+								<Tag key="LegalId" value="{UserData.LegalId}"/>
+							</LogInformation>
+						</Otherwise>
 					</Conditional>
 				</Condition>
 			</Conditional>
