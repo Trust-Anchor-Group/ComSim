@@ -100,6 +100,9 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 		/// <param name="Delimiters">If delimiters : and ; should be included at the beginning and end.</param>
 		public static void ExportPlantUml(string Script, StreamWriter Output, int Indentation, char QuoteChar, bool Delimiters)
 		{
+			Script = Script.Trim();
+
+			bool IsObj = Script.StartsWith('{') && Script.EndsWith('}');
 			bool First = true;
 
 			if (QuoteChar != '"')
@@ -117,11 +120,13 @@ namespace TAG.Simulator.ObjectModel.Activities.Execution
 
 					First = false;
 				}
+				else if (IsObj)
+					Output.Write('\n');
 				else
 					Output.Write("\\n");
 
 				if (!string.IsNullOrEmpty(Row))
-					Output.Write(Row.Replace("\t", "\\t"));
+					Output.Write(IsObj ? Row : Row.Replace("\t", "\\t"));
 			}
 
 			if (!First && Delimiters)
