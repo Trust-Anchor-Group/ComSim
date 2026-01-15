@@ -22,6 +22,7 @@ namespace TAG.Simulator.Web.Actors
 		private CancellationTokenSource cancel = new();
 		private ClientWebSocket client;
 		private ISniffer sniffer;
+		private Task connectionTask;
 		private string url;
 		private string protocol;
 		private bool closed = false;
@@ -116,7 +117,38 @@ namespace TAG.Simulator.Web.Actors
 		public override Task InitializeInstance()
 		{
 			this.sniffer = this.Model.GetSniffer(this.Id);
+			this.connectionTask = this.DoConnect(true);
+
 			return Task.CompletedTask;
+		}
+
+		private async Task DoConnect(bool StartReading)
+		{
+			try
+			{
+				this.sniffer.Information("Connecting to " + this.url);
+
+				this.client?.Dispose();
+				this.client = null;
+
+				this.client = new ClientWebSocket();
+				this.client.Options.AddSubProtocol(this.protocol);
+				
+				await this.client.ConnectAsync(new Uri(this.url), this.cancel.Token);
+
+				this.sniffer.Information("Connected to " + this.url);
+
+				if (StartReading)
+					_ = Task.Run(this.ReadIncoming);
+
+				await this.Model.ExternalEvent(this, "OnConnected",
+					new KeyValuePair<string, object>("Client", this));
+			}
+			catch (Exception ex)
+			{
+				this.sniffer.Exception(ex);
+				ExceptionDispatchInfo.Capture(ex).Throw();
+			}
 		}
 
 		/// <summary>
@@ -149,34 +181,15 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		public override async Task StartInstance()
 		{
-			try
-			{
-				this.sniffer.Information("Connecting to " + this.url);
-
-				this.client = new ClientWebSocket();
-				this.client.Options.AddSubProtocol(this.protocol);
-				await this.client.ConnectAsync(new Uri(this.url), this.cancel.Token);
-
-				this.sniffer.Information("Connected to " + this.url);
-
-				this.ReadIncoming();
-
-				await this.Model.ExternalEvent(this, "OnConnected",
-					new KeyValuePair<string, object>("Client", this));
-			}
-			catch (Exception ex)
-			{
-				this.sniffer.Exception(ex);
-				ExceptionDispatchInfo.Capture(ex).Throw();
-			}
+			await this.connectionTask;
 		}
 
 		public async Task SendText(string s)
 		{
-			byte[] Data = System.Text.Encoding.UTF8.GetBytes(s);
+			byte[] Data = Encoding.UTF8.GetBytes(s);
 
 			this.sniffer.TransmitText(s);
-			
+
 			await this.client.SendAsync(Data, WebSocketMessageType.Text, true,
 				this.cancel.Token);
 		}
@@ -234,14 +247,7 @@ namespace TAG.Simulator.Web.Actors
 								new KeyValuePair<string, object>("Status", Result.CloseStatus.Value),
 								new KeyValuePair<string, object>("Description", Result.CloseStatusDescription));
 
-							this.sniffer.Information("Connecting to " + this.url);
-
-							await this.client.ConnectAsync(new Uri(this.url), this.cancel.Token);
-
-							this.sniffer.Information("Connected to " + this.url);
-
-							await this.Model.ExternalEvent(this, "OnConnected",
-								new KeyValuePair<string, object>("Client", this));
+							await this.DoConnect(false);
 						}
 
 						continue;
