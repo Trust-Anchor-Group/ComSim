@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.WebSockets;
 using System.Runtime.ExceptionServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -180,6 +181,14 @@ namespace TAG.Simulator.Web.Actors
 				this.cancel.Token);
 		}
 
+		public async Task SendText(byte[] Data)
+		{
+			this.sniffer.TransmitText(Encoding.UTF8.GetString(Data));
+
+			await this.client.SendAsync(Data, WebSocketMessageType.Text, true,
+				this.cancel.Token);
+		}
+
 		public async Task SendBinary(byte[] Data)
 		{
 			this.sniffer.TransmitBinary(false, Data);
@@ -280,6 +289,10 @@ namespace TAG.Simulator.Web.Actors
 							break;
 					}
 				}
+			}
+			catch (TaskCanceledException)
+			{
+				Log.Informational("WebSocket reading task canceled.", this.InstanceId);
 			}
 			catch (Exception ex)
 			{

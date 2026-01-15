@@ -10,8 +10,10 @@ using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.ObjectModel.Values;
 using TAG.Simulator.Web.Actors;
 using Waher.Content;
+using Waher.Content.Json;
 using Waher.Content.Xml;
 using Waher.Script;
+using Waher.Script.Abstraction.Elements;
 
 namespace TAG.Simulator.Web.Activities
 {
@@ -85,14 +87,22 @@ namespace TAG.Simulator.Web.Activities
 				await WebSocketActor.Client.SendText(s);
 			else if (Content is XmlNode Xml)
 				await WebSocketActor.Client.SendText(Xml.OuterXml);
-			else if (Content is Dictionary<string, object> || Content is Array || Content is null)
+			else if (Content is Dictionary<string, object> ||
+				Content is Dictionary<string, IElement> ||
+				Content is Array ||
+				Content is null)
+			{
 				await WebSocketActor.Client.SendText(JSON.Encode(Content, false));
+			}
 			else
 			{
 				ContentResponse Encoded = await InternetContent.EncodeAsync(Content, Encoding.UTF8);
 				Encoded.AssertOk();
 
-				await WebSocketActor.Client.SendBinary(Encoded.Encoded);
+				if (Encoded.ContentType.StartsWith(JsonCodec.DefaultContentType))
+					await WebSocketActor.Client.SendText(Encoded.Encoded);
+				else
+					await WebSocketActor.Client.SendBinary(Encoded.Encoded);
 			}
 
 			return null;
