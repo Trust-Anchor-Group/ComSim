@@ -87,7 +87,7 @@ namespace TAG.Simulator.Web.Actors
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new WebActor(Parent, Model);
+			return new WebSocketActor(Parent, Model);
 		}
 
 		/// <summary>
