@@ -135,7 +135,7 @@ namespace TAG.Simulator.Web.Actors
 		{
 			this.credentials = await this.GetInstanceCredentials();
 
-			this.sniffer = this.Model.GetSniffer(this.userName);
+			this.sniffer = this.Model.GetSniffer(this.Id);
 
 			if (this.sniffer is null)
 			{
