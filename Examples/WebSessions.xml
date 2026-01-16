@@ -37,7 +37,6 @@
 				Global["User"+IntToStr2(i)]:=
 				{
 					"Index":i,
-					"IndexStr":IntToStr2(i),
 					"TabId":Str(NewGuid()),
 					"Jid":"SimMfaUser"+Str(i)+"@lab.tagroot.io",
 					"WebClient":null,
@@ -164,7 +163,9 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
-			<Inc counter="GET{UserData.IndexStr}"/>
+      <Sample name="GET">
+        <Script>UserData.Index</Script>
+      </Sample>
 			<web:GET actor="User"
 							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation"
 							 timeout="PT10S"
@@ -182,7 +183,9 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
-			<Inc counter="POST{UserData.IndexStr}"/>
+      <Sample name="POST">
+        <Script>UserData.Index</Script>
+      </Sample>
 			<web:POST actor="User"
 								url="https://lab.tagroot.io/QuickLogin"
 								timeout="PT10S"
@@ -237,9 +240,11 @@
 				UserData:=GetUserData(User);
 				]]>
 			</Eval>
+      <Sample name="POST">
+        <Script>UserData.Index</Script>
+      </Sample>
 			<Conditional>
 				<Condition condition="Event.type='SignatureReceived'">
-					<Inc counter="POST{UserData.IndexStr}"/>
 					<web:POST actor="UserData.WebClient"
 										url="https://lab.tagroot.io/Community/Api/ReplyToPost.ws"
 										timeout="PT10S"
@@ -345,29 +350,25 @@
 		</Activity>
 	</Activities>
 	<Graphs>
-		<CombinedCounterGraph header="GET/user" legend="true" span="true" title="GET Requests per User">
-			<Source ref="GET01"/>
-			<Source ref="GET02"/>
-			<Source ref="GET03"/>
-			<Source ref="GET04"/>
-			<Source ref="GET05"/>
-			<Source ref="GET06"/>
-			<Source ref="GET07"/>
-			<Source ref="GET08"/>
-			<Source ref="GET09"/>
-			<Source ref="GET10"/>
-		</CombinedCounterGraph>
-		<CombinedCounterGraph header="GET/user" legend="true" span="true" title="GET Requests per User">
-			<Source ref="POST01"/>
-			<Source ref="POST02"/>
-			<Source ref="POST03"/>
-			<Source ref="POST04"/>
-			<Source ref="POST05"/>
-			<Source ref="POST06"/>
-			<Source ref="POST07"/>
-			<Source ref="POST08"/>
-			<Source ref="POST09"/>
-			<Source ref="POST10"/>
-		</CombinedCounterGraph>
+		<CustomGraph for="GET">
+			<![CDATA[
+      [Labels,Counts]:=Histogram(GET,1,10,10);
+      G:=VerticalBars(str(1..10),Counts);
+      G.LabelX:="User";
+      G.LabelY:="Number of GETs";
+      G.Title:="Distribution of numbers GET calls";
+      G
+      ]]>
+		</CustomGraph>
+		<CustomGraph for="POST">
+			<![CDATA[
+      [Labels,Counts]:=Histogram(POST,1,10,10);
+      G:=VerticalBars(str(1..10),Counts);
+      G.LabelX:="User";
+      G.LabelY:="Number of POSTs";
+      G.Title:="Distribution of numbers POST calls";
+      G
+      ]]>
+		</CustomGraph>
 	</Graphs>
 </Model>
