@@ -235,7 +235,7 @@ namespace TAG.Simulator.Web.Actors
 
 						case "Content-Type":
 							ContentType = Header.Value;
-							break;
+							continue;
 					}
 
 					sb.Append(Header.Key);
