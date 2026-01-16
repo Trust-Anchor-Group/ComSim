@@ -74,7 +74,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			{
 				List<string> Labels = new List<string>();
 
-				foreach (Source Source in this.sources)
+				foreach (ISource Source in this.sources)
 					Labels.Add(Source.Reference);
 
 				ExportLegend(Output, Labels.ToArray());
@@ -154,7 +154,7 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			int i = 0;
 			bool First = true;
 
-			foreach (Source Source in this.sources)
+			foreach (ISource Source in this.sources)
 			{
 				Graph = this.GetGraph(Source.Reference);
 				if (Graph is null)
@@ -174,12 +174,12 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			}
 
 			if (First)
-				Output.WriteLine("No graphs found.");
+				Output.WriteLine("\"No graphs found.\"");
 			else
 			{
 				Output.WriteLine(")]);");
 				Output.Write("G.LabelX:=\"Time × ");
-				Output.Write(Model.TimeUnitStr);
+				Output.Write(this.Model.TimeUnitStr);
 				Output.WriteLine("\";");
 				Output.Write("G.Title:=\"");
 				Output.Write(this.title.Replace("\"", "\\\""));
