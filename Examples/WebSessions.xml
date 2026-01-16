@@ -163,15 +163,15 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
-      <Sample name="GET">
-        <Script>UserData.Index</Script>
-      </Sample>
 			<web:GET actor="User"
 							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation"
 							 timeout="PT10S"
 							 variable="Response">
 				<web:Header name="Accept" value="text/html"/>
 			</web:GET>
+      <Sample name="GET">
+        <Script>UserData.Index</Script>
+      </Sample>
 			<Stop/>
 		</Activity>
 		<Activity id="DoQuickLogin" logStart="false" logEnd="false">
@@ -183,9 +183,6 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
-      <Sample name="POST">
-        <Script>UserData.Index</Script>
-      </Sample>
 			<web:POST actor="User"
 								url="https://lab.tagroot.io/QuickLogin"
 								timeout="PT10S"
@@ -204,6 +201,9 @@
 					</Script>
 				</web:Payload>
 			</web:POST>
+      <Sample name="POST">
+        <Script>UserData.Index</Script>
+      </Sample>
 			<Conditional>
 				<Condition condition="exists(UserData.MfaClient) and UserData.LegalIdApproved">
 					<Eval>
@@ -240,9 +240,6 @@
 				UserData:=GetUserData(User);
 				]]>
 			</Eval>
-      <Sample name="POST">
-        <Script>UserData.Index</Script>
-      </Sample>
 			<Conditional>
 				<Condition condition="Event.type='SignatureReceived'">
 					<web:POST actor="UserData.WebClient"
@@ -262,6 +259,9 @@
 							</Script>
 						</web:Payload>
 					</web:POST>
+					<Sample name="POST">
+						<Script>UserData.Index</Script>
+					</Sample>
 				</Condition>
 			</Conditional>
 			<Stop/>
