@@ -182,7 +182,7 @@ namespace TAG.Simulator.MQTT.Actors
 				};
 			}
 
-			this.sniffer = this.Model.GetSniffer(this.userName);
+			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 
 			if (this.sniffer is null)
 				this.client = new MqttClient(this.domain, this.port, this.encrypted, this.userName, this.credentials.Password);

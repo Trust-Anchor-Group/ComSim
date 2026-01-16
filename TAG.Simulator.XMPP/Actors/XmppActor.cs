@@ -214,7 +214,7 @@ namespace TAG.Simulator.XMPP.Actors
 		{
 			this.xmppCredentials = await this.GetInstanceCredentials();
 
-			this.sniffer = this.Model.GetSniffer(this.userName);
+			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 
 			if (this.sniffer is null)
 				this.client = new XmppClient(this.xmppCredentials, "en", typeof(XmppActor).GetTypeInfo().Assembly);

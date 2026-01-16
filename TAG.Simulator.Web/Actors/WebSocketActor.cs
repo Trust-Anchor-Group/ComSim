@@ -116,7 +116,7 @@ namespace TAG.Simulator.Web.Actors
 		/// </summary>
 		public override Task InitializeInstance()
 		{
-			this.sniffer = this.Model.GetSniffer(this.Id);
+			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 			this.connectionTask = this.DoConnect(true);
 
 			return Task.CompletedTask;
