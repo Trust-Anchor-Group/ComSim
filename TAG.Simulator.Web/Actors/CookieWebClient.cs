@@ -219,25 +219,27 @@ namespace TAG.Simulator.Web.Actors
 
 				sb.AppendLine();
 
-				bool HasCookieHeader = false;
-
 				foreach (KeyValuePair<string, string> Header in Headers)
 				{
-					HasCookieHeader |= Header.Key == "Cookie";
+					switch (Header.Key)
+					{
+						case "Accept":
+						case "Authorization":
+						case "Cookie":
+						case "Content-Type":
+							continue;
+					}
 
 					sb.Append(Header.Key);
 					sb.Append(": ");
 					sb.AppendLine(Header.Value);
 				}
 
-				if (!HasCookieHeader)
+				string s = this.cookies.GetCookieHeader(Uri);
+				if (!string.IsNullOrEmpty(s))
 				{
-					string s = this.cookies.GetCookieHeader(Uri);
-					if (!string.IsNullOrEmpty(s))
-					{
-						sb.Append("Cookie: ");
-						sb.AppendLine(s);
-					}
+					sb.Append("Cookie: ");
+					sb.AppendLine(s);
 				}
 
 				if (Request.Content?.Headers is not null)
