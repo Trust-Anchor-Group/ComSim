@@ -13,25 +13,28 @@ namespace TAG.Simulator.Web.Activities
 	/// <summary>
 	/// Represents an identity property.
 	/// </summary>
-	public class Header : WebNode
+	/// <param name="Parent">Parent node</param>
+	/// <param name="Model">Model in which the node is defined.</param>
+	public class Header(ISimulationNode Parent, Model Model)
+		: WebNode(Parent, Model)
 	{
 		private StringAttribute name;
 		private StringAttribute value;
 
 		/// <summary>
-		/// Represents an identity property.
-		/// </summary>
-		/// <param name="Parent">Parent node</param>
-		/// <param name="Model">Model in which the node is defined.</param>
-		public Header(ISimulationNode Parent, Model Model)
-			: base(Parent, Model)
-		{
-		}
-
-		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(Header);
+
+		/// <summary>
+		/// Name definition of the header.
+		/// </summary>
+		public string Name => this.name?.Value;
+
+		/// <summary>
+		/// Value definition of the header.
+		/// </summary>
+		public string Value => this.value?.Value;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -89,17 +92,5 @@ namespace TAG.Simulator.Web.Activities
 
 			return new KeyValuePair<string, string>(Name, Value);
 		}
-
-		/// <summary>
-		/// Exports PlantUML
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Number of tabs to indent.</param>
-		/// <param name="QuoteChar">Quote character.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
-		{
-			Output.AppendUmlArgument(Indentation, this.name.Value, this.value.Value, true, QuoteChar);
-		}
-
 	}
 }

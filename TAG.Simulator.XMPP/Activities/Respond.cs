@@ -122,6 +122,8 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
 			Output.Indent(Indentation);
@@ -132,15 +134,15 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Id", this.requestId.Value, true, QuoteChar);
-			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Id", this.requestId.Value, true, QuoteChar, ref First);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar, ref First);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar, ref First);
 			}
 
 			Output.WriteLine(");");

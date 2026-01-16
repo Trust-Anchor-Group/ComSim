@@ -34,6 +34,16 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		public override string LocalName => nameof(Property);
 
 		/// <summary>
+		/// Name definition of the property.
+		/// </summary>
+		public string Name => this.name?.Value;
+
+		/// <summary>
+		/// Value definition of the property.
+		/// </summary>
+		public string Value => this.value?.Value;
+
+		/// <summary>
 		/// Creates a new instance of the node.
 		/// </summary>
 		/// <param name="Parent">Parent node.</param>
@@ -89,17 +99,5 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 
 			return new Waher.Networking.XMPP.Contracts.Property(Name, Value);
 		}
-
-		/// <summary>
-		/// Exports PlantUML
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Number of tabs to indent.</param>
-		/// <param name="QuoteChar">Quote character.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
-		{
-			Output.AppendUmlArgument(Indentation, this.name.Value, this.value.Value, true, QuoteChar);
-		}
-
 	}
 }

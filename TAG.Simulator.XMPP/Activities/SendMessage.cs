@@ -141,6 +141,8 @@ namespace TAG.Simulator.XMPP.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
 			Output.Indent(Indentation);
@@ -151,27 +153,26 @@ namespace TAG.Simulator.XMPP.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar);
-			Output.AppendUmlArgument(Indentation, "Type", this.type.ToString(), false, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "To", this.to.Value, true, QuoteChar, ref First);
+			Output.AppendUmlArgument(Indentation, "Type", this.type.ToString(), false, QuoteChar, ref First);
 
 			if (!string.IsNullOrEmpty(this.subject.Value))
-				Output.AppendUmlArgument(Indentation, "Subject", this.subject.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Subject", this.subject.Value, true, QuoteChar, ref First);
 
 			if (!string.IsNullOrEmpty(this.language.Value))
-				Output.AppendUmlArgument(Indentation, "Language", this.language.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Language", this.language.Value, true, QuoteChar, ref First);
 
 			if (!string.IsNullOrEmpty(this.threadId.Value))
-				Output.AppendUmlArgument(Indentation, "ThreadId", this.threadId.Value, true, QuoteChar);
-
+				Output.AppendUmlArgument(Indentation, "ThreadId", this.threadId.Value, true, QuoteChar, ref First);
 			if (!string.IsNullOrEmpty(this.parentThreadId.Value))
-				Output.AppendUmlArgument(Indentation, "ParentThreadId", this.parentThreadId.Value, true, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "ParentThreadId", this.parentThreadId.Value, true, QuoteChar, ref First);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar, ref First);
 			}
 
 			Output.WriteLine(");");

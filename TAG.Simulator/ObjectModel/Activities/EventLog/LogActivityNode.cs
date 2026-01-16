@@ -114,6 +114,8 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 		/// <param name="QuoteChar">Quote character.</param>
 		public override sealed void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.GetType().Name);
@@ -121,10 +123,10 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Message", this.message.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Message", this.message.Value, true, QuoteChar, ref First);
 
-			foreach (Tag P in this.tags)
-				P.ExportPlantUml(Output, Indentation, QuoteChar);
+			foreach (Tag Tag in this.tags)
+				Output.AppendUmlArgument(Indentation, Tag.Key, Tag.Value, true, QuoteChar, ref First);
 
 			Output.WriteLine(");");
 		}

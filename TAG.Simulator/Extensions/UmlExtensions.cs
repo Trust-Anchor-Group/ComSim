@@ -29,9 +29,11 @@ namespace TAG.Simulator.Extensions
 		/// <param name="Value">Value</param>
 		/// <param name="Quotes">Quotes</param>
 		/// <param name="QuoteChar">Quote character</param>
-		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, string Name, string Value, bool Quotes, char QuoteChar)
+		/// <param name="First">If it is the first argument.</param>
+		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, 
+			string Name, string Value, bool Quotes, char QuoteChar, ref bool First)
 		{
-			Output.AppendUmlArgument(Indentation, Name);
+			Output.AppendUmlArgument(Indentation, Name, ref First);
 
 			if (Quotes)
 				Eval.ExportPlantUml("\"" + Value.Replace("\"", "\\\"") + "\"", Output, Indentation, QuoteChar, false);
@@ -47,9 +49,11 @@ namespace TAG.Simulator.Extensions
 		/// <param name="Name">Name to append</param>
 		/// <param name="Value">Value</param>
 		/// <param name="QuoteChar">Quote character</param>
-		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, string Name, IValue Value, char QuoteChar)
+		/// <param name="First">If it is the first argument.</param>
+		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, 
+			string Name, IValue Value, char QuoteChar, ref bool First)
 		{
-			Output.AppendUmlArgument(Indentation, Name);
+			Output.AppendUmlArgument(Indentation, Name, ref First);
 			Value.ExportPlantUml(Output, Indentation, QuoteChar);
 		}
 
@@ -59,8 +63,15 @@ namespace TAG.Simulator.Extensions
 		/// <param name="Output">Output</param>
 		/// <param name="Indentation">Indentation</param>
 		/// <param name="Name">Name to append</param>
-		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, string Name)
+		/// <param name="First">If it is the first argument.</param>
+		public static void AppendUmlArgument(this StreamWriter Output, int Indentation, 
+			string Name, ref bool First)
 		{
+			if (First)
+				First = false;
+			else
+				Output.Write(',');
+			
 			Output.WriteLine();
 			Output.Indent(Indentation);
 

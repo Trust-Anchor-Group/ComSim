@@ -7,6 +7,7 @@ using TAG.Simulator.Extensions;
 using TAG.Simulator.ObjectModel;
 using TAG.Simulator.ObjectModel.Activities;
 using TAG.Simulator.XMPP.Actors;
+using Waher.Content.Html.Elements;
 using Waher.Content.Xml;
 using Waher.Networking.XMPP.Contracts;
 using Waher.Runtime.Collections;
@@ -108,6 +109,8 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
@@ -117,7 +120,7 @@ namespace TAG.Simulator.XMPP.Legal.Activities
 			Indentation++;
 
 			foreach (Property P in this.properties)
-				P.ExportPlantUml(Output, Indentation, QuoteChar);
+				Output.AppendUmlArgument(Indentation, P.Name, P.Value, true, QuoteChar, ref First);
 
 			Output.WriteLine(");");
 		}

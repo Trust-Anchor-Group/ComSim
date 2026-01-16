@@ -130,6 +130,8 @@ namespace TAG.Simulator.Web.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
@@ -139,21 +141,21 @@ namespace TAG.Simulator.Web.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Url", this.url.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Url", this.url.Value, true, QuoteChar, ref First);
 
 			if (!string.IsNullOrEmpty(this.variable.Value))
-				Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, false, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, false, QuoteChar, ref First);
 
 			if (this.payload?.Value is not null)
 			{
 				if (this.payload.Value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Payload", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.payload.Value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Payload", this.payload.Value, QuoteChar, ref First);
 			}
 
-			foreach (Header P in this.headers)
-				P.ExportPlantUml(Output, Indentation, QuoteChar);
+			foreach (Header Header in this.headers)
+				Output.AppendUmlArgument(Indentation, Header.Name, Header.Value, true, QuoteChar, ref First);
 
 			Output.WriteLine(");");
 		}

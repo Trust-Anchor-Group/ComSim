@@ -16,22 +16,15 @@ namespace TAG.Simulator.MQ.Activities
 	/// <summary>
 	/// Gets content to a topic.
 	/// </summary>
-	public class Get : ActivityNode
+	/// <param name="Parent">Parent node</param>
+	/// <param name="Model">Model in which the node is defined.</param>
+	public class Get(ISimulationNode Parent, Model Model) 
+		: ActivityNode(Parent, Model)
 	{
 		private StringAttribute actor;
 		private StringAttribute queue;
 		private StringAttribute variable;
 		private Waher.Content.Duration timeout;
-
-		/// <summary>
-		/// Gets content to a topic.
-		/// </summary>
-		/// <param name="Parent">Parent node</param>
-		/// <param name="Model">Model in which the node is defined.</param>
-		public Get(ISimulationNode Parent, Model Model)
-			: base(Parent, Model)
-		{
-		}
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -100,6 +93,8 @@ namespace TAG.Simulator.MQ.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
 			Output.Indent(Indentation);
@@ -110,9 +105,9 @@ namespace TAG.Simulator.MQ.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Queue", this.queue.Value, true, QuoteChar);
-			Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, true, QuoteChar);
-			Output.AppendUmlArgument(Indentation, "Timeout", Duration.ToString(this.timeout), true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Queue", this.queue.Value, true, QuoteChar, ref First);
+			Output.AppendUmlArgument(Indentation, "Variable", this.variable.Value, true, QuoteChar, ref First);
+			Output.AppendUmlArgument(Indentation, "Timeout", Duration.ToString(this.timeout), true, QuoteChar, ref First);
 
 			Output.WriteLine(");");
 		}

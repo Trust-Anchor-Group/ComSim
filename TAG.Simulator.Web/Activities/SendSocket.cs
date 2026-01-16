@@ -116,6 +116,8 @@ namespace TAG.Simulator.Web.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			Output.Indent(Indentation);
 			Output.Write(':');
 			Output.Write(this.actor.Value);
@@ -126,9 +128,9 @@ namespace TAG.Simulator.Web.Activities
 			if (this.payload?.Value is not null)
 			{
 				if (this.payload.Value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Payload", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.payload.Value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Payload", this.payload.Value, QuoteChar, ref First);
 			}
 
 			Output.WriteLine(");");

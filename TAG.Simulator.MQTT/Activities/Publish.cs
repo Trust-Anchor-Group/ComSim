@@ -123,6 +123,8 @@ namespace TAG.Simulator.MQTT.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
 			Output.Indent(Indentation);
@@ -133,18 +135,18 @@ namespace TAG.Simulator.MQTT.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Topic", this.topic.Value, true, QuoteChar);
-			Output.AppendUmlArgument(Indentation, "QoS", this.qos.ToString(), false, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Topic", this.topic.Value, true, QuoteChar, ref First);
+			Output.AppendUmlArgument(Indentation, "QoS", this.qos.ToString(), false, QuoteChar, ref First);
 
 			if (!this.retain)
-				Output.AppendUmlArgument(Indentation, "Retain", "true", false, QuoteChar);
+				Output.AppendUmlArgument(Indentation, "Retain", "true", false, QuoteChar, ref First);
 
 			if (!(this.value is null))
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar, ref First);
 			}
 
 			Output.WriteLine(");");

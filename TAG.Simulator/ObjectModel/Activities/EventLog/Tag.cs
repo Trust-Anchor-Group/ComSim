@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using TAG.Simulator.Extensions;
 using Waher.Content.Xml;
 using Waher.Script;
 
@@ -30,6 +28,16 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 		/// Local name of XML element defining contents of class.
 		/// </summary>
 		public override string LocalName => nameof(Tag);
+
+		/// <summary>
+		/// Key definition
+		/// </summary>
+		public string Key => this.key?.Value;
+
+		/// <summary>
+		/// Value definition
+		/// </summary>
+		public string Value => this.value?.ValueString;
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -87,17 +95,5 @@ namespace TAG.Simulator.ObjectModel.Activities.EventLog
 
 			return new KeyValuePair<string, object>(Key, Value);
 		}
-
-		/// <summary>
-		/// Exports PlantUML
-		/// </summary>
-		/// <param name="Output">Output</param>
-		/// <param name="Indentation">Number of tabs to indent.</param>
-		/// <param name="QuoteChar">Quote character.</param>
-		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
-		{
-			Output.AppendUmlArgument(Indentation, this.key.Value, this.value.ValueString, true, QuoteChar);
-		}
-
 	}
 }

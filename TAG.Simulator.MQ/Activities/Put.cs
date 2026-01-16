@@ -16,21 +16,14 @@ namespace TAG.Simulator.MQ.Activities
 	/// <summary>
 	/// Puts content to a topic.
 	/// </summary>
-	public class Put : ActivityNode, IValueRecipient
+	/// <param name="Parent">Parent node</param>
+	/// <param name="Model">Model in which the node is defined.</param>
+	public class Put(ISimulationNode Parent, Model Model) 
+		: ActivityNode(Parent, Model), IValueRecipient
 	{
 		private IValue value;
 		private StringAttribute actor;
 		private StringAttribute queue;
-
-		/// <summary>
-		/// Puts content to a topic.
-		/// </summary>
-		/// <param name="Parent">Parent node</param>
-		/// <param name="Model">Model in which the node is defined.</param>
-		public Put(ISimulationNode Parent, Model Model)
-			: base(Parent, Model)
-		{
-		}
 
 		/// <summary>
 		/// Local name of XML element defining contents of class.
@@ -116,6 +109,8 @@ namespace TAG.Simulator.MQ.Activities
 		/// <param name="QuoteChar">Quote character.</param>
 		public override void ExportPlantUml(StreamWriter Output, int Indentation, char QuoteChar)
 		{
+			bool First = true;
+
 			base.ExportPlantUml(Output, Indentation, QuoteChar);
 
 			Output.Indent(Indentation);
@@ -126,14 +121,14 @@ namespace TAG.Simulator.MQ.Activities
 
 			Indentation++;
 
-			Output.AppendUmlArgument(Indentation, "Queue", this.queue.Value, true, QuoteChar);
+			Output.AppendUmlArgument(Indentation, "Queue", this.queue.Value, true, QuoteChar, ref First);
 
 			if (this.value is not null)
 			{
 				if (this.value is Xml Xml && !string.IsNullOrEmpty(Xml.RootName))
-					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", Xml.RootName, false, QuoteChar, ref First);
 				else
-					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar);
+					Output.AppendUmlArgument(Indentation, "Content", this.value, QuoteChar, ref First);
 			}
 
 			Output.WriteLine(");");
