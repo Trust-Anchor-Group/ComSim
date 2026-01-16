@@ -226,6 +226,16 @@ namespace TAG.Simulator.Web.Actors
 					sb.AppendLine(Header.Value);
 				}
 
+				if (Request.Content?.Headers is not null)
+				{
+					foreach (KeyValuePair<string, IEnumerable<string>> Header in Request.Content.Headers)
+					{
+						sb.Append(Header.Key);
+						sb.Append(": ");
+						sb.AppendLine(string.Join(", ", Header.Value));
+					}
+				}
+
 				this.TransmitText(sb.ToString());
 
 				if (Data is not null)
@@ -248,6 +258,16 @@ namespace TAG.Simulator.Web.Actors
 					sb.Append(Header.Key);
 					sb.Append(": ");
 					sb.AppendLine(string.Join(", ", Header.Value));
+				}
+
+				if (Response.Content?.Headers is not null)
+				{
+					foreach (KeyValuePair<string, IEnumerable<string>> Header in Response.Content.Headers)
+					{
+						sb.Append(Header.Key);
+						sb.Append(": ");
+						sb.AppendLine(string.Join(", ", Header.Value));
+					}
 				}
 
 				this.ReceiveText(sb.ToString());
