@@ -63,5 +63,12 @@ namespace TAG.Simulator.ObjectModel.Actors
 			get;
 		}
 
+		/// <summary>
+		/// Tries to get an actor instance from its ID.
+		/// </summary>
+		/// <param name="InstanceId">Instance ID</param>
+		/// <param name="Instance">Instance, if found.</param>
+		/// <returns>If an instance was found with the given ID.</returns>
+		bool TryGetInstance(string InstanceId, out IActor Instance);
 	}
 }

@@ -28,6 +28,7 @@
 				<xs:extension base="cs:Actor">
 					<xs:attribute name="url" type="xs:string" use="required"/>
 					<xs:attribute name="protocol" type="xs:string" use="required"/>
+					<xs:attribute name="sessionActor" type="xs:string" use="optional"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>

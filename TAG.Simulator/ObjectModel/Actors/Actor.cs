@@ -13,6 +13,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// </summary>
 	public abstract class Actor : ExternalEventsNode, IActor
 	{
+		private readonly Dictionary<string, IActor> instanceById = new Dictionary<string, IActor>();
 		private readonly Variables variables;
 		private List<IActor> freeIndividuals = null;
 		private IActor[] instances;
@@ -77,6 +78,17 @@ namespace TAG.Simulator.ObjectModel.Actors
 		public IActor[] Instances => this.instances;
 
 		/// <summary>
+		/// Tries to get an actor instance from its ID.
+		/// </summary>
+		/// <param name="InstanceId">Instance ID</param>
+		/// <param name="Instance">Instance, if found.</param>
+		/// <returns>If an instance was found with the given ID.</returns>
+		public bool TryGetInstance(string InstanceId, out IActor Instance)
+		{
+			return this.instanceById.TryGetValue(InstanceId, out Instance);
+		}
+
+		/// <summary>
 		/// Sets properties and attributes of class in accordance with XML definition.
 		/// </summary>
 		/// <param name="Definition">XML definition</param>
@@ -114,6 +126,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 				Instance.externalEvents = this.externalEvents;
 
 				this.instances[i - 1] = Instance;
+				this.instanceById[Instance.instanceId] = Instance;
 				this.Model.Variables[Instance.instanceId] = Instance;
 
 				await Instance.InitializeInstance();

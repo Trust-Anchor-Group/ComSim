@@ -19,12 +19,13 @@ namespace TAG.Simulator.Web.Actors
 	/// </summary>
 	public class WebSocketActor : Actor
 	{
-		private CancellationTokenSource cancel = new();
+		private readonly CancellationTokenSource cancel = new();
 		private ClientWebSocket client;
 		private ISniffer sniffer;
 		private Task connectionTask;
 		private string url;
 		private string protocol;
+		private string sessionActor;
 		private bool closed = false;
 
 		/// <summary>
@@ -77,6 +78,7 @@ namespace TAG.Simulator.Web.Actors
 		{
 			this.url = XML.Attribute(Definition, "url");
 			this.protocol = XML.Attribute(Definition, "protocol");
+			this.sessionActor = XML.Attribute(Definition, "sessionActor");
 
 			return base.FromXml(Definition);
 		}
@@ -105,7 +107,8 @@ namespace TAG.Simulator.Web.Actors
 			WebSocketActor Result = new(this, this.Model, InstanceIndex, InstanceId)
 			{
 				url = this.url,
-				protocol = this.protocol
+				protocol = this.protocol,
+				sessionActor = this.sessionActor
 			};
 
 			return Task.FromResult<Actor>(Result);
@@ -133,8 +136,41 @@ namespace TAG.Simulator.Web.Actors
 
 				this.client = new ClientWebSocket();
 				this.client.Options.AddSubProtocol(this.protocol);
-				
-				await this.client.ConnectAsync(new Uri(this.url), this.cancel.Token);
+
+				Uri Uri = new(this.url);
+
+				if (!string.IsNullOrEmpty(this.sessionActor))
+				{
+					string SessionInstance = this.sessionActor + this.InstanceId.Substring(this.Id.Length);
+
+					this.sniffer.Information("Web session instance: " + SessionInstance);
+
+					if (!this.Model.TryGetActor(this.sessionActor, out IActor Actor))
+						throw new Exception("Session actor " + this.sessionActor + " not found.");
+
+					if (!Actor.TryGetInstance(SessionInstance, out IActor Instance))
+						throw new Exception("Session instance " + SessionInstance + " actor not found.");
+
+					if (Instance is not WebActor WebActor)
+						throw new Exception("Session instance " + SessionInstance + " is not a web actor.");
+
+					this.client.Options.Cookies = WebActor.Client.Cookies;
+
+					string s = this.client.Options.Cookies.GetCookieHeader(Uri);
+					if (!string.IsNullOrEmpty(s))
+						this.sniffer.Information("Cookie header: " + s);
+
+					await this.client.ConnectAsync(Uri, this.cancel.Token);
+
+					if (string.IsNullOrEmpty(s))
+					{
+						s = this.client.Options.Cookies.GetCookieHeader(Uri);
+						if (!string.IsNullOrEmpty(s))
+							this.sniffer.Information("Cookie received: " + s);
+					}
+				}
+				else
+					await this.client.ConnectAsync(Uri, this.cancel.Token);
 
 				this.sniffer.Information("Connected to " + this.url);
 

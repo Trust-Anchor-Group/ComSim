@@ -67,7 +67,7 @@
 	<Actors>
 		<web:WebActor id="WebUser" N="10" httpVersion="1.1">
 		</web:WebActor>
-		<web:WebSocketActor id="Ws_User" N="10" protocol="ls"
+		<web:WebSocketActor id="Ws_User" N="10" protocol="ls" sessionActor="WebUser"
 												url="wss://lab.tagroot.io/ClientEventsWS">
 			<ExternalEvent name="OnConnected" event="WebSocketConnected" actorName="User">
 				<Parameter name="Client"/>
