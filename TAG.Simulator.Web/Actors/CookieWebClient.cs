@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
+using TAG.Simulator.Web.Activities;
 using Waher.Content;
 using Waher.Content.Getters;
 using Waher.Networking;
@@ -219,11 +219,25 @@ namespace TAG.Simulator.Web.Actors
 
 				sb.AppendLine();
 
+				bool HasCookieHeader = false;
+
 				foreach (KeyValuePair<string, string> Header in Headers)
 				{
+					HasCookieHeader |= Header.Key == "Cookie";
+
 					sb.Append(Header.Key);
 					sb.Append(": ");
 					sb.AppendLine(Header.Value);
+				}
+
+				if (!HasCookieHeader)
+				{
+					string s = this.cookies.GetCookieHeader(Uri);
+					if (!string.IsNullOrEmpty(s))
+					{
+						sb.Append("Cookie: ");
+						sb.AppendLine(s);
+					}
 				}
 
 				if (Request.Content?.Headers is not null)
