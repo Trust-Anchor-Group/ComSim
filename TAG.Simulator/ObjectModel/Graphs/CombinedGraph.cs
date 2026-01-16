@@ -154,8 +154,6 @@ namespace TAG.Simulator.ObjectModel.Graphs
 			int i = 0;
 			bool First = true;
 
-			Output.WriteLine("G:=Sum([(");
-
 			foreach (Source Source in this.sources)
 			{
 				Graph = this.GetGraph(Source.Reference);
@@ -163,7 +161,9 @@ namespace TAG.Simulator.ObjectModel.Graphs
 					Log.Error("Graph for " + Source.Reference + " could not be found.");
 				else
 				{
-					if (!First)
+					if (First)
+						Output.WriteLine("G:=Sum([(");
+					else
 						Output.WriteLine("), (");
 
 					if (Graph.ExportGraphScript(Output, Model.ToString(Palette[i]), Span && this.span))
@@ -173,14 +173,19 @@ namespace TAG.Simulator.ObjectModel.Graphs
 				i++;
 			}
 
-			Output.WriteLine(")]);");
-			Output.Write("G.LabelX:=\"Time × ");
-			Output.Write(Model.TimeUnitStr);
-			Output.WriteLine("\";");
-			Output.Write("G.Title:=\"");
-			Output.Write(this.title.Replace("\"", "\\\""));
-			Output.WriteLine("\";");
-			Output.WriteLine("G");
+			if (First)
+				Output.WriteLine("No graphs found.");
+			else
+			{
+				Output.WriteLine(")]);");
+				Output.Write("G.LabelX:=\"Time × ");
+				Output.Write(Model.TimeUnitStr);
+				Output.WriteLine("\";");
+				Output.Write("G.Title:=\"");
+				Output.Write(this.title.Replace("\"", "\\\""));
+				Output.WriteLine("\";");
+				Output.WriteLine("G");
+			}
 
 			return true;
 		}
