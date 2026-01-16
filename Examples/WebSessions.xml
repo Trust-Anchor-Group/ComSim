@@ -139,6 +139,9 @@
 				UserData.WsClient:=User;
 				]]>
 			</Eval>
+			<LogInformation message="Registering Tab." actor="User{UserData.Index}">
+				<Tag key="TabID" value="{UserData.TabId}"/>
+			</LogInformation>
 			<web:SendSocket actor="User">
 				<web:Payload>
 					<Script>
@@ -163,6 +166,7 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
+			<LogInformation message="Getting page." actor="User{UserData.Index}"/>
 			<web:GET actor="User"
 							 url="https://lab.tagroot.io/Community/Post/Page_retrieved_from_simulation"
 							 timeout="PT10S"
@@ -183,6 +187,10 @@
 				UserData.WebClient:=User;
 				]]>
 			</Eval>
+			<LogInformation message="Initiating QuickLogin." actor="User{UserData.Index}">
+				<Tag key="TabID" value="{UserData.TabId}"/>
+				<Tag key="LegalId" value="{UserData.LegalId}"/>
+			</LogInformation>
 			<web:POST actor="User"
 								url="https://lab.tagroot.io/QuickLogin"
 								timeout="PT10S"
@@ -242,6 +250,10 @@
 			</Eval>
 			<Conditional>
 				<Condition condition="Event.type='SignatureReceived'">
+					<LogInformation message="Replying to post." actor="User{UserData.Index}">
+						<Tag key="TabID" value="{UserData.TabId}"/>
+						<Tag key="LegalId" value="{UserData.LegalId}"/>
+					</LogInformation>
 					<web:POST actor="UserData.WebClient"
 										url="https://lab.tagroot.io/Community/Api/ReplyToPost.ws"
 										timeout="PT10S"
