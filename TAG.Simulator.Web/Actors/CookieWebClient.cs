@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using TAG.Simulator.Web.Activities;
 using Waher.Content;
+using Waher.Content.Binary;
 using Waher.Content.Getters;
+using Waher.Content.Json;
+using Waher.Content.Xml.Text;
 using Waher.Networking;
 using Waher.Networking.Sniffers;
 
@@ -206,6 +210,7 @@ namespace TAG.Simulator.Web.Actors
 			if (this.HasSniffers)
 			{
 				StringBuilder sb = new();
+				string ContentType = BinaryCodec.DefaultContentType;
 
 				sb.Append(Method.ToString().ToUpper());
 				sb.Append(' ');
@@ -226,8 +231,11 @@ namespace TAG.Simulator.Web.Actors
 						case "Accept":
 						case "Authorization":
 						case "Cookie":
-						case "Content-Type":
 							continue;
+
+						case "Content-Type":
+							ContentType = Header.Value;
+							break;
 					}
 
 					sb.Append(Header.Key);
@@ -255,7 +263,12 @@ namespace TAG.Simulator.Web.Actors
 				this.TransmitText(sb.ToString());
 
 				if (Data is not null)
-					this.TransmitBinary(false, Data);
+				{
+					if (IsText(ContentType, out Encoding Encoding))
+						this.TransmitText(Encoding.GetString(Data));
+					else
+						this.TransmitBinary(false, Data);
+				}
 			}
 
 			HttpResponseMessage Response = await Client.SendAsync(Request,
@@ -292,9 +305,55 @@ namespace TAG.Simulator.Web.Actors
 			Data = await Response.Content.ReadAsByteArrayAsync();
 
 			if (this.HasSniffers && Data is not null)
-				this.ReceiveBinary(false, Data);
+			{
+				string ContentType = Response.Content.Headers.ContentType?.ToString() ?? BinaryCodec.DefaultContentType;
+
+				if (IsText(ContentType, out Encoding Encoding))
+					this.ReceiveText(Encoding.GetString(Data));
+				else
+					this.ReceiveBinary(false, Data);
+			}
 
 			return await WebGetter.ProcessResponse(Response, Uri);
+		}
+
+		private static bool IsText(string ContentType, out Encoding Encoding)
+		{
+			int i = ContentType.IndexOf(';');
+			if (i > 0)
+			{
+				KeyValuePair<string, string>[] Fields = CommonTypes.ParseFieldValues(ContentType.Trim());
+				string Charset = null;
+
+				foreach (KeyValuePair<string, string> P in Fields)
+				{
+					if (string.Compare(P.Key, "charset", true) == 0)
+					{
+						Charset = P.Value;
+						break;
+					}
+				}
+
+				if (Charset is null)
+					Encoding = Encoding.UTF8;
+				else
+					Encoding = Encoding.GetEncoding(Charset);
+
+				ContentType = ContentType[..i].TrimEnd();
+			}
+			else
+				Encoding = Encoding.UTF8;
+
+			if (ContentType.StartsWith("text/"))
+				return true;
+
+			if (Array.IndexOf(JsonCodec.JsonContentTypes, ContentType) >= 0 ||
+				Array.IndexOf(XmlCodec.XmlContentTypes, ContentType) >= 0)
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		private HttpClient GetClient(Duration Timeout)
