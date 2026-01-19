@@ -13,11 +13,11 @@
 		<Introduction>Simulates a collection of Web sessions that navigate password-protected pages.</Introduction>
 		<Description>
 			<![CDATA[ 
-			Simulates 10 Web clients, each representing a human user. Each web client also has
-			a corresponding Websocket client, to receive asynchronous events on, and an XMPP client, 
-			representing a digital ID used for MFA. Each user performs actions on web pages that 
-			require digital signatures (quicklogin) to authenticate the user. To maintain web sessions, 
-			each user maintains its own set of cookies.
+			Simulates 10 multi-modal Web clients, each representing a human user. Each web client 
+			also has a corresponding Websocket client, to receive asynchronous events on, and an 
+			XMPP client, representing a digital ID used for MFA. Each user performs actions on web 
+			pages that require digital signatures (quicklogin) to authenticate the user. To maintain 
+			web sessions, each user maintains its own set of cookies.
 			]]>
 		</Description>
 		<Preparation>
@@ -97,11 +97,11 @@
 		</xmpp:XmppActorTcp>
 	</Actors>
 	<Distributions>
-		<Normal id="DoUnauthenticatedTask" μ="24" σ="6" N="100"/>
+		<Normal id="GetPostPage" μ="24" σ="6" N="100"/>
 		<Normal id="ReplyToPost" μ="42" σ="6" N="10"/>
 	</Distributions>
 	<Events>
-		<StochasticEvent distribution="DoUnauthenticatedTask" activity="GetUnauthenticatedPage">
+		<StochasticEvent distribution="GetPostPage" activity="GetUnauthenticatedPage">
 			<Description>Performs a web task that does not require authentication.</Description>
 			<ActorReference name="User" exclusive="true">
 				<FromPopulation actor="WebUser"/>
@@ -173,9 +173,9 @@
 							 variable="Response">
 				<web:Header name="Accept" value="text/html"/>
 			</web:GET>
-      <Sample name="GET">
-        <Script>UserData.Index</Script>
-      </Sample>
+			<Sample name="GET">
+				<Script>UserData.Index</Script>
+			</Sample>
 			<Stop/>
 		</Activity>
 		<Activity id="DoQuickLogin" logStart="false" logEnd="false">
@@ -191,27 +191,41 @@
 				<Tag key="TabID" value="{UserData.TabId}"/>
 				<Tag key="LegalId" value="{UserData.LegalId}"/>
 			</LogInformation>
+			<web:GET actor="User"
+							 url="https://lab.tagroot.io/Community/Login.md"
+							 timeout="PT10S"
+							 variable="LoginPage">
+				<web:Header name="Accept" value="text/html"/>
+			</web:GET>
+			<Sample name="GET">
+				<Script>UserData.Index</Script>
+			</Sample>
+			<Eval>
+				<![CDATA[
+				if !(LoginPage.HtmlText like ".*\\<div(\\s+id=\"quickLoginCode\"|\\s+data-mode=\"[^\"]*\"|\\s+data-serviceId=\"(?'ServiceId'[^\"]*)\"|\\s+data-purpose=\"(?'Purpose'[^\"]*)\")*(><\/div>|\/>).*") then error("Unexpected response received. Unable to start QuickLogin");
+				]]>
+			</Eval>
 			<web:POST actor="User"
-								url="https://lab.tagroot.io/QuickLogin"
-								timeout="PT10S"
-								variable="Response">
+							url="https://lab.tagroot.io/QuickLogin"
+							timeout="PT10S"
+							variable="Response">
 				<web:Header name="Accept" value="application/json"/>
 				<web:Payload>
 					<Script>
 						<![CDATA[
 						{
-							"serviceId": "",
+							"serviceId": ServiceId,
 							"tab": UserData.TabId,
 							"mode": "image",
-							"purpose": "Simulation"
+							"purpose": Purpose
 						}						
 						]]>
 					</Script>
 				</web:Payload>
 			</web:POST>
-      <Sample name="POST">
-        <Script>UserData.Index</Script>
-      </Sample>
+			<Sample name="POST">
+				<Script>UserData.Index</Script>
+			</Sample>
 			<Conditional>
 				<Condition condition="exists(UserData.MfaClient) and UserData.LegalIdApproved">
 					<Eval>
@@ -249,7 +263,7 @@
 				]]>
 			</Eval>
 			<Conditional>
-				<Condition condition="Event.type='SignatureReceived'">
+				<Condition condition="Event.type='SignatureReceivedBE'">
 					<LogInformation message="Replying to post." actor="User{UserData.Index}">
 						<Tag key="TabID" value="{UserData.TabId}"/>
 						<Tag key="LegalId" value="{UserData.LegalId}"/>
