@@ -122,7 +122,7 @@ namespace TAG.Simulator.Web.Actors
 			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 			this.connectionTask = this.DoConnect(true);
 
-			return Task.CompletedTask;
+			return base.InitializeInstance();
 		}
 
 		private async Task DoConnect(bool StartReading)

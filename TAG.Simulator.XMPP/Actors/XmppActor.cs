@@ -278,6 +278,8 @@ namespace TAG.Simulator.XMPP.Actors
 					}
 				}
 			}
+
+			await base.InitializeInstance();
 		}
 
 		private Task Client_CustomPresenceXml(object Sender, CustomPresenceEventArgs e)

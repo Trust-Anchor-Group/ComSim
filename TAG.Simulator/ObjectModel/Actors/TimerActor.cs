@@ -85,14 +85,6 @@ namespace TAG.Simulator.ObjectModel.Actors
 			});
 		}
 
-		/// <summary>
-		/// Initializes an instance of an actor.
-		/// </summary>
-		public override Task InitializeInstance()
-		{
-			return Task.CompletedTask;
-		}
-
 		private void TimerCallback(object State)
 		{
 			Task.Run(async () =>

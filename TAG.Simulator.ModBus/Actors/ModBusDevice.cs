@@ -147,14 +147,6 @@ namespace TAG.Simulator.ModBus.Actors
 		}
 
 		/// <summary>
-		/// Initializes an instance of an actor.
-		/// </summary>
-		public override Task InitializeInstance()
-		{
-			return Task.CompletedTask;
-		}
-
-		/// <summary>
 		/// Starts an instance of an actor.
 		/// </summary>
 		public override Task StartInstance()

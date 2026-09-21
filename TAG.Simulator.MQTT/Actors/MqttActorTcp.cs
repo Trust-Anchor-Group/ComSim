@@ -172,15 +172,12 @@ namespace TAG.Simulator.MQTT.Actors
 				new FilterFieldEqualTo("Domain", this.domain),
 				new FilterFieldEqualTo("UserName", this.userName)));
 
-			if (this.credentials is null)
+			this.credentials ??= new AccountCredentials()
 			{
-				this.credentials = new AccountCredentials()
-				{
-					Domain = this.domain,
-					UserName = this.userName,
-					Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
-				};
-			}
+				Domain = this.domain,
+				UserName = this.userName,
+				Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
+			};
 
 			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 
@@ -202,6 +199,8 @@ namespace TAG.Simulator.MQTT.Actors
 			this.client.OnUnsubscribed += this.Client_OnUnsubscribed;
 
 			this.connected = new TaskCompletionSource<bool>();
+		
+			await base.InitializeInstance();
 		}
 
 		private Task Client_OnUnsubscribed(object Sender, ushort PacketIdentifier)

@@ -124,7 +124,7 @@ namespace TAG.Simulator.MQ.Actors
 		/// <returns>Actor instance.</returns>
 		public override Task<Actor> CreateInstanceAsync(int InstanceIndex, string InstanceId)
 		{
-			MqActorTcp Result = new MqActorTcp(this, this.Model, InstanceIndex, InstanceId)
+			MqActorTcp Result = new(this, this.Model, InstanceIndex, InstanceId)
 			{
 				host = this.host,
 				port = this.port,
@@ -149,15 +149,12 @@ namespace TAG.Simulator.MQ.Actors
 				new FilterFieldEqualTo("Host", this.host),
 				new FilterFieldEqualTo("UserName", this.userName)));
 
-			if (this.credentials is null)
+			this.credentials ??= new AccountCredentials()
 			{
-				this.credentials = new AccountCredentials()
-				{
-					Host = this.host,
-					UserName = this.userName,
-					Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
-				};
-			}
+				Host = this.host,
+				UserName = this.userName,
+				Password = string.IsNullOrEmpty(this.password) ? string.Empty : await this.Model.GetKey(this.password, this.userName)
+			};
 
 			this.sniffer = this.Model.GetSniffer(this.InstanceId);
 
@@ -167,6 +164,8 @@ namespace TAG.Simulator.MQ.Actors
 				this.client = new MqClient(this.queueManager, this.channel, this.cipher, this.cipherSuite, this.certificateStore, this.host, this.port, this.sniffer);
 
 			this.connectionTask = this.client.ConnectAsync(this.credentials.UserName, this.credentials.Password);
+		
+			await base.InitializeInstance();
 		}
 
 		/// <summary>
@@ -179,9 +178,9 @@ namespace TAG.Simulator.MQ.Actors
 			if (string.IsNullOrEmpty(this.credentials.ObjectId))
 				await Database.Insert(this.credentials);
 
-			Variables Variables = new Variables();
-			ObjectProperties Properties = new ObjectProperties(this, Variables);
-			List<SubscriptionState> Subscriptions = new List<SubscriptionState>();
+			Variables Variables = [];
+			ObjectProperties Properties = new(this, Variables);
+			List<SubscriptionState> Subscriptions = [];
 
 			if (this.Parent is ISimulationNodeChildren Parent)
 			{
@@ -189,7 +188,7 @@ namespace TAG.Simulator.MQ.Actors
 				{
 					if (Node is Subscribe Subscribe)
 					{
-						SubscriptionState Subscription = new SubscriptionState()
+						SubscriptionState Subscription = new()
 						{
 							ExtEventName = await Expression.TransformAsync(Subscribe.ExtEvent, "{", "}", Properties),
 							Queue = await Expression.TransformAsync(Subscribe.Queue, "{", "}", Properties),
@@ -205,7 +204,7 @@ namespace TAG.Simulator.MQ.Actors
 				}
 			}
 
-			this.subscriptions = Subscriptions.ToArray();
+			this.subscriptions = [.. Subscriptions];
 		}
 
 		private SubscriptionState[] subscriptions;
@@ -251,7 +250,7 @@ namespace TAG.Simulator.MQ.Actors
 			this.client?.Dispose();
 			this.client = null;
 
-			if (!(this.sniffer is null))
+			if (this.sniffer is not null)
 			{
 				if (this.sniffer is IDisposable Disposable)
 					Disposable.Dispose();

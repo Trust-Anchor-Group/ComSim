@@ -93,7 +93,7 @@ namespace TAG.Simulator.ModBus.Actors
 		public override Task InitializeInstance()
 		{
 			this.client = null;
-			return Task.CompletedTask;
+			return base.InitializeInstance();
 		}
 
 		/// <summary>

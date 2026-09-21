@@ -150,6 +150,8 @@ namespace TAG.Simulator.Web.Actors
 					this.credentials?.Password,
 					this.sniffer);
 			}
+
+			await base.InitializeInstance();
 		}
 
 		/// <summary>

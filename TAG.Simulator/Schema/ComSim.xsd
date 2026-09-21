@@ -176,11 +176,30 @@
 	<xs:complexType name="Actor" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="ExtensibleElement">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="InstanceVariable">
+						<xs:complexType>
+							<xs:attribute name="name" type="xs:string" use="required"/>
+							<xs:attribute name="type" type="InstanceVariableType" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
 				<xs:attribute name="id" type="xs:ID" use="required"/>
 				<xs:attribute name="N" type="xs:positiveInteger" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
+	<xs:simpleType name="InstanceVariableType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Boolean"/>
+			<xs:enumeration value="Double"/>
+			<xs:enumeration value="Int64"/>
+			<xs:enumeration value="String"/>
+			<xs:enumeration value="DateTime"/>
+			<xs:enumeration value="TimeSpan"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:complexType name="ExtensibleElement" abstract="true">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">

@@ -188,7 +188,17 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// Initializes an instance of an actor.
 		/// </summary>
-		public abstract Task InitializeInstance();
+		public virtual async Task InitializeInstance()
+		{
+			if (this.Parent is ISimulationNodeChildren Parent)
+			{
+				foreach (ISimulationNode Child in Parent.Children)
+				{
+					if (Child is InstanceVariable Variable)
+						await Variable.SetVariable(this, this.variables);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Starts an instance of an actor.
