@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://lab.tagroot.io/Schema/ComSim.xsd"
+       xmlns:web="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
+       xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
+       timeBase="StartOfSimulation"
+       bucketTime="PT1S"
+       timeUnit="PT1S"
+       timeCycle="PT10S"
+       duration="PT10S"
+       sampleEpsilon="true">
+  <Meta>
+    <Title>DeepFace Performance</Title>
+    <Introduction>Simulation that gradually increases load on a DeepFace web service, to analyze performance, error rate and latency during different loads.</Introduction>
+    <Description>
+      <![CDATA[ 
+      Simulates 10 web clients, each representing a Neuron accessing a DeepFace web service,
+      during 10 minutes. Web clients requests face vectorization with a frequency that is 
+			gradually increased over time. During the simulation, performance metrics are sampled. 
+      ]]>
+    </Description>
+    <Preparation>
+      <![CDATA[
+      DeepFace
+      -----------
+
+      DeepFace runs in a container environment protected by a Neuron that faces the Internet.
+			It has a reverse proxy, that forwards requests to the local DeepFace web service, and
+			forwards any reponses back to the web client.
+      
+      Performance Counters
+      ------------------------
+      
+      For this simulation to work, the `Performance.ws` Web Service script available in the
+      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
+      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
+      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
+      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
+      script contais the following script, executed when the resource is accessed:
+
+          {
+              "cpuPercent":PerformanceCounterValue("Processor","_Total","% Processor Time"),
+              "networkBytesPerSec":PerformanceCounterValue("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec"),
+              "memoryMBytesFree":PerformanceCounterValue("Memory","Available MBytes")
+          }
+      ]]>
+    </Preparation>
+    <ModelScript>
+      <![CDATA[
+      GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
+      
+      DecodeBinary(Bin):={"startTime":BitConverter.ToUInt64(Bin,0)};
+      ]]>
+    </ModelScript>
+  </Meta>
+  <Assemblies>
+    <Assembly fileName="TAG.Simulator.Performance.dll"/>
+    <Assembly fileName="TAG.Simulator.Web.dll"/>
+  </Assemblies>
+  <Actors>
+    <Timer id="PerformanceTimer" N="1" period="PT1S">
+      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+    </Timer>
+		<web:WebActor id="Neuron" N="10" httpVersion="2.0">
+		</web:WebActor>
+		<web:WebActor id="DeepFace" N="1" httpVersion="2.0">
+			<InstanceVariable name="URL" type="String"/>
+		</web:WebActor>
+  </Actors>
+  <Distributions>
+    <Normal id="WsDistribution" μ="200" σ="75" N="1500000"/>
+  </Distributions>
+  <Events>
+    <StochasticEvent distribution="WsDistribution" activity="TestUrl">
+      <Description>Sends an HTTP Web Service request from one random web client to the DeepFace web service.</Description>
+      <ActorReference name="From" exclusive="false">
+        <FromPopulation actor="Neuron"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="DeepFace"/>
+      </ActorReference>
+      <SetVariable name="StartTime">
+        <Script>Now</Script>
+      </SetVariable>
+    </StochasticEvent>
+    <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
+      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+    </EventHandler>
+  </Events>
+  <Activities>
+    <Activity id="ReadPerformanceCounters">
+      <Description>This activity measures server performance, by calling a web service and reporting the measured values in the returning JSON object back to the simulator.</Description>
+      <Start/>
+      <Parallel>
+        <Thread>
+          <Group title="Broker Performance">
+            <Eval>M:=GetBrokerPerformance()</Eval>
+            <Sample name="Broker CPU (%)">
+              <Script>M.cpuPercent</Script>
+            </Sample>
+            <Sample name="Broker Network (kB/s)">
+              <Script>M.networkBytesPerSec/1024</Script>
+            </Sample>
+            <Sample name="Broker Free Memory (GB)">
+              <Script>M.memoryMBytesFree/1024</Script>
+            </Sample>
+          </Group>
+        </Thread>
+        <Thread>
+          <Group title="Simulator Performance">
+            <!-- NOTE: Performance counter names, instance names and category names depends on configuration and locale of operating system of the machine running the simulator. Might have to be changed. -->
+            <Sample name="Simulator CPU (%)">
+              <!-- Swedish: -->
+              <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/>
+              <!-- English:
+                 <perf:Performance category="Processor" instance="_Total" counter="% Processor Time"/> -->
+            </Sample>
+            <Sample name="Simulator Network (kB/s)">
+              <!-- Swedish: -->
+              <perf:Performance category="Nätverksgränssnitt" instance="Intel[R] Wireless-AC 9560 160MHz" counter="Totalt antal byte/s" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Network Interface" instance="Microsoft Hyper-V Network Adapter" counter="Bytes Total/sec" divider="1024"/> -->
+            </Sample>
+            <Sample name="Simulator Free Memory (GB)">
+              <!-- Swedish: -->
+              <perf:Performance category="Minne" counter="Tillgängliga megabyte" divider="1024"/>
+              <!-- English:
+                 <perf:Performance category="Memory" counter="Available MBytes" divider="1024"/>-->
+            </Sample>
+          </Group>
+        </Thread>
+      </Parallel>
+      <Stop/>
+    </Activity>
+    <Activity id="TestUrl" logStart="false" logEnd="false">
+			<Description>Tests the URL by executing a GET on the DeepFace URL.</Description>
+			<Start/>
+			<LogInformation message="Getting DeepFace page." actor="Neuron.InstanceId"/>
+			<web:GET actor="Neuron"
+							 url="{DeepFace.URL}"
+							 timeout="PT10S"
+							 variable="Response">
+				<web:Header name="Accept" value="text/html"/>
+			</web:GET>
+			<Sample name="GET">
+				<Script>Neuron.InstanceIndex</Script>
+			</Sample>
+			<Stop/>
+    </Activity>
+  </Activities>
+  <Measurements>
+    <BucketTime for="Broker CPU (%)" duration="PT10S"/>
+    <BucketTime for="Simulator CPU (%)" duration="PT10S"/>
+    <BucketTime for="Broker Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="Simulator Free Memory (GB)" duration="PT10S"/>
+    <BucketTime for="Broker Network (kB/s)" duration="PT10S"/>
+    <BucketTime for="Simulator Network (kB/s)" duration="PT10S"/>
+  </Measurements>
+  <Graphs>
+    <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
+      <Source ref="Broker CPU (%)"/>
+      <Source ref="Simulator CPU (%)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Free Memory (GB)" legend="true" header="Memory Performance">
+      <Source ref="Broker Free Memory (GB)"/>
+      <Source ref="Simulator Free Memory (GB)"/>
+    </CombinedSampleGraph>
+    <CombinedSampleGraph title="Machine Input/Output (kB/s)" legend="true" header="I/O Performance">
+      <Source ref="Broker Network (kB/s)"/>
+      <Source ref="Simulator Network (kB/s)"/>
+    </CombinedSampleGraph>
+  </Graphs>
+</Model>
