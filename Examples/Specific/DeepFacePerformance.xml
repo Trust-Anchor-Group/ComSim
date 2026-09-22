@@ -10,47 +10,133 @@
        sampleEpsilon="true">
   <Meta>
     <Title>DeepFace Performance</Title>
-    <Introduction>Simulation that gradually increases load on a DeepFace web service, to analyze performance, error rate and latency during different loads.</Introduction>
+    <Introduction>
+			<![CDATA[
+			Simulation that gradually increases load on a DeepFace web service, to analyze 
+			performance, error rate and latency during different loads.
+			]]>
+		</Introduction>
     <Description>
       <![CDATA[ 
-      Simulates 10 web clients, each representing a Neuron accessing a DeepFace web service,
-      during 10 minutes. Web clients requests face vectorization with a frequency that is 
-			gradually increased over time. During the simulation, performance metrics are sampled. 
+      Simulates 10 web clients, each representing a Neuron accessing a single DeepFace web 
+			service, during 1 minute. Web clients requests face vectorization with a frequency that 
+			is gradually increased over time. During the simulation, performance metrics are sampled. 
       ]]>
     </Description>
     <Preparation>
       <![CDATA[
-      DeepFace
-      -----------
+Face Database
+----------------
 
-      DeepFace runs in a container environment protected by a Neuron that faces the Internet.
-			It has a reverse proxy, that forwards requests to the local DeepFace web service, and
-			forwards any reponses back to the web client.
-      
-      Performance Counters
-      ------------------------
-      
-      For this simulation to work, the `Performance.ws` Web Service script available in the
-      [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in the
-      [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to the
-      `/Reports` web folder of the [TAG Neuron](https://lab.tagroot.io/Broker.md) or the
-      [IoT Gateway](https://waher.se/IoTGateway/Index.md) web server. For readability, the web service
-      script contais the following script, executed when the resource is accessed:
+For the simulation to work, a face image database needs to be used. Any face image database
+can be used, as long as it is based on a set of images stored in a folder structure, with a
+common root folder. During the setup of the simulation, the path to the root folder of the
+face image database has to be entered. For this simlation the face database
+[`celebahq`](https://www.kaggle.com/datasets/lamsimon/celebahq) has been used. It consists
+of JPG images of celebrities each one around 100 kB in size, and 1024x1024 pixels.
 
-          {
-              "cpuPercent":PerformanceCounterValue("Processor","_Total","% Processor Time"),
-              "networkBytesPerSec":PerformanceCounterValue("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec"),
-              "memoryMBytesFree":PerformanceCounterValue("Memory","Available MBytes")
-          }
-      ]]>
+Reverse Proxy
+----------------
+			
+The [TAG Neuron](https://lab.tagroot.io/Broker.md) or the 
+[IoT Gateway](https://waher.se/IoTGateway/Index.md) web server used to define the
+reverse proxy that redirects requests to the local DeepFace has to be setup. This is
+done in the `Gateway.config` file, or in the `GatewayConfig` Data Source, under
+the `WebServer` node. The following XML can be pasted into the `WebServer` node using
+the [Simple IoT Client](https://waher.se/IoTGateway/SimpleIoTClient.md), to add the 
+reverse proxy node. You might have to change the remote parameters, in case the Docker
+component uses other values. The Neuron or Gateway needs to be restarted afterward, for 
+the changes to take effect.
+
+```xml
+<createNewNode xmlns="urn:nf:iot:concentrator:1.0" type="Waher.Service.IoTBroker.Sources.GatewayConfig.ProxyResource" id="WebServer" src="GatewayConfig">
+	<x xmlns="jabber:x:data" type="submit">
+		<field var="LocalResource">
+			<value>/DeepFace</value>
+		</field>
+		<field var="RemoteDomain">
+			<value>192.168.100.10</value>
+		</field>
+		<field var="RemoteFolder">
+			<value>/</value>
+		</field>
+		<field var="RemotePort">
+			<value>5000</value>
+		</field>
+		<field var="Encrypted">
+			<value>false</value>
+		</field>
+		<field var="UseSession">
+			<value>true</value>
+		</field>
+		<field var="TimeoutMs">
+			<value>30000</value>
+		</field>
+		<field var="Privilege">
+			<value></value>
+		</field>
+	</x>
+</createNewNode>
+```
+			
+DeepFace
+-----------
+
+DeepFace runs in a container environment protected by a Neuron that faces the Internet.
+It has a reverse proxy, that forwards requests to the local DeepFace web service, and
+forwards any reponses back to the web client.
+			
+During initial setup of the simulation, the URL to the Reverse Proxy that redirects
+requests to the DeepFace Web Service has to be entered.
+			
+```dot:Connected Entities
+digraph G 
+{
+    rankdir=LR
+
+    subgraph cluster_0 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label = "Laptop in Chile";
+        Simulator [label="Simulator\nComSim"]
+    }
+
+
+    subgraph cluster_1 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label = "VM in Azure in Western Europe";
+        Neuron [label="Neuron\nReverse Proxy"]
+        DeepFace [label="DeepFace\nin Docker container"]
+    }
+
+	Simulator -> Neuron [label="HTTP/2.0 GET/POST"]
+	Neuron -> DeepFace [label="HTTP/2.0 GET/POST"]
+	DeepFace -> Neuron [label="HTTP/2.0 Response"]
+	Neuron -> Simulator [label="HTTP/2.0 Response"]
+}
+```
+      
+Performance Counters
+------------------------
+      
+For this simulation to work, the `Performance.ws` Web Service script available in the
+[Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in
+the [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to
+Neuron hosting the reverse proxy and DeepFace, for example to the `Reports/Performance.ws`
+file resource. When the simulatio starts, a URL to the web service must be entered.
+
+For readability, then web service script contais the following script:
+
+    {
+        "cpuPercent":PerformanceCounterValue("Processor","_Total","% Processor Time"),
+        "networkBytesPerSec":PerformanceCounterValue("Network Interface","Microsoft Hyper-V Network Adapter","Bytes Total/sec"),
+        "memoryMBytesFree":PerformanceCounterValue("Memory","Available MBytes")
+    }
+]]>
     </Preparation>
-    <ModelScript>
-      <![CDATA[
-      GetBrokerPerformance():=Post("https://lab.tagroot.io/Reports/Performance.ws","","application/json");
-      
-      DecodeBinary(Bin):={"startTime":BitConverter.ToUInt64(Bin,0)};
-      ]]>
-    </ModelScript>
   </Meta>
   <Assemblies>
     <Assembly fileName="TAG.Simulator.Performance.dll"/>
@@ -58,29 +144,28 @@
   </Assemblies>
   <Actors>
     <Timer id="PerformanceTimer" N="1" period="PT1S">
-      <ExternalEvent name="Elapsed" event="MeasurePerformance"/>
+      <ExternalEvent name="Elapsed" event="MeasurePerformance" actorName="Timer"/>
+			<InstanceVariable name="PerformanceWsUrl" type="String"/>
     </Timer>
 		<web:WebActor id="Neuron" N="10" httpVersion="2.0">
 		</web:WebActor>
 		<web:WebActor id="DeepFace" N="1" httpVersion="2.0">
 			<InstanceVariable name="URL" type="String"/>
+			<InstanceVariable name="ImageDBFolder" type="String"/>
 		</web:WebActor>
   </Actors>
   <Distributions>
-    <Normal id="WsDistribution" μ="200" σ="75" N="1500000"/>
+		<Uniform id="TestApiDistribution" N="100" from="0" to="10"/>
   </Distributions>
   <Events>
-    <StochasticEvent distribution="WsDistribution" activity="TestUrl">
-      <Description>Sends an HTTP Web Service request from one random web client to the DeepFace web service.</Description>
+    <StochasticEvent distribution="TestApiDistribution" activity="TestApi">
+      <Description>Sends an HTTP GET request to the DeepFace API endpoint, to check that the web service is up and running.</Description>
       <ActorReference name="From" exclusive="false">
         <FromPopulation actor="Neuron"/>
       </ActorReference>
       <ActorReference name="To" exclusive="false">
         <FromPopulation actor="DeepFace"/>
       </ActorReference>
-      <SetVariable name="StartTime">
-        <Script>Now</Script>
-      </SetVariable>
     </StochasticEvent>
     <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
       <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
@@ -93,7 +178,7 @@
       <Parallel>
         <Thread>
           <Group title="Broker Performance">
-            <Eval>M:=GetBrokerPerformance()</Eval>
+            <Eval>M:=Post(Timer.PerformanceWsUrl,{Accept:"application/json"})</Eval>
             <Sample name="Broker CPU (%)">
               <Script>M.cpuPercent</Script>
             </Sample>
@@ -131,18 +216,18 @@
       </Parallel>
       <Stop/>
     </Activity>
-    <Activity id="TestUrl" logStart="false" logEnd="false">
+    <Activity id="TestApi" logStart="false" logEnd="false">
 			<Description>Tests the URL by executing a GET on the DeepFace URL.</Description>
 			<Start/>
-			<LogInformation message="Getting DeepFace page." actor="Neuron.InstanceId"/>
-			<web:GET actor="Neuron"
-							 url="{DeepFace.URL}"
+			<LogInformation message="Getting DeepFace page." actor="{From.InstanceId}"/>
+			<web:GET actor="From"
+							 url="{To.URL}"
 							 timeout="PT10S"
 							 variable="Response">
 				<web:Header name="Accept" value="text/html"/>
 			</web:GET>
-			<Sample name="GET">
-				<Script>Neuron.InstanceIndex</Script>
+			<Sample name="TestApi">
+				<Script>From.InstanceIndex</Script>
 			</Sample>
 			<Stop/>
     </Activity>
@@ -156,6 +241,16 @@
     <BucketTime for="Simulator Network (kB/s)" duration="PT10S"/>
   </Measurements>
   <Graphs>
+		<CustomGraph for="TestApi" header="Test API">
+			<![CDATA[
+      [Labels,Counts]:=Histogram(TestApi,1,10,10);
+      G:=VerticalBars(str(1..10),Counts);
+      G.LabelX:="Neuron";
+      G.LabelY:="Number of GETs";
+      G.Title:="Distribution of number of GET calls";
+      G
+      ]]>
+		</CustomGraph>
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
