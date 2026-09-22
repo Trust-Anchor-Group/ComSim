@@ -194,8 +194,8 @@ namespace TAG.Simulator.ObjectModel.Actors
 			{
 				foreach (ISimulationNode Child in Parent.Children)
 				{
-					if (Child is InstanceVariable Variable)
-						await Variable.SetVariable(this, this.variables);
+					if (Child is IInstanceNode InstanceNode)
+						await InstanceNode.ConfigureInstance(this, this.variables);
 				}
 			}
 		}

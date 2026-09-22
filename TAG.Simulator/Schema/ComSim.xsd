@@ -183,6 +183,7 @@
 							<xs:attribute name="type" type="InstanceVariableType" use="required"/>
 						</xs:complexType>
 					</xs:element>
+					<xs:element name="InstanceScript" type="xs:string"/>
 				</xs:choice>
 				<xs:attribute name="id" type="xs:ID" use="required"/>
 				<xs:attribute name="N" type="xs:positiveInteger" use="required"/>

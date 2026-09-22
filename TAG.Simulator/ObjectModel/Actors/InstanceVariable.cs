@@ -24,7 +24,7 @@ namespace TAG.Simulator.ObjectModel.Actors
 	/// <summary>
 	/// Defines an instance variable.
 	/// </summary>
-	public class InstanceVariable : SimulationNode
+	public class InstanceVariable : SimulationNode, IInstanceNode
 	{
 		private InstanceVariableType type;
 		private string name;
@@ -78,10 +78,10 @@ namespace TAG.Simulator.ObjectModel.Actors
 		}
 
 		/// <summary>
-		/// Sets the instance variable.
+		/// Configures an actor instance.
 		/// </summary>
 		/// <param name="Variables">Collection of instance variables.</param>
-		public async Task SetVariable(Actor ActorInstance, Variables Variables)
+		public async Task ConfigureInstance(Actor ActorInstance, Variables Variables)
 		{
 			string KeyPrefix = ActorInstance.InstanceId + "." + this.name;
 			string ValueKey = KeyPrefix + ".Value";
