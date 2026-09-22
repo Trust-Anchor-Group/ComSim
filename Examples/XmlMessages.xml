@@ -132,7 +132,7 @@
             </Sample>
             <Sample name="Simulator Network (kB/s)">
               <!-- Swedish: -->
-              <perf:Performance category="Nätverksgränssnitt" instance="Intel[R] Wireless-AC 9560 160MHz" counter="Totalt antal byte/s" divider="1024"/>
+              <perf:Performance category="Nätverksgränssnitt" instance="Intel[R] Wi-Fi 6E AX211 160MHz" counter="Totalt antal byte/s" divider="1024"/>
               <!-- English:
                  <perf:Performance category="Network Interface" instance="Microsoft Hyper-V Network Adapter" counter="Bytes Total/sec" divider="1024"/> -->
             </Sample>
