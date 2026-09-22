@@ -104,6 +104,12 @@ new simulation models:
 | [LegalIdentities.xml](Examples/LegalIdentities.xml)         | Simulates a collection of XMPP accounts that apply for legal identities. The users randomly petitions each others for their identities. They also perform remote logins, triggering signature petitions.                                                                                     | [Report](https://lab.tagroot.io/Reports/LegalIdentities.md)     |
 | [WebSessions.xml](Examples/WebSessions.xml)                 | Simulates a collection of multi-modal Web actors that access pages on the web and use digital identities via XMPP for MFA. Some operations do not require authentication, others require authentication.                                                                                     | [Report](https://lab.tagroot.io/Reports/WebSessions.md)         |
 
+Additional specific simulations available:
+
+| Example                                                              | Description                                                                                                                                               |
+|:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [DeepFacePerformance.xml](Examples/Specific/DeepFacePerformance.xml) | Simulates load on a DeepFace instance behind a reverse proxy, and measures performance. Simulation also demonstrates the use of actor instance variables. |
+
 ## Extending the Simulator
 
 You can extend the simulator by providing links to your own .NET Standard assemblies, and reference them from your simulation model.
