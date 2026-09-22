@@ -382,7 +382,7 @@
       G:=VerticalBars(str(1..10),Counts);
       G.LabelX:="User";
       G.LabelY:="Number of GETs";
-      G.Title:="Distribution of numbers GET calls";
+      G.Title:="Distribution of number of GET calls";
       G
       ]]>
 		</CustomGraph>
@@ -392,7 +392,7 @@
       G:=VerticalBars(str(1..10),Counts);
       G.LabelX:="User";
       G.LabelY:="Number of POSTs";
-      G.Title:="Distribution of numbers POST calls";
+      G.Title:="Distribution of number of POST calls";
       G
       ]]>
 		</CustomGraph>
