@@ -1,12 +1,21 @@
-﻿using Waher.Networking.MQTT;
+﻿using TAG.Simulator.ObjectModel.Actors;
+using Waher.Networking.MQTT;
 
 namespace TAG.Simulator.MQTT.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities.
 	/// </summary>
-	public class MqttActivityObject
+	public class MqttActivityObject : ActivityObject
 	{
+		/// <summary>
+		/// Object used in simulation activities.
+		/// </summary>
+		public MqttActivityObject(Actor ActorInstance)
+			: base(ActorInstance)
+		{
+		}
+
 		/// <summary>
 		/// MQTT Client reference
 		/// </summary>

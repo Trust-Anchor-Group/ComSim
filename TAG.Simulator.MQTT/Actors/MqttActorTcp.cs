@@ -327,7 +327,7 @@ namespace TAG.Simulator.MQTT.Actors
 		{
 			get
 			{
-				return new MqttActivityObject()
+				return new MqttActivityObject(this)
 				{
 					Client = this.client,
 					UserName = this.userName,

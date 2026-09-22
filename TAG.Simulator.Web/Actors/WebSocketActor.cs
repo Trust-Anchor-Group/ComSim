@@ -141,7 +141,7 @@ namespace TAG.Simulator.Web.Actors
 
 				if (!string.IsNullOrEmpty(this.sessionActor))
 				{
-					string SessionInstance = this.sessionActor + this.InstanceId.Substring(this.Id.Length);
+					string SessionInstance = this.sessionActor + this.InstanceId[this.Id.Length..];
 
 					this.sniffer.Information("Web session instance: " + SessionInstance);
 
@@ -349,7 +349,7 @@ namespace TAG.Simulator.Web.Actors
 		{
 			get
 			{
-				return new WebSocketActorActivityObject()
+				return new WebSocketActorActivityObject(this)
 				{
 					Client = this,
 					Protocol = this.protocol,

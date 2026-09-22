@@ -217,7 +217,7 @@ namespace TAG.Simulator.Web.Actors
 		{
 			get
 			{
-				return new WebActorActivityObject()
+				return new WebActorActivityObject(this)
 				{
 					Client = this.client,
 					UserName = this.userName,

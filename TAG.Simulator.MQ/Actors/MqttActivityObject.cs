@@ -1,9 +1,12 @@
-﻿namespace TAG.Simulator.MQ.Actors
+﻿using TAG.Simulator.ObjectModel.Actors;
+
+namespace TAG.Simulator.MQ.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities.
 	/// </summary>
-	public class MqActivityObject
+	public class MqActivityObject(Actor ActorInstance) 
+		: ActivityObject(ActorInstance)
 	{
 		/// <summary>
 		/// MQ Client reference

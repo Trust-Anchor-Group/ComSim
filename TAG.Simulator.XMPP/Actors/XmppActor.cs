@@ -510,7 +510,7 @@ namespace TAG.Simulator.XMPP.Actors
 		{
 			get
 			{
-				return new XmppActivityObject()
+				return new XmppActivityObject(this)
 				{
 					Client = this.client,
 					UserName = this.userName,

@@ -243,6 +243,6 @@ namespace TAG.Simulator.ObjectModel.Actors
 		/// <summary>
 		/// Returns the object that will be used by the actor for actions during an activity.
 		/// </summary>
-		public virtual object ActivityObject => this;
+		public virtual object ActivityObject => new ActivityObject(this);
 	}
 }

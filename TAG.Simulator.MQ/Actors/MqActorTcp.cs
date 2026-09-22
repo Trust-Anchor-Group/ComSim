@@ -266,7 +266,7 @@ namespace TAG.Simulator.MQ.Actors
 		{
 			get
 			{
-				return new MqActivityObject()
+				return new MqActivityObject(this)
 				{
 					Client = this.client,
 					UserName = this.userName,

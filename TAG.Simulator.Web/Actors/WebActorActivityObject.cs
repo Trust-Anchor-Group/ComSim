@@ -1,9 +1,12 @@
-﻿namespace TAG.Simulator.Web.Actors
+﻿using TAG.Simulator.ObjectModel.Actors;
+
+namespace TAG.Simulator.Web.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities representing a web actor.
 	/// </summary>
-	public class WebActorActivityObject
+	public class WebActorActivityObject(Actor ActorInstance) 
+		: ActivityObject(ActorInstance)
 	{
 		/// <summary>
 		/// Web Client reference

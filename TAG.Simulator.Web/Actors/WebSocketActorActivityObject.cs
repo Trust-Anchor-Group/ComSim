@@ -1,9 +1,12 @@
-﻿namespace TAG.Simulator.Web.Actors
+﻿using TAG.Simulator.ObjectModel.Actors;
+
+namespace TAG.Simulator.Web.Actors
 {
 	/// <summary>
 	/// Object used in simulation activities representing a web-socket actor.
 	/// </summary>
-	public class WebSocketActorActivityObject
+	public class WebSocketActorActivityObject(Actor ActorInstance) 
+		: ActivityObject(ActorInstance)
 	{
 		/// <summary>
 		/// WebSocket Actor reference
