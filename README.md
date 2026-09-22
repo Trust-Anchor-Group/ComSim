@@ -106,9 +106,9 @@ new simulation models:
 
 Additional specific simulations available:
 
-| Example                                                              | Description                                                                                                                                               |
-|:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [DeepFacePerformance.xml](Examples/Specific/DeepFacePerformance.xml) | Simulates load on a DeepFace instance behind a reverse proxy, and measures performance. Simulation also demonstrates the use of actor instance variables. |
+| Example                                                              | Description                                                                                                                                                                   |
+|:---------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [DeepFacePerformance.xml](Examples/Specific/DeepFacePerformance.xml) | Simulates load on a DeepFace instance behind a reverse proxy, and measures performance. Simulation also demonstrates the use of actor instance variables and instance script. |
 
 ## Extending the Simulator
 

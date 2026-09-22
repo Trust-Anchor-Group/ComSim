@@ -3,10 +3,10 @@
        xmlns:web="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
        xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
        timeBase="StartOfSimulation"
-       bucketTime="PT1S"
+       bucketTime="PT10S"
        timeUnit="PT1S"
-       timeCycle="PT10S"
-       duration="PT10S"
+       timeCycle="PT1M"
+       duration="PT1M"
        sampleEpsilon="true">
   <Meta>
     <Title>DeepFace Performance</Title>
@@ -152,14 +152,36 @@ For readability, then web service script contais the following script:
 		<web:WebActor id="DeepFace" N="1" httpVersion="2.0">
 			<InstanceVariable name="URL" type="String"/>
 			<InstanceVariable name="ImageDBFolder" type="String"/>
+		  <InstanceScript>
+				<![CDATA[
+				if !EndsWith(URL,"/") then URL:=URL+"/";
+				RepresentURL:=URL+"represent";
+				
+				ImageFiles:=join(
+				  System.IO.Directory.GetFiles(ImageDBFolder,"*.png",System.IO.SearchOption.AllDirectories),
+				  System.IO.Directory.GetFiles(ImageDBFolder,"*.jpg",System.IO.SearchOption.AllDirectories));
+				ImageCount:=count(ImageFiles);
+				LogNotice("Images found in database: "+Str(ImageCount));
+				]]>
+		  </InstanceScript>
 		</web:WebActor>
   </Actors>
   <Distributions>
-		<Uniform id="TestApiDistribution" N="100" from="0" to="10"/>
+		<Uniform id="TestApiDistribution" N="200" from="0" to="60"/>
+		<Uniform id="VectorizeFaceDistribution" N="200" from="0" to="60"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="TestApiDistribution" activity="TestApi">
-      <Description>Sends an HTTP GET request to the DeepFace API endpoint, to check that the web service is up and running.</Description>
+      <Description>Raised when the DeepFace API endpoint is tested.</Description>
+      <ActorReference name="From" exclusive="false">
+        <FromPopulation actor="Neuron"/>
+      </ActorReference>
+      <ActorReference name="To" exclusive="false">
+        <FromPopulation actor="DeepFace"/>
+      </ActorReference>
+    </StochasticEvent>
+    <StochasticEvent distribution="VectorizeFaceDistribution" activity="VectorizeFace">
+      <Description>Raised when a face is vectorized using the DeepFace API.</Description>
       <ActorReference name="From" exclusive="false">
         <FromPopulation actor="Neuron"/>
       </ActorReference>
@@ -168,10 +190,100 @@ For readability, then web service script contais the following script:
       </ActorReference>
     </StochasticEvent>
     <EventHandler id="MeasurePerformance" activity="ReadPerformanceCounters">
-      <Description>Server performance is measured regularly during the simulation, and shown in the final report.</Description>
+      <Description>
+				<![CDATA[
+				Server performance is measured regularly during the simulation, and shown in the 
+				final report.
+				]]>
+			</Description>
     </EventHandler>
   </Events>
   <Activities>
+    <Activity id="TestApi" logStart="false" logEnd="false">
+      <Description>
+				<![CDATA[
+				Sends an HTTP GET request to the DeepFace API endpoint, to check that the web service 
+				is up and running.
+				]]>
+			</Description>
+			<Start/>
+			<LogInformation message="Getting DeepFace page." actor="{From.InstanceId}"/>
+			<Eval>
+				<![CDATA[
+				Start:=NowUtc
+				]]>
+			</Eval>
+			<web:GET actor="From"
+							 url="{To.URL}"
+							 timeout="PT10S"
+							 variable="Response">
+				<web:Header name="Accept" value="text/html"/>
+			</web:GET>
+			<Eval>
+				<![CDATA[
+				Stop:=NowUtc;
+				ElapsedTime:=(Stop-Start).TotalSeconds;
+				]]>
+			</Eval>
+			<Sample name="TestApi">
+				<Script>From.InstanceIndex</Script>
+			</Sample>
+			<Sample name="GetRoundtrip">
+				<Variable name="ElapsedTime"/>
+			</Sample>
+			<Stop/>
+    </Activity>
+    <Activity id="VectorizeFace" logStart="false" logEnd="false">
+      <Description>
+				<![CDATA[
+				Selects a random face from the face database, and sends it in a HTTP POST request to 
+				the DeepFace API endpoint, requesting it to vectorize the face in the image.
+				]]>
+			</Description>
+			<Start/>
+			<LogInformation message="Vectorizing face." actor="{From.InstanceId}"/>
+			<Eval>
+				<![CDATA[
+				ImageIndex:=floor(uniform(0,To.ImageCount));
+				ImageFileName:=To.ImageFiles[ImageIndex];
+				ImageFileExtension:=System.IO.Path.GetExtension(ImageFileName);
+				ImageContentType:=ImageFileExtension=".jpg" ? "image/jpeg" : "image/png";
+				ImageData:=LoadFile(ImageFileName,"binary");
+				
+				Request:=						
+				{
+				  "model_name": "Facenet512",
+				  "detector_backend": "retinaface",
+				  "img": "data:"+ImageContentType+";base64,"+Base64Encode(ImageData),
+				  "anti_spoofing": true
+				};
+
+				Start:=NowUtc
+				]]>
+			</Eval>
+			<web:POST actor="From"
+							  url="{To.RepresentURL}"
+							  timeout="PT10S"
+							  variable="Response">
+				<web:Header name="Accept" value="application/json"/>
+			  <web:Payload>
+					<Variable name="Request"/>
+			  </web:Payload>
+			</web:POST>
+			<Eval>
+				<![CDATA[
+				Stop:=NowUtc;
+				ElapsedTime:=(Stop-Start).TotalSeconds;
+				]]>
+			</Eval>
+			<Sample name="VectorizeFace">
+				<Script>From.InstanceIndex</Script>
+			</Sample>
+			<Sample name="PostRoundtrip">
+				<Variable name="ElapsedTime"/>
+			</Sample>
+			<Stop/>
+    </Activity>
     <Activity id="ReadPerformanceCounters">
       <Description>This activity measures server performance, by calling a web service and reporting the measured values in the returning JSON object back to the simulator.</Description>
       <Start/>
@@ -216,21 +328,6 @@ For readability, then web service script contais the following script:
       </Parallel>
       <Stop/>
     </Activity>
-    <Activity id="TestApi" logStart="false" logEnd="false">
-			<Description>Tests the URL by executing a GET on the DeepFace URL.</Description>
-			<Start/>
-			<LogInformation message="Getting DeepFace page." actor="{From.InstanceId}"/>
-			<web:GET actor="From"
-							 url="{To.URL}"
-							 timeout="PT10S"
-							 variable="Response">
-				<web:Header name="Accept" value="text/html"/>
-			</web:GET>
-			<Sample name="TestApi">
-				<Script>From.InstanceIndex</Script>
-			</Sample>
-			<Stop/>
-    </Activity>
   </Activities>
   <Measurements>
     <BucketTime for="Broker CPU (%)" duration="PT10S"/>
@@ -251,6 +348,20 @@ For readability, then web service script contais the following script:
       G
       ]]>
 		</CustomGraph>
+		<CustomGraph for="VectorizeFace" header="Vectorize Face">
+			<![CDATA[
+      [Labels,Counts]:=Histogram(VectorizeFace,1,10,10);
+      G:=VerticalBars(str(1..10),Counts);
+      G.LabelX:="Neuron";
+      G.LabelY:="Number of POSTs";
+      G.Title:="Distribution of number of POST calls";
+      G
+      ]]>
+		</CustomGraph>
+		<CombinedSampleGraph title="Rountrip time (s)" header="API Rountrip Time" legend="true">
+			<Source ref="GetRoundtrip"/>
+			<Source ref="PostRoundtrip"/>
+		</CombinedSampleGraph>
     <CombinedSampleGraph title="Machine CPU %" legend="true" header="CPU Performance">
       <Source ref="Broker CPU (%)"/>
       <Source ref="Simulator CPU (%)"/>
