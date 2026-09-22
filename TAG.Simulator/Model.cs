@@ -798,6 +798,26 @@ namespace TAG.Simulator
 		}
 
 		/// <summary>
+		/// Deletes a key from the database.
+		/// </summary>
+		/// <param name="KeyName">Name of key.</param>
+		/// <param name="LookupValue">Lookup value. Can be used to return different values for different keys, and for importing keys.</param>
+		public async Task DeleteKey(string KeyName, string LookupValue)
+		{
+			string Key = "KEY." + KeyName;
+
+			if (!string.IsNullOrEmpty(LookupValue))
+				Key += "." + LookupValue;
+
+			lock (this.keyValues)
+			{
+				this.keyValues.Remove(Key);
+			}
+
+			await RuntimeSettings.DeleteAsync(Key);
+		}
+
+		/// <summary>
 		/// Gets a key from the database. If it does not exist, it prompts the user for input.
 		/// </summary>
 		/// <param name="KeyName">Name of key.</param>

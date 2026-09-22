@@ -88,12 +88,26 @@ namespace TAG.Simulator.ObjectModel.Actors
 			string ConfiguredKey = KeyPrefix + ".Configured";
 			object Value;
 
-			if (!await RuntimeSettings.GetAsync(ConfiguredKey, false))
+			if (await RuntimeSettings.GetAsync(ConfiguredKey, false))
+			{
+				Value = this.type switch
+				{
+					InstanceVariableType.Boolean => await RuntimeSettings.GetAsync(ValueKey, false),
+					InstanceVariableType.Double => await RuntimeSettings.GetAsync(ValueKey, 0.0),
+					InstanceVariableType.Int64 => await RuntimeSettings.GetAsync(ValueKey, 0L),
+					InstanceVariableType.String => await RuntimeSettings.GetAsync(ValueKey, string.Empty),
+					InstanceVariableType.DateTime => await RuntimeSettings.GetAsync(ValueKey, DateTime.MinValue),
+					InstanceVariableType.TimeSpan => await RuntimeSettings.GetAsync(ValueKey, TimeSpan.Zero),
+					_ => throw new Exception("Unrecognized instance variable type: " + this.type.ToString()),
+				};
+			}
+			else
 			{
 				Value = null;
 
 				while (Value is null)
 				{
+					await this.Model.DeleteKey(ValueKey, string.Empty);
 					string s = await this.Model.GetKey(ValueKey, string.Empty);
 
 					switch (this.type)
@@ -135,18 +149,10 @@ namespace TAG.Simulator.ObjectModel.Actors
 							throw new Exception("Unrecognized instance variable type: " + this.type.ToString());
 					}
 				}
-			}
 
-			Value = this.type switch
-			{
-				InstanceVariableType.Boolean => await RuntimeSettings.GetAsync(ValueKey, false),
-				InstanceVariableType.Double => await RuntimeSettings.GetAsync(ValueKey, 0.0),
-				InstanceVariableType.Int64 => await RuntimeSettings.GetAsync(ValueKey, 0L),
-				InstanceVariableType.String => await RuntimeSettings.GetAsync(ValueKey, string.Empty),
-				InstanceVariableType.DateTime => await RuntimeSettings.GetAsync(ValueKey, DateTime.MinValue),
-				InstanceVariableType.TimeSpan => await RuntimeSettings.GetAsync(ValueKey, TimeSpan.Zero),
-				_ => throw new Exception("Unrecognized instance variable type: " + this.type.ToString()),
-			};
+				await RuntimeSettings.SetAsync(ValueKey, Value);
+				await RuntimeSettings.SetAsync(ConfiguredKey, true);
+			}
 
 			Variables[this.name] = Value;
 		}
