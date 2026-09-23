@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="Waher.Networking" Version="4.6.8" />
-    <PackageReference Include="Waher.Networking.XMPP.Contracts" Version="5.3.0" />
+    <PackageReference Include="Waher.Networking.XMPP.Contracts" Version="5.3.1" />
   </ItemGroup>
 
   <ItemGroup>
