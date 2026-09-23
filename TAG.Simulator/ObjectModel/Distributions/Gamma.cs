@@ -103,7 +103,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="t">Time</param>
 		/// <param name="NrCycles">Number of time cycles completed.</param>
 		/// <returns>CDU(t)</returns>
-		protected override double GetCumulativeProbability(double t, int NrCycles)
+		public override double GetCumulativeProbability(double t, int NrCycles)
 		{
 			t -= this.t0;
 			if (t < 0)

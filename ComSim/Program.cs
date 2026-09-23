@@ -523,8 +523,8 @@ namespace ComSim
 				Console.Out.WriteLine("Initializing database.");
 
 				bool Result = Run(Model, Done, SnifferFolder, SnifferTransformFileName, MarkdownOutputFileName,
-						XmlOutputFileName, CommandLine.ToString(), Master, Css, !LogConsole,
-						ProgramDataFolder, BlockSize, BlobBlockSize, Encoding, Encryption).Result;
+					XmlOutputFileName, CommandLine.ToString(), Master, Css, !LogConsole,
+					ProgramDataFolder, BlockSize, BlobBlockSize, Encoding, Encryption).Result;
 
 				if (Result)
 				{

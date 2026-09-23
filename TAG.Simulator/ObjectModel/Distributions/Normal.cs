@@ -72,7 +72,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="t">Time</param>
 		/// <param name="NrCycles">Number of time cycles completed.</param>
 		/// <returns>CDU(t)</returns>
-		protected override double GetCumulativeProbability(double t, int NrCycles)
+		public override double GetCumulativeProbability(double t, int NrCycles)
 		{
 			if (Math.Abs(t - this.μ) > Math.Abs(this.TimeCycleUnits + t - this.μ))
 			{

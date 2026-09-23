@@ -1,19 +1,20 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Waher.Content;
 
 namespace TAG.Simulator.ObjectModel.Distributions
 {
 	/// <summary>
-	/// Uniform distribution
+	/// Linearly increasing distribution
 	/// </summary>
-	public class Uniform : RangeDistribution
+	public class LinearIncrease : RangeDistribution
 	{
 		/// <summary>
-		/// Uniform distribution
+		/// Linearly increasing distribution
 		/// </summary>
 		/// <param name="Parent">Parent node</param>
 		/// <param name="Model">Model in which the node is defined.</param>
-		public Uniform(ISimulationNode Parent, Model Model)
+		public LinearIncrease(ISimulationNode Parent, Model Model)
 			: base(Parent, Model)
 		{
 		}
@@ -21,7 +22,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <summary>
 		/// Local name of XML element defining contents of class.
 		/// </summary>
-		public override string LocalName => nameof(Uniform);
+		public override string LocalName => nameof(LinearIncrease);
 
 		/// <summary>
 		/// Creates a new instance of the node.
@@ -31,7 +32,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <returns>New instance</returns>
 		public override ISimulationNode Create(ISimulationNode Parent, Model Model)
 		{
-			return new Uniform(Parent, Model);
+			return new LinearIncrease(Parent, Model);
 		}
 
 		/// <summary>
@@ -44,18 +45,35 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		{
 			double t0 = this.From;
 			double t1 = this.To;
-			double Δ = t1 - t0; 
+			double Δ = t1 - t0;
+			double r;
 
 			if (this.Inverted)  // t1 < t0
 			{
 				Δ += this.TimeCycleUnits;
 
 				if (t <= t1)
-					return t / Δ + NrCycles;
+				{
+					r = this.TimeCycleUnits - t0;
+					t += r;
+
+					return (t * t - r * r) / (Δ * Δ) + NrCycles;
+				}
 				else if (t < t0)
-					return t1 / Δ + NrCycles;
+				{
+					r = this.TimeCycleUnits - t0;
+					t1 += r;
+
+					return (t1 * t1 - r * r) / (Δ * Δ) + NrCycles;
+				}
 				else
-					return (t1 + t - t0) / Δ + NrCycles;
+				{
+					t = t - t0;
+					r = this.TimeCycleUnits - t0;
+					t1 += r;
+
+					return (t * t + t1 * t1 - r * r) / (Δ * Δ) + NrCycles;
+				}
 			}
 			else
 			{
@@ -64,7 +82,10 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				else if (t >= t1)
 					return NrCycles + 1;
 				else
-					return (t - t0) / Δ + NrCycles;
+				{
+					t -= t0;
+					return t * t / (Δ * Δ) + NrCycles;
+				}
 			}
 		}
 
@@ -74,33 +95,33 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="Output">Export output</param>
 		public override void ExportPdfBody(StringBuilder Output)
 		{
-			string t0 = CommonTypes.Encode(this.From);
-			string t1 = CommonTypes.Encode(this.To);
-			string Δ;
-
 			if (this.Inverted)
 			{
-				Δ = CommonTypes.Encode(this.TimeCycleUnits - (this.From - this.To));
-
 				Output.Append("t<=");
-				Output.Append(t1);
-				Output.Append(" or t>=");
-				Output.Append(t0);
-				Output.Append(" ? 1/");
-				Output.Append(Δ);
-				Output.Append(" : 0");
+				Output.Append(CommonTypes.Encode(this.To));
+				Output.Append(" ? 2*(t-(");
+				Output.Append(CommonTypes.Encode(this.From - this.TimeCycleUnits));
+				Output.Append("))/");
+				Output.Append(CommonTypes.Encode(this.TimeCycleUnits - (this.From - this.To)));
+				Output.Append("^2 : t>=");
+				Output.Append(CommonTypes.Encode(this.From));
+				Output.Append(" ? 2*(t-");
+				Output.Append(CommonTypes.Encode(this.From));
+				Output.Append(")/");
+				Output.Append(CommonTypes.Encode(this.TimeCycleUnits - (this.From - this.To)));
+				Output.Append("^2 : 0");
 			}
 			else
 			{
-				Δ = CommonTypes.Encode(this.To - this.From);
-
 				Output.Append("t>=");
-				Output.Append(t0);
+				Output.Append(CommonTypes.Encode(this.From));
 				Output.Append(" and t<=");
-				Output.Append(t1);
-				Output.Append(" ? 1/");
-				Output.Append(Δ);
-				Output.Append(" : 0");
+				Output.Append(CommonTypes.Encode(this.To));
+				Output.Append(" ? 2*(t-");
+				Output.Append(CommonTypes.Encode(this.From));
+				Output.Append(")/");
+				Output.Append(CommonTypes.Encode(this.To - this.From));
+				Output.Append("^2 : 0");
 			}
 		}
 	}

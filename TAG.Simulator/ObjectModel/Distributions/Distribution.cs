@@ -78,7 +78,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 				p = this.GetCumulativeProbability(t2, NrCycles) - this.GetCumulativeProbability(t1, NrCycles);
 			else
 			{
-				p = this.GetCumulativeProbability(this.Model.TimeCycleUnits, NrCycles - 1) - this.GetCumulativeProbability(t1, NrCycles - 1);
+				p = this.GetCumulativeProbability(this.TimeCycleUnits, NrCycles - 1) - this.GetCumulativeProbability(t1, NrCycles - 1);
 				p += this.GetCumulativeProbability(t2, NrCycles) - this.GetCumulativeProbability(0, NrCycles);
 			}
 
@@ -103,7 +103,7 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <param name="t">Time</param>
 		/// <param name="NrCycles">Number of time cycles completed.</param>
 		/// <returns>CDU(t)</returns>
-		protected abstract double GetCumulativeProbability(double t, int NrCycles);
+		public abstract double GetCumulativeProbability(double t, int NrCycles);
 
 		/// <summary>
 		/// Exports the PDF function, if not already exported.

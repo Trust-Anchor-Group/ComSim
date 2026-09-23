@@ -73,7 +73,11 @@ namespace TAG.Simulator
 			if (!initialized)
 				throw new NotSupportedException("Factory not initialized.");
 
-			Key = Definition.NamespaceURI + "#" + Definition.LocalName;
+			Key = Definition.NamespaceURI;
+			if (string.IsNullOrEmpty(Key))
+				Key = Model.ComSimNamespace;
+
+			Key += "#" + Definition.LocalName;
 			if (!nodeTypes.TryGetValue(Key, out ISimulationNode Result))
 				throw new Exception("Unable to instantiate objects of type " + Definition.NamespaceURI + "#" + Definition.LocalName);
 

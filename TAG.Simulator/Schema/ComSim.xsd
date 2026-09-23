@@ -43,12 +43,14 @@
 				<xs:element name="Distributions">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Uniform" type="UniformDistribution"/>
+							<xs:element name="Uniform" type="RangeDistribution"/>
 							<xs:element name="Normal" type="NormalDistribution"/>
 							<xs:element name="Exponential" type="ExponentialDistribution"/>
 							<xs:element name="Gamma" type="GammaDistribution"/>
 							<xs:element name="Chi" type="ChiDistribution"/>
 							<xs:element name="ChiSquare" type="ChiSquareDistribution"/>
+							<xs:element name="LinearIncrease" type="RangeDistribution"/>
+							<xs:element name="LinearDecrease" type="RangeDistribution"/>
 							<xs:any namespace="##other"/>
 						</xs:choice>
 					</xs:complexType>
@@ -118,7 +120,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:complexType name="UniformDistribution">
+	<xs:complexType name="RangeDistribution">
 		<xs:complexContent>
 			<xs:extension base="Distribution">
 				<xs:attribute name="from" type="xs:double" use="required"/>

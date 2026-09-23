@@ -3,7 +3,7 @@
        xmlns:web="http://lab.tagroot.io/Schema/ComSim/Web.xsd"
        xmlns:perf="http://lab.tagroot.io/Schema/ComSim/Performance.xsd"
        timeBase="StartOfSimulation"
-       bucketTime="PT10S"
+       bucketTime="PT1S"
        timeUnit="PT1S"
        timeCycle="PT1M"
        duration="PT1M"
@@ -167,8 +167,8 @@ For readability, then web service script contais the following script:
 		</web:WebActor>
   </Actors>
   <Distributions>
-		<Uniform id="TestApiDistribution" N="200" from="0" to="60"/>
-		<Uniform id="VectorizeFaceDistribution" N="200" from="0" to="60"/>
+		<LinearDecrease id="TestApiDistribution" N="200" from="0" to="60"/>
+		<LinearIncrease id="VectorizeFaceDistribution" N="200" from="0" to="60"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="TestApiDistribution" activity="TestApi">

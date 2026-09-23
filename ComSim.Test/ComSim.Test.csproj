@@ -13,12 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Waher.Runtime.Inventory" Version="1.4.6" />
     <PackageReference Include="Waher.Script" Version="2.15.2" />
     <PackageReference Include="Waher.Script.Graphs" Version="2.7.0" />
+    <PackageReference Include="Waher.Script.Statistics" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComSim\ComSim.csproj" />
+    <ProjectReference Include="..\TAG.Simulator\TAG.Simulator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
