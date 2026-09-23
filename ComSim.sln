@@ -72,6 +72,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specific", "Specific", "{02
 		Examples\Specific\DeepFacePerformance.xml = Examples\Specific\DeepFacePerformance.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComSim.Test", "ComSim.Test\ComSim.Test.csproj", "{23D4C1D7-7671-49BC-8863-82BAD3929F3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{B8DE8810-B71A-4834-832B-209446FA3CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8DE8810-B71A-4834-832B-209446FA3CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8DE8810-B71A-4834-832B-209446FA3CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D4C1D7-7671-49BC-8863-82BAD3929F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D4C1D7-7671-49BC-8863-82BAD3929F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D4C1D7-7671-49BC-8863-82BAD3929F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D4C1D7-7671-49BC-8863-82BAD3929F3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
