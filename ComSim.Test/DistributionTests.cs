@@ -28,34 +28,61 @@ namespace ComSim.Test
 		}
 
 		[TestMethod]
-		[DataRow(
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
 			"<Uniform id='U0' N='200' from='0' to='60'/>")]
-		[DataRow(
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<Uniform id=\"U1\" N=\"200\" from=\"10\" to=\"50\"/>")]
-		[DataRow(
+			"<Uniform id='U1' N='200' from='10' to='50'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<Uniform id=\"U2\" N=\"200\" from=\"50\" to=\"10\"/>")]
-		[DataRow(
+			"<Uniform id='U2' N='200' from='50' to='10'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearIncrease id=\"I0\" N=\"200\" from=\"0\" to=\"60\"/>")]
-		[DataRow(
+			"<LinearIncrease id='I0' N='200' from='0' to='60'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearIncrease id=\"I1\" N=\"200\" from=\"10\" to=\"50\"/>")]
-		[DataRow(
+			"<LinearIncrease id='I1' N='200' from='10' to='50'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearIncrease id=\"I2\" N=\"200\" from=\"50\" to=\"10\"/>")]
-		[DataRow(
+			"<LinearIncrease id='I2' N='200' from='50' to='10'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearDecrease id=\"D0\" N=\"200\" from=\"0\" to=\"60\"/>")]
-		[DataRow(
+			"<LinearDecrease id='D0' N='200' from='0' to='60'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearDecrease id=\"D1\" N=\"200\" from=\"10\" to=\"50\"/>")]
-		[DataRow(
+			"<LinearDecrease id='D1' N='200' from='10' to='50'/>")]
+		[DataRow(1,
 			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT1M' sampleEpsilon='true'/>",
-			"<LinearDecrease id=\"D2\" N=\"200\" from=\"50\" to=\"10\"/>")]
-		public async Task Test_01_DrawGraphs(string ModelXml, string DistributionXml)
+			"<LinearDecrease id='D2' N='200' from='50' to='10'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<Uniform id='U3' N='200' from='0' to='60'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<Uniform id='U4' N='200' from='10' to='50'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<Uniform id='U5' N='200' from='50' to='10'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearIncrease id='I3' N='200' from='0' to='60'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearIncrease id='I4' N='200' from='10' to='50'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearIncrease id='I5' N='200' from='50' to='10'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearDecrease id='D3' N='200' from='0' to='60'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearDecrease id='D4' N='200' from='10' to='50'/>")]
+		[DataRow(3,
+			"<Model timeBase='StartOfSimulation' bucketTime='PT1S' timeUnit='PT1S' timeCycle='PT1M' duration='PT3M' sampleEpsilon='true'/>",
+			"<LinearDecrease id='D5' N='200' from='50' to='10'/>")]
+		public async Task Test_01_DrawGraphs(int Cycles, string ModelXml, string DistributionXml)
 		{
 			XmlDocument Def = new();
 			Def.LoadXml(ModelXml);
@@ -72,7 +99,8 @@ namespace ComSim.Test
 			else
 			{
 				ChunkedList<DateTime> Timestamps = [];
-				ChunkedList<double> Times = [0];
+				ChunkedList<double> Times = [];
+				ChunkedList<double> TimesAxis = [];
 				ChunkedList<double> Cumulative = [];
 				DateTime TP = Model.StartTime;
 				double t1;
@@ -98,12 +126,12 @@ namespace ComSim.Test
 					if (t2 < t1)
 						NrCycles++;
 
-					if (TP < Model.EndTime)
-						Times.Add(t2);
+					Times.Add(t2);
+					TimesAxis.Add(t2 + NrCycles * Model.TimeCycleMs / Model.TimeUnitMs);
 
 					I = Distribution!.GetCumulativeProbability(t2, NrCycles);
 					AllIncreasing &= I >= LastI;
-					InRange &= I >= 0 && I <= 1;
+					InRange &= I >= 0 && I <= Cycles;
 					LastI = I;
 
 					Timestamps.Add(TP);
@@ -115,6 +143,7 @@ namespace ComSim.Test
 				Variables Variables = new(
 					new Variable("TP", Timestamps.ToArray()),
 					new Variable("t", Times.ToArray()),
+					new Variable("tx", TimesAxis.ToArray()),
 					new Variable("Cumulative", Cumulative.ToArray()));
 
 				Graph G = (Graph)await Expression.EvalAsync(
@@ -141,9 +170,9 @@ namespace ComSim.Test
 				StringBuilder sb = new();
 				sb.Append("P:=");
 				Distribution.ExportPdfBody(sb);
-				sb.Append(";plot2dline(t,zeroes(count(t)),'Black',1)+");
-				sb.Append("plot2dline(t,P,'Red',3)+");
-				sb.Append("scatter2d(t,P,'Blue',5)");
+				sb.Append(";plot2dline(tx,zeroes(count(t)),'Black',1)+");
+				sb.Append("plot2dline(tx,P,'Red',3)+");
+				sb.Append("scatter2d(tx,P,'Blue',5)");
 
 				G = (Graph)await Expression.EvalAsync(sb.ToString(), Variables);
 				Pixels = G.CreatePixels(Settings);
@@ -153,7 +182,7 @@ namespace ComSim.Test
 
 				Assert.IsTrue(AllIncreasing, "Cumulative probability function is not increasing.");
 				Assert.IsTrue(InRange, "Cumulative probability function is out of range.");
-				Assert.AreEqual(1.0, LastI, 1e-6, "Cumulative probability function does not reach 1.0 at end of interval.");
+				Assert.AreEqual(Cycles, LastI, 1e-6, "Cumulative probability function does not reach 1.0 at end of interval.");
 			}
 		}
 	}
