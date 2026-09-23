@@ -74,12 +74,6 @@ namespace TAG.Simulator.ObjectModel.Distributions
 		/// <returns>CDU(t)</returns>
 		public override double GetCumulativeProbability(double t, int NrCycles)
 		{
-			if (Math.Abs(t - this.μ) > Math.Abs(this.TimeCycleUnits + t - this.μ))
-			{
-				t += this.TimeCycleUnits;
-				NrCycles--;
-			}
-
 			double x = (t - this.μ) / this.σSqrt2;
 			double erf = x < -5 ? -1 : x > 5 ? 1 : StatMath.Erf(x);
 
