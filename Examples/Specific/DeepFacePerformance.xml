@@ -152,7 +152,7 @@ For readability, then web service script contais the following script:
       <ExternalEvent name="Elapsed" event="MeasurePerformance" actorName="Timer"/>
 			<InstanceVariable name="PerformanceUrl" type="String"/>
     </Timer>
-		<web:WebActor id="Neuron" N="10" httpVersion="2.0">
+		<web:WebActor id="Neuron" N="50" httpVersion="2.0">
 		</web:WebActor>
 		<web:WebActor id="DeepFace" N="1" httpVersion="2.0">
 			<InstanceVariable name="DeepFaceUrl" type="String"/>
@@ -172,8 +172,8 @@ For readability, then web service script contais the following script:
 		</web:WebActor>
   </Actors>
   <Distributions>
-		<Uniform id="TestApiDistribution" N="180" from="0" to="60"/>
-		<LinearIncrease id="VectorizeFaceDistribution" N="500" from="0" to="60"/>
+		<Uniform id="TestApiDistribution" N="120" from="0" to="60"/>
+		<Normal id="VectorizeFaceDistribution" N="500" μ="30" σ="10"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="TestApiDistribution" activity="TestApi">
@@ -275,8 +275,6 @@ For readability, then web service script contais the following script:
 					<Variable name="Request"/>
 				</web:Payload>
 			</web:POST>
-			<Try>
-			</Try>
 			<Eval>
 				<![CDATA[
 				Stop:=NowUtc;
@@ -347,8 +345,8 @@ For readability, then web service script contais the following script:
   <Graphs>
 		<CustomGraph for="TestApi" header="Test API">
 			<![CDATA[
-      [Labels,Counts]:=Histogram(TestApi,1,10,10);
-      G:=VerticalBars(str(1..10),Counts);
+      [Labels,Counts]:=Histogram(TestApi,1,50,50);
+      G:=VerticalBars(str(1..50),Counts);
       G.LabelX:="Neuron";
       G.LabelY:="Number of GETs";
       G.Title:="Distribution of number of GET calls";
@@ -357,8 +355,8 @@ For readability, then web service script contais the following script:
 		</CustomGraph>
 		<CustomGraph for="VectorizeFace" header="Vectorize Face">
 			<![CDATA[
-      [Labels,Counts]:=Histogram(VectorizeFace,1,10,10);
-      G:=VerticalBars(str(1..10),Counts);
+      [Labels,Counts]:=Histogram(VectorizeFace,1,50,50);
+      G:=VerticalBars(str(1..50),Counts);
       G.LabelX:="Neuron";
       G.LabelY:="Number of POSTs";
       G.Title:="Distribution of number of POST calls";
