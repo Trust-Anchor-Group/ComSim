@@ -87,7 +87,7 @@ It has a reverse proxy, that forwards requests to the local DeepFace web service
 forwards any reponses back to the web client.
 			
 During initial setup of the simulation, the URL to the Reverse Proxy that redirects
-requests to the DeepFace Web Service has to be entered.
+requests to the DeepFace Web Service has to be entered (variable `DeepFaceUrl`).
 			
 ```dot:Connected Entities
 digraph G 
@@ -118,6 +118,10 @@ digraph G
 	Neuron -> Simulator [label="HTTP/2.0 Response"]
 }
 ```
+
+The DeepFace representation Web Service takes a photo image as input and returns a
+vector representation of the face in the image. If spoofing is detected, the web service 
+returns a `400 Bad Request` error.
       
 Performance Counters
 ------------------------
@@ -126,7 +130,8 @@ For this simulation to work, the `Performance.ws` Web Service script available i
 [Examples](https://github.com/Trust-Anchor-Group/ComSim/tree/master/Examples) folder in
 the [ComSim](https://github.com/Trust-Anchor-Group/ComSim) project, needs to be copied to
 Neuron hosting the reverse proxy and DeepFace, for example to the `Reports/Performance.ws`
-file resource. When the simulatio starts, a URL to the web service must be entered.
+file resource. When the simulatio starts, a URL to the web service must be entered
+(variable `PerformanceUrl`).
 
 For readability, then web service script contais the following script:
 
@@ -145,17 +150,17 @@ For readability, then web service script contais the following script:
   <Actors>
     <Timer id="PerformanceTimer" N="1" period="PT1S">
       <ExternalEvent name="Elapsed" event="MeasurePerformance" actorName="Timer"/>
-			<InstanceVariable name="PerformanceWsUrl" type="String"/>
+			<InstanceVariable name="PerformanceUrl" type="String"/>
     </Timer>
 		<web:WebActor id="Neuron" N="10" httpVersion="2.0">
 		</web:WebActor>
 		<web:WebActor id="DeepFace" N="1" httpVersion="2.0">
-			<InstanceVariable name="URL" type="String"/>
+			<InstanceVariable name="DeepFaceUrl" type="String"/>
 			<InstanceVariable name="ImageDBFolder" type="String"/>
 		  <InstanceScript>
 				<![CDATA[
-				if !EndsWith(URL,"/") then URL:=URL+"/";
-				RepresentURL:=URL+"represent";
+				if !EndsWith(DeepFaceUrl,"/") then DeepFaceUrl:=DeepFaceUrl+"/";
+				RepresentURL:=DeepFaceUrl+"represent";
 				
 				ImageFiles:=join(
 				  System.IO.Directory.GetFiles(ImageDBFolder,"*.png",System.IO.SearchOption.AllDirectories),
@@ -167,8 +172,8 @@ For readability, then web service script contais the following script:
 		</web:WebActor>
   </Actors>
   <Distributions>
-		<LinearDecrease id="TestApiDistribution" N="200" from="0" to="60"/>
-		<LinearIncrease id="VectorizeFaceDistribution" N="200" from="0" to="60"/>
+		<Uniform id="TestApiDistribution" N="180" from="0" to="60"/>
+		<LinearIncrease id="VectorizeFaceDistribution" N="500" from="0" to="60"/>
   </Distributions>
   <Events>
     <StochasticEvent distribution="TestApiDistribution" activity="TestApi">
@@ -214,7 +219,7 @@ For readability, then web service script contais the following script:
 				]]>
 			</Eval>
 			<web:GET actor="From"
-							 url="{To.URL}"
+							 url="{To.DeepFaceUrl}"
 							 timeout="PT10S"
 							 variable="Response">
 				<web:Header name="Accept" value="text/html"/>
@@ -262,14 +267,16 @@ For readability, then web service script contais the following script:
 				]]>
 			</Eval>
 			<web:POST actor="From"
-							  url="{To.RepresentURL}"
-							  timeout="PT10S"
-							  variable="Response">
+								url="{To.RepresentURL}"
+								timeout="PT10S"
+								variable="Response">
 				<web:Header name="Accept" value="application/json"/>
-			  <web:Payload>
+				<web:Payload>
 					<Variable name="Request"/>
-			  </web:Payload>
+				</web:Payload>
 			</web:POST>
+			<Try>
+			</Try>
 			<Eval>
 				<![CDATA[
 				Stop:=NowUtc;
@@ -290,7 +297,7 @@ For readability, then web service script contais the following script:
       <Parallel>
         <Thread>
           <Group title="Broker Performance">
-            <Eval>M:=Post(Timer.PerformanceWsUrl,{Accept:"application/json"})</Eval>
+            <Eval>M:=Post(Timer.PerformanceUrl,{Accept:"application/json"})</Eval>
             <Sample name="Broker CPU (%)">
               <Script>M.cpuPercent</Script>
             </Sample>
